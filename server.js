@@ -21,5 +21,5 @@ app.listen(3100, () => {
 });
 app.use(express.static(__dirname + '/www'));
 
-const api = require('./service/app');
+const api = require('./service/api');
 app.use(api);
