@@ -2,7 +2,7 @@
   "name": "ecc_mis",
   "version": "1.0.0",
   "description": "MIS ecc",
-  "main": "server.js",
+  "main": "eec3700.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

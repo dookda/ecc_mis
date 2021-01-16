@@ -17,9 +17,13 @@ body {
 }
 
 #map {
-  height: 60vh;
+  height: 70vh;
   width: 100%;
   /* border-radius: 10px; */
+}
+
+#chart{
+  height: 65vh;
 }
 .mb1 {
   margin-bottom: 1em;

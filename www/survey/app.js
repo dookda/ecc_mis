@@ -2,6 +2,8 @@ let userid;
 $(document).ready(async function () {
   // await liff.init({ liffId: "1653987548-eakD174y" });
   loadMap();
+
+
 });
 
 let latlng = {
@@ -177,4 +179,15 @@ function resize() {
 
 function closeWindows() {
   window.close();
+}
+
+var header = document.getElementById("myDIV");
+var btns = header.getElementsByClassName("listBtn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function () {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+    console.log(current)
+  });
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+    <div class="container-fluid mt-2 mb-1">
+        <h2 style="font-weight: bold">สถานการณ์คุณภาพอากาศ</h2>
+        ข้อมูลคุณภาพอากาศปัจจุบัน (จากกรมควบคุมมลพิษ)<br />
+        <div>
+            <button class="btn btn-success" onclick="mapAQI()">AQI</button>
+            <button class="btn btn-success" onclick="mapPM25()">PM 2.5</button>
+            <button class="btn btn-success" onclick="mapPM10()">PM 10</button>
+            <button class="btn btn-success" onclick="mapCO()">CO</button>
+            <button class="btn btn-success" onclick="mapNO2()">NO2</button>
+            <button class="btn btn-success" onclick="mapSO2()">SO2</button>
+        </div>
+    </div>
+
+
+
+    <div class="container-fluid mt-2 mb-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="map"></div>
+                <div>
+                    <img src="./aqi.png" width="100%">
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="alert alert-info">
+                    <span id="variable"></span><br><span style="font-size: small;" id="datetime"></span>
+                </div>
+                <div class="p-0" id="chart"></div>
+            </div>
+        </div>
+
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p> <span class="ver">updated 21-12-2020</span></p>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<!-- <script src="./marker.js"></script> -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<script src="./app.js"></script>
+
+</html>
