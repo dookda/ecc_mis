@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col">
                 <div class="card card-stats">
-                    <div class="card-body ">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
@@ -55,7 +55,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-atom text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-atom text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -99,7 +99,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-sun-fog-29 text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -121,7 +121,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-bus-front-12 text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -143,7 +143,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-sound-wave text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -165,7 +165,7 @@
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="icon-big text-center icon-warning">
-                                    <i class="nc-icon nc-globe text-warning"></i>
+                                    <i class="nc-icon nc-planet text-warning"></i>
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
@@ -180,147 +180,147 @@
                     </div>
                 </div>
             </div>
-
         </div>
+    </div>
 
-        <div class="container-fluid mt-1 mb-6">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <button class="btn btn-success btn-round" onclick="mapAQI()">AQI</button>
-                            <button class="btn btn-success btn-round" onclick="mapPM25()">PM 2.5</button>
-                            <button class="btn btn-success btn-round" onclick="mapPM10()">PM 10</button>
-                            <button class="btn btn-success btn-round" onclick="mapO3()">O3</button>
-                            <button class="btn btn-success btn-round" onclick="mapCO()">CO</button>
-                            <button class="btn btn-success btn-round" onclick="mapNO2()">NO2</button>
-                            <button class="btn btn-success btn-round" onclick="mapSO2()">SO2</button>
-                        </div>
-                    </div>
-                    <div class="card card-stats">
-                        <div class="card-body p-0">
-                            <div id="map"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <img src="./aqi.png" width="100%">
+    <div class="container-fluid mt-1 mb-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-body ">
+                        <button class="btn btn-success btn-round" onclick="mapAQI()">AQI</button>
+                        <button class="btn btn-success btn-round" onclick="mapPM25()">PM 2.5</button>
+                        <button class="btn btn-success btn-round" onclick="mapPM10()">PM 10</button>
+                        <button class="btn btn-success btn-round" onclick="mapO3()">O3</button>
+                        <button class="btn btn-success btn-round" onclick="mapCO()">CO</button>
+                        <button class="btn btn-success btn-round" onclick="mapNO2()">NO2</button>
+                        <button class="btn btn-success btn-round" onclick="mapSO2()">SO2</button>
                     </div>
                 </div>
-
-                <div class="col-sm-6">
-                    <div class="alert alert-info mb-0">
-                        <span id="variable"></span>&nbsp;<span style="font-size: small;" id="datetime"></span>
+                <div class="card card-stats">
+                    <div class="card-body p-0">
+                        <div id="map"></div>
                     </div>
-
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <span id="unit"></span>
-                            <div class="p-0" id="chart"></div>
-                        </div>
-                    </div>
+                </div>
+                <div>
+                    <img src="./aqi.png" width="100%">
                 </div>
             </div>
 
-            <hr>
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <table id="tab" class="table hover" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>รหัส</th>
-                                        <th>ชื่อสถานี</th>
-                                        <!-- <th>สถานที่</th> -->
-                                        <th>pm25</th>
-                                        <th>pm10</th>
-                                        <th>o3</th>
-                                        <th>co</th>
-                                        <th>no2</th>
-                                        <th>so2</th>
-                                        <th>aqi</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
+            <div class="col-sm-6">
+                <div class="alert alert-info mb-0">
+                    <span id="variable"></span>&nbsp;<span style="font-size: small;" id="datetime"></span>
                 </div>
-                <div class="col-sm-7">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    aqi
-                                    <div class="chartHist p-0" id="chart-aqi"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    pm25 (µg./m<sup>3</sup>)
-                                    <div class="chartHist p-0" id="chart-pm25"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    pm10 (µg./m<sup>3</sup>)
-                                    <div class="chartHist p-0" id="chart-pm10"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    o<sub>3</sub> (ppb)
-                                    <div class="chartHist p-0" id="chart-o3"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    co (ppm)
-                                    <div class="chartHist p-0" id="chart-co"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    no<sub>2</sub> (ppb)
-                                    <div class="chartHist p-0" id="chart-no2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    so<sub>2</sub> (ppb)
-                                    <div class="chartHist p-0" id="chart-so2"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6"></div>
+                <div class="card card-stats">
+                    <div class="card-body ">
+                        <span id="unit"></span>
+                        <div class="p-0" id="chart"></div>
                     </div>
                 </div>
             </div>
-
-            <p></p>
-            <p></p>
-            <p></p>
-            <p> <span class="ver">updated 21-01-2021</span></p>
         </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card card-stats">
+                    <div class="card-body ">
+                        <table id="tab" class="table hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>รหัส</th>
+                                    <th>ชื่อสถานี</th>
+                                    <!-- <th>สถานที่</th> -->
+                                    <th>pm25</th>
+                                    <th>pm10</th>
+                                    <th>o3</th>
+                                    <th>co</th>
+                                    <th>no2</th>
+                                    <th>so2</th>
+                                    <th>aqi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                aqi
+                                <div class="chartHist p-0" id="chart-aqi"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                pm25 (µg./m<sup>3</sup>)
+                                <div class="chartHist p-0" id="chart-pm25"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                pm10 (µg./m<sup>3</sup>)
+                                <div class="chartHist p-0" id="chart-pm10"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                o<sub>3</sub> (ppb)
+                                <div class="chartHist p-0" id="chart-o3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                co (ppm)
+                                <div class="chartHist p-0" id="chart-co"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                no<sub>2</sub> (ppb)
+                                <div class="chartHist p-0" id="chart-no2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                so<sub>2</sub> (ppb)
+                                <div class="chartHist p-0" id="chart-so2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"></div>
+                </div>
+            </div>
+        </div>
+
+        <p></p>
+        <p></p>
+        <p></p>
+        <p> <span class="ver">updated 21-01-2021</span></p>
+    </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
