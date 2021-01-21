@@ -161,7 +161,7 @@ let mapAQI = async () => {
       ค่า AQI : ${Number(i.aqi).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.aqi)
     })
     marker.on('click', (e) => {
@@ -199,7 +199,7 @@ let mapPM25 = async () => {
       ค่า PM2.5 : ${Number(i.pm25).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.pm25)
     })
   })
@@ -232,7 +232,7 @@ let mapPM10 = async () => {
       ค่า PM10 : ${Number(i.pm10).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.pm10)
     })
   })
@@ -265,7 +265,7 @@ let mapO3 = async () => {
       ค่า O3 : ${Number(i.o3).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.o3)
     })
   })
@@ -298,7 +298,7 @@ let mapCO = async () => {
       ค่า CO : ${Number(i.co).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.co)
     })
   })
@@ -331,7 +331,7 @@ let mapNO2 = async () => {
       ค่า NO2 : ${Number(i.no2).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.no2)
     })
   })
@@ -364,7 +364,7 @@ let mapSO2 = async () => {
       ค่า SO2 : ${Number(i.so2).toFixed(1)}`
     )
     datArr.push({
-      "station": i.sta_id,
+      "station": i.sta_th,
       "data": Number(i.so2)
     })
   })
