@@ -92,16 +92,75 @@ app.post("/eec-api/get-hist", (req, res) => {
             avg(so2) as so2, 
             avg(aqi) as aqi
         FROM aqi_hourly_pcd
-        WHERE sta_id = '${sta_id}'
+        WHERE sta_id = '${sta_id}' date_ > current_date - interval '14 days'
         GROUP BY date_, sta_id, sta_th 
         ORDER BY date_`
-    // console.log(sta_id)
     dat.query(sql).then((r) => {
-        // console.log(r.rows)
         res.status(200).json({
             data: r.rows
         });
     });
+})
+
+app.get("/eec-api/get-weather", (req, res) => {
+    const sql = `
+        SELECT s.*, TO_CHAR(s.datetime, 'DD-MM-YYYY') as date_ 
+        FROM (
+                SELECT * FROM weather_daily_tmd
+                WHERE province = 'ระยอง' OR province = 'ชลบุรี' OR province = 'ฉะเชิงเทรา' 
+                        OR sta_num = '48420' OR sta_num = '48429' OR sta_num = '48430' 
+                        OR sta_num = '48439' OR sta_num = '48440' OR sta_num = '48480' 
+            ) s
+        INNER JOIN (
+                SELECT sta_num, MAX(datetime) as dt FROM weather_daily_tmd
+                GROUP BY sta_num
+            ) n
+        ON s.sta_num = n.sta_num
+        WHERE s.datetime = n.dt
+    `
+    dat.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-weather-3hr", (req, res) => {
+    const sql = `
+        SELECT s.*, TO_CHAR(s.datetime, 'YYYY-MM-DD') as date_, TO_CHAR(datetime, 'HH24:MM') as time_ 
+        FROM (
+                SELECT * FROM weather_3hr_tmd
+                WHERE province = 'ระยอง' OR province = 'ชลบุรี' OR province = 'ฉะเชิงเทรา' 
+                    OR sta_num = '48420' OR sta_num = '48429' OR sta_num = '48430' 
+                    OR sta_num = '48439' OR sta_num = '48440' OR sta_num = '48480' 
+            ) s
+        INNER JOIN (
+                SELECT sta_num, MAX(datetime) as dt FROM weather_3hr_tmd
+                GROUP BY sta_num
+            ) n
+        ON s.sta_num = n.sta_num
+        WHERE s.datetime = n.dt
+    `
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/eec-api/get-weather-hist", (req, res) => {
+    const { sta_id } = req.body;
+    const sql = `
+        SELECT *, TO_CHAR(datetime, 'YYYY-MM-DD') 
+        FROM weather_daily_tmd
+        WHERE sta_num = '${sta_id}' and datetime > current_date - interval '7 days'
+        ORDER BY datetime
+    `
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
 })
 
 module.exports = app;

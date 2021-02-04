@@ -13,7 +13,7 @@ let map = L.map("map", {
 });
 
 // const url = 'http://localhost:3700';
-const url = "https://rti2dss.com:3700";
+const url = "http://rti2dss.com:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -465,6 +465,7 @@ let showDataTable = async () => {
       }
     ],
     select: true,
+    pageLength: 5,
   });
   $('#tab tbody').on('click', 'tr', function () {
     let data = table.row(this).data();

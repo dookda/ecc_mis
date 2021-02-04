@@ -1,0 +1,83 @@
+body {
+  font-family: "Kanit", sans-serif;
+}
+
+h{
+  font-family: "Kanit", sans-serif;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+html,
+body {
+  background-color:#f6f6f8;
+  -webkit-font-smoothing: antialiased;
+}
+
+#map {
+  height: 55vh;
+  width: 100%;
+  border-radius: 10px;
+}
+
+#dataType{
+  height: 55vh;
+  width: 100%;
+}
+
+#chart{
+  height: 55vh;
+  width: 100%;
+}
+
+#chart2{
+  height: 45vh;
+  width: 100%;
+}
+
+.card-stats .card-body {
+  padding: 15px 15px 0;
+}
+
+.card .card-body {
+  padding: 15px 15px 10px;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+  background-color: #fff;
+  color: #252422;
+  margin-bottom: 20px;
+  position: relative;
+  border: 0 none;
+  transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+}
+
+
+.mb1 {
+  margin-bottom: 1em;
+}
+
+.mb2 {
+  margin-bottom: 2em;
+}
+
+.ver{
+  font-size: 10px;
+}
+
+td.highlight {
+  background-color: whitesmoke !important;
+}
+
+.chartHist{
+  width: 100%;
+  height: 200px;
+}
+
+.bg-gray{
+  background-color: #f6f6f6;
+}

@@ -24,6 +24,12 @@ app.use(bodyParser.urlencoded({
 //     ca: fs.readFileSync('/etc/apache2/ssl/intermediate.crt')
 // };
 
+// var https_options = {
+//     key: fs.readFileSync("/etc/apache2/ssl/private.key"),
+//     cert: fs.readFileSync("/etc/apache2/ssl/public.crt"),
+//     ca: fs.readFileSync('/etc/apache2/ssl/intermediate.crt')
+// };
+
 // var server = https.createServer(https_options, app);
 // var port = process.env.PORT || 3700;
 // server.listen(port, function () {
