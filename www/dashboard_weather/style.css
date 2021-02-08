@@ -23,7 +23,7 @@ body {
 }
 
 #dataType{
-  height: 55vh;
+  /* height: 55vh; */
   width: 100%;
 }
 
@@ -80,4 +80,14 @@ td.highlight {
 
 .bg-gray{
   background-color: #f6f6f6;
+}
+
+#f{
+  font-family: "Kanit", sans-serif;
+  font-size: 24px;
+}
+
+#profile {
+  width: 50px;
+  border-radius: 5%;
 }

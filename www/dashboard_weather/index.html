@@ -18,12 +18,28 @@
 </head>
 
 <body>
-
     <div class="container-fluid mt-1 mb-1">
-        <h2 style="font-weight: bold">สถานการณ์สภาพอากาศ</h2>
-        ข้อมูลคุณภาพอากาศปัจจุบัน (จากกรมควบคุมมลพิษ)<br />
+        <div class="col-12">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div id="card">
+                        <img alt="" id="profile">
+                    </div>
+                </div>
 
+                <div class="col-xs-4 ml-1">
+                    <h5> <span class="badge badge-light" id="displayName"></span></h5>
+                    <span id="statusMessage"></span>
+                </div>
+
+                <div class="col-xs-4 ml-1">
+                    <h2 style="font-weight: bold">ลักษณะอากาศ</h2>
+                    ข้อมูลลักษณะอากาศปัจจุบัน (จากกรมอุตุนิยมวิทยา)<br />
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="container-fluid mt-1 mb-1">
         <div class="row">
             <div class="col">
@@ -35,15 +51,7 @@
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">สูงสุด</p>
-                                    <p>
-                                    </p>
-                                    <hr>
-                                    <p class="card-category">
-                                        ต่ำสุด</p>
-                                    <p>
-
-                                    </p>
+                                    <h3><span id="rainfall"></span> </h3>มิลลิเมตร
                                 </div>
                             </div>
                         </div>
@@ -60,13 +68,7 @@
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">สูงสุด</p>
-                                    <p>
-                                    </p>
-                                    <hr>
-                                    <p class="card-category">ต่ำสุด</p>
-                                    <p>
-                                    </p>
+                                    <h3><span id="air_temp"></span> </h3>องศาเซลเซียส
                                 </div>
                             </div>
                         </div>
@@ -78,18 +80,12 @@
                 <div class="card card-stats">
                     <div class="card-body ">
                         <div class="row">
-                            <div class="col-5 col-md-4">ความชื้น<br>
+                            <div class="col-5 col-md-4">ความชื้นสัมพัทธ์<br>
                                 <i class="fa fa-snowflake-o fa-3x p-1" aria-hidden="true"></i>
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">สูงสุด</p>
-                                    <p>
-                                    </p>
-                                    <hr>
-                                    <p class="card-category">ต่ำสุด</p>
-                                    <p>
-                                    </p>
+                                    <h3><span id="rh"></span> </h3>เปอร์เซนต์
                                 </div>
                             </div>
                         </div>
@@ -106,15 +102,7 @@
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">สูงสุด
-                                    </p>
-                                    <p>
-                                    </p>
-                                    <hr>
-                                    <p class="card-category">ต่ำสุด
-                                    </p>
-                                    <p>
-                                    </p>
+                                    <h3><span id="msl_pressure"></span> </h3>มิลลิบาร์
                                 </div>
                             </div>
                         </div>
@@ -131,14 +119,7 @@
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">สูงสุด</p>
-                                    <p>
-                                    </p>
-                                    <hr>
-                                    <p class="card-category">ต่ำสุด</p>
-                                    <p>
-                                    </p>
-
+                                    <h3><span id="windspeed"></span> </h3>กิโลเมตร/ชั่วโมง
                                 </div>
                             </div>
                         </div>
@@ -162,16 +143,16 @@
                 <div class="card card-stats">
                     <div class="card-body">
                         <div id="dataType">
-                            <button class="btn btn-info btn-block p-3" onclick="showRain()"><i class="fa fa-tint p-1"
+                            <button class="btn btn-info btn-block" onclick="showRain()"><i class="fa fa-tint p-1"
                                     aria-hidden="true"></i>ปริมาณน้ำฝน</button>
-                            <button class="btn btn-info btn-block p-3" onclick="showTemp()"><i
+                            <button class="btn btn-info btn-block" onclick="showTemp()"><i
                                     class="fa fa-thermometer-full p-1" aria-hidden="true"></i>อุณหภูมิ</button>
-                            <button class="btn btn-info btn-block p-3" onclick="showRh()"><i
-                                    class="fa fa-snowflake-o p-1" aria-hidden="true"></i>ความชื้น</button>
-                            <button class="btn btn-info btn-block p-3" onclick="showPressure()"><i
-                                    class="fa fa-cloud p-1" aria-hidden="true"></i>ความกดอากาศ</button>
-                            <button class="btn btn-info btn-block p-3" onclick="showWind()"><i
-                                    class="fa fa-superpowers p-1" aria-hidden="true"></i>ความเร็วลม</button>
+                            <button class="btn btn-info btn-block" onclick="showRh()"><i class="fa fa-snowflake-o p-1"
+                                    aria-hidden="true"></i>ความชื้น</button>
+                            <button class="btn btn-info btn-block" onclick="showPressure()"><i class="fa fa-cloud p-1"
+                                    aria-hidden="true"></i>ความกดอากาศ</button>
+                            <button class="btn btn-info btn-block" onclick="showWind()"><i class="fa fa-superpowers p-1"
+                                    aria-hidden="true"></i>ความเร็วลม</button>
                         </div>
                     </div>
                 </div>
@@ -181,7 +162,7 @@
                 <div class="card card-stats">
                     <div class="card-body">
 
-                        <div id="chart">test</div>
+                        <div id="chart"></div>
                     </div>
                 </div>
             </div>
@@ -199,18 +180,15 @@
                                 <tr>
                                     <!-- <th>รหัส</th> -->
                                     <th>ชื่อสถานี</th>
-                                    <th>province</th>
-                                    <th>sta_p</th>
-                                    <th>msl_p</th>
-                                    <th>temp</th>
-                                    <th>dew</th>
-                                    <th>rh</th>
-                                    <th>var_p</th>
-                                    <th>lvis</th>
-                                    <th>wdir</th>
-                                    <th>wspeed</th>
-                                    <th>rainfall</th>
-                                    <th>rain24hr</th>
+                                    <th>ความกดอากาศ</th>
+                                    <th>อุณหภูมิ</th>
+                                    <th>อุณหภูมิจุดน้ำค้าง</th>
+                                    <th>ความชื้นสัมพัทธ์</th>
+                                    <th>ทัศนวิสัยทางบก</th>
+                                    <th>ทิศทางลม</th>
+                                    <th>ความเร็วลม</th>
+                                    <th>ฝนปัจจุบัน</th>
+                                    <th>ฝน 24 ชั่วโมง</th>
                                 </tr>
                             </thead>
                         </table>
@@ -219,7 +197,15 @@
             </div>
         </div>
 
-        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-stats text-center">
+                    <div class="card-body ">
+                        สถานีตรวจวัด<h3><span id="sta_name"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-12">
@@ -227,16 +213,16 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                aqi
-                                <div class="chartHist p-0" id="chart-aqi"></div>
+                                ปริมาณน้ำฝน (มิลลิเมตร)
+                                <div class="chartHist p-0" id="chart-rainfall"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                pm25 (µg./m<sup>3</sup>)
-                                <div class="chartHist p-0" id="chart-pm25"></div>
+                                อุณหภูมิ (องศาเซลเซียส)
+                                <div class="chartHist p-0" id="chart-temperature"></div>
                             </div>
                         </div>
                     </div>
@@ -245,35 +231,16 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                pm10 (µg./m<sup>3</sup>)
-                                <div class="chartHist p-0" id="chart-pm10"></div>
+                                ความเร็วลม (กิโลเมตร/ชั่วโมง)
+                                <div class="chartHist p-0" id="chart-windspeed"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                o<sub>3</sub> (ppb)
-                                <div class="chartHist p-0" id="chart-o3"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                co (ppm)
-                                <div class="chartHist p-0" id="chart-co"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                no<sub>2</sub> (ppb)
-                                <div class="chartHist p-0" id="chart-no2"></div>
+                                ความชื้นสัมพัทธ์ (เปอร์เซนต์)
+                                <div class="chartHist p-0" id="chart-rh"></div>
                             </div>
                         </div>
                     </div>
@@ -283,26 +250,15 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                so<sub>2</sub> (ppb)
-                                <div class="chartHist p-0" id="chart-so2"></div>
+                                ความกดอากาศ (มิลลิบาร์)
+                                <div class="chartHist p-0" id="chart-pressure"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6"></div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <span id="unit"></span>
-                        <div class="p-0" id="chart2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <p></p>
         <p></p>

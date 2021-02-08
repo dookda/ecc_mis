@@ -13,18 +13,39 @@ body {
 html,
 body {
   background-color:#f6f6f8;
+  -webkit-font-smoothing: antialiased;
 }
 
 #map {
-  height: 50vh;
+  height: 52vh;
   width: 100%;
   /* border-radius: 10px; */
 }
 
 #chart{
-  height: 60vh;
+  height: 55vh;
   width: 100%;
 }
+
+.card-stats .card-body {
+  padding: 15px 15px 0;
+}
+
+.card .card-body {
+  padding: 15px 15px 10px;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+  background-color: #fff;
+  color: #252422;
+  margin-bottom: 20px;
+  position: relative;
+  border: 0 none;
+  transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+}
+
 .mb1 {
   margin-bottom: 1em;
 }
@@ -48,4 +69,9 @@ td.highlight {
 
 .bg-gray{
   background-color: #f6f6f6;
+}
+
+#profile {
+  width: 50px;
+  border-radius: 5%;
 }

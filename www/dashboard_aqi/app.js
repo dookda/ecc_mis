@@ -1,7 +1,18 @@
 let userid;
-$(document).ready(async () => {
-  // await liff.init({ liffId: "1653987548-eakD174y" });
+$(document).ready(async function () {
+  await liff.init({ liffId: "1655648770-ZDnl52V2" }, () => { }, err => console.error(err.code, error.message));
+  await getUserid();
+  loadMap();
 });
+
+async function getUserid() {
+  const profile = await liff.getProfile();
+  userid = await profile.userId;
+  $('#profile').attr('src', await profile.pictureUrl);
+  $('#userId').text(profile.userId);
+  $('#statusMessage').text(await profile.statusMessage);
+  $('#displayName').text(await profile.displayName);
+}
 
 let latlng = {
   lat: 13.305567,
@@ -13,7 +24,7 @@ let map = L.map("map", {
 });
 
 // const url = 'http://localhost:3700';
-const url = "http://rti2dss.com:3700";
+const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -89,7 +100,7 @@ L.control.layers(baseMap, overlayMap).addTo(map);
 
 
 function onLocationFound(e) {
-  gps = L.marker(e.latlng)
+  nearData(e)
 }
 
 function onLocationError(e) {
@@ -110,7 +121,7 @@ var lc = L.control.locate({
   }
 }).addTo(map);
 
-// lc.start();
+lc.start();
 
 let rmLyr = () => {
   map.eachLayer(lyr => {
@@ -122,18 +133,31 @@ let rmLyr = () => {
 
 let response = axios.get(url + '/eec-api/get-aqi');
 
-let getAvAQI = async () => {
-  let av = await axios.get(url + '/eec-api/get-av-aqi');
-  av = av.data.data[0];
-  $("#av-aqi").text(Number(av.aqi).toFixed(2));
-  $("#av-pm10").text(Number(av.pm10).toFixed(2));
-  $("#av-pm25").text(Number(av.pm25).toFixed(2));
-  $("#av-o3").text(Number(av.o3).toFixed(2));
-  $("#av-co").text(Number(av.co).toFixed(2));
-  $("#av-no2").text(Number(av.no2).toFixed(2));
-  $("#av-so2").text(Number(av.so2).toFixed(2));
-  console.log(av)
+let nearData = async (e) => {
+  let res = await axios.post(url + '/eec-api/get-aqi-near', { geom: e.latlng });
+
+  console.log(res.data.data[0]);
+  $("#av-aqi").text(Number(res.data.data[0].aqi).toFixed(1));
+  $("#av-pm10").text(Number(res.data.data[0].pm10).toFixed(1));
+  $("#av-pm25").text(Number(res.data.data[0].pm25).toFixed(1));
+  $("#av-o3").text(Number(res.data.data[0].o3).toFixed(1));
+  $("#av-co").text(Number(res.data.data[0].co).toFixed(1));
+  $("#av-no2").text(Number(res.data.data[0].no2).toFixed(1));
+  $("#av-so2").text(Number(res.data.data[0].so2).toFixed(1));
 }
+
+// let getAvAQI = async () => {
+//   let av = await axios.get(url + '/eec-api/get-av-aqi');
+//   av = av.data.data[0];
+//   $("#av-aqi").text(Number(av.aqi).toFixed(2));
+//   $("#av-pm10").text(Number(av.pm10).toFixed(2));
+//   $("#av-pm25").text(Number(av.pm25).toFixed(2));
+//   $("#av-o3").text(Number(av.o3).toFixed(2));
+//   $("#av-co").text(Number(av.co).toFixed(2));
+//   $("#av-no2").text(Number(av.no2).toFixed(2));
+//   $("#av-so2").text(Number(av.so2).toFixed(2));
+//   console.log(av)
+// }
 
 let mapAQI = async () => {
   $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
@@ -372,7 +396,7 @@ let mapSO2 = async () => {
   $("#unit").html('so<sub>2</sub> (ppb)');
 }
 
-let barChart = (datArr) => {
+let barChart1 = (datArr) => {
   am4core.useTheme(am4themes_kelly);
   am4core.useTheme(am4themes_animated);
 
@@ -412,15 +436,67 @@ let barChart = (datArr) => {
   chart.data = datArr
 }
 
+let barChart = (datArr) => {
+  am4core.useTheme(am4themes_animated);
+  // Themes end
+
+  // Create chart instance
+  var chart = am4core.create("chart", am4charts.XYChart);
+  // chart.scrollbarX = new am4core.Scrollbar();
+
+  // Add data
+  chart.data = datArr;
+
+  // Create axes
+  var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+  categoryAxis.dataFields.category = "station";
+  categoryAxis.renderer.grid.template.location = 0;
+  categoryAxis.renderer.minGridDistance = 30;
+  categoryAxis.renderer.labels.template.horizontalCenter = "right";
+  categoryAxis.renderer.labels.template.verticalCenter = "middle";
+  categoryAxis.renderer.labels.template.rotation = 270;
+  categoryAxis.tooltip.disabled = true;
+  categoryAxis.renderer.minHeight = 110;
+
+  var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.renderer.minWidth = 50;
+
+  // Create series
+  var series = chart.series.push(new am4charts.ColumnSeries());
+  series.sequencedInterpolation = true;
+  series.dataFields.valueY = "data";
+  series.dataFields.categoryX = "station";
+  series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+  series.columns.template.strokeWidth = 0;
+
+  series.tooltip.pointerOrientation = "vertical";
+
+  series.columns.template.column.cornerRadiusTopLeft = 10;
+  series.columns.template.column.cornerRadiusTopRight = 10;
+  series.columns.template.column.fillOpacity = 0.8;
+
+  // on hover, make corner radiuses bigger
+  var hoverState = series.columns.template.column.states.create("hover");
+  hoverState.properties.cornerRadiusTopLeft = 0;
+  hoverState.properties.cornerRadiusTopRight = 0;
+  hoverState.properties.fillOpacity = 1;
+
+  series.columns.template.adapter.add("fill", function (fill, target) {
+    return chart.colors.getIndex(target.dataItem.index);
+  });
+
+  // Cursor
+  chart.cursor = new am4charts.XYCursor();
+}
 
 let showHistoryChart = (id) => {
   let sta_id = id.target.options.id
   // console.log(sta_id.target.options.id)
   axios.post(url + '/eec-api/get-hist', { sta_id: sta_id }).then((r) => {
 
-    console.log(r.data.data);
+    // console.log(r.data.data);
   }).catch((err) => {
-    console.log(err);
+    // console.log(err);
   });
 
 }
@@ -466,11 +542,13 @@ let showDataTable = async () => {
     ],
     select: true,
     pageLength: 5,
+    responsive: {
+      details: false
+    }
   });
   $('#tab tbody').on('click', 'tr', function () {
     let data = table.row(this).data();
     // console.log(data)
-    // map.setView([Number(data.lon), Number(data.lat)], 10)
     L.popup({ offset: [0, -27] })
       .setLatLng([Number(data.lat), Number(data.lon)])
       .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
@@ -481,6 +559,8 @@ let showDataTable = async () => {
 }
 
 let showChart = async (e) => {
+  console.log(e);
+  $("#sta_name").text(`${e.sta_th} ${e.area_th}`)
   let d = await axios.post(url + '/eec-api/get-hist', { sta_id: e.sta_id });
 
   let arrPM25 = [];
@@ -495,31 +575,31 @@ let showChart = async (e) => {
     // console.log(i);
     arrPM25.push({
       "date": i.date_,
-      "value": Number(i.pm25).toFixed(2)
+      "value": Number(i.pm25).toFixed(1)
     });
     arrPM10.push({
       "date": i.date_,
-      "value": Number(i.pm10).toFixed(2)
+      "value": Number(i.pm10).toFixed(1)
     });
     arrO3.push({
       "date": i.date_,
-      "value": Number(i.o3).toFixed(2)
+      "value": Number(i.o3).toFixed(1)
     });
     arrCO.push({
       "date": i.date_,
-      "value": Number(i.co).toFixed(2)
+      "value": Number(i.co).toFixed(1)
     });
     arrNO2.push({
       "date": i.date_,
-      "value": Number(i.no2).toFixed(2)
+      "value": Number(i.no2).toFixed(1)
     });
     arrSO2.push({
       "date": i.date_,
-      "value": Number(i.so2).toFixed(2)
+      "value": Number(i.so2).toFixed(1)
     });
     arrAQI.push({
       "date": i.date_,
-      "value": Number(i.aqi).toFixed(2)
+      "value": Number(i.aqi).toFixed(1)
     });
   })
 
@@ -594,8 +674,8 @@ let chartTemplate = (arrData, div) => {
 
 // init aqi
 mapAQI()
-getAvAQI()
+// getAvAQI()
 showDataTable()
-showChart({ sta_id: '74t' })
+showChart({ sta_id: '74t', sta_th: "ศูนย์ราชการจังหวัดระยอง", area_th: "ต.เนินพระ อ.เมือง, ระยอง" })
 
 

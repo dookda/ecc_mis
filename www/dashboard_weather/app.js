@@ -1,6 +1,8 @@
 let userid;
-$(document).ready(async () => {
-  // await liff.init({ liffId: "1653987548-eakD174y" });
+$(document).ready(async function () {
+  await liff.init({ liffId: "1655648770-v5mzYA0A" }, () => { }, err => console.error(err.code, error.message));
+  await getUserid();
+  loadMap();
 });
 
 let latlng = {
@@ -12,8 +14,9 @@ let map = L.map("map", {
   zoom: 8
 });
 
-const url = 'http://localhost:3700';
+// const url = 'http://localhost:3700';
 // const url = "http://rti2dss.com:3700";
+const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -87,8 +90,11 @@ const overlayMap = {
 };
 L.control.layers(baseMap, overlayMap).addTo(map);
 
+let latLng;
+
 function onLocationFound(e) {
-  gps = L.marker(e.latlng)
+  // latLng = e.latlng;
+  nearData(e)
 }
 
 function onLocationError(e) {
@@ -109,7 +115,7 @@ var lc = L.control.locate({
   }
 }).addTo(map);
 
-// lc.start();
+lc.start();
 
 let rmLyr = () => {
   map.eachLayer(lyr => {
@@ -121,6 +127,17 @@ let rmLyr = () => {
 
 let response = axios.get(url + '/eec-api/get-weather-3hr');
 
+let nearData = async (e) => {
+  let res = await axios.post(url + '/eec-api/get-weather-near', { geom: e.latlng });
+
+  console.log(res.data.data[0]);
+  $("#rainfall").text(res.data.data[0].rainfall);
+  $("#air_temp").text(res.data.data[0].air_temp);
+  $("#rh").text(res.data.data[0].rh);
+  $("#msl_pressure").text(res.data.data[0].msl_pressure);
+  $("#windspeed").text(res.data.data[0].windspeed);
+}
+
 let showTable = async () => {
   // console.log("ok")
   let table = $('#tab').DataTable({
@@ -130,12 +147,7 @@ let showTable = async () => {
     },
     columns: [
       // { data: 'sta_num' },
-      { data: 'sta_th' },
-      { data: 'province' },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.sta_pressure).toFixed(1) }
-      }, {
+      { data: 'sta_th' }, {
         data: null,
         "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
       }, {
@@ -147,9 +159,6 @@ let showTable = async () => {
       }, {
         data: null,
         "render": function (data, type, row) { return Number(data.rh).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.var_pressure).toFixed(1) }
       }, {
         data: null,
         "render": function (data, type, row) { return Number(data.land_vis).toFixed(1) }
@@ -169,11 +178,15 @@ let showTable = async () => {
     ],
     select: true,
     pageLength: 5,
+    responsive: {
+      details: false
+    }
   });
 
   $('#tab tbody').on('click', 'tr', function () {
     let data = table.row(this).data();
-    console.log(data)
+    // console.log(data)
+    showChart(data)
     // map.setView([Number(data.lon), Number(data.lat)], 10)
     // L.popup({ offset: [0, -27] })
     //   .setLatLng([Number(data.lat), Number(data.lon)])
@@ -182,36 +195,7 @@ let showTable = async () => {
     // map.panTo([Number(data.lat), Number(data.lon)])
     // showChart(data)
   });
-
 }
-
-
-
-//   $('#tab tbody').on('click', 'tr', function () {
-//     let data = table.row(this).data();
-//     // console.log(data)
-//     // map.setView([Number(data.lon), Number(data.lat)], 10)
-//     L.popup({ offset: [0, -27] })
-//       .setLatLng([Number(data.lat), Number(data.lon)])
-//       .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
-//       .openOn(map);
-//     map.panTo([Number(data.lat), Number(data.lon)])
-//     showChart(data)
-//   });
-// }
-
-// let getAvAQI = async () => {
-//   let av = await axios.get(url + '/eec-api/get-av-aqi');
-//   av = av.data.data[0];
-//   $("#av-aqi").text(Number(av.aqi).toFixed(2));
-//   $("#av-pm10").text(Number(av.pm10).toFixed(2));
-//   $("#av-pm25").text(Number(av.pm25).toFixed(2));
-//   $("#av-o3").text(Number(av.o3).toFixed(2));
-//   $("#av-co").text(Number(av.co).toFixed(2));
-//   $("#av-no2").text(Number(av.no2).toFixed(2));
-//   $("#av-so2").text(Number(av.so2).toFixed(2));
-//   console.log(av)
-// }
 
 let showRain = async () => {
   $("#variable").text('Rainfall')
@@ -518,67 +502,50 @@ pressureChart = async (data) => {
   chart.cursor.lineY.disabled = true;
 }
 
-// getWeatherHist = () => {
-//   axios.post(url + '/eec-api/get-weather-hist', {
-//     sta_id: '48440'
-//   }).then((r) => {
-//     console.log(r);
-//   }).catch((err) => {
-//     console.log(err);
-//   });
-// }
-
-
 let showChart = async (e) => {
-  let d = await axios.post(url + '/eec-api/get-weather-hist', { sta_id: e.sta_id });
+  let res = await axios.post(url + '/eec-api/get-weather-hist', { sta_num: e.sta_num });
 
-  let arrPM25 = [];
-  let arrPM10 = [];
-  let arrO3 = [];
-  let arrCO = [];
-  let arrNO2 = [];
-  let arrSO2 = [];
-  let arrAQI = [];
+  let rainfall = [];
+  let temperature = [];
+  let windspeed = [];
+  let rh = [];
+  let msl_pressure = [];
 
-  d.data.data.map(i => {
+  res.data.data.map(i => {
     // console.log(i);
-    arrPM25.push({
+    $("#sta_name").text(i.sta_th)
+
+    rainfall.push({
       "date": i.date_,
-      "value": Number(i.pm25).toFixed(2)
+      "value": Number(i.rainfall).toFixed(2)
     });
-    // arrPM10.push({
-    //   "date": i.date_,
-    //   "value": Number(i.pm10).toFixed(2)
-    // });
-    // arrO3.push({
-    //   "date": i.date_,
-    //   "value": Number(i.o3).toFixed(2)
-    // });
-    // arrCO.push({
-    //   "date": i.date_,
-    //   "value": Number(i.co).toFixed(2)
-    // });
-    // arrNO2.push({
-    //   "date": i.date_,
-    //   "value": Number(i.no2).toFixed(2)
-    // });
-    // arrSO2.push({
-    //   "date": i.date_,
-    //   "value": Number(i.so2).toFixed(2)
-    // });
-    // arrAQI.push({
-    //   "date": i.date_,
-    //   "value": Number(i.aqi).toFixed(2)
-    // });
+
+    temperature.push({
+      "date": i.date_,
+      "value": Number(i.temperature).toFixed(2)
+    });
+
+    windspeed.push({
+      "date": i.date_,
+      "value": Number(i.windspeed).toFixed(2)
+    });
+
+    rh.push({
+      "date": i.date_,
+      "value": Number(i.rh).toFixed(2)
+    });
+
+    msl_pressure.push({
+      "date": i.date_,
+      "value": Number(i.msl_pressure).toFixed(2)
+    });
   })
 
-  chartTemplate(arrPM25, "chart-pm25");
-  // chartTemplate(arrPM10, "chart-pm10");
-  // chartTemplate(arrO3, "chart-o3");
-  // chartTemplate(arrCO, "chart-co");
-  // chartTemplate(arrNO2, "chart-no2");
-  // chartTemplate(arrSO2, "chart-so2");
-  // chartTemplate(arrAQI, "chart-aqi");
+  chartTemplate(rainfall, "chart-rainfall");
+  chartTemplate(temperature, "chart-temperature");
+  chartTemplate(windspeed, "chart-windspeed");
+  chartTemplate(rh, "chart-rh");
+  chartTemplate(msl_pressure, "chart-pressure");
 }
 
 let chartTemplate = (arrData, div) => {
@@ -640,20 +607,10 @@ let chartTemplate = (arrData, div) => {
   dateAxis.keepSelection = true;
 }
 
-
 // init aqi
 showTemp();
 showTable();
+showChart({ sta_num: "48478" })
 // getWeatherHist();
-
-// var json = 'http://tgms.dgr.go.th/entries/poi-stations?keyword=';
-
-// $.get(json).done(r => {
-//   r.data.forEach(i => {
-//     console.log(i.lat, i.lng);
-//   })
-//   console.log(r.data[0], r.data[0].lat, r.data[0].lng);
-
-// })
 
 

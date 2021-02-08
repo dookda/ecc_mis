@@ -24,26 +24,7 @@ app.post("/eec-api/aqi-insert", (req, res) => {
 });
 
 app.get("/eec-api/get-aqi", (req, res) => {
-    const sql = `SELECT s.* 
-        FROM
-            (SELECT tt.sta_id, tt.sta_th, tt.sta_en, tt.area_th, tt.area_en, tt.sta_type, 
-                tt.lat, tt.lon, TO_CHAR(tt.date_, 'YYYY-MM-DD') as date_, 
-                TO_CHAR(time_, 'HH24:MM') as time_, CONCAT(tt.date_,' ',tt.time_)::timestamp as dt,
-                tt.pm25, tt.pm10, tt.o3, tt.co, tt.no2, tt.so2, tt.aqi
-                FROM aqi_hourly_pcd tt
-                WHERE tt.sta_id = 'bkp80t' OR tt.sta_id = '19t' OR tt.sta_id = '77t'
-                    OR tt.sta_id = '34t'OR tt.sta_id = '32t' OR tt.sta_id = '28t' 
-                    OR tt.sta_id = '33t' OR tt.sta_id = '30t' OR tt.sta_id = '74t'
-                    OR tt.sta_id = '29t' OR tt.sta_id = '31t' OR tt.sta_id = 'm9'
-                GROUP BY tt.sta_id,tt.sta_th, tt.sta_en, tt.area_th, tt.area_en, tt.sta_type, 
-                    tt.lat, tt.lon, tt.date_, tt.time_, tt.pm25, tt.pm10, tt.o3, tt.co, tt.no2, tt.so2, tt.aqi
-            ) as s
-        INNER JOIN 
-            (SELECT sta_id, MAX(CONCAT(date_,' ',time_)::timestamp) AS dt
-                FROM aqi_hourly_pcd
-                GROUP BY sta_id) as m
-        ON s.sta_id = m.sta_id
-        WHERE s.dt = m.dt`
+    const sql = `SELECT * FROM v_pcd_aqi_eec`
 
     dat.query(sql).then((r) => {
         res.status(200).json({
@@ -81,6 +62,21 @@ app.get("/eec-api/get-av-aqi", (req, res) => {
     });
 })
 
+app.post("/eec-api/get-aqi-near", (req, res) => {
+    const { geom } = req.body;
+    const sql = `
+    SELECT *, ST_Distance(ST_Transform(geom, 32648), ST_Transform(ST_Geomfromtext('Point(${geom.lng} ${geom.lat})', 4326), 32648))  as dist
+    FROM v_pcd_aqi_all
+    ORDER BY dist ASC
+    LIMIT 1
+    `
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/eec-api/get-hist", (req, res) => {
     const { sta_id } = req.body;
     const sql = `SELECT DISTINCT TO_CHAR(date_, 'YYYY-MM-DD') as date_, sta_id, sta_th, 
@@ -92,7 +88,7 @@ app.post("/eec-api/get-hist", (req, res) => {
             avg(so2) as so2, 
             avg(aqi) as aqi
         FROM aqi_hourly_pcd
-        WHERE sta_id = '${sta_id}' date_ > current_date - interval '14 days'
+        WHERE sta_id = '${sta_id}' AND date_ > current_date - interval '14 days'
         GROUP BY date_, sta_id, sta_th 
         ORDER BY date_`
     dat.query(sql).then((r) => {
@@ -103,21 +99,7 @@ app.post("/eec-api/get-hist", (req, res) => {
 })
 
 app.get("/eec-api/get-weather", (req, res) => {
-    const sql = `
-        SELECT s.*, TO_CHAR(s.datetime, 'DD-MM-YYYY') as date_ 
-        FROM (
-                SELECT * FROM weather_daily_tmd
-                WHERE province = 'ระยอง' OR province = 'ชลบุรี' OR province = 'ฉะเชิงเทรา' 
-                        OR sta_num = '48420' OR sta_num = '48429' OR sta_num = '48430' 
-                        OR sta_num = '48439' OR sta_num = '48440' OR sta_num = '48480' 
-            ) s
-        INNER JOIN (
-                SELECT sta_num, MAX(datetime) as dt FROM weather_daily_tmd
-                GROUP BY sta_num
-            ) n
-        ON s.sta_num = n.sta_num
-        WHERE s.datetime = n.dt
-    `
+    const sql = `SELECT * FROM v_tmd_weather_day_eec`
     dat.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
@@ -126,21 +108,7 @@ app.get("/eec-api/get-weather", (req, res) => {
 })
 
 app.get("/eec-api/get-weather-3hr", (req, res) => {
-    const sql = `
-        SELECT s.*, TO_CHAR(s.datetime, 'YYYY-MM-DD') as date_, TO_CHAR(datetime, 'HH24:MM') as time_ 
-        FROM (
-                SELECT * FROM weather_3hr_tmd
-                WHERE province = 'ระยอง' OR province = 'ชลบุรี' OR province = 'ฉะเชิงเทรา' 
-                    OR sta_num = '48420' OR sta_num = '48429' OR sta_num = '48430' 
-                    OR sta_num = '48439' OR sta_num = '48440' OR sta_num = '48480' 
-            ) s
-        INNER JOIN (
-                SELECT sta_num, MAX(datetime) as dt FROM weather_3hr_tmd
-                GROUP BY sta_num
-            ) n
-        ON s.sta_num = n.sta_num
-        WHERE s.datetime = n.dt
-    `
+    const sql = `SELECT * FROM v_tmd_weather_3hr_eec`;
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -149,12 +117,27 @@ app.get("/eec-api/get-weather-3hr", (req, res) => {
 })
 
 app.post("/eec-api/get-weather-hist", (req, res) => {
-    const { sta_id } = req.body;
+    const { sta_num } = req.body;
     const sql = `
-        SELECT *, TO_CHAR(datetime, 'YYYY-MM-DD') 
+        SELECT *, TO_CHAR(datetime, 'YYYY-MM-DD') as date_
         FROM weather_daily_tmd
-        WHERE sta_num = '${sta_id}' and datetime > current_date - interval '7 days'
+        WHERE sta_num = '${sta_num}' and datetime > current_date - interval '14 days'
         ORDER BY datetime
+    `
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/eec-api/get-weather-near", (req, res) => {
+    const { geom } = req.body;
+    const sql = `
+    SELECT *, ST_Distance(ST_Transform(geom, 32648), ST_Transform(ST_Geomfromtext('Point(${geom.lng} ${geom.lat})', 4326), 32648))  as dist
+    FROM v_tmd_weather_3hr_all
+    ORDER BY dist ASC
+    LIMIT 1
     `
     dat.query(sql).then(r => {
         res.status(200).json({
