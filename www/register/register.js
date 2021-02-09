@@ -1,42 +1,32 @@
 let userid;
-$(document).ready(async function () {
-    await liff.init({
-        liffId: "1653987548-9OOmkKbD"
-    }, (a) => {
-        console.log(a)
-    },
-        err => console.error(err.code, error.message)
-    );
 
-    await getUserid();
+let main = async () => {
+    await liff.init({ liffId: "1655648770-v5mzYA0A" })
+    if (liff.isLoggedIn()) {
+        getUserProfile()
+    } else {
+        liff.login()
+    }
+}
 
-    loadMap();
-    getAccount();
-});
+// main()
 
-async function getUserid() {
+let getUserProfile = async () => {
     const profile = await liff.getProfile();
-    console.log(profile)
-    userid = await profile.userId;
-
     $('#profile').attr('src', await profile.pictureUrl);
-    // $('#userId').text(profile.userId);
+    $('#userId').text(profile.userId);
     $('#statusMessage').text(await profile.statusMessage);
     $('#displayName').text(await profile.displayName);
 }
 
-// async function lineProfile() {
-//     const profile = await liff.getProfile();
-//     $('#pictureUrl').attr('src', profile.pictureUrl);
-//     // $('#userId').text(profile.userId);
-//     $('#statusMessage').text(profile.statusMessage);
-//     $('#displayName').text(profile.displayName);
-// }
 
-var map = L.map('map', {
-    center: [16.820378, 100.265787],
-    zoom: 13
-});
+// loadMap();
+getAccount();
+
+// var map = L.map('map', {
+//     center: [16.820378, 100.265787],
+//     zoom: 13
+// });
 
 // var urlParams = new URLSearchParams(window.location.search);
 var marker, gps, dataurl, tam, amp, pro, x, y;
@@ -104,21 +94,21 @@ function refreshPage() {
     location.reload(true);
 }
 
-map.on('locationfound', onLocationFound);
+// map.on('locationfound', onLocationFound);
 // map.on('locationerror', onLocationError);
 // map.locate({ setView: true, maxZoom: 18 });
 
-var lc = L.control.locate({
-    position: 'topleft',
-    strings: {
-        title: "Show me where I am, yo!"
-    },
-    locateOptions: {
-        enableHighAccuracy: true,
-    }
-}).addTo(map);
+// var lc = L.control.locate({
+//     position: 'topleft',
+//     strings: {
+//         title: "Show me where I am, yo!"
+//     },
+//     locateOptions: {
+//         enableHighAccuracy: true,
+//     }
+// }).addTo(map);
 
-lc.start();
+// lc.start();
 
 var isNew = true;
 

@@ -1,9 +1,23 @@
 let userid;
-$(document).ready(async function () {
-  await liff.init({ liffId: "1655648770-v5mzYA0A" }, () => { }, err => console.error(err.code, error.message));
-  await getUserid();
-  loadMap();
-});
+
+let main = async () => {
+  await liff.init({ liffId: "1655648770-v5mzYA0A" })
+  if (liff.isLoggedIn()) {
+    getUserProfile()
+  } else {
+    liff.login()
+  }
+}
+
+main()
+
+let getUserProfile = async () => {
+  const profile = await liff.getProfile();
+  $('#profile').attr('src', await profile.pictureUrl);
+  $('#userId').text(profile.userId);
+  $('#statusMessage').text(await profile.statusMessage);
+  $('#displayName').text(await profile.displayName);
+}
 
 let latlng = {
   lat: 13.305567,

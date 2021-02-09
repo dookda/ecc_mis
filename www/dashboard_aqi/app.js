@@ -1,13 +1,18 @@
 let userid;
-$(document).ready(async function () {
-  await liff.init({ liffId: "1655648770-ZDnl52V2" }, () => { }, err => console.error(err.code, error.message));
-  await getUserid();
-  loadMap();
-});
 
-async function getUserid() {
+let main = async () => {
+  await liff.init({ liffId: "1655648770-ZDnl52V2" })
+  if (liff.isLoggedIn()) {
+    getUserProfile()
+  } else {
+    liff.login()
+  }
+}
+
+main()
+
+let getUserProfile = async () => {
   const profile = await liff.getProfile();
-  userid = await profile.userId;
   $('#profile').attr('src', await profile.pictureUrl);
   $('#userId').text(profile.userId);
   $('#statusMessage').text(await profile.statusMessage);
