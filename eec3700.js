@@ -1,5 +1,3 @@
-var https = require('https');
-var fs = require('fs');
 const express = require('express');
 const app = express();
 
@@ -8,6 +6,10 @@ const cors = require('cors');
 
 app.use(cors());
 app.options('*', cors());
+
+
+const whk = require('./service/webhook');
+app.use(whk);
 
 app.use(bodyParser.json({
     limit: '50mb',
@@ -36,11 +38,15 @@ app.use(bodyParser.urlencoded({
 //     console.log('listening on port ' + server.address().port);
 // });
 
+app.use(express.static(__dirname + '/www'));
+
 app.listen(3700, () => {
     console.log('running on http://localhost:3700')
 });
 
-app.use(express.static(__dirname + '/www'));
-
 const api = require('./service/api');
 app.use(api);
+
+const pf = require('./service/profile');
+app.use(pf);
+

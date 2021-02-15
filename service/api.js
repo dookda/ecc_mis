@@ -1,31 +1,50 @@
 const express = require('express');
 const app = express.Router();
 const con = require("./db");
-const ecc = con.ecc;
+const eec = con.eec;
 const dat = con.dat;
 
+app.post("/eec-api/register", (req, res) => {
+    const { userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua } = req.body;
 
-app.post("/eec-api/aqi-insert", (req, res) => {
-    const { sname, saqi, img, geom } = req.body;
+    const sql = "INSERT INTO regis (userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua, dreg) " +
+        "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,now())";
+    const val = [userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua];
 
-    const imgname = "img" + Date.now();
-    const sql = "INSERT INTO ecc_aqi_4326 (sname, saqi, imgname, img, sdate, geom) " +
-        "VALUES ($1,$2,$3,$4,now(),ST_SetSRID(st_geomfromgeojson($5), 4326))";
-    const val = [sname, saqi, imgname, img, geom];
-    // console.log(sql)
-    // console.log(val);
-
-    ecc.query(sql, val).then((r) => {
+    eec.query(sql, val).then((r) => {
         res.status(200).json({
-            status: "success",
-            message: "insert data"
+            message: "insert success"
         });
     });
 });
 
-app.get("/eec-api/get-aqi", (req, res) => {
-    const sql = `SELECT * FROM v_pcd_aqi_eec`
+// app.post("/eec-api/aqi-insert", (req, res) => {
+//     const { sname, saqi, img, geom } = req.body;
 
+//     const imgname = "img" + Date.now();
+//     const sql = "INSERT INTO ecc_aqi_4326 (sname, saqi, imgname, img, sdate, geom) " +
+//         "VALUES ($1,$2,$3,$4,now(),ST_SetSRID(st_geomfromgeojson($5), 4326))";
+//     const val = [sname, saqi, imgname, img, geom];
+
+//     eec.query(sql, val).then((r) => {
+//         res.status(200).json({
+//             status: "success",
+//             message: "insert data"
+//         });
+//     });
+// });
+
+app.get("/eec-api/get-aqi", (req, res) => {
+    const sql = `SELECT * FROM v_pcd_aqi_eec`;
+    dat.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-aqi-all", (req, res) => {
+    const sql = `SELECT * FROM v_pcd_aqi_all`;
     dat.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
@@ -109,6 +128,15 @@ app.get("/eec-api/get-weather", (req, res) => {
 
 app.get("/eec-api/get-weather-3hr", (req, res) => {
     const sql = `SELECT * FROM v_tmd_weather_3hr_eec`;
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.get("/eec-api/get-weather-3hr-all", (req, res) => {
+    const sql = `SELECT * FROM v_tmd_weather_3hr_all`;
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
