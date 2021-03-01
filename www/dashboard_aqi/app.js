@@ -1,5 +1,4 @@
 let userid;
-
 let main = async () => {
   await liff.init({ liffId: "1655648770-ZDnl52V2" })
   if (liff.isLoggedIn()) {
@@ -33,35 +32,35 @@ const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
-  iconSize: [32, 37],
+  iconSize: [50, 50],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let icongreen = L.icon({
   iconUrl: './marker/location-pin-green.svg',
-  iconSize: [32, 37],
+  iconSize: [50, 50],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconyellow = L.icon({
   iconUrl: './marker/location-pin-yellow.svg',
-  iconSize: [32, 37],
+  iconSize: [50, 50],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconorange = L.icon({
   iconUrl: './marker/location-pin-orange.svg',
-  iconSize: [32, 37],
+  iconSize: [50, 50],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconred = L.icon({
   iconUrl: './marker/location-pin-red.svg',
-  iconSize: [32, 37],
+  iconSize: [50, 50],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
@@ -93,13 +92,16 @@ const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
   CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
+
 const baseMap = {
   "Mapbox": mapbox.addTo(map),
-  "google Hybrid": ghyb
+  "Google Hybrid": ghyb
+
+
 };
 
 const overlayMap = {
-  "ขอบจังหวัด": pro.addTo(map)
+  "ขอบเขตจังหวัด": pro.addTo(map)
 };
 L.control.layers(baseMap, overlayMap).addTo(map);
 
@@ -137,6 +139,7 @@ let rmLyr = () => {
 }
 
 let response = axios.get(url + '/eec-api/get-aqi');
+let responseAll = axios.get(url + '/eec-api/get-aqi-all');
 
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-aqi-near', { geom: e.latlng });
@@ -151,19 +154,6 @@ let nearData = async (e) => {
   $("#av-so2").text(Number(res.data.data[0].so2).toFixed(1));
 }
 
-// let getAvAQI = async () => {
-//   let av = await axios.get(url + '/eec-api/get-av-aqi');
-//   av = av.data.data[0];
-//   $("#av-aqi").text(Number(av.aqi).toFixed(2));
-//   $("#av-pm10").text(Number(av.pm10).toFixed(2));
-//   $("#av-pm25").text(Number(av.pm25).toFixed(2));
-//   $("#av-o3").text(Number(av.o3).toFixed(2));
-//   $("#av-co").text(Number(av.co).toFixed(2));
-//   $("#av-no2").text(Number(av.no2).toFixed(2));
-//   $("#av-so2").text(Number(av.so2).toFixed(2));
-//   console.log(av)
-// }
-
 let mapAQI = async () => {
   $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
   rmLyr()
@@ -171,6 +161,16 @@ let mapAQI = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.aqi)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('AQI');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     // console.log(i);
     let marker
     if (Number(i.aqi) <= 25) {
@@ -189,16 +189,10 @@ let mapAQI = async () => {
     ชื่อสถานี : ${i.sta_th} <br> 
       ค่า AQI : ${Number(i.aqi).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.aqi)
-    })
     marker.on('click', (e) => {
       showHistoryChart(e)
     })
   })
-  barChart(datArr);
-  $("#unit").html('AQI');
 }
 
 let mapPM25 = async () => {
@@ -209,6 +203,16 @@ let mapPM25 = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.pm25)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('pm25 (µg./m<sup>3</sup>)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker
     if (Number(i.pm25) <= 25) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -227,13 +231,7 @@ let mapPM25 = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า PM2.5 : ${Number(i.pm25).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.pm25)
-    })
   })
-  barChart(datArr);
-  $("#unit").html('pm25 (µg./m<sup>3</sup>)');
 }
 
 let mapPM10 = async () => {
@@ -243,6 +241,16 @@ let mapPM10 = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.pm10)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('pm25 (µg./m<sup>3</sup>)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker;
     if (Number(i.pm10) <= 50) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -260,13 +268,7 @@ let mapPM10 = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า PM10 : ${Number(i.pm10).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.pm10)
-    })
   })
-  barChart(datArr);
-  $("#unit").html('pm25 (µg./m<sup>3</sup>)');
 }
 
 let mapO3 = async () => {
@@ -276,6 +278,16 @@ let mapO3 = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.o3)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('o<sub>3</sub> (ppb)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker;
     if (Number(i.o3) <= 4.4) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -293,13 +305,7 @@ let mapO3 = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า O3 : ${Number(i.o3).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.o3)
-    })
   })
-  barChart(datArr);
-  $("#unit").html('o<sub>3</sub> (ppb)');
 }
 
 let mapCO = async () => {
@@ -309,6 +315,16 @@ let mapCO = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.co)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('co (ppm)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker;
     if (Number(i.co) <= 4.4) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -326,13 +342,7 @@ let mapCO = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า CO : ${Number(i.co).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.co)
-    })
   })
-  barChart(datArr);
-  $("#unit").html('co (ppm)');
 }
 
 let mapNO2 = async () => {
@@ -342,6 +352,16 @@ let mapNO2 = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.no2)
+    })
+  })
+  barChart(datArr)
+  $("#unit").html('co (ppm)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker;
     if (Number(i.no2) <= 60) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -359,13 +379,7 @@ let mapNO2 = async () => {
       ชื่อสถานี : ${i.sta_th} <br>  
       ค่า NO2 : ${Number(i.no2).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.no2)
-    })
   })
-  barChart(datArr)
-  $("#unit").html('co (ppm)');
 }
 
 let mapSO2 = async () => {
@@ -375,6 +389,16 @@ let mapSO2 = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "data": Number(i.so2)
+    })
+  })
+  barChart(datArr);
+  $("#unit").html('so<sub>2</sub> (ppb)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker
     if (Number(i.so2) <= 100) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
@@ -392,17 +416,11 @@ let mapSO2 = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า SO2 : ${Number(i.so2).toFixed(1)}`
     )
-    datArr.push({
-      "station": i.sta_th,
-      "data": Number(i.so2)
-    })
   })
-  barChart(datArr);
-  $("#unit").html('so<sub>2</sub> (ppb)');
 }
 
 let barChart1 = (datArr) => {
-  am4core.useTheme(am4themes_kelly);
+  am4core.useTheme(am4themes_material);
   am4core.useTheme(am4themes_animated);
 
   var chart = am4core.create("chart", am4charts.XYChart);

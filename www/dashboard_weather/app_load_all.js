@@ -45,11 +45,11 @@ function loadMap() {
 
     var baseMap = {
         "Mapbox": mapbox.addTo(map),
-        "google Hybrid": ghyb
+        "Google Hybrid": ghyb
     };
 
     var overlayMap = {
-        "ขอบจังหวัด": pro.addTo(map)
+        "ขอบเขตจังหวัด": pro.addTo(map)
     };
     L.control.layers(baseMap, overlayMap).addTo(map);
 }

@@ -14,10 +14,61 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
     <!-- <link rel="stylesheet" href="./../theme/assets/css/paper-dashboard.min.css"> -->
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
+    <!-- ภาพ header -->
+    <div class="container">
+        <div class="test">
+            <img src="https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/2-1.png" style="width:100%;"
+                class="responsive">
+            <h1>ระบบรายงานคุณภาพอากาศ</h1>
+        </div>
+    </div>
+    <p></p>
+
+    <!-- Menu bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">เมนู</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://eec-onep.soc.cmu.ac.th/">หน้าหลัก <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="ค้นหา" aria-label="Search">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">ค้นหา</button>
+            </form>
+        </div>
+    </nav>
+
+
     <div class="container-fluid mt-1 mb-1">
         <div class="col-12">
             <div class="row">
@@ -32,211 +83,170 @@
                     <span id="statusMessage"></span>
                 </div>
 
+
+
                 <div class="col-xs-4 ml-1">
+                    <br>
+                    <!-- <h2 style="font-weight: bold">ข้อมูลคุณภาพอากาศ ณ ตำแหน่งผู้ใช้งาน</h2>
+                    ข้อมูลคุณภาพอากาศ วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span
+                        id="sta_th"></span>
+                    (จากกรมอุตุนิยมวิทยา)<br /> -->
                     <h2 style="font-weight: bold">คุณภาพอากาศ</h2>
                     ข้อมูลคุณภาพอากาศปัจจุบัน (จากกรมควบคุมมลพิษ)<br />
                 </div>
             </div>
         </div>
     </div>
-
+    <br>
     <div class="container-fluid mt-1 mb-1">
-        <div class="row">
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-5 col-md-4">AQI<br>
-                                <i class="fa fa-tachometer fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <div class="numbers">
-                                    <h3><span id="av-aqi"></span> </h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-6 col-md-5">PM25<br>
-                                <i class="fa fa-cloud fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-6 col-md-7">
-                                <div class="numbers">
-                                    <h3><span id="av-pm25"></span> </h3>
-                                    µg./m<sup>3</sup>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-6 col-md-5">PM10 <br>
-                                <i class="fa fa-cloud fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-6 col-md-7">
-                                <div class="numbers">
-                                    <h3><span id="av-pm10"></span> </h3>
-                                    µg./m<sup>3</sup>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card-deck">
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-tachometer-alt fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>AQI<br>
+                    <span class="ch3" id="av-aqi"></span><br>AQI
                 </div>
             </div>
 
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5 col-md-4">O<sub>3</sub><br>
-                                <i class="fa fa-industry fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <div class="numbers">
-                                    <h3><span id="av-o3"></span> </h3>
-                                    ppm
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-wind fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>PM2.5<br>
+                    <span class="ch3" id="av-pm25"></span><br>µg./m<sup>3</sup>
                 </div>
             </div>
 
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5 col-md-4">CO<br>
-                                <i class="fa fa-truck fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <div class="numbers">
-                                    <h3><span id="av-co"></span> </h3>
-                                    ppm
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-smog fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>PM10<br>
+                    <span class="ch3" id="av-pm10"></span><br>µg./m<sup>3</sup>
                 </div>
             </div>
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5 col-md-4">NO<sub>2</sub><br>
-                                <i class="fa fa-snowflake-o fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <div class="numbers">
-                                    <h3><span id="av-no2"></span> </h3>
-                                    ppb
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-cloud fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>O<sub>3</sub><br>
+                    <span class="ch3" id="av-o3"></span><br>ppm
                 </div>
             </div>
-            <div class='w-100 d-md-none'></div>
-            <div class="col">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5 col-md-4">SO<sub>2</sub><br>
-                                <i class="fa fa-tint fa-2x p-1" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <div class="numbers">
-                                    <h3><span id="av-so2"></span> </h3>
-                                    ppb
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-truck fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>CO<br>
+                    <span class="ch3" id="av-co"></span><br>ppm
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-industry fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>NO<sub>2</sub><br>
+                    <span class="ch3" id="av-no2"></span><br>ppm
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color:rgb(217, 83, 79);">
+                        <i class="las la-fan fa-2x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>SO<sub>2</sub><br>
+                    <span class="ch3" id="av-so2"></span><br>ppm
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- แสดงแผนที่ -->
+    <div class="card-deck p-3">
+        <div class="card card-stats">
+            <div class="card-body p-1 mb-1">
+                <span id="variable"></span>&nbsp;<span style="font-size: small;" id="datetime"></span>
+                <div id="map"></div>
+                <div>
+                    <img src="./aqi.png" width="100%">
                 </div>
             </div>
         </div>
     </div>
+    <!-- หัวข้อ -->
+    <div class="container-fluid mt-1 mb-1 center">
+        <br>
+        <h6 style="font-weight: bold">เรียกดูข้อมูลคุณภาพอากาศ ตามประเภทข้อมูล</h6>
+    </div>
 
-    <div class="container-fluid mt-1 mb-6">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card card-stats">
-                    <div class="card-body p-1 mb-1">
-                        <span id="variable"></span>&nbsp;<span style="font-size: small;" id="datetime"></span>
-                        <div id="map"></div>
-                        <div>
-                            <img src="./aqi.png" width="100%">
-                        </div>
-                    </div>
+    <!-- //Show curent weather near me -->
+    <div class="container">
+        <div class="card-deck p-3">
+            <div class="card card-stats">
 
-                </div>
+                <button class="btn btn-danger flex-fill" onclick="mapAQI()">
+                    <i class="las la-tachometer-alt fa-2x p-2" aria-hidden="true"></i>AQI</button>
             </div>
-
-            <div class="col-sm-2">
-                <div class="card card-stats">
-                    <div class="card-body">
-                        <div id="dataType">
-                            <button class="btn btn-success btn-block" onclick="mapAQI()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>AQI</button>
-                            <button class="btn btn-success btn-block" onclick="mapPM25()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>PM 2.5</button>
-                            <button class="btn btn-success btn-block" onclick="mapPM10()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>PM 10</button>
-                            <button class="btn btn-success btn-block" onclick="mapO3()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>O3</button>
-                            <button class="btn btn-success btn-block" onclick="mapCO()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>CO</button>
-                            <button class="btn btn-success btn-block" onclick="mapNO2()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>NO2</button>
-                            <button class="btn btn-success btn-block" onclick="mapSO2()"><i class="fa fa-tint p-1"
-                                    aria-hidden="true"></i>SO2</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapPM25()">
+                    <i class="las la-wind fa-2x p-2" aria-hidden="true"></i>PM2.5</button>
             </div>
-
-            <div class="col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-body ">
-                        <span id="unit"></span>
-                        <div class="p-0" id="chart"></div>
-                    </div>
-                </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapPM10()">
+                    <i class="las la-smog fa-2x p-2" aria-hidden="true"></i>PM10</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapO3()">
+                    <i class="las la-cloud fa-2x p-2" aria-hidden="true"></i>O<sub>3</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapCO()">
+                    <i class="las la-truck fa-2x p-2" aria-hidden="true"></i>CO</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapNO2()">
+                    <i class="las la-industry fa-2x p-2" aria-hidden="true"></i>NO<sub>2</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-danger flex-fill" onclick="mapSO2()">
+                    <i class="las la-fan fa-2x p-2" aria-hidden="true"></i>SO<sub>2</button>
             </div>
         </div>
+    </div>
 
-        <hr>
+    <!-- แสดงข้อมูลตารางแต่ละสถานี -->
+    <div class="container-fluid mt-3 mb-6">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
+
                 <div class="card card-stats">
                     <div class="card-body ">
-                        <table id="tab" class="table table-striped table-bordered dt-responsive nowrap hover"
+                        <table id="tab" class="table table-striped table-bordered table-hover dt-responsive nowrap"
                             style="width:100%">
                             <thead>
                                 <tr>
                                     <th>รหัส</th>
                                     <th>ชื่อสถานี</th>
                                     <!-- <th>สถานที่</th> -->
-                                    <th>pm25</th>
-                                    <th>pm10</th>
+                                    <th>PM2.5</th>
+                                    <th>PM10</th>
                                     <th>o3</th>
-                                    <th>co</th>
-                                    <th>no2</th>
-                                    <th>so2</th>
+                                    <th>CO</th>
+                                    <th>NO2</th>
+                                    <th>SO2</th>
                                     <th>aqi</th>
                                 </tr>
                             </thead>
@@ -244,8 +254,20 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+            <!-- แสดงข้อมูลกราฟทุกสถานี -->
+            <div class="col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-body">
+
+                        <div id="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- กราฟค่าตรวจวัดแต่ละพารามิเตอร์ -->
+    <div class="container-fluid mt-3 mb-6">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-stats text-center">
@@ -262,7 +284,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                aqi
+                                AQI
                                 <div class="chartHist p-0" id="chart-aqi"></div>
                             </div>
                         </div>
@@ -270,7 +292,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                pm25 (µg./m<sup>3</sup>)
+                                PM2.5 (µg./m<sup>3</sup>)
                                 <div class="chartHist p-0" id="chart-pm25"></div>
                             </div>
                         </div>
@@ -280,7 +302,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                pm10 (µg./m<sup>3</sup>)
+                                PM10 (µg./m<sup>3</sup>)
                                 <div class="chartHist p-0" id="chart-pm10"></div>
                             </div>
                         </div>
@@ -288,7 +310,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                o<sub>3</sub> (ppb)
+                                O<sub>3</sub> (ppb)
                                 <div class="chartHist p-0" id="chart-o3"></div>
                             </div>
                         </div>
@@ -299,7 +321,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                co (ppm)
+                                CO (ppm)
                                 <div class="chartHist p-0" id="chart-co"></div>
                             </div>
                         </div>
@@ -307,7 +329,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                no<sub>2</sub> (ppb)
+                                NO<sub>2</sub> (ppb)
                                 <div class="chartHist p-0" id="chart-no2"></div>
                             </div>
                         </div>
@@ -318,7 +340,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                so<sub>2</sub> (ppb)
+                                SO<sub>2</sub> (ppb)
                                 <div class="chartHist p-0" id="chart-so2"></div>
                             </div>
                         </div>
@@ -327,14 +349,12 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid mt-3 mb-6">
 
-        <p></p>
-        <p></p>
-        <p></p>
-        <p> <span class="ver">updated 21-01-2021</span></p>
+        <p> <span class="ver">ปรับปรุง 23-02-2021</span></p>
     </div>
 </body>
-<script src="https://static.line-scdn.net/liff/edge/2.3.0/sdk.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>

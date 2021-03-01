@@ -13,6 +13,7 @@ main()
 
 let getUserProfile = async () => {
   const profile = await liff.getProfile();
+  console.log();
   $('#profile').attr('src', await profile.pictureUrl);
   $('#userId').text(profile.userId);
   $('#statusMessage').text(await profile.statusMessage);
@@ -34,35 +35,35 @@ const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
-  iconSize: [32, 37],
+  iconSize: [40, 45],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let icongreen = L.icon({
   iconUrl: './marker/location-pin-green.svg',
-  iconSize: [32, 37],
+  iconSize: [40, 45],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconyellow = L.icon({
   iconUrl: './marker/location-pin-yellow.svg',
-  iconSize: [32, 37],
+  iconSize: [40, 45],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconorange = L.icon({
   iconUrl: './marker/location-pin-orange.svg',
-  iconSize: [32, 37],
+  iconSize: [40, 45],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
 
 let iconred = L.icon({
   iconUrl: './marker/location-pin-red.svg',
-  iconSize: [32, 37],
+  iconSize: [40, 45],
   iconAnchor: [12, 37],
   popupAnchor: [5, -30]
 });
@@ -96,11 +97,11 @@ const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
 
 const baseMap = {
   "Mapbox": mapbox.addTo(map),
-  "google Hybrid": ghyb
+  "Google Hybrid": ghyb
 };
 
 const overlayMap = {
-  "ขอบจังหวัด": pro.addTo(map)
+  "ขอบเขตจังหวัด": pro.addTo(map)
 };
 L.control.layers(baseMap, overlayMap).addTo(map);
 
@@ -140,11 +141,18 @@ let rmLyr = () => {
 }
 
 let response = axios.get(url + '/eec-api/get-weather-3hr');
+let responseAll = axios.get(url + '/eec-api/get-weather-3hr-all');
 
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-weather-near', { geom: e.latlng });
 
-  console.log(res.data.data[0]);
+  console.log(res.data);
+
+  $("#d").text(res.data.data[0].date_);
+  $("#t").text(res.data.data[0].time_);
+  $("#sta_th").text(res.data.data[0].sta_th);
+
+  $("#rainfall24").text(res.data.data[0].rain24hr);
   $("#rainfall").text(res.data.data[0].rainfall);
   $("#air_temp").text(res.data.data[0].air_temp);
   $("#rh").text(res.data.data[0].rh);
@@ -191,7 +199,7 @@ let showTable = async () => {
       }
     ],
     select: true,
-    pageLength: 5,
+    pageLength: 8,
     responsive: {
       details: false
     }
@@ -218,7 +226,17 @@ let showRain = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
-    console.log(i);
+    datArr.push({
+      "station": i.sta_th,
+      "rainfall": i.rainfall,
+      "rain24hr": i.rain24hr
+    })
+  })
+  rainChart(datArr);
+  $("#unit").html('Rainfall (mm)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker
     if (Number(i.rainfall) <= 25) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
@@ -238,17 +256,7 @@ let showRain = async () => {
       ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.
       `
     )
-    datArr.push({
-      "station": i.sta_th,
-      "rainfall": i.rainfall,
-      "rain24hr": i.rain24hr
-    })
-    // marker.on('click', (e) => {
-    //   showHistoryChart(e)
-    // })
   })
-  rainChart(datArr);
-  $("#unit").html('Rainfall (mm)');
 }
 
 let showPressure = async () => {
@@ -258,6 +266,19 @@ let showPressure = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].datetime} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "station": i.sta_th,
+      "sta_pressure": i.sta_pressure,
+      "msl_pressure": i.msl_pressure
+    })
+  })
+  // barChart(datArr);
+  // console.log(datArr);
+  pressureChart(datArr)
+  $("#unit").html('MeanSeaLevelPressure (mb)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     // console.log(i);
     let marker
     if (Number(i.msl_pressure) <= 25) {
@@ -278,16 +299,7 @@ let showPressure = async () => {
       ความกดอากาศที่สถานี : ${Number(i.sta_pressure).toFixed(1)} hPa
       `
     )
-    datArr.push({
-      "station": i.sta_th,
-      "sta_pressure": i.sta_pressure,
-      "msl_pressure": i.msl_pressure
-    })
   })
-  // barChart(datArr);
-  // console.log(datArr);
-  pressureChart(datArr)
-  $("#unit").html('MeanSeaLevelPressure (mb)');
 }
 
 let showTemp = async () => {
@@ -297,6 +309,17 @@ let showTemp = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "category": i.sta_th,
+      "value": Number(i.air_temp)
+    })
+  })
+
+  barChart(datArr, ' ℃', "อุณหภูมิ");
+  $("#unit").html('Temperature (celcius)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     // console.log(i);
     let marker
     if (Number(i.air_temp) <= 25) {
@@ -315,16 +338,10 @@ let showTemp = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       อุณหภูมิ : ${Number(i.air_temp).toFixed(1)}`
     )
-    datArr.push({
-      "category": i.sta_th,
-      "value": Number(i.air_temp)
-    })
     marker.on('click', (e) => {
       showHistoryChart(e)
     })
   })
-  lollipopChart(datArr, '℃');
-  $("#unit").html('Temperature (celcius)');
 }
 
 let showRh = async () => {
@@ -334,6 +351,16 @@ let showRh = async () => {
   let datArr = [];
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
+    datArr.push({
+      "category": i.sta_th,
+      "value": Number(i.rh)
+    })
+  })
+  barChart(datArr, ' %', "ความชื้นสัมพัทธ์");
+  $("#unit").html('RelativeHumidity (%)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     // console.log(i);
     let marker
     if (Number(i.rh) <= 25) {
@@ -352,16 +379,10 @@ let showRh = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ความชื้นสัมพัทธ์ : ${Number(i.rh).toFixed(1)}`
     )
-    datArr.push({
-      "category": i.sta_th,
-      "value": Number(i.rh)
-    })
-    marker.on('click', (e) => {
-      showHistoryChart(e)
-    })
+    // marker.on('click', (e) => {
+    //   showHistoryChart(e)
+    // })
   })
-  lollipopChart(datArr, ' %');
-  $("#unit").html('RelativeHumidity (%)');
 }
 
 let showWind = async () => {
@@ -372,6 +393,17 @@ let showWind = async () => {
   $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
     // console.log(i);
+    datArr.push({
+      "category": i.sta_th,
+      "value": Number(i.windspeed)
+    })
+  })
+
+  barChart(datArr, ' km/h', "ความเร็วลม");
+  $("#unit").html('WindSpeed (km/h)');
+
+  let x = await responseAll;
+  x.data.data.map(i => {
     let marker
     if (Number(i.windspeed) <= 25) {
       marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
@@ -389,17 +421,10 @@ let showWind = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ความเร็วลม : ${Number(i.windspeed).toFixed(1)}`
     )
-    datArr.push({
-      "category": i.sta_th,
-      "value": Number(i.windspeed)
-    })
-    marker.on('click', (e) => {
-      showHistoryChart(e)
-    })
+    // marker.on('click', (e) => {
+    //   showHistoryChart(e)
+    // })
   })
-
-  lollipopChart(datArr, ' km/h');
-  $("#unit").html('WindSpeed (km/h)');
 }
 
 rainChart = async (data) => {
@@ -432,6 +457,35 @@ rainChart = async (data) => {
   series2.clustered = false;
   series2.columns.template.width = am4core.percent(50);
   series2.tooltipText = "ปริมาณน้ำฝน 24 ชั่วโมง {categoryX} : [bold]{valueY}[/]";
+
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.lineX.disabled = true;
+  chart.cursor.lineY.disabled = true;
+}
+
+barChart = async (data, unit, title) => {
+  am4core.useTheme(am4themes_animated);
+  var chart = am4core.create("chart", am4charts.XYChart);
+  chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
+  chart.data = await data;
+
+  var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+  categoryAxis.dataFields.category = "category";
+  categoryAxis.renderer.grid.template.location = 0;
+  categoryAxis.renderer.minGridDistance = 30;
+  categoryAxis.renderer.labels.template.rotation = -90;
+  categoryAxis.renderer.labels.template.horizontalCenter = "right";
+  categoryAxis.renderer.labels.template.verticalCenter = "middle";
+
+  var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.title.text = title;
+  valueAxis.title.fontWeight = 800;
+
+  var series = chart.series.push(new am4charts.ColumnSeries());
+  series.dataFields.valueY = "value";
+  series.dataFields.categoryX = "category";
+  series.clustered = false;
+  series.tooltipText = title + "{categoryX} : [bold]{valueY}[/]";
 
   chart.cursor = new am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
