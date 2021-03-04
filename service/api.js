@@ -4,19 +4,6 @@ const con = require("./db");
 const eec = con.eec;
 const dat = con.dat;
 
-app.post("/eec-api/register", (req, res) => {
-    const { userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua } = req.body;
-
-    const sql = "INSERT INTO regis (userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua, dreg) " +
-        "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,now())";
-    const val = [userid, usrname, tele, email, prov, ocup, sex, workshop, greenArea, organic, hforest, watQua, watLev, airQua];
-
-    eec.query(sql, val).then((r) => {
-        res.status(200).json({
-            message: "insert success"
-        });
-    });
-});
 
 // app.post("/eec-api/aqi-insert", (req, res) => {
 //     const { sname, saqi, img, geom } = req.body;

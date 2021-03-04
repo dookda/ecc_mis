@@ -30,82 +30,105 @@ app.post('/webhook', middleware(config), async (req, res) => {
 
 const handleMessageEvent = async (e) => {
 
-    let greenArea = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/green.jpg",
-        "title": "พื้นที่สีเขียว",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-ep2aX464"
-            }
-        ]
+    let formBiodiversity = {
+        // ความหลากหลายทางชีวภาพ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/1.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-n1DKeyZy"
+        }
     }
 
-    let organicFarm = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/green2.jpg",
-        "title": "เกษตรอินทรีย์",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-JLXzogag"
-            }
-        ]
+    let formGreen = {
+        // พื้นที่สีเขียว
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/2.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-ep2aX464"
+        }
     }
 
-    let familyForest = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/green.jpg",
-        "title": "ป่าครอบครัว",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-AVvzZ7n7"
-            }
-        ]
+    let formFarmforest = {
+        // ป่าครอบครัว
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/3.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-AVvzZ7n7"
+        }
     }
 
-    let biodiversity = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/green.jpg",
-        "title": "ความหลากหลายทางชีวภาพ",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-n1DKeyZy"
-            }
-        ]
+    let formOrganic = {
+        // เกษตรอินทรีย์
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/4.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-JLXzogag"
+        }
     }
-    let waterQuality = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/watqua.jpg",
-        "title": "คุณภาพน้ำ",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-weBqo060"
-            }
-        ]
+    let formAirQuality = {
+        // คุณภาพอากาศ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/5.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-GDrvOdBd"
+        }
     }
 
-    let waterLevel = {
-        "thumbnailImageUrl": "https://eec-onep.online/img/watlev.jpg",
-        "title": "ปริมาณน้ำ",
-        "text": "description",
-        "actions": [
-            {
-                "type": "uri",
-                "label": "เพิ่มข้อมูล",
-                "uri": "https://liff.line.me/1655648770-l9Dxrawa"
-            }
-        ]
+    let formWatQuality = {
+        // คุณภาพน้ำ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/7.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-weBqo060"
+        }
     }
+
+    let formWatLevel = {
+        // ปริมาณน้ำ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/8.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-weBqo060"
+        }
+    }
+
+    let formNotice = {
+        // ปัญหาสิ่งแวดล้อม
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/10.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-r9qy29a9"
+        }
+    }
+
+    let dashboardWater = {
+        //  รายงานปริมาณน้ำ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/9.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-v5mzYA0A"
+        }
+    }
+
+    let dashboardAqi = {
+        // รายงานคุณภาพอากาศ
+        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/6.png",
+        "action": {
+            "type": "uri",
+            "label": "เข้าใช้งาน",
+            "uri": "https://liff.line.me/1655648770-ZDnl52V2"
+        }
+    }
+
 
     let profile = {
         "thumbnailImageUrl": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_5_carousel.png",
@@ -148,98 +171,7 @@ const handleMessageEvent = async (e) => {
             "altText": "this is an image carousel template",
             "template": {
                 "type": "image_carousel",
-                "columns": [
-                    {
-                        // ความหลากหลายทางชีวภาพ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/1.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-n1DKeyZy"
-                        }
-                    },
-                    {
-                        // พื้นที่สีเขียว
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/2.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-ep2aX464"
-                        }
-                    },
-                    {
-                        // ป่าครอบครัว
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/3.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-AVvzZ7n7"
-                        }
-                    },
-                    {
-                        // เกษตรอินทรีย์
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/4.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-JLXzogag"
-                        }
-                    },
-                    {
-                        // คุณภาพอากาศ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/5.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-GDrvOdBd"
-                        }
-                    },
-                    {
-                        // คุณภาพน้ำ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/7.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-weBqo060"
-                        }
-                    },
-                    {
-                        // ปริมาณน้ำ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/8.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-weBqo060"
-                        }
-                    },
-                    {
-                        // ปัญหาสิ่งแวดล้อม
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/10.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-r9qy29a9"
-                        }
-                    },
-                    {
-                        //  รายงานปริมาณน้ำ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/9.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-v5mzYA0A"
-                        }
-                    },
-                    {
-                        // รายงานคุณภาพอากาศ
-                        "imageUrl": "https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/02/6.png",
-                        "action": {
-                            "type": "uri",
-                            "label": "เข้าใช้งาน",
-                            "uri": "https://liff.line.me/1655648770-ZDnl52V2"
-                        }
-                    }
-                ]
+                "columns": b
             }
         };
         return client.replyMessage(e.replyToken, msg);

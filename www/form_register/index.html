@@ -96,8 +96,22 @@
                 <h5>กรุณาเลือกโมดูลที่ต้องการเข้าร่วมเป็นเครือข่ายนำเข้าข้อมูล: (สามารถเลือกได้มากกว่า 1 ข้อ)</h5>
                 <div class="form-check">
                     <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="ความหลากหลายทางชีวภาพ" id="biodiversity">
+                        ความหลากหลายทางชีวภาพ
+                        <span class="form-check-sign"></span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="พื้นที่สีเขียว" id="greenArea">
                         พื้นที่สีเขียว
+                        <span class="form-check-sign"></span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="ป่าครอบครัว" id="hforest">
+                        ป่าครอบครัว
                         <span class="form-check-sign"></span>
                     </label>
                 </div>
@@ -110,8 +124,8 @@
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="ป่าครอบครัว" id="hforest">
-                        ป่าครอบครัว
+                        <input class="form-check-input" type="checkbox" value="คุณภาพอากาศ" id="airQua">
+                        คุณภาพอากาศ
                         <span class="form-check-sign"></span>
                     </label>
                 </div>
@@ -131,8 +145,8 @@
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="คุณภาพอากาศ" id="airQua">
-                        คุณภาพอากาศ
+                        <input class="form-check-input" type="checkbox" value="ปัญหาด้านสิ่งแวดล้อม" id="notice">
+                        แจ้งปัญหาด้านสิ่งแวดล้อม
                         <span class="form-check-sign"></span>
                     </label>
                 </div>
@@ -140,16 +154,16 @@
 
             <div class="form-group">
                 <h5>ต้องการได้รับการอบรมในการนำเข้าข้อมูล: </h5>
-                <label><input type="radio" name="workshop" value="yes" id="workshop_true"> ต้องการ </label>
+                <label><input type="radio" name="workshop" value="yes" checked> ต้องการ </label>
                 <br>
-                <label><input type="radio" name="workshop" value="no" id="workshop_false"> ไม่ต้องการ</label>
+                <label><input type="radio" name="workshop" value="no"> ไม่ต้องการ</label>
             </div>
             <div class="mt-1">
-                <button type="submit" class="btn btn-success" id="button">
+                <button type="submit" class="btn btn-secondary" id="button">
                     <span id='n'>&nbsp;บันทึก</span>
                 </button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-warning" id="refresh" onclick="closeLiff()">
-                    <span>&nbsp;ออก</span>
+                <button type="button" class="btn btn-warning" id="refresh" onclick="refreshPage()">
+                    <span>&nbsp;เริ่มใหม่</span>
                 </button>
             </div>
         </form>
@@ -180,12 +194,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 
 
-<script src="./profile.js"></script>
+<script src="./register.js"></script>
 
 </html>

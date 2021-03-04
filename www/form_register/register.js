@@ -20,6 +20,7 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
+// var url = 'http://localhost:3700';
 var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
@@ -46,7 +47,6 @@ let closeLiff = async () => {
     });
 }
 
-
 $('#fieldForm').submit(function (e) {
     e.preventDefault();
     const obj = {
@@ -60,14 +60,16 @@ $('#fieldForm').submit(function (e) {
         workshop: $('input[name="workshop"]:checked').val()
     }
 
+    $('#biodiversity').is(":checked") ? obj.biodiversity = "yes" : obj.biodiversity = 'no';
     $('#greenArea').is(":checked") ? obj.greenArea = "yes" : obj.greenArea = 'no';
-    $('#organic').is(":checked") ? obj.organic = "yes" : obj.organic = 'no';
     $('#hforest').is(":checked") ? obj.hforest = "yes" : obj.hforest = 'no';
+    $('#organic').is(":checked") ? obj.organic = "yes" : obj.organic = 'no';
+    $('#airQua').is(":checked") ? obj.airQua = "yes" : obj.airQua = 'no';
     $('#watQua').is(":checked") ? obj.watQua = "yes" : obj.watQua = 'no';
     $('#watLev').is(":checked") ? obj.watLev = "yes" : obj.watLev = 'no';
-    $('#airQua').is(":checked") ? obj.airQua = "yes" : obj.airQua = 'no';
+    $('#notice').is(":checked") ? obj.notice = "yes" : obj.notice = 'no';
 
-    $.post(url + '/eec-api/register', obj).done(async (res) => {
+    $.post(url + '/profile-api/register', obj).done(async (res) => {
         $('#modal').modal('show');
     })
     return false;
