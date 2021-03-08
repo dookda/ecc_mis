@@ -50,3 +50,6 @@ app.use(api);
 const pf = require('./service/profile');
 app.use(pf);
 
+const projmon = require('./service/projmon');
+app.use(projmon);
+

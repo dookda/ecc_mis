@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>ติดตามโครงการ</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">EEC MIS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">เพิ่มข้อมูล <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./../update/index.html">จัดการข้อมูล</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" disabled>รายงาน</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron mt-6">
+            <h5>ติดตามโครงการ</h5>
+            เพิ่มโครงการใหม่
+            <p></p>
+        </div>
+        <h5>ประเด็นที่ 1 งบประมาณ</h5>
+        <form id="fieldForm">
+            <div class="form-group">
+                <h6>ชื่อโครงการ:</h6>
+                <!-- <label for="">หมายเหตุ หากมีการเปลี่ยนแปลงชื่อโครงการ โปรดระบุ</label> -->
+                <input type="text" class="form-control" id="proj_name" required>
+            </div>
+
+            <div class="form-group">
+                <h6>วงเงินโครงการ:</h6>
+                <input type="number" class="form-control" id="budget">
+            </div>
+
+            <div class="form-group">
+                <h6>แหล่งเงินงบประมาณที่ประสงค์จะใช้ดำเนินการ:</h6>
+                <input type="text" class="form-control" id="loan">
+            </div>
+
+            <div class="form-group">
+                <h6>ปีงบประมาณที่จะดำเนินการ:</h6>
+                <input type="text" class="form-control" id="year">
+            </div>
+
+            <hr>
+            <h5>ประเด็นที่ 2 สถานภาพโครงการ</h5>
+            <div class="form-group">
+                <h6>ลักษณะโครงการ: </h6>
+                <label><input type="radio" name="proj_type" value="โครงการใหม่" checked> โครงการใหม่ </label>
+                <br>
+                <label><input type="radio" name="proj_type" value="โครงการต่อเนื่อง"> โครงการต่อเนื่อง </label>
+            </div>
+
+            <div class="form-group">
+                <h6>พื้นที่ตั้งโครงการ:</h6>
+                <input type="text" class="form-control" id="location">
+            </div>
+
+            <div class="form-group">
+                <h6>เนื้อที่ (ไร่):</h6>
+                <input type="number" class="form-control" id="area">
+            </div>
+
+            <div class="form-group">
+                <label for="">วาดขอบเขตโครงการลงบนแผนที่ </label>
+                <div class="card" id="map"></div>
+            </div>
+
+            <div class="form-group">
+                <h6>ผลการดำเนินการโครงการ</h6>
+            </div>
+
+            <div class="form-group">
+                <label><input type="radio" name="status" value="อยู่ระหว่างดำเนินการก่อสร้าง" id="status1">
+                    อยู่ระหว่างดำเนินการก่อสร้าง </label>
+                <label for="">(โปรดกรอกวันที่คาดว่าจะแล้วเสร็จ) </label>
+                <input type="date" class="form-control" id="espect1">
+            </div>
+
+            <div class="form-group">
+                <label><input type="radio" name="status" value="อยู่ระหว่างการจัดซื้อจัดจ้าง" id="status2">
+                    อยู่ระหว่างการจัดซื้อจัดจ้าง </label>
+                <label for="">(โปรดกรอกวันที่คาดว่าจะแล้วเสร็จ) </label>
+                <input type="date" class="form-control" id="espect2">
+            </div>
+
+            <div class="form-group">
+                <label><input type="radio" name="status" value="อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด"
+                        id="status3">
+                    อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด </label>
+                <br>
+            </div>
+
+            <div class="form-group">
+                <label><input type="radio" name="status" value="อยู่ระหว่างขอตั้งงบประมาณ" id="status4">
+                    อยู่ระหว่างขอตั้งงบประมาณ </label>
+                <label for="">ประจำปีงบประมาณ </label>
+                <input type="text" class="form-control" id="feas_loan">
+            </div>
+
+            <div class="form-group">
+                <h6>อื่นๆ โปรดระบุ </h6>
+                <textarea type="text" class="form-control" id="other" rows="5"></textarea>
+            </div>
+
+            <hr>
+            <h5> ประเด็นที่ 3 รายละเอียดโครงการ</h5>
+            <div class="form-group">
+                <h6>วัตถุประสงค์โครงการ </h6>
+                <input type="text" class="form-control" id="proj_obj">
+            </div>
+
+            <div class="form-group">
+                <h6>วิธีการและขั้นตอนการดำเนินงาน </h6>
+                <textarea type="text" class="form-control" id="proj_mthod" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <h6>รูปแบบ/เทคโนโลยีที่ใช้ กรณีการก่อสร้างระบบจัดการของเสีย </h6>
+                <textarea type="text" class="form-control" id="proj_tech" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <h6>พื้นที่ดำเนินการ </h6>
+                <input type="text" class="form-control" id="proj_area">
+            </div>
+
+            <div class="form-group">
+                <h6>ผลผลิตและผลลัพธ์ที่ได้รับ </h6>
+                <textarea type="text" class="form-control" id="output" rows="5"></textarea>
+            </div>
+
+            <hr>
+            <h5> ประเด็นที่ 4 ปัญหาและอุปสรรค </h5>
+            <textarea type="text" class="form-control" id="problem" rows="5"></textarea>
+
+            <hr>
+            <h5>ประเด็นที่ 5 ข้อซักถามและประเด็นขอหารือ</h5>
+            <textarea type="text" class="form-control" id="quesion" rows="5"></textarea>
+
+            <hr>
+
+            <h5>ประเด็นที่ 6 ผู้ดำเนินงานและผู้ประสานงานหลัก </h5>
+            <div class="form-group">
+                <h6>ชื่อ-สกุล</h6>
+                <input type="text" class="form-control" id="rname">
+            </div>
+            <div class="form-group">
+                <h6>ตำแหน่ง</h6>
+                <input type="text" class="form-control" id="pos">
+            </div>
+            <div class="form-group">
+                <h6>โทรศัพท์ (ที่ทำงาน)</h6>
+                <input type="text" class="form-control" id="tele">
+            </div>
+            <div class="form-group">
+                <h6>โทรสาร (ที่ทำงาน)</h6>
+                <input type="text" class="form-control" id="fax">
+            </div>
+            <div class="form-group">
+                <h6>โทรศัพท์เคลื่อนที่</h6>
+                <input type="text" class="form-control" id="mob">
+            </div>
+            <div class="form-group">
+                <h6>E mail</h6>
+                <input type="email" class="form-control" id="mail">
+            </div>
+            <div class="mt-1">
+                <button type="submit" class="btn btn-success" id="button">
+                    <span id='n'>&nbsp;บันทึก</span>
+                </button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-light" id="refresh" onclick="refreshPage()">
+                    <span>&nbsp;เริ่มใหม่</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="modal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>อัพเดทข้อมูลแล้ว </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        onclick="closeLiff()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <p></p>
+    <p></p>
+    <hr>
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="./app.js"></script>
+
+</html>
