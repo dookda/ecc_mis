@@ -81,30 +81,13 @@
     </nav>
     <!-- แสดงข้อมูลอุตุ ณ ตำแหน่งผู้ใช้ -->
     <div class="container-fluid mt-1 mb-1">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-xs-4">
-                    <div id="card">
-                        <img alt="" id="profile">
-                    </div>
-                </div>
 
-                <div class="col-xs-4 ml-1">
-                    <h5> <span class="badge badge-light" id="displayName"></span></h5>
-                    <span id="statusMessage"></span>
-                </div>
+        <h2 style="font-weight: bold">ข้อมูลลักษณะอากาศ ณ ตำแหน่งผู้ใช้งาน</h2>
+        ข้อมูลลักษณะอากาศ วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span id="sta_th"></span>
+        (จากกรมอุตุนิยมวิทยา)<br />
 
-                <div class="col-xs-4 ml-1">
-                    <br>
-                    <h2 style="font-weight: bold">ข้อมูลลักษณะอากาศ ณ ตำแหน่งผู้ใช้งาน</h2>
-                    ข้อมูลลักษณะอากาศ วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span
-                        id="sta_th"></span>
-                    (จากกรมอุตุนิยมวิทยา)<br />
-                </div>
-            </div>
-        </div>
     </div>
-    <br>
+
     <div class="container-fluid mt-1 mb-1">
         <div class="card-deck">
             <div class="card card-stats">
@@ -169,6 +152,39 @@
         </div>
     </div>
 
+    <div class="card-deck p-3 mb-1">
+        <div class="card card-stats">
+            <div class="card-body p2">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">จังหวัด:</label>
+                            <select class="form-control" id="pro">
+                                <option value="eec">eec</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="21">ระยอง</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">อำเภอ:</label>
+                            <select class="form-control" id="amp">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">ตำบล:</label>
+                            <select class="form-control" id="tam">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- แสดงแผนที่ -->
     <div class="card-deck p-3">
@@ -316,12 +332,9 @@
             </div>
         </div>
     </div>
+
     <div class="container-fluid mt-3 mb-6">
-
-        <p>
-            <span class="ver">ปรับปรุง 23-02-2021</span>
-        </p>
-
+        <p> <span class="ver">ปรับปรุง 10/03/2021</span></p>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

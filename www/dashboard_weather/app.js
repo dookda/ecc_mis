@@ -1,24 +1,3 @@
-let userid;
-
-let main = async () => {
-  await liff.init({ liffId: "1655648770-v5mzYA0A" })
-  if (liff.isLoggedIn()) {
-    getUserProfile()
-  } else {
-    liff.login()
-  }
-}
-
-main()
-
-let getUserProfile = async () => {
-  const profile = await liff.getProfile();
-  console.log();
-  $('#profile').attr('src', await profile.pictureUrl);
-  $('#userId').text(profile.userId);
-  $('#statusMessage').text(await profile.statusMessage);
-  $('#displayName').text(await profile.displayName);
-}
 
 let latlng = {
   lat: 13.305567,
@@ -87,6 +66,19 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   maxZoom: 20,
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+  layers: "th:tambon_4326",
+  format: "image/png",
+  transparent: true,
+  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+  layers: "th:amphoe_4326",
+  format: "image/png",
+  transparent: true,
+  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 
 const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
   layers: "th:province_4326",
@@ -95,15 +87,20 @@ const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
   CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const baseMap = {
+const baseMaps = {
   "Mapbox": mapbox.addTo(map),
   "Google Hybrid": ghyb
 };
 
-const overlayMap = {
+const overlayMaps = {
+  "ขอบเขตตำบล": tam.addTo(map),
+  "ขอบเขตอำเภอ": amp.addTo(map),
   "ขอบเขตจังหวัด": pro.addTo(map)
 };
-L.control.layers(baseMap, overlayMap).addTo(map);
+
+const lyrControl = L.control.layers(baseMaps, overlayMaps, {
+  collapsed: true
+}).addTo(map);
 
 let latLng;
 
@@ -132,6 +129,52 @@ var lc = L.control.locate({
 
 lc.start();
 
+$("#pro").on("change", function () {
+  getPro(this.value)
+  zoomExtent("pro", this.value)
+});
+$("#amp").on("change", function () {
+  getAmp(this.value)
+  zoomExtent("amp", this.value)
+});
+$("#tam").on("change", function () {
+  zoomExtent("tam", this.value)
+});
+
+let zoomExtent = (lyr, code) => {
+  axios.get(url + `/eec-api/get-extent/${lyr}/${code}`).then(r => {
+    let geom = JSON.parse(r.data.data[0].geom)
+    // console.log(geom);
+    map.fitBounds([
+      geom.coordinates[0][0],
+      geom.coordinates[0][2],
+    ]);
+  })
+}
+
+let getPro = (procode) => {
+  axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+    // console.log(r.data.data);
+    $("#amp").empty();
+    $("#tam").empty();
+    r.data.data.map(i => {
+      $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+    })
+  })
+}
+
+let getAmp = (ampcode) => {
+  axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+    $("#tam").empty();
+    r.data.data.map(i => {
+      $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+    })
+  })
+}
+
+let response = axios.get(url + '/eec-api/get-weather-3hr');
+let responseAll = axios.get(url + '/eec-api/get-weather-3hr-all');
+
 let rmLyr = () => {
   map.eachLayer(lyr => {
     if (lyr.options.name == 'marker') {
@@ -140,24 +183,19 @@ let rmLyr = () => {
   })
 }
 
-let response = axios.get(url + '/eec-api/get-weather-3hr');
-let responseAll = axios.get(url + '/eec-api/get-weather-3hr-all');
-
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-weather-near', { geom: e.latlng });
-
-  console.log(res.data);
-
+  // console.log(res.data);
   $("#d").text(res.data.data[0].date_);
   $("#t").text(res.data.data[0].time_);
   $("#sta_th").text(res.data.data[0].sta_th);
-
   $("#rainfall24").text(res.data.data[0].rain24hr);
   $("#rainfall").text(res.data.data[0].rainfall);
   $("#air_temp").text(res.data.data[0].air_temp);
   $("#rh").text(res.data.data[0].rh);
   $("#msl_pressure").text(res.data.data[0].msl_pressure);
   $("#windspeed").text(res.data.data[0].windspeed);
+
 }
 
 let showTable = async () => {
@@ -237,25 +275,66 @@ let showRain = async () => {
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_th: i.sta_th,
+      rain24hr: i.rain24hr,
+      air_temp: i.air_temp,
+      rh: i.rh,
+      msl_pressure: i.msl_pressure,
+      windspeed: i.windspeed
+    }
     let marker
     if (Number(i.rainfall) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ปริมาณน้ำฝนปัจจุบัน : ${Number(i.rainfall).toFixed(1)} mm.<br> 
-      ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.
-      `
+      ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.`
     )
+    marker.on('click', (e) => {
+      $("#sta_th").text(e.target.options.data.sta_th);
+      $("#rainfall24").text(e.target.options.data.rain24hr);
+      $("#rainfall").text(e.target.options.data.rainfall);
+      $("#air_temp").text(e.target.options.data.air_temp);
+      $("#rh").text(e.target.options.data.rh);
+      $("#msl_pressure").text(e.target.options.data.msl_pressure);
+      $("#windspeed").text(e.target.options.data.windspeed);
+    })
   })
 }
 
@@ -279,18 +358,50 @@ let showPressure = async () => {
 
   let x = await responseAll;
   x.data.data.map(i => {
-    // console.log(i);
+    let dat = {
+      sta_th: i.sta_th,
+      rain24hr: i.rain24hr,
+      air_temp: i.air_temp,
+      rh: i.rh,
+      msl_pressure: i.msl_pressure,
+      windspeed: i.windspeed
+    }
     let marker
     if (Number(i.msl_pressure) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.msl_pressure) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.msl_pressure) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.msl_pressure) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
@@ -299,6 +410,15 @@ let showPressure = async () => {
       ความกดอากาศที่สถานี : ${Number(i.sta_pressure).toFixed(1)} hPa
       `
     )
+    marker.on('click', (e) => {
+      $("#sta_th").text(e.target.options.data.sta_th);
+      $("#rainfall24").text(e.target.options.data.rain24hr);
+      $("#rainfall").text(e.target.options.data.rainfall);
+      $("#air_temp").text(e.target.options.data.air_temp);
+      $("#rh").text(e.target.options.data.rh);
+      $("#msl_pressure").text(e.target.options.data.msl_pressure);
+      $("#windspeed").text(e.target.options.data.windspeed);
+    })
   })
 }
 
@@ -320,18 +440,50 @@ let showTemp = async () => {
 
   let x = await responseAll;
   x.data.data.map(i => {
-    // console.log(i);
+    let dat = {
+      sta_th: i.sta_th,
+      rain24hr: i.rain24hr,
+      air_temp: i.air_temp,
+      rh: i.rh,
+      msl_pressure: i.msl_pressure,
+      windspeed: i.windspeed
+    }
     let marker
     if (Number(i.air_temp) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.air_temp) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.air_temp) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.air_temp) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
@@ -339,7 +491,13 @@ let showTemp = async () => {
       อุณหภูมิ : ${Number(i.air_temp).toFixed(1)}`
     )
     marker.on('click', (e) => {
-      showHistoryChart(e)
+      $("#sta_th").text(e.target.options.data.sta_th);
+      $("#rainfall24").text(e.target.options.data.rain24hr);
+      $("#rainfall").text(e.target.options.data.rainfall);
+      $("#air_temp").text(e.target.options.data.air_temp);
+      $("#rh").text(e.target.options.data.rh);
+      $("#msl_pressure").text(e.target.options.data.msl_pressure);
+      $("#windspeed").text(e.target.options.data.windspeed);
     })
   })
 }
@@ -361,27 +519,65 @@ let showRh = async () => {
 
   let x = await responseAll;
   x.data.data.map(i => {
-    // console.log(i);
+    let dat = {
+      sta_th: i.sta_th,
+      rain24hr: i.rain24hr,
+      air_temp: i.air_temp,
+      rh: i.rh,
+      msl_pressure: i.msl_pressure,
+      windspeed: i.windspeed
+    }
     let marker
     if (Number(i.rh) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rh) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rh) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rh) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ความชื้นสัมพัทธ์ : ${Number(i.rh).toFixed(1)}`
     )
-    // marker.on('click', (e) => {
-    //   showHistoryChart(e)
-    // })
+    marker.on('click', (e) => {
+      $("#sta_th").text(e.target.options.data.sta_th);
+      $("#rainfall24").text(e.target.options.data.rain24hr);
+      $("#rainfall").text(e.target.options.data.rainfall);
+      $("#air_temp").text(e.target.options.data.air_temp);
+      $("#rh").text(e.target.options.data.rh);
+      $("#msl_pressure").text(e.target.options.data.msl_pressure);
+      $("#windspeed").text(e.target.options.data.windspeed);
+    })
   })
 }
 
@@ -404,26 +600,65 @@ let showWind = async () => {
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_th: i.sta_th,
+      rain24hr: i.rain24hr,
+      air_temp: i.air_temp,
+      rh: i.rh,
+      msl_pressure: i.msl_pressure,
+      windspeed: i.windspeed
+    }
     let marker
     if (Number(i.windspeed) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.windspeed) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.windspeed) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.windspeed) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ความเร็วลม : ${Number(i.windspeed).toFixed(1)}`
     )
-    // marker.on('click', (e) => {
-    //   showHistoryChart(e)
-    // })
+    marker.on('click', (e) => {
+      $("#sta_th").text(e.target.options.data.sta_th);
+      $("#rainfall24").text(e.target.options.data.rain24hr);
+      $("#rainfall").text(e.target.options.data.rainfall);
+      $("#air_temp").text(e.target.options.data.air_temp);
+      $("#rh").text(e.target.options.data.rh);
+      $("#msl_pressure").text(e.target.options.data.msl_pressure);
+      $("#windspeed").text(e.target.options.data.windspeed);
+    })
   })
 }
 

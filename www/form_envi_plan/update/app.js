@@ -1,5 +1,17 @@
-const url = "http://localhost:3700";
+const url = "https://eec-onep.online:3700";
 // const url = 'https://rti2dss.com:3200';
+
+function filterGlobal() {
+    $('#myTable').DataTable().search(
+        $('#global_filter').val()
+    ).draw();
+}
+
+function filterColumn(i) {
+    $('#myTable').DataTable().column(i).search(
+        $('#col' + i + '_filter').val()
+    ).draw();
+}
 
 $(document).ready(function () {
     let table = $('#myTable').DataTable({
@@ -26,6 +38,16 @@ $(document).ready(function () {
                 }
             }
         ],
+        searching: true,
+    });
+
+    $('input.global_filter').on('keyup click', function () {
+        filterGlobal();
+    });
+
+    $('input.column_filter').on('keyup click', function () {
+        // console.log(this);
+        filterColumn($(this).parents('tr').attr('data-column'));
     });
 })
 

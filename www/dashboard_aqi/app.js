@@ -1,23 +1,3 @@
-let userid;
-let main = async () => {
-  await liff.init({ liffId: "1655648770-ZDnl52V2" })
-  if (liff.isLoggedIn()) {
-    getUserProfile()
-  } else {
-    liff.login()
-  }
-}
-
-main()
-
-let getUserProfile = async () => {
-  const profile = await liff.getProfile();
-  $('#profile').attr('src', await profile.pictureUrl);
-  $('#userId').text(profile.userId);
-  $('#statusMessage').text(await profile.statusMessage);
-  $('#displayName').text(await profile.displayName);
-}
-
 let latlng = {
   lat: 13.305567,
   lng: 101.383101
@@ -65,7 +45,6 @@ let iconred = L.icon({
   popupAnchor: [5, -30]
 });
 
-
 const mapbox = L.tileLayer(
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
   {
@@ -85,6 +64,20 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
 
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+  layers: "th:tambon_4326",
+  format: "image/png",
+  transparent: true,
+  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+  layers: "th:amphoe_4326",
+  format: "image/png",
+  transparent: true,
+  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
 const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
   layers: "th:province_4326",
   format: "image/png",
@@ -92,25 +85,27 @@ const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
   CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-
-const baseMap = {
+const baseMaps = {
   "Mapbox": mapbox.addTo(map),
   "Google Hybrid": ghyb
-
-
 };
 
-const overlayMap = {
+const overlayMaps = {
+  "ขอบเขตตำบล": tam.addTo(map),
+  "ขอบเขตอำเภอ": amp.addTo(map),
   "ขอบเขตจังหวัด": pro.addTo(map)
 };
-L.control.layers(baseMap, overlayMap).addTo(map);
 
+const lyrControl = L.control.layers(baseMaps, overlayMaps, {
+  collapsed: true
+}).addTo(map);
 
-function onLocationFound(e) {
+let a = 1;
+let onLocationFound = (e) => {
   nearData(e)
 }
 
-function onLocationError(e) {
+let onLocationError = (e) => {
   console.log(e.message);
 }
 
@@ -118,6 +113,7 @@ map.on("locationfound", onLocationFound);
 // map.on("locationerror", onLocationError);
 // map.locate({ setView: true, maxZoom: 19 });
 
+// start locate
 var lc = L.control.locate({
   position: 'topleft',
   strings: {
@@ -130,6 +126,53 @@ var lc = L.control.locate({
 
 lc.start();
 
+$("#pro").on("change", function () {
+  getPro(this.value)
+  zoomExtent("pro", this.value)
+});
+$("#amp").on("change", function () {
+  getAmp(this.value)
+  zoomExtent("amp", this.value)
+});
+$("#tam").on("change", function () {
+  zoomExtent("tam", this.value)
+});
+
+let zoomExtent = (lyr, code) => {
+  axios.get(url + `/eec-api/get-extent/${lyr}/${code}`).then(r => {
+    let geom = JSON.parse(r.data.data[0].geom)
+    // console.log(geom);
+    map.fitBounds([
+      geom.coordinates[0][0],
+      geom.coordinates[0][2],
+    ]);
+  })
+}
+
+let getPro = (procode) => {
+  axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+    // console.log(r.data.data);
+    $("#amp").empty();
+    $("#tam").empty();
+    r.data.data.map(i => {
+      $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+    })
+  })
+}
+
+let getAmp = (ampcode) => {
+  axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+    $("#tam").empty();
+    r.data.data.map(i => {
+      $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+    })
+  })
+}
+
+let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
+let response = axios.get(url + '/eec-api/get-aqi');
+let responseAll = axios.get(url + '/eec-api/get-aqi-all');
+
 let rmLyr = () => {
   map.eachLayer(lyr => {
     if (lyr.options.name == 'marker') {
@@ -138,13 +181,52 @@ let rmLyr = () => {
   })
 }
 
-let response = axios.get(url + '/eec-api/get-aqi');
-let responseAll = axios.get(url + '/eec-api/get-aqi-all');
+let onEachFeature = (feature, layer) => {
+  if (feature.properties) {
+    const time = feature.properties.acq_time;
+    const hr = Number(time.slice(0, 2));
+    const mn = Number(time.slice(2, 4));
+    layer.bindPopup(
+      '<b>ตำแหน่งจุดความร้อน</b>' +
+      '<br/>lat: ' + feature.properties.latitude +
+      '<br/>lon: ' + feature.properties.longitude +
+      // '<br/>satellite: ' + feature.properties.satellite +
+      '<br/>วันที่: ' + feature.properties.acq_date +
+      '<br/>เวลา: ' + hr + ':' + mn
+    );
+  }
+}
+
+let loadHotspot = async () => {
+  let hp = await hpData;
+  // console.log(hp);
+  const fs = hp.data.data.features;
+
+  var geojsonMarkerOptions = {
+    radius: 6,
+    fillColor: "#ff5100",
+    color: "#a60b00",
+    weight: 0,
+    opacity: 1,
+    fillOpacity: 0.8
+  };
+
+  const marker = await L.geoJSON(fs, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, geojsonMarkerOptions);
+    },
+    onEachFeature: onEachFeature
+  }).addTo(map);
+
+  lyrControl.addOverlay(marker, "จุดความร้อน");
+}
 
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-aqi-near', { geom: e.latlng });
-
-  console.log(res.data.data[0]);
+  // console.log(res.data.data[0]);
+  $("#sta_id").text(res.data.data[0].sta_id)
+  $("#sta_th").text(res.data.data[0].sta_th)
+  $("#area_th").text(res.data.data[0].area_th)
   $("#av-aqi").text(Number(res.data.data[0].aqi).toFixed(1));
   $("#av-pm10").text(Number(res.data.data[0].pm10).toFixed(1));
   $("#av-pm25").text(Number(res.data.data[0].pm25).toFixed(1));
@@ -152,37 +234,68 @@ let nearData = async (e) => {
   $("#av-co").text(Number(res.data.data[0].co).toFixed(1));
   $("#av-no2").text(Number(res.data.data[0].no2).toFixed(1));
   $("#av-so2").text(Number(res.data.data[0].so2).toFixed(1));
+  $("#datetime").text(`วันที่ ${res.data.data[0].dt_} เวลา ${res.data.data[0].time_} น.`)
 }
 
 let mapAQI = async () => {
-  $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
+  // $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
   rmLyr()
   let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
   d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.aqi)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "AQI", "ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)");
   $("#unit").html('AQI');
 
   let x = await responseAll;
   x.data.data.map(i => {
-    // console.log(i);
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker
     if (Number(i.aqi) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.aqi) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.aqi) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.aqi) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker', id: i.sta_id });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
@@ -190,7 +303,17 @@ let mapAQI = async () => {
       ค่า AQI : ${Number(i.aqi).toFixed(1)}`
     )
     marker.on('click', (e) => {
-      showHistoryChart(e)
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.data.sta_id)
+      $("#sta_th").text(e.target.options.data.sta_th)
+      $("#area_th").text(e.target.options.data.area_th)
+      $("#av-aqi").text(Number(e.target.options.data.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.data.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.data.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.data.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.data.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.data.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.data.so2).toFixed(1));
     })
   })
 }
@@ -208,22 +331,54 @@ let mapPM25 = async () => {
       "data": Number(i.pm25)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "µg./sqm", "ฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน(PM2.5)");
   $("#unit").html('pm25 (µg./m<sup>3</sup>)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker
     if (Number(i.pm25) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm25) <= 37) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm25) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm25) <= 90) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
 
     marker.addTo(map)
@@ -231,6 +386,19 @@ let mapPM25 = async () => {
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า PM2.5 : ${Number(i.pm25).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
@@ -246,28 +414,73 @@ let mapPM10 = async () => {
       "data": Number(i.pm10)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "µg./sqm", "ฝุ่นละอองขนาดไม่เกิน 10 ไมครอน (PM10)");
   $("#unit").html('pm25 (µg./m<sup>3</sup>)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker;
     if (Number(i.pm10) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm10) <= 80) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm10) <= 120) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.pm10) <= 150) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า PM10 : ${Number(i.pm10).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
@@ -283,28 +496,73 @@ let mapO3 = async () => {
       "data": Number(i.o3)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "ppb", "ก๊าซโอโซน (O3)");
   $("#unit").html('o<sub>3</sub> (ppb)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker;
     if (Number(i.o3) <= 4.4) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.o3) <= 6.4) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.o3) <= 9.0) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.o3) <= 30) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า O3 : ${Number(i.o3).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
@@ -320,28 +578,73 @@ let mapCO = async () => {
       "data": Number(i.co)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "ppm", "คาร์บอนมอนอกไซด์ (CO)");
   $("#unit").html('co (ppm)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker;
     if (Number(i.co) <= 4.4) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.co) <= 6.4) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.co) <= 9.0) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.co) <= 30) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า CO : ${Number(i.co).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
@@ -357,28 +660,73 @@ let mapNO2 = async () => {
       "data": Number(i.no2)
     })
   })
-  barChart(datArr)
+  barChart(datArr, "ppm", "ก๊าซไนโตรเจนไดออกไซด์ (NO2)")
   $("#unit").html('co (ppm)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker;
     if (Number(i.no2) <= 60) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.no2) <= 106) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.no2) <= 170) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.no2) <= 340) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br>  
       ค่า NO2 : ${Number(i.no2).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
@@ -394,78 +742,81 @@ let mapSO2 = async () => {
       "data": Number(i.so2)
     })
   })
-  barChart(datArr);
+  barChart(datArr, "ppb", "ก๊าซซัลเฟอร์ไดออกไซด์ (SO2)");
   $("#unit").html('so<sub>2</sub> (ppb)');
 
   let x = await responseAll;
   x.data.data.map(i => {
+    let dat = {
+      sta_id: i.sta_id,
+      sta_th: i.sta_th,
+      area_th: i.area_th,
+      aqi: i.aqi,
+      co: i.co,
+      no2: i.no2,
+      o3: i.o3,
+      pm10: i.pm10,
+      pm25: i.pm25,
+      so2: i.so2
+    }
     let marker
     if (Number(i.so2) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconblue, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconblue,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.so2) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: icongreen, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: icongreen,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.so2) <= 300) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconyellow, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconyellow,
+        name: 'marker',
+        data: dat
+      });
     } else if (Number(i.so2) <= 400) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconorange, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconorange,
+        name: 'marker',
+        data: dat
+      });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], { icon: iconred, name: 'marker' });
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: iconred,
+        name: 'marker',
+        data: dat
+      });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ค่า SO2 : ${Number(i.so2).toFixed(1)}`
     )
+    marker.on('click', (e) => {
+      // console.log(e.target.options);
+      $("#sta_id").text(e.target.options.sta_id)
+      $("#sta_th").text(e.target.options.sta_th)
+      $("#area_th").text(e.target.options.area_th)
+      $("#av-aqi").text(Number(e.target.options.aqi).toFixed(1));
+      $("#av-pm10").text(Number(e.target.options.pm10).toFixed(1));
+      $("#av-pm25").text(Number(e.target.options.pm25).toFixed(1));
+      $("#av-o3").text(Number(e.target.options.o3).toFixed(1));
+      $("#av-co").text(Number(e.target.options.co).toFixed(1));
+      $("#av-no2").text(Number(e.target.options.no2).toFixed(1));
+      $("#av-so2").text(Number(e.target.options.so2).toFixed(1));
+    })
   })
 }
 
-let barChart1 = (datArr) => {
+let barChart = (datArr, unit, title) => {
+  // console.log(datArr);
   am4core.useTheme(am4themes_material);
-  am4core.useTheme(am4themes_animated);
-
   var chart = am4core.create("chart", am4charts.XYChart);
-  chart.padding(40, 40, 40, 40);
-
-  var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-  categoryAxis.renderer.grid.template.location = 0;
-  categoryAxis.dataFields.category = "station";
-  categoryAxis.renderer.minGridDistance = 1;
-  categoryAxis.renderer.inversed = true;
-  categoryAxis.renderer.grid.template.disabled = true;
-
-  var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-  valueAxis.min = 0;
-
-  var series = chart.series.push(new am4charts.ColumnSeries());
-  series.dataFields.categoryY = "station";
-  series.dataFields.valueX = "data";
-  series.tooltipText = "{valueX.value}"
-  series.columns.template.strokeOpacity = 0;
-  series.columns.template.column.cornerRadiusBottomRight = 5;
-  series.columns.template.column.cornerRadiusTopRight = 5;
-
-  var labelBullet = series.bullets.push(new am4charts.LabelBullet())
-  labelBullet.label.horizontalCenter = "left";
-  labelBullet.label.dx = 10;
-  labelBullet.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
-  labelBullet.locationX = 1;
-
-  // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
-  series.columns.template.adapter.add("fill", function (fill, target) {
-    return chart.colors.getIndex(target.dataItem.index);
-  });
-
-  categoryAxis.sortBySeries = series;
-  chart.data = datArr
-}
-
-let barChart = (datArr) => {
-  am4core.useTheme(am4themes_animated);
-  // Themes end
-
-  // Create chart instance
-  var chart = am4core.create("chart", am4charts.XYChart);
-  // chart.scrollbarX = new am4core.Scrollbar();
+  chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
 
   // Add data
   chart.data = datArr;
@@ -481,47 +832,31 @@ let barChart = (datArr) => {
   categoryAxis.tooltip.disabled = true;
   categoryAxis.renderer.minHeight = 110;
 
+  categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
+    if (target.dataItem && target.dataItem.index & 2 == 2) {
+      return dy + 25;
+    }
+    return dy;
+  });
+
   var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-  valueAxis.renderer.minWidth = 50;
+  valueAxis.title.text = title;
+  valueAxis.title.fontWeight = 800;
 
   // Create series
   var series = chart.series.push(new am4charts.ColumnSeries());
-  series.sequencedInterpolation = true;
   series.dataFields.valueY = "data";
   series.dataFields.categoryX = "station";
-  series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
-  series.columns.template.strokeWidth = 0;
+  series.name = "data";
+  series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+  series.columns.template.fillOpacity = .8;
+  series.columns.template.width = am4core.percent(60);
 
-  series.tooltip.pointerOrientation = "vertical";
+  var columnTemplate = series.columns.template;
+  columnTemplate.strokeWidth = 2;
+  columnTemplate.strokeOpacity = 1;
 
-  series.columns.template.column.cornerRadiusTopLeft = 10;
-  series.columns.template.column.cornerRadiusTopRight = 10;
-  series.columns.template.column.fillOpacity = 0.8;
-
-  // on hover, make corner radiuses bigger
-  var hoverState = series.columns.template.column.states.create("hover");
-  hoverState.properties.cornerRadiusTopLeft = 0;
-  hoverState.properties.cornerRadiusTopRight = 0;
-  hoverState.properties.fillOpacity = 1;
-
-  series.columns.template.adapter.add("fill", function (fill, target) {
-    return chart.colors.getIndex(target.dataItem.index);
-  });
-
-  // Cursor
   chart.cursor = new am4charts.XYCursor();
-}
-
-let showHistoryChart = (id) => {
-  let sta_id = id.target.options.id
-  // console.log(sta_id.target.options.id)
-  axios.post(url + '/eec-api/get-hist', { sta_id: sta_id }).then((r) => {
-
-    // console.log(r.data.data);
-  }).catch((err) => {
-    // console.log(err);
-  });
-
 }
 
 let showDataTable = async () => {
@@ -571,7 +906,7 @@ let showDataTable = async () => {
   });
   $('#tab tbody').on('click', 'tr', function () {
     let data = table.row(this).data();
-    // console.log(data)
+    console.log(data)
     L.popup({ offset: [0, -27] })
       .setLatLng([Number(data.lat), Number(data.lon)])
       .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
@@ -582,7 +917,6 @@ let showDataTable = async () => {
 }
 
 let showChart = async (e) => {
-  console.log(e);
   $("#sta_name").text(`${e.sta_th} ${e.area_th}`)
   let d = await axios.post(url + '/eec-api/get-hist', { sta_id: e.sta_id });
 
@@ -626,16 +960,32 @@ let showChart = async (e) => {
     });
   })
 
-  chartTemplate(arrPM25, "chart-pm25");
-  chartTemplate(arrPM10, "chart-pm10");
-  chartTemplate(arrO3, "chart-o3");
-  chartTemplate(arrCO, "chart-co");
-  chartTemplate(arrNO2, "chart-no2");
-  chartTemplate(arrSO2, "chart-so2");
-  chartTemplate(arrAQI, "chart-aqi");
+  let pm25 = 37;
+  let pm10 = 80;
+  let o3 = 50;
+  let co = 6.4;
+  let no2 = 106;
+  let so2 = 200;
+  let aqi = 50;
+
+  $("#idxpm25").text(pm25)
+  $("#idxpm10").text(pm10)
+  $("#idxo3").text(o3)
+  $("#idxco").text(co)
+  $("#idxno2").text(no2)
+  $("#idxso2").text(so2)
+  $("#idxaqi").text(aqi)
+
+  chartTemplate(arrPM25, "chart-pm25", pm25);
+  chartTemplate(arrPM10, "chart-pm10", pm10);
+  chartTemplate(arrO3, "chart-o3", o3);
+  chartTemplate(arrCO, "chart-co", co);
+  chartTemplate(arrNO2, "chart-no2", no2);
+  chartTemplate(arrSO2, "chart-so2", so2);
+  chartTemplate(arrAQI, "chart-aqi", aqi);
 }
 
-let chartTemplate = (arrData, div) => {
+let chartTemplate = (arrData, div, index) => {
   am4core.useTheme(am4themes_animated);
 
   // Create chart instance
@@ -645,12 +995,12 @@ let chartTemplate = (arrData, div) => {
   chart.data = arrData;
 
   // Set input format for the dates
-  chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+  chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
 
   // Create axes
   var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+  valueAxis.baseValue = 0;
   // Create series
   var series = chart.series.push(new am4charts.LineSeries());
   series.dataFields.valueY = "value";
@@ -659,7 +1009,7 @@ let chartTemplate = (arrData, div) => {
   series.tensionX = 0.8;
   series.strokeWidth = 2;
   series.minBulletDistance = 15;
-  series.stroke = am4core.color("#ff0000");
+  series.stroke = am4core.color("#00b80f");
 
   // Drop-shaped tooltips
   series.tooltip.background.cornerRadius = 20;
@@ -670,14 +1020,17 @@ let chartTemplate = (arrData, div) => {
   series.tooltip.label.textAlign = "middle";
   series.tooltip.label.textValign = "middle";
 
-  // Make bullets grow on hover
-  var bullet = series.bullets.push(new am4charts.CircleBullet());
-  bullet.circle.strokeWidth = 2;
-  bullet.circle.radius = 4;
-  bullet.circle.fill = am4core.color("#fff");
+  var range = valueAxis.createSeriesRange(series);
+  range.value = index;
+  // range.endValue = -1000;
+  range.contents.stroke = am4core.color("#ff0000");
+  range.contents.fill = range.contents.stroke;
 
-  var bullethover = bullet.states.create("hover");
-  bullethover.properties.scale = 1.3;
+  // Make bullets grow on hover
+  // var bullet = series.bullets.push(new am4charts.CircleBullet());
+  // bullet.circle.strokeWidth = 2;
+  // bullet.circle.radius = 4;
+  // bullet.circle.fill = am4core.color("#fff");
 
   // Make a panning cursor
   chart.cursor = new am4charts.XYCursor();
@@ -694,9 +1047,9 @@ let chartTemplate = (arrData, div) => {
   dateAxis.keepSelection = true;
 }
 
-
 // init aqi
 mapAQI()
+loadHotspot()
 // getAvAQI()
 showDataTable()
 showChart({ sta_id: '74t', sta_th: "ศูนย์ราชการจังหวัดระยอง", area_th: "ต.เนินพระ อ.เมือง, ระยอง" })

@@ -47,9 +47,9 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#">จัดการข้อมูล</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <div class="nav-link" disabled>รายงาน</div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -63,6 +63,55 @@
             <!-- <p></p>
             <a type="button" class="btn btn-primary" href="./../add/index.html">เพิ่มโครงการใหม่</a> -->
         </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <table>
+                    <tbody>
+                        <tr id="filter_global">
+                            <td>ค้นหาจากทุกคอลัมน์</td>
+                            <td align="center"><input type="text" class="global_filter form-control" id="global_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col1" data-column="0">
+                            <td>ค้นหา ชื่อโครงการ</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col0_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col2" data-column="1">
+                            <td>ค้นหา งบประมาณ</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col1_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col3" data-column="2">
+                            <td>ค้นหา แหล่งเงิน</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col2_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col4" data-column="3">
+                            <td>ค้นหา ปีงบประมาณ</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col3_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col5" data-column="4">
+                            <td>ค้นหา ประเภทโครงการ</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col4_filter">
+                            </td>
+                        </tr>
+                        <tr id="filter_col6" data-column="5">
+                            <td>ค้นหา สถานที่</td>
+                            <td align="center"><input type="text" class="column_filter form-control" id="col5_filter">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+        </div>
+
+
+        <hr>
         <table id="myTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
@@ -79,7 +128,13 @@
 
     </div>
     <p></p>
-    <p></p>
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3">
+            <!-- updated: <span id="editdate"></span> -->
+        </div>
+        <!-- Copyright -->
+    </footer>
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

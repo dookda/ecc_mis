@@ -3,23 +3,67 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 const dat = con.dat;
+// const gdb = con.gdb;
+
+app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
+    const lyr = req.params.lyr;
+    const val = req.params.val;
+    let sql;
+
+    if (lyr == "pro") {
+        sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
+            FROM eec_pro_4326
+            WHERE prov_code = '${val}'`;
+    } else if (lyr == "amp") {
+        sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
+            FROM eec_amp_4326
+            WHERE area_code = '${val}'`;
+    } else if (lyr == "tam") {
+        sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
+            FROM eec_tam_4326
+            WHERE area_code = '${val}'`;
+    }
+
+    eec.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-prov", (req, res) => {
+    const sql = `SELECT prov_code, prov_namt, prov_name
+        FROM eec_pro_4326`;
+    eec.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-amp/:procode", (req, res) => {
+    const procode = req.params.procode;
+    const sql = `SELECT prov_code, prov_namt, prov_name, CONCAT(prov_code, amp_code) as amphoe_idn, amp_namt, amp_name
+        FROM eec_amp_4326 WHERE prov_code='${procode}' `;
+    eec.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-tam/:ampcode", (req, res) => {
+    const ampcode = req.params.ampcode;
+    const sql = `SELECT prov_code, prov_namt, prov_name, CONCAT(prov_code, amp_code) as amphoe_idn, amp_namt, amp_name, CONCAT(prov_code, amp_code, tam_code) as tambon_idn, tam_namt, tam_name
+        FROM eec_tam_4326 WHERE CONCAT(prov_code, amp_code)='${ampcode}' `;
+    eec.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
 
 
-// app.post("/eec-api/aqi-insert", (req, res) => {
-//     const { sname, saqi, img, geom } = req.body;
-
-//     const imgname = "img" + Date.now();
-//     const sql = "INSERT INTO ecc_aqi_4326 (sname, saqi, imgname, img, sdate, geom) " +
-//         "VALUES ($1,$2,$3,$4,now(),ST_SetSRID(st_geomfromgeojson($5), 4326))";
-//     const val = [sname, saqi, imgname, img, geom];
-
-//     eec.query(sql, val).then((r) => {
-//         res.status(200).json({
-//             status: "success",
-//             message: "insert data"
-//         });
-//     });
-// });
 
 app.get("/eec-api/get-aqi", (req, res) => {
     const sql = `SELECT * FROM v_pcd_aqi_eec`;
@@ -71,7 +115,8 @@ app.get("/eec-api/get-av-aqi", (req, res) => {
 app.post("/eec-api/get-aqi-near", (req, res) => {
     const { geom } = req.body;
     const sql = `
-    SELECT *, ST_Distance(ST_Transform(geom, 32648), ST_Transform(ST_Geomfromtext('Point(${geom.lng} ${geom.lat})', 4326), 32648))  as dist
+    SELECT *, TO_CHAR(dt, 'DD MON YYYY') as dt_,
+        ST_Distance(ST_Transform(geom, 32648), ST_Transform(ST_Geomfromtext('Point(${geom.lng} ${geom.lat})', 4326), 32648))  as dist
     FROM v_pcd_aqi_all
     ORDER BY dist ASC
     LIMIT 1
@@ -85,18 +130,20 @@ app.post("/eec-api/get-aqi-near", (req, res) => {
 
 app.post("/eec-api/get-hist", (req, res) => {
     const { sta_id } = req.body;
-    const sql = `SELECT DISTINCT TO_CHAR(date_, 'YYYY-MM-DD') as date_, sta_id, sta_th, 
-            avg(pm25) as pm25,
-            avg(pm10) as pm10, 
-            avg(o3) as o3, 
-            avg(co) as co, 
-            avg(no2) as no2, 
-            avg(so2) as so2, 
-            avg(aqi) as aqi
-        FROM aqi_hourly_pcd
-        WHERE sta_id = '${sta_id}' AND date_ > current_date - interval '14 days'
-        GROUP BY date_, sta_id, sta_th 
-        ORDER BY date_`
+    const sql = `SELECT  DISTINCT CONCAT(date_, ' ', time_) AS date_, 
+                    date_ as d, time_ as t, 
+                    sta_id, sta_th, 
+                    avg(pm25) as pm25,
+                    avg(pm10) as pm10, 
+                    avg(o3) as o3, 
+                    avg(co) as co, 
+                    avg(no2) as no2, 
+                    avg(so2) as so2, 
+                    avg(aqi) as aqi
+                    FROM aqi_hourly_pcd
+                    WHERE sta_id = '${sta_id}' AND date_ > current_date - interval '14 days'
+                    GROUP BY date_, time_, sta_id, sta_th 
+                    ORDER BY date_, time_`
     dat.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
@@ -160,5 +207,7 @@ app.post("/eec-api/get-weather-near", (req, res) => {
         })
     })
 })
+
+
 
 module.exports = app;

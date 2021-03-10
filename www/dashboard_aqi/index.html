@@ -71,32 +71,14 @@
 
     <div class="container-fluid mt-1 mb-1">
         <div class="col-12">
-            <div class="row">
-                <div class="col-xs-4">
-                    <div id="card">
-                        <img alt="" id="profile">
-                    </div>
-                </div>
-
-                <div class="col-xs-4 ml-1">
-                    <h5> <span class="badge badge-light" id="displayName"></span></h5>
-                    <span id="statusMessage"></span>
-                </div>
-
-
-
-                <div class="col-xs-4 ml-1">
-                    <br>
-                    <!-- <h2 style="font-weight: bold">ข้อมูลคุณภาพอากาศ ณ ตำแหน่งผู้ใช้งาน</h2>
-                    ข้อมูลคุณภาพอากาศ วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span
-                        id="sta_th"></span>
-                    (จากกรมอุตุนิยมวิทยา)<br /> -->
-                    <h2 style="font-weight: bold">คุณภาพอากาศ</h2>
-                    ข้อมูลคุณภาพอากาศปัจจุบัน (จากกรมควบคุมมลพิษ)<br />
-                </div>
-            </div>
+            <h2 style="font-weight: bold">คุณภาพอากาศ</h2>
+            ข้อมูลคุณภาพอากาศปัจจุบัน (จากกรมควบคุมมลพิษ) &nbsp; <span style="font-size: small;" id="datetime"></span>
+            <br> <span style="font-size: small;">รหัส:</span> <span id="sta_id"></span> <span style="font-size: small;">
+                ชื่อสถานี:</span><span id="sta_th"></span> <span style="font-size: small;"> สถานที่:</span> <span
+                id="area_th"></span>
         </div>
     </div>
+
     <br>
     <div class="container-fluid mt-1 mb-1">
         <div class="card-deck">
@@ -174,15 +156,53 @@
         </div>
     </div>
 
-    <!-- แสดงแผนที่ -->
-    <div class="card-deck p-3">
+    <div class="card-deck p-3 mb-1">
         <div class="card card-stats">
-            <div class="card-body p-1 mb-1">
-                <span id="variable"></span>&nbsp;<span style="font-size: small;" id="datetime"></span>
-                <div id="map"></div>
-                <div>
-                    <img src="./aqi.png" width="100%">
+            <div class="card-body p2">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">จังหวัด:</label>
+                            <select class="form-control" id="pro">
+                                <option value="eec">eec</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="21">ระยอง</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">อำเภอ:</label>
+                            <select class="form-control" id="amp">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="sel1">ตำบล:</label>
+                            <select class="form-control" id="tam">
+                            </select>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- แสดงแผนที่ -->
+    <div class="card-deck p-3 mb-1">
+        <div class="card card-stats">
+            <div class="card-body p-1 ">
+                <div class="border-10" id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-deck p-3 mb-1">
+        <div class="card card-stats">
+            <div class="card-body p-1 ">
+                <img class="border-10" src="./aqi.png" width="100%">
             </div>
         </div>
     </div>
@@ -277,14 +297,15 @@
                 </div>
             </div>
         </div>
-
+        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
+            href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a>
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                AQI
+                                AQI (สีแดงเป็นค่าที่เกิน <span id="idxaqi"></span>)
                                 <div class="chartHist p-0" id="chart-aqi"></div>
                             </div>
                         </div>
@@ -292,7 +313,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                PM2.5 (µg./m<sup>3</sup>)
+                                PM2.5 (สีแดงเป็นค่าที่เกิน <span id="idxpm25"></span> µg./m<sup>3</sup>)
                                 <div class="chartHist p-0" id="chart-pm25"></div>
                             </div>
                         </div>
@@ -302,7 +323,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                PM10 (µg./m<sup>3</sup>)
+                                PM10 (สีแดงเป็นค่าที่เกิน <span id="idxpm10"></span> µg./m<sup>3</sup>)
                                 <div class="chartHist p-0" id="chart-pm10"></div>
                             </div>
                         </div>
@@ -310,7 +331,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                O<sub>3</sub> (ppb)
+                                O<sub>3</sub> (สีแดงเป็นค่าที่เกิน <span id="idxo3"></span> ppb)
                                 <div class="chartHist p-0" id="chart-o3"></div>
                             </div>
                         </div>
@@ -321,7 +342,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                CO (ppm)
+                                CO ( สีแดงเป็นค่าที่เกิน <span id="idxco"></span>ppm)
                                 <div class="chartHist p-0" id="chart-co"></div>
                             </div>
                         </div>
@@ -329,7 +350,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                NO<sub>2</sub> (ppb)
+                                NO<sub>2</sub> ( สีแดงเป็นค่าที่เกิน <span id="idxno2"></span>ppb)
                                 <div class="chartHist p-0" id="chart-no2"></div>
                             </div>
                         </div>
@@ -340,7 +361,7 @@
                     <div class="col-sm-6">
                         <div class="card card-stats">
                             <div class="card-body ">
-                                SO<sub>2</sub> (ppb)
+                                SO<sub>2</sub> (สีแดงเป็นค่าที่เกิน <span id="idxso2"></span> ppb)
                                 <div class="chartHist p-0" id="chart-so2"></div>
                             </div>
                         </div>
@@ -351,8 +372,7 @@
         </div>
     </div>
     <div class="container-fluid mt-3 mb-6">
-
-        <p> <span class="ver">ปรับปรุง 23-02-2021</span></p>
+        <p> <span class="ver">ปรับปรุง 10/03/2021</span></p>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -367,8 +387,9 @@
 <!-- amcharts -->
 <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script>
+<!-- <script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script> -->
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/material.js"></script>
 <!-- datatable -->
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
