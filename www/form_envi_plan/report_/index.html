@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>ติดตามโครงการ</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">EEC MIS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./../add/index.html">เพิ่มข้อมูล</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./../update/index.html">จัดการข้อมูล</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <div class="nav-link" disabled>รายงาน </div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron mt-6">
+            <div class="row">
+                <div class="col-sm-6">ชื่อโครงการ
+                    <h5><span id="proj_name"></span></h5>
+                    <span class="badge badge-success" id="proj_type"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label for="">วงเงินโครงการ</label>
+                    <h5><span id="budget"></span>&nbsp;บาท</h5>
+
+                    <label for="">แหล่งเงินงบประมาณที่ประสงค์จะใช้ดำเนินการ</label>
+                    <h5><span id="loan"></span></h5>
+
+                    <label for="">ปีงบประมาณที่จะดำเนินการ</label>
+                    <h5><span id="year"></span></h5>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="">ขอบเขตโครงการ</label>
+                <div class="card" id="map"></div>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">สถานที่โครงการ</label>
+                <h5><span id="location"></span></h5>
+
+                <label for="">จำนวนเนื้อที่ (ไร่)</label>
+                <h5><span id="area"></span> </h5>
+
+                <hr>
+                <label for="">ผลการดำเนินการโครงการ</label>
+
+            </div>
+        </div>
+        <hr>
+        <h5>วัตถุประสงค์โครงการ</h5>
+        <label id="proj_obj"></label>
+
+        <h5>วิธีการและขั้นตอนการดำเนินงาน</h5>
+        <label id="proj_mthod"></label>
+
+        <h5>รูปแบบ/เทคโนโลยีที่ใช้ กรณีการก่อสร้างระบบจัดการของเสีย</h5>
+        <label id="proj_tech"></label>
+
+        <h5>พื้นที่ดำเนินการ</h5>
+        <label id="proj_area"></label>
+
+        <h5>ผลผลิตและผลลัพธ์ที่ได้รับ</h5>
+        <label id="output"></label>
+
+        <hr>
+        <h5>ปัญหาและอุปสรรค </h5>
+        <label id="problem"></label>
+
+        <h5>ข้อซักถามและประเด็นขอหารือ </h5>
+        <label id="quesion"></label>
+
+        <hr>
+        <h5>ผู้ดำเนินงานและผู้ประสานงานหลัก </h5>
+        <div class="form-group mb-5">
+            <h6>ชื่อ-สกุล</h6>
+            <label class="form-report" id="rname"></label>
+
+            <h6>ตำแหน่ง</h6>
+            <label class="form-report" id="pos"></label>
+
+            <h6>โทรศัพท์ (ที่ทำงาน)</h6>
+            <label class="form-report" id="tele"></label>
+
+            <h6>โทรสาร (ที่ทำงาน)</h6>
+            <label class="form-report" id="fax"></label>
+
+            <h6>โทรศัพท์เคลื่อนที่</h6>
+            <label class="form-report" id="mob"></label>
+
+            <h6>E-mail</h6>
+            <label class="form-report" id="mail"></label>
+
+        </div>
+    </div>
+    <p></p>
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3">
+            updated: <span id="editdate"></span>
+        </div>
+        <!-- Copyright -->
+    </footer>
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="./app.js"></script>
+
+</html>

@@ -10,7 +10,7 @@ let map = L.map('map', {
 });
 
 const url = "https://eec-onep.online:3700";
-// const url = 'https://rti2dss.com:3200';
+// const url = 'http://localhost:3700';
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -50,78 +50,121 @@ map.pm.addControls({
     cutPolygon: false
 });
 
-let geom = '-';
+let geom = "";
 map.on('pm:create', e => {
     geom = e.layer.toGeoJSON();
 });
 
-function refreshPage() {
-    location.reload(true);
+let refreshPage = () => {
+    // location.reload(true);
+    window.open("./../report/index.html", "_self");
 }
 
-let chk;
-$("#espect1").hide()
-$("#espect2").hide()
-$("#feas_loan").hide()
-$('input[name="status"]').change(r => {
-    if ($('input[name="status"]:checked').val() == 'อยู่ระหว่างดำเนินการก่อสร้าง') {
-        $("#espect1").show()
-        $("#espect2").hide()
-        $("#feas_loan").hide()
-        chk = 1
-    }
-    if ($('input[name="status"]:checked').val() == 'อยู่ระหว่างการจัดซื้อจัดจ้าง') {
-        $("#espect1").hide()
-        $("#espect2").show()
-        $("#feas_loan").hide()
-        chk = 2
-    }
-    if ($('input[name="status"]:checked').val() == 'อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด') {
-        $("#espect1").hide()
-        $("#espect2").hide()
-        $("#feas_loan").hide()
-    }
-    if ($('input[name="status"]:checked').val() == 'อยู่ระหว่างขอตั้งงบประมาณ') {
-        $("#espect1").hide()
-        $("#espect2").hide()
-        $("#feas_loan").show()
+tinymce.init({
+    selector: 'textarea',
+    menubar: false,
+    statusbar: false,
+    toolbar: true
+})
+
+$("#div_proc_troub").hide()
+$("#div_fund_troub").hide()
+// $("#div_fund_accpt").hide()
+// $("#div_opert_stat").hide()
+
+$("#proc_stat").change(i => {
+    $("#div_proc_troub").hide()
+    $("#div_fund_troub").hide()
+    $("#div_fund_accpt").hide()
+    $("#div_opert_stat").hide()
+    $("#proc_troub").val("")
+    $("#fund_troub").val("")
+    $("#fund_accpt").val("")
+    $("#fund_year").val("")
+
+    if ($("#proc_stat").val() == "ได้รับงบประมาณแล้ว") {
+        $("#div_fund_accpt").show()
+        $("#div_opert_stat").show()
+    } else if ($("#proc_stat").val() == "ไม่ได้รับงบประมาณ") {
+        $("#div_fund_troub").show()
+        $("#div_opert_stat").hide()
+    } else if ($("#proc_stat").val() == "ยังไม่ยื่นของบประมาณ") {
+        $("#div_proc_troub").show()
+        $("#div_opert_stat").hide()
     }
 })
 
-let espect = '-';
-$('#fieldForm').submit(function (e) {
+$("#div_opert_estm").hide()
+$("#div_budg_year").hide()
+
+$("#opert_stat").change(i => {
+    $("#div_opert_estm").hide()
+    $("#div_budg_year").hide()
+    $("#opert_estm").val("")
+    $("#budg_year").val("")
+
+    if ($("#opert_stat").val() == "อยู่ระหว่างตั้งของบประมาณ") {
+        $("#div_budg_year").show()
+    } else if ($("#opert_stat").val() == "อยู่ระหว่างดำเนินการ/ก่อสร้าง") {
+        $("#div_opert_estm").show()
+    }
+})
+
+$("#fieldForm").submit(function (e) {
     e.preventDefault();
-    chk == 1 ? espect = $('#espect1').val() : null;
-    chk == 2 ? espect = $('#espect2').val() : null;
+    tinyMCE.triggerSave();
+
     const obj = {
-        proj_name: $('#proj_name').val(),
-        budget: $('#budget').val() ? $('#budget').val() : 0,
-        loan: $('#loan').val() ? $('#loan').val() : '-',
-        year: $('#year').val() ? $('#year').val() : 0,
-        proj_type: $('input[name="proj_type"]:checked').val(),
-        location: $('#location').val() ? $('#location').val() : '-',
-        area: $('#area').val() ? $('#area').val() : 0,
-        status: $('input[name="status"]:checked').val() ? $('input[name="status"]:checked').val() : '-',
-        espect: espect,
-        feas_loan: $('#feas_loan').val() ? $('#feas_loan').val() : '-',
-        other: $('#other').val() ? $('#other').val() : '-',
-        proj_obj: $('#proj_obj').val() ? $('#proj_obj').val() : '-',
-        proj_mthod: $('#proj_mthod').val() ? $('#proj_mthod').val() : '-',
-        proj_tech: $('#proj_tech').val() ? $('#proj_tech').val() : '-',
-        proj_area: $('#proj_area').val() ? $('#proj_area').val() : '-',
-        output: $('#output').val() ? $('#output').val() : '-',
-        problem: $('#problem').val() ? $('#problem').val() : '-',
-        quesion: $('#quesion').val() ? $('#quesion').val() : '-',
-        rname: $('#rname').val() ? $('#rname').val() : '-',
-        pos: $('#pos').val() ? $('#pos').val() : '-',
-        tele: $('#tele').val() ? $('#tele').val() : '-',
-        fax: $('#fax').val() ? $('#fax').val() : '-',
-        mob: $('#mob').val() ? $('#mob').val() : '-',
-        mail: $('#mail').val() ? $('#mail').val() : '-',
-        geom: geom
+        data: {
+            prj_cate: $('#prj_cate').val(),
+            prj_name: $('#prj_name').val(),
+            prj_detail: $('#prj_detail').val(),
+            prj_obj: $('#prj_obj').val(),
+            prj_site: $('#prj_site').val(),
+            prj_time: $('#prj_time').val(),
+            budget: $('#budget').val(),
+            budg_61: $('#budg_61').val(),
+            budg_62: $('#budg_62').val(),
+            budg_63: $('#budg_63').val(),
+            budg_64: $('#budg_64').val(),
+            budg_65: $('#budg_65').val(),
+            budg_66: $('#budg_66').val(),
+            budg_67: $('#budg_67').val(),
+            budg_68: $('#budg_68').val(),
+            budg_69: $('#budg_69').val(),
+            budg_70: $('#budg_70').val(),
+            prj_operat: $('#prj_operat').val(),
+            fund: $('#fund').val(),
+            proc_stat: $('#proc_stat').val(),
+            proc_troub: $('#proc_troub').val(),
+            fund_troub: $('#fund_troub').val(),
+            fund_accpt: $('#fund_accpt').val(),
+            fund_year: $('#fund_year').val(),
+            opert_stat: $('#opert_stat').val(),
+            opert_estm: $('#opert_estm').val(),
+            budg_year: $('#budg_year').val(),
+            prj_type: $('#prj_type').val(),
+            prj_locate: $('#prj_locate').val(),
+            prj_rai: $('#prj_rai').val(),
+            prj_name_c: $('#prj_name_c').val(),
+            prj_obj_c: $('#prj_obj_c').val(),
+            prj_method: $('#prj_method').val(),
+            prj_tech: $('#prj_tech').val(),
+            prj_area: $('#prj_area').val(),
+            prj_output: $('#prj_output').val(),
+            prj_troub: $('#prj_troub').val(),
+            prj_comnt: $('#prj_comnt').val(),
+            prj_info: $('#prj_info').val(),
+            // filename: $('#filename').val(),
+            coor_name: $('#coor_name').val(),
+            coor_pos: $('#coor_pos').val(),
+            coor_tel: $('#coor_tel').val(),
+            coor_email: $('#coor_email').val(),
+            geom: geom
+        }
     }
     console.log(obj);
-    axios.post(url + "/projmon-api/adddata", obj).then((r) => {
+    axios.post(url + "/projmon-api/insertdata", obj).then((r) => {
         r.data.data == "success" ? refreshPage() : null
     })
     return false;

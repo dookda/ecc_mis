@@ -1,0 +1,134 @@
+
+body {
+    font-family: 'Kanit', sans-serif;
+  }
+  
+h{
+    font-family: "Kanit", sans-serif;
+  }
+
+.h3 .h2 .card-body .row{
+    font-family: 'Kanit', sans-serif;
+  }
+body {
+    padding: 0;
+    margin: 0;
+  }
+html,
+body {
+    background-color:#f6f6f8;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  
+
+.card-stats .card-body {
+    font-family: 'Kanit', sans-serif;
+    padding: 15px 15px 0;
+}
+.card-body { font-family: 'Kanit', Arial; }
+
+#map {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 600px;
+}
+
+#chartdiv {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 220px;
+}
+
+#chartdiw {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 220px;
+}
+
+#chartdie {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdir {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdit {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdiy {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdiu {
+    width: 100%;
+    height: 500px;
+}
+
+#chartdii {
+    width: 100%;
+    height: 500px;
+}
+
+#chartdio {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdip {
+    width: 100%;
+    height: 220px;
+}
+
+#chartdia {
+    width: 100%;
+    height: 220px;
+}
+
+#chart1 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart2 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart3 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart4 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart5 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart6 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 300px;
+}
+
+#chart7 {
+    font-family: "Kanit", sans-serif;
+    width: 100%;
+    height: 500px;
+}

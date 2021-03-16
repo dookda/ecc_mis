@@ -53,3 +53,9 @@ app.use(pf);
 const projmon = require('./service/projmon');
 app.use(projmon);
 
+const green = require('./service/green');
+app.use(green);
+
+const watquality = require('./service/watquality');
+app.use(watquality);
+

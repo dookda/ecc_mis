@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบรายงานคุณภาพน้ำบาดาล</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+    <!-- <link rel="stylesheet" href="./../theme/assets/css/paper-dashboard.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="./style.css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" /> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" /> -->
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css">
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+
+    <!-- amchart -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/dataviz.js"></script>
+    <!-- <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" /> -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap" /> -->
+    <!-- <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"> -->
+    <link rel="stylesheet" href="./style.css" />
+
+
+</head>
+
+<body>
+
+    <!-- ภาพ header -->
+    <div class="container">
+        <div class="test">
+            <img src="https://eec-onep.soc.cmu.ac.th/wp-content/uploads/2021/03/3.png" style="width:100%;"
+                class="responsive">
+            <h1>ระบบรายงานคุณภาพน้ำบาดาล</h1>
+        </div>
+    </div>
+    <p></p>
+
+    <!-- Menu bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">เมนู</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://eec-onep.soc.cmu.ac.th/">หน้าหลัก <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="ค้นหา" aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">ค้นหา</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- แสดงข้อมูลบ่อน้ำบาดาล ณ ตำแหน่งผู้ใช้ -->
+    <div class="container-fluid mt-1 mb-1">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div id="card">
+                        <img alt="" id="profile">
+                    </div>
+                </div>
+
+                <div class="col-xs-4 ml-1">
+                    <h5> <span class="badge badge-light" id="displayName"></span></h5>
+                    <span id="statusMessage"></span>
+                </div>
+
+                <div class="col-xs-4 ml-1">
+                    <br>
+                    <h2 style="font-weight: bold">ข้อมูลคุณภาพของบ่อบาดาล ณ ตำแหน่งผู้ใช้งาน</h2>
+                    ข้อมูลบ่อบาดาล วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span id="sta_th"></span>
+                    (จากกรมทรัพยากรน้ำบาดาล)<br />
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- แสดงข้อมูลบ่อบาดาล ณ ตำแหน่งผู้ใช้ -->
+    <div class="container-fluid mt-1 mb-1">
+        <div class="card-deck">
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las las la-swimming-pool fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ความลึก<br>
+                    <span class="ch3" id="av-depth"></span><br>เมตร
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-water fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ระดับน้ำ<br>
+                    <span class="ch3" id="av-wl"></span><br>เมตร
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-chart-line fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ค่าการนำไฟฟ้า<br>
+                    <span class="ch3" id="av-ec"></span><br> µs/cm
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-tachometer-alt fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ค่าความเป็นกรด-ด่าง<br>
+                    <span class="ch3" id="av-ph"></span>
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-temperature-high fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ค่าอุณหภูมิ<br>
+                    <span class="ch3" id="av-temp"></span><br> องศาเซลเซียส
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-star-half-alt fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ค่าความขุ่น<br>
+                    <span class="ch3" id="av-tds"></span><br>mg/L
+                </div>
+            </div>
+
+            <div class="card card-stats">
+                <div class="c-body center">
+                    <span style="color: rgb(91,192,222);">
+                        <i class="las la-biohazard fa-3x p-1" aria-hidden="true"></i>
+                    </span>
+                    <br>ค่าความเค็ม<br>
+                    <span class="ch3" id="av-sal"></span><br>ppt
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- แสดงแผนที่ -->
+    <div class="card-deck p-3">
+        <div class="card card-stats">
+            <div class="card-body p-1">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- หัวข้อ -->
+    <div class="container-fluid mt-1 mb-1 center">
+        <br>
+        <h6 style="font-weight: bold">เรียกดูบ่อสังเกตการณ์น้ำบาดาล ตามประเภทข้อมูล</h6>
+    </div>
+
+    <!-- //Show GW near me ***************** ฝากใส่เพิ่มค่ะ -->
+    <div class="container">
+        <div class="card-deck p-3">
+            <div class="card card-stats">
+
+                <button class="btn btn-info flex-fill" onclick="showDepth()">
+                    <i class="las las la-swimming-pool p-2" aria-hidden="true"></i>ความลึก</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showWl()">
+                    <i class="las la-water p-2" aria-hidden="true"></i>ระดับน้ำ</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showEc()">
+                    <i class="las la-chart-line p-2" aria-hidden="true"></i>ค่าการนำไฟฟ้า</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showPh()">
+                    <i class="las la-tachometer-alt p-2" aria-hidden="true"></i>ค่าความเป็นกรด-ด่าง</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showTemp()">
+                    <i class="las la-temperature-high p-2" aria-hidden="true"></i>ค่าอุณหภูมิ</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showTds()">
+                    <i class="las la-star-half-alt p-2" aria-hidden="true"></i>ค่าความขุ่น</button>
+            </div>
+            <div class="card card-stats">
+                <button class="btn btn-info flex-fill" onclick="showSal()">
+                    <i class="las la-biohazard p-2" aria-hidden="true"></i>ค่าความเค็ม</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- แสดงข้อมูลตารางแต่ละสถานี -->
+    <div class="container-fluid mt-3 mb-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- select -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <select name="filter_tambon" id="filter_tambon" class="form-control" required>
+                                <option value="">ตำบล...</option>
+                                <!-- <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                                <option value="ชลบุรี">ชลบุรี</option>
+                                <option value="ระยอง">ระยอง</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <select name="filter_amphoe" id="filter_amphoe" class="form-control" required>
+                                <option value="">อำเภอ...</option>
+                                <!-- <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                                <option value="ชลบุรี">ชลบุรี</option>
+                                <option value="ระยอง">ระยอง</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <select name="filter_province" id="filter_province" class="form-control" required>
+                                <option value="">จังหวัด...</option>
+                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                                <option value="ชลบุรี">ชลบุรี</option>
+                                <option value="ระยอง">ระยอง</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" name="filter" id="filter" class="btn btn-info">ค้นหา</button>
+                    </div>
+                </div>
+
+                <div class="card card-stats">
+                    <div class="card-body ">
+                        <table id="tab" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>รหัสบ่อ</th>
+                                    <th>สถานีตรวจวัด</th>
+                                    <th>ตำบล</th>
+                                    <th>อำเภอ</th>
+                                    <th>จังหวัด</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="spinner-border" id="spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- แสดงข้อมูลกราฟทุกสถานี -->
+            <div class="col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-body">
+
+                        <div id="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- กราฟค่าตรวจวัดแต่ละพารามิเตอร์ -->
+    <div class="container-fluid mt-3 mb-6">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-stats text-center">
+                    <div class="card-body ">
+                        ข้อมูลบ่อสังเกตการณ์น้ำบาดาล<h3><span id="sta_name"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                wl (m)
+                                <div class="chartHist p-0" id="chart1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                Ec (µs/cm)
+                                <div class="chartHist p-0" id="chart2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                pH
+                                <div class="chartHist p-0" id="chart3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                Temp (°C)
+                                <div class="chartHist p-0" id="chart4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                Tds (mg/L)
+                                <div class="chartHist p-0" id="chart5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                Sal (ppt)
+                                <div class="chartHist p-0" id="chart6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid mt-3 mb-6">
+        <p>
+            <span class="ver">ปรับปรุง 5-03-2021</span>
+        </p>
+    </div>
+
+</body>
+<!-- datatable -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<!-- <script src="./table2.js"></script> -->
+<script src="./script.js"></script>
+
+</html>
