@@ -59,3 +59,11 @@ app.use(green);
 const watquality = require('./service/watquality');
 app.use(watquality);
 
+const seaquality = require('./service/seaquality');
+app.use(seaquality);
+
+const wastewat = require('./service/wastewat');
+app.use(wastewat);
+
+const login = require('./service/login');
+app.use(login);

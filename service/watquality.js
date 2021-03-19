@@ -64,7 +64,7 @@ app.post("/wq-api/update", async (req, res) => {
         let sql = `UPDATE ${tb}  
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE wq_id='${wq_id}'`
-        console.log(data.geom);
+        // console.log(data.geom);
         await eec.query(sql)
     }
     res.status(200).json({
