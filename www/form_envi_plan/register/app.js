@@ -1,8 +1,20 @@
-const url = 'http://localhost:3700';
+let uid = sessionStorage.getItem('key');
+let typ = sessionStorage.getItem('typ');
+let org = sessionStorage.getItem('org');
 
-let refreshPage = () => {
-    console.log("sdfghj");
-    window.open('./../login/index.html', '_self');
+let logout = () => {
+    sessionStorage.clear();
+    location.href = "./../login/index.html";
+}
+uid && typ == "admin" ? null : logout();
+$("#aut").html(`${org}`)
+// const url = 'http://localhost:3700';
+const url = 'https://eec-onep.online:3700';
+
+
+let login = () => {
+    sessionStorage.clear();
+    location.href = "./../login/index.html";
 }
 
 let getData = () => {
@@ -27,7 +39,7 @@ $('#loginForm').submit(function (e) {
     }
     if ($("#usrname").val() && $("#pass").val()) {
         axios.post(url + "/login-api/insert", obj).then(r => {
-            r.data.data == "success" ? refreshPage() : console.log(r);
+            r.data.data == "success" ? login() : console.log(r);
         })
     } else {
         console.log("โปรดระบุชื่อผู้ใช้");

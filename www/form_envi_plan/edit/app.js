@@ -1,3 +1,14 @@
+let uid = sessionStorage.getItem('key');
+let typ = sessionStorage.getItem('typ');
+let org = sessionStorage.getItem('org');
+
+let logout = () => {
+    sessionStorage.clear();
+    location.href = "./../login/index.html";
+}
+// console.log(uid, org);
+uid && org ? null : logout();
+$("#aut").html(`${org}`)
 
 let latlng = {
     lat: 13.305567,
@@ -135,10 +146,10 @@ let getValue = (id) => {
         $('#prj_id').val(r.data.data[0].prj_id)
         $('#prj_cate').val(r.data.data[0].prj_cate)
         $('#prj_name').val(r.data.data[0].prj_name)
-        $('#prj_detail').val(await r.data.data[0].prj_detail)
-        // await tinymce.get("prj_detail").setContent(r.data.data[0].prj_detail);
-        $('#prj_obj').val(await r.data.data[0].prj_obj)
-        // await tinymce.get("prj_obj").setContent(r.data.data[0].prj_obj);
+        // $('#prj_detail').val(await r.data.data[0].prj_detail)
+        await tinymce.get("prj_detail").setContent(r.data.data[0].prj_detail ? r.data.data[0].prj_detail : "-");
+        // $('#prj_obj').val(await r.data.data[0].prj_obj)
+        await tinymce.get("prj_obj").setContent(r.data.data[0].prj_obj ? r.data.data[0].prj_obj : "-");
         $('#prj_site').val(r.data.data[0].prj_site)
         $('#prj_time').val(r.data.data[0].prj_time)
         $('#budget').val(r.data.data[0].budget)
@@ -168,21 +179,21 @@ let getValue = (id) => {
         $('#prj_locate').val(r.data.data[0].prj_locate)
         $('#prj_rai').val(r.data.data[0].prj_rai)
         $('#prj_name_c').val(r.data.data[0].prj_name_c)
-        await $('#prj_obj_c').val(r.data.data[0].prj_obj_c)
-        // await tinymce.get("prj_obj_c").setContent(r.data.data[0].prj_obj_c);
-        await $('#prj_method').val(r.data.data[0].prj_method)
-        // await tinymce.get("prj_method").setContent(r.data.data[0].prj_method);
-        await $('#prj_tech').val(r.data.data[0].prj_tech)
-        // await tinymce.get("prj_tech").setContent(r.data.data[0].prj_tech);
+        // await $('#prj_obj_c').val(r.data.data[0].prj_obj_c)
+        await tinymce.get("prj_obj_c").setContent(r.data.data[0].prj_obj_c ? `${r.data.data[0].prj_obj_c}` : "-");
+        // await $('#prj_method').val(r.data.data[0].prj_method)
+        await tinymce.get("prj_method").setContent(r.data.data[0].prj_method ? r.data.data[0].prj_method : "-");
+        // await $('#prj_tech').val(r.data.data[0].prj_tech)
+        await tinymce.get("prj_tech").setContent(r.data.data[0].prj_tech ? r.data.data[0].prj_tech : "-");
         $('#prj_area').val(r.data.data[0].prj_area)
-        await $('#prj_output').val(r.data.data[0].prj_output)
-        // await tinymce.get("prj_output").setContent(r.data.data[0].prj_output);
-        await $('#prj_troub').val(r.data.data[0].prj_troub)
-        // await tinymce.get("prj_troub").setContent(r.data.data[0].prj_troub);
-        await $('#prj_comnt').val(r.data.data[0].prj_comnt)
-        // await tinymce.get("prj_comnt").setContent(r.data.data[0].prj_comnt);
-        await $('#prj_info').val(r.data.data[0].prj_info)
-        // await tinymce.get("prj_info").setContent(r.data.data[0].prj_info);
+        // await $('#prj_output').val(r.data.data[0].prj_output)
+        await tinymce.get("prj_output").setContent(r.data.data[0].prj_output ? r.data.data[0].prj_output : "-");
+        // await $('#prj_troub').val(r.data.data[0].prj_troub)
+        await tinymce.get("prj_troub").setContent(r.data.data[0].prj_troub ? r.data.data[0].prj_troub : "-");
+        // await $('#prj_comnt').val(r.data.data[0].prj_comnt)
+        await tinymce.get("prj_comnt").setContent(r.data.data[0].prj_comnt ? r.data.data[0].prj_comnt : "-");
+        // await $('#prj_info').val(r.data.data[0].prj_info)
+        await tinymce.get("prj_info").setContent(r.data.data[0].prj_info ? r.data.data[0].prj_info : "-");
         // filename: $('#filename').val(),
         $('#coor_name').val(r.data.data[0].coor_name)
         $('#coor_pos').val(r.data.data[0].coor_pos)
@@ -264,9 +275,15 @@ $("#fieldForm").submit(function (e) {
     return false;
 });
 
+$(document).ready(() => {
+    let searchParams = new URLSearchParams(window.location.search)
+    let id = searchParams.get('id')
+    getValue(id)
+})
 
-let searchParams = new URLSearchParams(window.location.search)
-let id = searchParams.get('id')
-getValue(id)
+
+
+
+
 
 

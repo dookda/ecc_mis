@@ -1,57 +1,60 @@
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
-
 let uid = sessionStorage.getItem('key');
+let typ = sessionStorage.getItem('typ');
+let org = sessionStorage.getItem('org');
+
 let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-console.log(uid);
-uid ? null : logout();
+console.log(uid, org);
+uid && org ? null : logout();
+$("#aut").html(`${org}`)
+
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 $(document).ready(function () {
-    $(document).ready(function () {
-        let table = $('#myTable').DataTable({
-            ajax: {
-                type: "POST",
-                url: url + '/projmon-api/getdata',
-                data: { userid: "sakda" },
-                dataSrc: 'data'
-            },
-            columns: [
-                {
-                    data: '',
-                    render: (data, type, row) => {
-                        return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
-                    },
-                    width: "40%"
+    let table = $('#myTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/projmon-api/getdata',
+            data: { org: org, typ: typ },
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: '',
+                render: (data, type, row) => {
+                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
                 },
-                { data: 'prj_operat', width: "12%" },
-                { data: 'budget', width: "10%" },
-                { data: 'proc_stat', width: "10%" },
-                { data: 'opert_stat', width: "10%" },
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return `
+                width: "40%"
+            },
+            { data: 'prj_operat', width: "12%" },
+            { data: 'budget', width: "10%" },
+            { data: 'proc_stat', width: "10%" },
+            { data: 'opert_stat', width: "10%" },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `
                        <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไข</a>
                        <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                    },
-                    width: "18%"
-                }
-            ],
-            searching: true,
-        });
+                },
+                width: "18%"
+            }
+        ],
+        searching: true,
+    });
 
-        table.on('search.dt', function () {
-            let data = table.rows({ search: 'applied' }).data()
-            getProc_stat(data);
-            getOpert_stat(data);
-            getPrj_cate(data);
-            getBudget(data);
-            getMap(data)
-        });
-    })
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data()
+        getProc_stat(data);
+        getOpert_stat(data);
+        getPrj_cate(data);
+        getBudget(data);
+        getMap(data)
+    });
+
     loadMap();
 })
 
@@ -237,7 +240,7 @@ let getBudget = async (x) => {
         val: dv
     }]
 
-    console.log(dat);
+    // console.log(dat);
     barChart(dat, "chart2", "ล้านบาท")
 }
 

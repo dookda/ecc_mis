@@ -1,17 +1,23 @@
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 let uid = sessionStorage.getItem('key');
-console.log(uid);
+let typ = sessionStorage.getItem('typ');
+let org = sessionStorage.getItem('org');
 
 let gotoPage = (id) => {
     if (id.auth == "admin") {
-        console.log(id);
+        // console.log(id);
         location.href = "./../admin/index.html";
         sessionStorage.setItem('key', id.uid);
+        sessionStorage.setItem('typ', id.auth);
+        sessionStorage.setItem('org', id.organize);
     } else {
-        console.log(id);
+        // console.log(id);
         location.href = "./../report/index.html";
         sessionStorage.setItem('key', id.uid);
+        sessionStorage.setItem('typ', id.auth);
+        sessionStorage.setItem('org', id.organize);
     }
 }
 

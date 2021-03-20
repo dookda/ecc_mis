@@ -4,13 +4,25 @@ const con = require("./db");
 const eec = con.eec;
 
 app.post("/projmon-api/getdata", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson FROM eecprj_mon`
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
+    const { org, typ } = req.body;
+    console.log(org, typ);
+    if (typ == 'admin') {
+        const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+        FROM eecprj_mon`
+        eec.query(sql).then(r => {
+            res.status(200).json({
+                data: r.rows
+            })
         })
-    })
+    } else if (typ == 'editor') {
+        const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+        FROM eecprj_mon WHERE prj_operat='${org}'`
+        eec.query(sql).then(r => {
+            res.status(200).json({
+                data: r.rows
+            })
+        })
+    }
 })
 
 app.post("/projmon-api/getone", (req, res) => {

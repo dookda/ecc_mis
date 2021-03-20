@@ -1,3 +1,13 @@
+let uid = sessionStorage.getItem('key');
+let typ = sessionStorage.getItem('typ');
+let org = sessionStorage.getItem('org');
+
+let logout = () => {
+    sessionStorage.clear();
+    location.href = "./../login/index.html";
+}
+uid && typ == "admin" ? null : logout();
+$("#aut").html(`${org}`)
 
 let latlng = {
     lat: 13.305567,
