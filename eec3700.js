@@ -67,3 +67,6 @@ app.use(wastewat);
 
 const login = require('./service/login');
 app.use(login);
+
+const watsurface = require('./service/watsurface');
+app.use(watsurface);
