@@ -35,14 +35,14 @@ app.post("/ws-api/insert", async (req, res) => {
     for (d in data) {
         if (data[d] !== '' && d !== 'geom') {
             let sql = `UPDATE surwater SET ${d}='${data[d]}' WHERE ws_id='${ws_id}'`
-            console.log(sql);
+            // console.log(sql);
             await eec.query(sql)
         }
     }
     if (data.geom !== "") {
         let sql = `UPDATE surwater SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE ws_id='${ws_id}'`
-        console.log(sql);
+        // console.log(sql);
         await eec.query(sql)
     }
     res.status(200).json({

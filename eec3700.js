@@ -70,3 +70,9 @@ app.use(login);
 
 const watsurface = require('./service/watsurface');
 app.use(watsurface);
+
+const ncd = require('./service/ncd');
+app.use(ncd);
+
+const foodmile = require('./service/foodmile');
+app.use(foodmile);
