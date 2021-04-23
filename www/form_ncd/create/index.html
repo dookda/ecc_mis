@@ -50,8 +50,7 @@
     <!-- Template Main CSS File -->
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="./../assets/css/style.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
 </head>
 
 </head>
@@ -62,18 +61,6 @@
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- .nav-menu -->
-
-            <nav class="nav-menu d-none d-lg-block">
-                <ul>
-                    <li><a href="./../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="">เข้าสู่ระบบ</a></li>
-                </ul>
-            </nav><!-- .nav-menu -->
-
             <!-- social icon -->
             <div class="header-social-links">
                 <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
@@ -91,10 +78,10 @@
         <section id="services" class="services">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
-                    <h2>NCDs</h2>
-                    <p>
-                        แบบสอบถามภาวะความเสี่ยงต่อการเจ็บป่วยด้วยโรคไม่ติดต่อ (NCDs)
-                    </p>
+                    <br>
+                    <br>
+                    <h2>แบบสอบถามภาวะความเสี่ยงต่อการเจ็บป่วยด้วยโรคไม่ติดต่อ (NCDs)</h2>
+
                 </div>
 
                 <!-- ใส่แผนที่ -->
@@ -117,78 +104,95 @@
 
                 </div>
                 <!-- ฟอร์มนำเข้า -->
+
                 <div class="container mt-3 mb-3">
 
                     <form id="myform">
                         <h5>ข้อมูลทั่วไป</h5>
                         <p></p>
-                        <div class="form-group">
-                            <label>เพศ</label>
-                            <select class="form-control" id="sex">
-                                <option value="ชาย">ชาย</option>
-                                <option value="หญิง">หญิง</option>
-                            </select>
-                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>เพศ</label>
+                                    <select class="form-control" id="sex">
+                                        <option value="ชาย">ชาย</option>
+                                        <option value="หญิง">หญิง</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="insti">ช่วงอายุของท่าน</label>
+                                    <select class="form-control" id="age">
+                                        <option value="น้อยกว่า 15 ปี">น้อยกว่า 15 ปี</option>
+                                        <option value="อายุ15 - 39 ปี">อายุ15 - 39 ปี</option>
+                                        <option value="อายุ 40 - 49 ปี">อายุ 40 - 49 ปี</option>
+                                        <option value="อายุ 50 - 59 ปี">อายุ 50 - 59 ปี</option>
+                                        <option value="60 ปีขึ้นไป">60 ปีขึ้นไป</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="insti">ระดับการศึกษา </label>
+                                    <select class="form-control" id="edu">
+                                        <option value="ไม่ได้เรียน">ไม่ได้เรียน</option>
+                                        <option value="ประถมศึกษา">ประถมศึกษา</option>
+                                        <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
+                                        <option value="มัธยมศึกษาตอนปลาย/ปวช.">มัธยมศึกษาตอนปลาย/ปวช.</option>
+                                        <option value="อนุปริญญา/ปวส.">อนุปริญญา/ปวส.</option>
+                                        <option value="ปริญญาตรี">ปริญญาตรี</option>
+                                        <option value="สูงกว่าปริญาตรี">สูงกว่าปริญาตรี</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group panel">
+                                    <label for="insti">อาชีพ</label>
+                                    <select class="form-control" id="occu">
+                                        <option value="นักศึกษา">นักศึกษา</option>
+                                        <option value="เกษตรกร">เกษตรกร</option>
+                                        <option value="ค้าขาย">ค้าขาย</option>
+                                        <option value="รับจ้างทั่วไป">รับจ้างทั่วไป</option>
+                                        <option value="พนักงานโรงงาน/บริษัท">พนักงานโรงงาน/บริษัท</option>
+                                        <option value="รับราชการ">รับราชการ</option>
+                                        <option value="อื่นๆ">อื่นๆ โปรดระบุ</option>
+                                    </select>
+                                </div>
 
-                        <div class="form-group">
-                            <label for="insti">ช่วงอายุของท่าน</label>
-                            <select class="form-control" id="age">
-                                <option value="น้อยกว่า 15 ปี">น้อยกว่า 15 ปี</option>
-                                <option value="อายุ15 - 39 ปี">อายุ15 - 39 ปี</option>
-                                <option value="อายุ 40 - 49 ปี">อายุ 40 - 49 ปี</option>
-                                <option value="อายุ 50 - 59 ปี">อายุ 50 - 59 ปี</option>
-                                <option value="60 ปีขึ้นไป">60 ปีขึ้นไป</option>
-                            </select>
+                                <div class="form-group" id="other_div">
+                                    <input type="text" class="form-control" id="occu_other" placeholder="ระบุ อาชีพ">
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="insti">ระดับการศึกษา </label>
-                            <select class="form-control" id="edu">
-                                <option value="ไม่ได้เรียน">ไม่ได้เรียน</option>
-                                <option value="ประถมศึกษา">ประถมศึกษา</option>
-                                <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
-                                <option value="มัธยมศึกษาตอนปลาย/ปวช.">มัธยมศึกษาตอนปลาย/ปวช.</option>
-                                <option value="อนุปริญญา/ปวส.">อนุปริญญา/ปวส.</option>
-                                <option value="ปริญญาตรี">ปริญญาตรี</option>
-                                <option value="สูงกว่าปริญาตรี">สูงกว่าปริญาตรี</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>จำนวนสมาชิกในครัวเรือน (คน) </label>
+                                    <input type="number" class="form-control" id="member">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>รายได้ของครัวเรือน (บาท/เดือน)</label>
+                                    <input type="number" class="form-control" id="income">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>รายจ่ายของครัวเรือน (บาท/เดือน)</label>
+                                    <input type="number" class="form-control" id="outcome">
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="form-group panel">
-                            <label for="insti">อาชีพ</label>
-                            <select class="form-control" id="occu">
-                                <option value="นักศึกษา">นักศึกษา</option>
-                                <option value="เกษตรกร">เกษตรกร</option>
-                                <option value="ค้าขาย">ค้าขาย</option>
-                                <option value="รับจ้างทั่วไป">รับจ้างทั่วไป</option>
-                                <option value="พนักงานโรงงาน/บริษัท">พนักงานโรงงาน/บริษัท</option>
-                                <option value="รับราชการ">รับราชการ</option>
-                                <option value="อื่นๆ">อื่นๆ โปรดระบุ</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="other_div">
-                            <input type="text" class="form-control" id="occu_other" placeholder="ระบุ อาชีพ">
-                        </div>
-
-                        <div class="form-group">
-                            <label>จำนวนสมาชิกในครัวเรือน (คน) </label>
-                            <input type="number" class="form-control" id="member">
-                        </div>
-                        <div class="form-group">
-                            <label>รายได้ของครัวเรือน (บาท/เดือน)</label>
-                            <input type="number" class="form-control" id="income">
-                        </div>
-                        <div class="form-group">
-                            <label>รายจ่ายของครัวเรือน (บาท/เดือน)</label>
-                            <input type="number" class="form-control" id="outcome">
-                        </div>
-
                         <hr>
                         <h5>ภาวะความเสี่ยงต่อการเป็นโรคไม่ติดต่อเรื้อรัง (NCDs)</h5>
+
                         <label for="">โรคไม่ติดต่อเรื้อรัง 4 กลุ่มโรค คือ
                             <ul>
                                 <li>โรคมะเร็งทุกชนิด</li>
-                                <li>โรคหัวใจและหลอดเลือด ได้แก่ โรคความดันโลหิตสูง กล้ามเนื้อหัวใจขาดเลือดฉับพลัน
+                                <li>โรคหัวใจและหลอดเลือด ได้แก่ โรคความดันโลหิตสูง
+                                    กล้ามเนื้อหัวใจขาดเลือดฉับพลัน
                                     หลอดเลือดสมอง หลอดเลือดส่วนปลายอุดตัน หัวใจล้มเหลว หัวใจรูห์มาติค
                                     หัวใจพิการแต่กำเนิด
                                     และกล้ามเนื้อหัวใจ</li>
@@ -197,17 +201,23 @@
                             </ul>
                         </label>
 
-                        <div class="form-group">
-                            <label>น้ำหนักของท่าน (กิโลกรัม)</label>
-                            <input type="number" class="form-control" id="weight">
-                        </div>
-
-                        <div class="form-group">
-                            <label>ส่วนสูงของท่าน (กิโลกรัม)</label>
-                            <input type="number" class="form-control" id="heigth">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>น้ำหนักของท่าน (กิโลกรัม)</label>
+                                    <input type="number" class="form-control" id="weight">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label>ส่วนสูงของท่าน (กิโลกรัม)</label>
+                                    <input type="number" class="form-control" id="heigth">
+                                </div>
+                            </div>
                         </div>
                         <hr>
                         <h5>ข้อมูลตำแหน่ง</h5>
+                        <h6>กรุณาคลิกที่แผนที่เพื่อนำเข้าตำแหน่ง</h6>
                         <div class="card mt-1 p-0">
                             <div id="map"></div>
                         </div>
@@ -218,7 +228,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>มีภาวะอ้วนลงพุง
-                                            (สำหรับผู้ชายที่มีรอบเอวเกิน36นิ้วหรือผู้หญิงที่มีรอบเอวเกิน32นิ้ว)</label>
+                                            (สำหรับผู้ชายที่มีรอบเอวเกิน 36 นิ้ว หรือผู้หญิงที่มีรอบเอวเกิน 32
+                                            นิ้ว)</label>
                                     </div>
                                     <div class="col-sm-2 form-check">
                                         <input class="form-check-input" type="radio" name="ncd1" id="ncd1" value="ใช่">
@@ -568,29 +579,31 @@
                         </div>
                     </form>
                     <hr>
-
-                    <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
+                    <br>
+                    <a class="btn btn-light pull-right m-1" href="./../../questionnaire.html"><i
                             class="fa fa-clipboard"></i>&nbsp;
-                        กลับหน้ารายงาน</a>
-                    <button class="btn btn-success pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
-                            aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
+                        กลับหน้าหลัก</a>
+                    <button class="btn btn-info pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
+                            aria-hidden="true"></i>&nbsp;ส่งคำตอบ
                     </button>
+                    <br>
                 </div>
             </div>
         </section><!-- End Services Section -->
-
+        <br>
+        <br>
+        <br>
+        <br>
         <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container mt-3 mb-6">
-            <p> <span class="ver">ปรับปรุง 16/03/2021</span></p>
-        </div>
+
     </main><!-- End #main -->
 
     <div class="modal" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>เพิ่มข้อมูลสำเร็จ </p>
-                    <p>ขอบคุณที่ให้ความร่วมมือค่ะ</p>
+                    <p>ส่งคำตอบสำเร็จ</p>
+                    <p>ขอบคุณที่กรุณาตอบแบบสอบถามค่ะ</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>

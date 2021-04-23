@@ -1,9 +1,14 @@
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'https://eec-onep.online:3700';
 
 let uid = sessionStorage.getItem('key');
 let typ = sessionStorage.getItem('typ');
 let org = sessionStorage.getItem('org');
+
+let gotoDashboard = () => {
+    sessionStorage.clear();
+    location.href = "./../dashboard/index.html";
+}
 
 let gotoPage = (id) => {
     if (id.auth == "admin") {

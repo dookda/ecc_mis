@@ -39,7 +39,7 @@ let loadMap = () => {
     });
     var baseMap = {
         "Mapbox": mapbox,
-        "google Hybrid": ghyb.addTo(map)
+        "Google Hybrid": ghyb.addTo(map)
     }
     var overlayMap = {
         "ขอบเขตจังหวัด": pro
@@ -102,10 +102,7 @@ $("#occu").change(() => {
     $("#occu").val() == "อื่นๆ" ? $("#other_div").show() : $("#other_div").hide();
 })
 
-$("#ncd25_div").hide()
-$("#ncd25").change(() => {
-    $("#ncd25").is(':checked') ? $("#ncd25_div").show() : $("#ncd25_div").hide();
-})
+
 
 let insertData = () => {
     const obj = {

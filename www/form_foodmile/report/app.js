@@ -11,9 +11,9 @@ let refreshPage = () => {
     // console.log("ok");
 }
 
-let confirmDelete = (ws_id, ws_station) => {
-    $("#projId").val(ws_id)
-    $("#projName").text(ws_station)
+let confirmDelete = (fm_id, fm_id_n) => {
+    $("#projId").val(fm_id)
+    $("#projName").text(fm_id_n)
     $("#deleteModal").modal("show")
 }
 
@@ -25,12 +25,11 @@ let closeModal = () => {
 
 let deleteValue = () => {
     // console.log($("#projId").val());
-    let ws_id = $("#projId").val()
-    axios.post(url + "/ws-api/delete", { ws_id: ws_id }).then(r => {
+    let fm_id = $("#projId").val()
+    axios.post(url + "/fm-api/delete", { fm_id: fm_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
     })
 }
-
 
 $("#charttitle").hide();
 $("#spinner").hide();
@@ -63,6 +62,7 @@ let loadTable = () => {
     let table = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
+            async: true,
             type: "POST",
             url: url + '/fm-api/getdata',
             data: { userid: "sakda" },
@@ -82,6 +82,35 @@ let loadTable = () => {
             { data: 'member' },
             { data: 'income' },
             { data: 'outcome' },
+
+            { data: 'weight' },
+            { data: 'heigth' },
+            { data: 'ncd1' },
+            { data: 'ncd2' },
+            { data: 'ncd3' },
+            { data: 'ncd4' },
+            { data: 'ncd5' },
+            { data: 'ncd6' },
+            { data: 'ncd7' },
+            { data: 'ncd8' },
+            { data: 'ncd9' },
+            { data: 'ncd10' },
+            { data: 'ncd11' },
+            { data: 'ncd12' },
+            { data: 'ncd13' },
+            { data: 'ncd14' },
+            { data: 'ncd15' },
+            { data: 'ncd16' },
+            { data: 'ncd17' },
+            { data: 'ncd18' },
+            { data: 'ncd19' },
+            { data: 'ncd20' },
+            { data: 'ncd21' },
+            { data: 'ncd22' },
+            { data: 'ncd23' },
+            { data: 'ncd24' },
+            { data: 'ncd25' },
+
             { data: 'ricesource' },
             { data: 's_rice1' },
             { data: 's_rice2' },
@@ -89,19 +118,32 @@ let loadTable = () => {
             { data: 'prod1' },
             { data: 'prod2' },
             { data: 's_store' },
+            { data: 's_moo' },
+            { data: 's_tam' },
+            { data: 's_amp' },
+            { data: 's_pro' },
+
             { data: 'b_rice1' },
             { data: 'b_rice2' },
             { data: 'b_rice3' },
             { data: 'b_vol' },
-            { data: 'b_store' }
-            // {
-            //     data: null,
-            //     render: function (data, type, row, meta) {
-            //         return `
-            //            <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.ws_id},'${row.ws_station}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-            //            <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
-            //     }
-            // }
+            { data: 'b_store' },
+            { data: 'b_moo' },
+            { data: 'b_tam' },
+            { data: 'b_amp' },
+            { data: 'b_pro' },
+            { data: 'loc_man' },
+            { data: 'loc_sale' },
+            { data: 'loc_buy' },
+            { data: 'dist' },
+            { data: 'other' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.fm_id}','${row.fm_id}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                    //    <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
+                }
+            }
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
@@ -110,9 +152,6 @@ let loadTable = () => {
         ],
         searching: true
     });
-
-    table.buttons().container()
-        .appendTo('#myTable_wrapper .col-sm-6:eq(0)');
 }
 
 let geneChart = (arr, div, tt, unit) => {
@@ -156,6 +195,50 @@ let geneChart = (arr, div, tt, unit) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+}
+
+let pieChart = () => {
+    am4core.useTheme(am4themes_animated);
+    var chart = am4core.create("chartdiv", am4charts.PieChart);
+    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+    chart.data = [
+        {
+            cat: "Lithuania",
+            val: 260
+        },
+        {
+            country: "Czechia",
+            value: 230
+        },
+        {
+            country: "Ireland",
+            value: 200
+        },
+        {
+            country: "Germany",
+            value: 165
+        },
+        {
+            country: "Australia",
+            value: 139
+        },
+        {
+            country: "Austria",
+            value: 128
+        }
+    ];
+
+    var series = chart.series.push(new am4charts.PieSeries());
+    series.dataFields.value = "val";
+    series.dataFields.radiusValue = "val";
+    series.dataFields.category = "cat";
+    series.slices.template.cornerRadius = 6;
+    series.colors.step = 3;
+
+    series.hiddenState.properties.endAngle = -90;
+
+    chart.legend = new am4charts.Legend();
 }
 
 

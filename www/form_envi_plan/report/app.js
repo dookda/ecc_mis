@@ -6,7 +6,7 @@ let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-console.log(uid, org);
+// console.log(uid, org);
 uid && org ? null : logout();
 $("#aut").html(`${org}`)
 
@@ -24,26 +24,32 @@ $(document).ready(function () {
         columns: [
             {
                 data: '',
+                render: (data, type, row, meta) => {
+                    // console.log(meta.row)
+                    return `${meta.row + 1}`
+                }
+            },
+            {
+                data: '',
                 render: (data, type, row) => {
                     return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
-                },
-                width: "40%"
+                }
             },
-            { data: 'prj_operat', width: "12%" },
-            { data: 'budget', width: "10%" },
-            { data: 'proc_stat', width: "10%" },
-            { data: 'opert_stat', width: "10%" },
+            { data: 'prj_operat' },
+            { data: 'budget' },
+            { data: 'proc_stat' },
+            { data: 'opert_stat' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `
                        <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไข</a>
                        <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "18%"
+                }
             }
         ],
         searching: true,
+        scrollX: true
     });
 
     table.on('search.dt', function () {
@@ -278,7 +284,8 @@ let getOpert_stat = async (x) => {
     let b = "อยู่ระหว่างตั้งของบประมาณ"
     let c = "อยู่ระหว่างดำเนินการ/ก่อสร้าง"
     let d = "ยังไม่ได้ดำเนินการ"
-    let av = 0, bv = 0, cv = 0, dv = 0;
+    let e = "ดำเนินการเรียบร้อยแล้ว"
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map(i => {
         // console.log(i);
@@ -290,6 +297,8 @@ let getOpert_stat = async (x) => {
             cv++
         } else if (i.opert_stat == d) {
             dv++
+        } else if (i.opert_stat == e) {
+            ev++
         }
     })
     let dat = [{
@@ -304,6 +313,9 @@ let getOpert_stat = async (x) => {
     }, {
         cat: d,
         val: dv
+    }, {
+        cat: e,
+        val: ev
     }]
     barChart(dat, "chart4", "โครงการ")
 }

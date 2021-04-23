@@ -16,12 +16,35 @@ app.post("/green-api/adddata", async (req, res) => {
                 )VALUES(
                     '${proj_id}', ST_GeomfromGeoJSON('${JSON.stringify(geom.geometry)}')
                 )`
-    // console.log(sql,);
+
     await eec.query(sqlGeom)
     await eec.query(sql).then(r => {
         res.status(200).json({
             data: "success"
         })
+    })
+})
+
+app.post("/green-api/insert", async (req, res) => {
+    const { data } = req.body;
+    let proj_id = Date.now()
+    await eec.query(`INSERT INTO green_area(proj_id)VALUES('${proj_id}')`)
+    let d;
+    for (d in data) {
+        if (data[d] !== '' && d !== 'geom') {
+            let sql = `UPDATE green_area SET ${d}='${data[d]}' WHERE proj_id='${proj_id}'`;
+            await eec.query(sql)
+        }
+    }
+
+    if (data.geom !== 0) {
+        data.geom.map(async (i) => {
+            let sql = `INSERT INTO green_area_geom(proj_id, geom)VALUES('${proj_id}', ST_GeomfromGeoJSON('${JSON.stringify(i.geometry)}'))`;
+            await eec.query(sql)
+        })
+    }
+    res.status(200).json({
+        data: "success"
     })
 })
 

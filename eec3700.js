@@ -76,3 +76,9 @@ app.use(ncd);
 
 const foodmile = require('./service/foodmile');
 app.use(foodmile);
+
+const agrimon = require('./service/agrimon');
+app.use(agrimon);
+
+const iot = require('./service/iot');
+app.use(iot);

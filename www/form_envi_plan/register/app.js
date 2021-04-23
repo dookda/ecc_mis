@@ -1,16 +1,4 @@
-let uid = sessionStorage.getItem('key');
-let typ = sessionStorage.getItem('typ');
-let org = sessionStorage.getItem('org');
-
-let logout = () => {
-    sessionStorage.clear();
-    location.href = "./../login/index.html";
-}
-uid && typ == "admin" ? null : logout();
-$("#aut").html(`${org}`)
-// const url = 'http://localhost:3700';
-const url = 'https://eec-onep.online:3700';
-
+const url = 'https://eec-onep.online/:3700';
 
 let login = () => {
     sessionStorage.clear();
