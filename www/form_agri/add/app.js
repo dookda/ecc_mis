@@ -9,7 +9,7 @@ let main = async () => {
     }
 }
 
-main()
+// main()
 
 let getUserProfile = async () => {
     const profile = await liff.getProfile();

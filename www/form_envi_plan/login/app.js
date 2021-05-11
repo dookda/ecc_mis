@@ -13,7 +13,7 @@ let gotoDashboard = () => {
 let gotoPage = (id) => {
     if (id.auth == "admin") {
         // console.log(id);
-        location.href = "./../admin/index.html";
+        location.href = "./../report/index.html";
         sessionStorage.setItem('key', id.uid);
         sessionStorage.setItem('typ', id.auth);
         sessionStorage.setItem('org', id.organize);

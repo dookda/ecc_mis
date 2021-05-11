@@ -10,6 +10,8 @@ let logout = () => {
 uid && org ? null : logout();
 $("#aut").html(`${org}`)
 
+typ == "admin" ? $("#isadmin").show() : $("#isadmin").hide();
+
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
@@ -22,22 +24,24 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    // console.log(meta.row)
-                    return `${meta.row + 1}`
-                }
-            },
+            { data: 'prj_order' },
+            // { data: 'prj_cate' },
+            // {
+            //     data: '',
+            //     render: (data, type, row, meta) => {
+            //         return `${meta.row + 1}`
+            //     }
+            // },
             {
                 data: '',
                 render: (data, type, row) => {
                     return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
+                    // return `${row.prj_name}`
                 }
             },
             { data: 'prj_operat' },
             { data: 'budget' },
-            { data: 'proc_stat' },
+            // { data: 'proc_stat' },
             { data: 'opert_stat' },
             {
                 data: null,
@@ -45,12 +49,16 @@ $(document).ready(function () {
                     return `
                        <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไข</a>
                        <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                }
+                },
+                width: "11%"
             }
         ],
         searching: true,
-        scrollX: true
+        scrollX: false,
+        // order: [2, 'asc'],
     });
+
+    // table.column(2).visible(false);
 
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data()

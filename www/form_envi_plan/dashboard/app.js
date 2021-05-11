@@ -24,22 +24,17 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    // console.log(meta.row)
-                    return `${meta.row + 1}`
-                }
-            },
+            { data: 'prj_order' },
             {
                 data: '',
                 render: (data, type, row) => {
                     return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
+                    // return `${row.prj_name}`
                 }
             },
             { data: 'prj_operat' },
             { data: 'budget' },
-            { data: 'proc_stat' },
+            // { data: 'proc_stat' },
             { data: 'opert_stat' },
             // {
             //     data: null,

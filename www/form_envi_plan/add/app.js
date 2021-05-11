@@ -77,6 +77,10 @@ tinymce.init({
     toolbar: true
 })
 
+$("#prj_cate").change(i => {
+    console.log(i)
+})
+
 $("#div_proc_troub").hide()
 $("#div_fund_troub").hide()
 // $("#div_fund_accpt").hide()
@@ -120,6 +124,25 @@ $("#opert_stat").change(i => {
     }
 })
 
+$("#prj_measure").change(i => {
+    let a = $("#prj_measure").val()
+    // console.log(a);
+    getActivity($("#prj_measure").val())
+})
+
+let getActivity = (prj_measure) => {
+    axios.post(url + "/projmon-api/getmeasure", { prj_measure: prj_measure }).then(r => {
+        // console.log(r);
+        $("#list_measure").empty()
+        r.data.data.map((i, k) => {
+            // console.log(k);
+            $("#list_measure").append(`<li>${i.prj_detail}</li>
+                <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                <br><input type="text" class="form-control" id="act_${k + 1}">`)
+        })
+    })
+}
+
 $("#fieldForm").submit(function (e) {
     e.preventDefault();
     tinyMCE.triggerSave();
@@ -128,6 +151,7 @@ $("#fieldForm").submit(function (e) {
         data: {
             prj_cate: $('#prj_cate').val(),
             prj_name: $('#prj_name').val(),
+            prj_measure: $('#prj_measure').val(),
             prj_detail: $('#prj_detail').val(),
             prj_obj: $('#prj_obj').val(),
             prj_site: $('#prj_site').val(),

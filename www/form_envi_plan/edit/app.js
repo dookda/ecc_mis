@@ -10,6 +10,9 @@ let logout = () => {
 uid && org ? null : logout();
 $("#aut").html(`${org}`)
 
+let searchParams = new URLSearchParams(window.location.search)
+let id = searchParams.get('id')
+
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -128,6 +131,93 @@ $("#opert_stat").change(i => {
     }
 })
 
+$("#prj_measure").change(i => {
+    let a = $("#prj_measure").val()
+    console.log(a);
+    getActivity($("#prj_measure").val())
+})
+
+let getActivity = (prj_measure) => {
+    axios.post(url + "/projmon-api/getmeasure", { prj_measure: prj_measure }).then(r => {
+        $("#list_measure").empty()
+        axios.post(url + "/projmon-api/getmeasurebyact", { prj_id: id }).then(x => {
+            // console.log(x, prj_measure);
+            if (x.data.data[0].prj_measure == prj_measure) {
+                r.data.data.map((i, k) => {
+
+                    console.log(x);
+                    if (k + 1 == 1) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_1 == null ? "" : x.data.data[0].act_1}">`)
+                    }
+                    if (k + 1 == 2) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_2 == null ? "" : x.data.data[0].act_2}">`)
+                    }
+                    if (k + 1 == 3) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_3 == null ? "" : x.data.data[0].act_3}">`)
+                    }
+                    if (k + 1 == 4) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_4 == null ? "" : x.data.data[0].act_4}">`)
+                    }
+                    if (k + 1 == 5) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_5 == null ? "" : x.data.data[0].act_5}">`)
+                    }
+                    if (k + 1 == 6) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_6 == null ? "" : x.data.data[0].act_6}">`)
+                    }
+                    if (k + 1 == 7) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_7 == null ? "" : x.data.data[0].act_7}">`)
+                    }
+                    if (k + 1 == 8) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_8 == null ? "" : x.data.data[0].act_8}">`)
+                    }
+                    if (k + 1 == 9) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_9 == null ? "" : x.data.data[0].act_9}">`)
+                    }
+                    if (k + 1 == 10) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_10 == null ? "" : x.data.data[0].act_10}">`)
+                    }
+                    if (k + 1 == 10) {
+                        $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_11 == null ? "" : x.data.data[0].act_11}">`)
+                    }
+
+
+                })
+            } else {
+                r.data.data.map((i, k) => {
+                    // console.log(k);
+                    $("#list_measure").append(`<li>${i.prj_detail}</li>
+                        <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
+                        <br><input type="text" class="form-control" id="act_${k + 1}">`)
+                })
+            }
+        })
+
+
+    })
+}
+
 let getValue = (id) => {
     map.eachLayer((lyr) => {
         if (lyr.options.name == 'geojson') {
@@ -142,9 +232,10 @@ let getValue = (id) => {
     };
 
     axios.post(url + "/projmon-api/getone", { prj_id: id }).then(async (r) => {
-        console.log(r.data.data[0]);
+        // console.log(r.data.data[0]);
         $('#prj_id').val(r.data.data[0].prj_id)
         $('#prj_cate').val(r.data.data[0].prj_cate)
+        $('#prj_measure').val(r.data.data[0].prj_measure)
         $('#prj_name').val(r.data.data[0].prj_name)
         // $('#prj_detail').val(await r.data.data[0].prj_detail)
         await tinymce.get("prj_detail").setContent(r.data.data[0].prj_detail ? r.data.data[0].prj_detail : "-");
@@ -182,7 +273,7 @@ let getValue = (id) => {
         // await $('#prj_obj_c').val(r.data.data[0].prj_obj_c)
         await tinymce.get("prj_obj_c").setContent(r.data.data[0].prj_obj_c ? `${r.data.data[0].prj_obj_c}` : "-");
         // await $('#prj_method').val(r.data.data[0].prj_method)
-        await tinymce.get("prj_method").setContent(r.data.data[0].prj_method ? r.data.data[0].prj_method : "-");
+        // await tinymce.get("prj_method").setContent(r.data.data[0].prj_method ? r.data.data[0].prj_method : "-");
         // await $('#prj_tech').val(r.data.data[0].prj_tech)
         await tinymce.get("prj_tech").setContent(r.data.data[0].prj_tech ? r.data.data[0].prj_tech : "-");
         $('#prj_area').val(r.data.data[0].prj_area)
@@ -193,7 +284,7 @@ let getValue = (id) => {
         // await $('#prj_comnt').val(r.data.data[0].prj_comnt)
         await tinymce.get("prj_comnt").setContent(r.data.data[0].prj_comnt ? r.data.data[0].prj_comnt : "-");
         // await $('#prj_info').val(r.data.data[0].prj_info)
-        await tinymce.get("prj_info").setContent(r.data.data[0].prj_info ? r.data.data[0].prj_info : "-");
+        // await tinymce.get("prj_info").setContent(r.data.data[0].prj_info ? r.data.data[0].prj_info : "-");
         // filename: $('#filename').val(),
         $('#coor_name').val(r.data.data[0].coor_name)
         $('#coor_pos').val(r.data.data[0].coor_pos)
@@ -211,8 +302,14 @@ let getValue = (id) => {
             geojson.addTo(map);
             map.setView(geojson.getBounds().getCenter())
         }
+
+        if (r.data.data[0].prj_measure) {
+            getActivity(r.data.data[0].prj_measure)
+        }
     })
 }
+
+getValue(id)
 
 $("#fieldForm").submit(function (e) {
     e.preventDefault();
@@ -222,6 +319,18 @@ $("#fieldForm").submit(function (e) {
         data: {
             prj_id: $('#prj_id').val(),
             prj_cate: $('#prj_cate').val(),
+            prj_measure: $('#prj_measure').val(),
+            act_1: $('#act_1').val(),
+            act_2: $('#act_2').val(),
+            act_3: $('#act_3').val(),
+            act_4: $('#act_4').val(),
+            act_5: $('#act_5').val(),
+            act_6: $('#act_6').val(),
+            act_7: $('#act_7').val(),
+            act_8: $('#act_8').val(),
+            act_9: $('#act_9').val(),
+            act_10: $('#act_10').val(),
+            act_11: $('#act_11').val(),
             prj_name: $('#prj_name').val(),
             prj_detail: $('#prj_detail').val(),
             prj_obj: $('#prj_obj').val(),
@@ -275,11 +384,8 @@ $("#fieldForm").submit(function (e) {
     return false;
 });
 
-$(document).ready(() => {
-    let searchParams = new URLSearchParams(window.location.search)
-    let id = searchParams.get('id')
-    getValue(id)
-})
+
+
 
 
 
