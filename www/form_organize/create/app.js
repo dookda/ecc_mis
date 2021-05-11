@@ -174,9 +174,6 @@ let resize = () => {
     }
 }
 
-let refreshPage = () => {
-    location.href = "./../report/index.html";
-}
 
 
 
