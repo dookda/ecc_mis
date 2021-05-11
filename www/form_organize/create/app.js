@@ -1,117 +1,145 @@
-$(document).ready(() => {
-    loadMap();
-});
+
 
 let latlng = {
     lat: 16.820378,
     lng: 100.265787
 }
 
-let gps1 = "";
-let gps2 = "";
-let gps3 = "";
+const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+let userid;
+let dataurl;
+let geom;
+// let gps1;
 
-// const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+let map = L.map('map', {
+    center: latlng,
+    zoom: 13
+});
 
-let loadMap = () => {
-    let map = L.map('map', {
-        center: latlng,
-        zoom: 13
-    });
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
 
-    var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1
-    });
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
 
-    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
+var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: 'th:province_4326',
+    format: 'image/png',
+    transparent: true
+});
+var baseMap = {
+    "Mapbox": mapbox,
+    "google Hybrid": ghyb.addTo(map)
+}
+var overlayMap = {
+    "ขอบเขตจังหวัด": pro
+}
+L.control.layers(baseMap, overlayMap, { collapsed: false, }).addTo(map);
 
-    var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true
-    });
-    var baseMap = {
-        "Mapbox": mapbox,
-        "google Hybrid": ghyb.addTo(map)
+let onLocationFound = (e) => {
+    if (geom) {
+        map.removeLayer(geom);
     }
-    var overlayMap = {
-        "ขอบเขตจังหวัด": pro
-    }
-    L.control.layers(baseMap, overlayMap, { collapsed: false, }).addTo(map);
-
-    let onLocationFound = (e) => {
-        if (gps1) {
-            map.removeLayer(gps1);
-        }
-        gps1 = L.marker(e.latlng, {
-            draggable: false,
-            name: 'p'
-        }).addTo(map);
-    }
-
-    map.on("locationfound", onLocationFound);
-
-    var lc = L.control.locate({
-        position: 'topleft',
-        strings: {
-            title: ""
-        },
-        locateOptions: {
-            enableHighAccuracy: true,
-        }
+    geom = L.marker(e.latlng, {
+        draggable: false,
+        name: 'p'
     }).addTo(map);
 
-    lc.start();
-
-    map.on('click', (e) => {
-        if (gps1) {
-            map.removeLayer(gps1);
-        }
-        lc.stop();
-        gps1 = L.marker(e.latlng, {
-            draggable: false,
-            name: 'p'
-        }).addTo(map);
-    });
+    $("#lat").val(e.latlng.lat)
+    $("#lon").val(e.latlng.lng)
 }
 
+map.on("locationfound", onLocationFound);
+
+var lc = L.control.locate({
+    position: 'topleft',
+    strings: {
+        title: ""
+    },
+    locateOptions: {
+        enableHighAccuracy: true,
+    }
+}).addTo(map);
+
+lc.start();
+
+map.on('click', (e) => {
+    if (geom) {
+        map.removeLayer(geom);
+    }
+    lc.stop();
+    geom = L.marker(e.latlng, {
+        draggable: false,
+        name: 'p'
+    }).addTo(map);
+
+    $("#lat").val(e.latlng.lat)
+    $("#lon").val(e.latlng.lng)
+});
+
+
 let sendData = () => {
-    console.log(geom[0]);
+    console.log(geom.toGeoJSON());
     const obj = {
         data: {
             userid: userid,
-            agname: $('#agname').val(),
-            agdate: $('#agdate').val(),
-            agarea: $('#agarea').val(),
-            agtype: $('#agtype').val(),
-            agdetail: $('#agdetail').val(),
+            orgname: $('#orgname').val(),
+            orgcontact: $('#orgcontact').val(),
+            orgtel: $('#orgtel').val(),
+            orgemail: $('#orgemail').val(),
+            headname: $('#headname').val(),
+            headvno: $('#headvno').val(),
+            headvmoo: $('#headvmoo').val(),
+            headvname: $('#headvname').val(),
+            headpro: $('#headpro').val(),
+            headamp: $('#headamp').val(),
+            headtam: $('#headtam').val(),
+            orgvno: $('#orgvno').val(),
+            orgvmoo: $('#orgvmoo').val(),
+            orgvname: $('#orgvname').val(),
+            orgpro: $('#orgpro').val(),
+            orgamp: $('#orgamp').val(),
+            orgtam: $('#orgtam').val(),
+            lat: $('#lat').val(),
+            lon: $('#lon').val(),
+            orgtype: $('#orgtype').val(),
+            orgtypeother: $('#orgtypeother').val(),
+            orgstatus: $('#orgstatus').val(),
+            orgtarget: $('#orgtarget').val(),
+            orgwork: $('#orgwork').val(),
+            orgoutput: $('#orgoutput').val(),
+            orgreportor: $('#orgreportor').val(),
             img: dataurl ? dataurl : dataurl = "",
-            geom: geom == "" ? "" : geom[0]
+            geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
     console.log(obj);
-    if (geom.length > 0) {
-        axios.post(url + "/agi-api/insert", obj).then((r) => {
-            r.data.data == "success" ? $("#okmodal").modal("show") : null
-        })
-    } else {
-        $("#modal").modal("show");
-    }
+    axios.post(url + "/org-api/insert", obj).then((r) => {
+        r.data.data == "success" ? $("#okmodal").modal("show") : null
+    })
+    // if (geom.length > 0) {
+    //     axios.post(url + "/org-api/insert", obj).then((r) => {
+    //         console.log(r);
+    //         r.data.data == "success" ? $("#okmodal").modal("show") : null
+    //     })
+    // } else {
+    //     $("#modal").modal("show");
+    // }
     return false;
 }
 
 let gotoList = () => {
-    location.href = "./../list/index.html";
+    location.href = "./../report/index.html";
 }
 
 let refreshPage = () => {
@@ -132,6 +160,11 @@ $('#imgfile').change(function (evt) {
     resize();
 });
 
+let selAmp = (e) => {
+    console.log(e)
+    axios.get(url + "/")
+}
+
 let resize = () => {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         var filesToUploads = document.getElementById('imgfile').files;
@@ -144,8 +177,8 @@ let resize = () => {
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0);
-                var MAX_WIDTH = 800;
-                var MAX_HEIGHT = 800;
+                var MAX_WIDTH = 600;
+                var MAX_HEIGHT = 600;
                 var width = img.width;
                 var height = img.height;
                 if (width > height) {
