@@ -120,76 +120,72 @@
                         </div>
 
 
-
-
                         <h3>ส่วนที่ 2 ประธาน/หัวหน้ากลุ่ม</h3>
 
                         <div class="form-group">
                             <label>ชื่อ-สกุล หัวหน้ากลุ่ม</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="headname">
                         </div>
 
                         <div class="form-group">
-                            <label>บ้านเลขที่</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <label>เลขที่</label>
+                            <input type="text" class="form-control" id="headvno">
                         </div>
 
                         <div class="form-group">
                             <label>หมู่ที่</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="headvmoo">
                         </div>
 
                         <div class="form-group">
                             <label>ชื่อหมู่บ้าน</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="headvname">
                         </div>
 
 
 
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="form-control" id="prov">
+                            <select class="form-control" id="headpro" onchange="selAmp(this.value)">
                                 <option value=""></option>
-                                <option value="จันทบุรี">จันทบุรี</option>
-                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
-                                <option value="ชลบุรี">ชลบุรี</option>
-                                <option value="ตราด">ตราด</option>
-                                <option value="นครนายก">นครนายก</option>
-                                <option value="ปราจีนบุรี">ปราจีนบุรี</option>
-                                <option value="ระยอง">ระยอง</option>
-                                <option value="สระแก้ว">สระแก้ว</option>
+                                <option value="22">จันทบุรี</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="23">ตราด</option>
+                                <option value="26">นครนายก</option>
+                                <option value="25">ปราจีนบุรี</option>
+                                <option value="21">ระยอง</option>
+                                <option value="27">สระแก้ว</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="headamp">
                         </div>
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="headtam">
                         </div>
-
 
                         <h3>ส่วนที่ 3 สถานที่ตั้งกลุ่ม เครือข่าย องค์กร</h3>
 
-
                         <div class="form-group">
                             <label>บ้านเลขที่</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgvno">
                         </div>
                         <div class="form-group">
                             <label>หมู่ที่</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgvmoo">
                         </div>
 
                         <div class="form-group">
                             <label>ชื่อหมู่บ้าน</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgvname">
                         </div>
 
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="form-control" id="prov">
+                            <select class="form-control" id="orgpro">
                                 <option value=""></option>
                                 <option value="จันทบุรี">จันทบุรี</option>
                                 <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
@@ -203,11 +199,11 @@
                         </div>
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgamp">
                         </div>
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgtam">
                         </div>
 
                         <label>ย้ายหมุดไปยังสถานที่ทำการของท่าน</label>
@@ -215,18 +211,18 @@
 
                         <div class="form-group row">
                             <div class="col">
-                                <label>พิกัด</label>
-                                <input type="text" class="form-control" id="orgtel">
+                                <label>ละติจูด</label>
+                                <input type="number" step="0.1" class="form-control" id="lat">
                             </div>
                             <div class="col">
-                                <label>พิกัด</label>
-                                <input type="text" class="form-control" id="orgtel">
+                                <label>ลองจิจูด</label>
+                                <input type="number" step="0.1" class="form-control" id="lon">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="insti">ประเภทงานของกลุ่ม เครือข่าย องค์กร</label>
-                            <select class="form-control" id="edu">
+                            <select class="form-control" id="orgtype">
                                 <option value=""></option>
                                 <option value="ประถมศึกษา">เกษตร(เกษตรอินทรีย์ เกษตรปลอดภัย ฯ)</option>
                                 <option value="ท่องเที่ยวชุมชน">ท่องเที่ยวชุมชน</option>
@@ -246,13 +242,14 @@
                             </select>
                             <div class="form-group">
                                 <label>ประเภทอื่น ๆ โปรดระบุ</label>
-                                <input type="tex" class="form-control" id="orgtel">
+                                <input type="tex" class="form-control" id="orgtypeother">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>สถานะของกลุ่ม เครือข่าย องค์กร</label>
-                            <select class="form-control" id="sex">
+                            <select class="form-control" id="orgstatus">
+                                <option value=""></option>
                                 <option value="ยังเคลื่อนงานอยู่">ยังเคลื่อนงานอยู่</option>
                                 <option value="หยุดขับเคลื่อน">หยุดขับเคลื่อน</option>
                                 <option value="เปลี่ยนเป้าหมาย">เปลี่ยนเป้าหมาย</option>
@@ -261,35 +258,38 @@
 
                         <div class="form-group">
                             <label>เป้าหมาย</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgtarget">
                         </div>
 
                         <div class="form-group">
                             <label>การทำงานของกลุ่ม เครือข่าย องค์กร</label>
-                            <input type="textarea" class="form-control" id="orgtel">
+                            <input type="textarea" class="form-control" id="orgwork">
                         </div>
 
                         <div class="form-group">
                             <label>ผลลัพธ์จากงาน</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgoutput">
                         </div>
 
                         <div class="form-group">
-                            <label>รูปภาพ</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <label for="img">อัพโหลดรูปภาพ</label>
+                            <input type="file" class="form-control-file" id="imgfile">
+                            <p></p>
+                            <img src="" id="preview" width="250px">
                         </div>
 
                         <div class="form-group">
                             <label>ผู้ให้ข้อมูล</label>
-                            <input type="text" class="form-control" id="orgtel">
+                            <input type="text" class="form-control" id="orgreportor">
                         </div>
 
                     </form>
+
                     <hr>
                     <a class="btn btn-light pull-right m-1" href="./index.html"><i class="fa fa-clipboard"></i>&nbsp;
                         เริ่มต้นใหม่</a>
-                    <button class="btn btn-info pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
-                            aria-hidden="true"></i>&nbsp;ส่งคำตอบ
+                    <button class="btn btn-info pull-right m-1" onclick="sendData()"><i class="fa fa-plus"
+                            aria-hidden="true"></i>&nbsp;ส่ง
                     </button>
                 </div>
             </div>
@@ -300,15 +300,15 @@
         </div>
     </main><!-- End #main -->
 
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal" id="okmodal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>ส่งคำตอบสำเร็จ </p>
+                    <p>ส่งข้อมูลสำเร็จ </p>
                     <p>ขอบคุณที่กรุณาตอบแบบสอบถามค่ะ</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoList()">ปิด</button>
                 </div>
             </div>
         </div>

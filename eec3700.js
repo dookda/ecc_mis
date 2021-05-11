@@ -80,5 +80,8 @@ app.use(foodmile);
 const agrimon = require('./service/agrimon');
 app.use(agrimon);
 
+const org = require('./service/organization');
+app.use(org);
+
 const iot = require('./service/iot');
 app.use(iot);

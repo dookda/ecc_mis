@@ -3,7 +3,7 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 const dat = con.dat;
-// const gdb = con.gdb;
+const th = con.th;
 
 app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
     const lyr = req.params.lyr;
@@ -62,8 +62,6 @@ app.get("/eec-api/get-tam/:ampcode", (req, res) => {
         });
     });
 })
-
-
 
 app.get("/eec-api/get-aqi", (req, res) => {
     const sql = `SELECT * FROM v_pcd_aqi_eec`;
@@ -206,6 +204,35 @@ app.post("/eec-api/get-weather-near", (req, res) => {
             data: r.rows
         })
     })
+})
+
+app.get("/eec-api/get-th-prov", (req, res) => {
+    const sql = `SELECT pv_idn, pro_name FROM province_4326`;
+    th.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-th-amp/:procode", (req, res) => {
+    const procode = req.params.procode;
+    const sql = `SELECT pv_idn, pro_name, ap_idn, amp_name FROM amphoe_4326 WHERE pv_idn='${procode}'`;
+    th.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-th-tam/:ampcode", (req, res) => {
+    const ampcode = req.params.ampcode;
+    const sql = `SELECT pv_idn, pro_name, ap_idn, amp_name, tb_idn, tam_name FROM tambon_4326 WHERE CONCAT ap_idn='${ampcode}'`;
+    th.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
 })
 
 

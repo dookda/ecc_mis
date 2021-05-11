@@ -3,8 +3,8 @@ $(document).ready(() => {
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
@@ -64,7 +64,7 @@ let loadTable = () => {
         ajax: {
             async: true,
             type: "POST",
-            url: url + '/fm-api/getdata',
+            url: url + '/org-api/getdata',
             data: { userid: "sakda" },
             dataSrc: 'data'
         },
@@ -72,71 +72,13 @@ let loadTable = () => {
             {
                 data: '',
                 render: (data, type, row) => {
-                    return `${row.fm_id}`
+                    return `${row.orgid}`
                 }
             },
-            { data: 'sex' },
-            { data: 'age' },
-            { data: 'edu' },
-            { data: 'occu' },
-            { data: 'member' },
-            { data: 'income' },
-            { data: 'outcome' },
-
-            { data: 'weight' },
-            { data: 'heigth' },
-            { data: 'ncd1' },
-            { data: 'ncd2' },
-            { data: 'ncd3' },
-            { data: 'ncd4' },
-            { data: 'ncd5' },
-            { data: 'ncd6' },
-            { data: 'ncd7' },
-            { data: 'ncd8' },
-            { data: 'ncd9' },
-            { data: 'ncd10' },
-            { data: 'ncd11' },
-            { data: 'ncd12' },
-            { data: 'ncd13' },
-            { data: 'ncd14' },
-            { data: 'ncd15' },
-            { data: 'ncd16' },
-            { data: 'ncd17' },
-            { data: 'ncd18' },
-            { data: 'ncd19' },
-            { data: 'ncd20' },
-            { data: 'ncd21' },
-            { data: 'ncd22' },
-            { data: 'ncd23' },
-            { data: 'ncd24' },
-            { data: 'ncd25' },
-
-            { data: 'ricesource' },
-            { data: 's_rice1' },
-            { data: 's_rice2' },
-            { data: 's_rice3' },
-            { data: 'prod1' },
-            { data: 'prod2' },
-            { data: 's_store' },
-            { data: 's_moo' },
-            { data: 's_tam' },
-            { data: 's_amp' },
-            { data: 's_pro' },
-
-            { data: 'b_rice1' },
-            { data: 'b_rice2' },
-            { data: 'b_rice3' },
-            { data: 'b_vol' },
-            { data: 'b_store' },
-            { data: 'b_moo' },
-            { data: 'b_tam' },
-            { data: 'b_amp' },
-            { data: 'b_pro' },
-            { data: 'loc_man' },
-            { data: 'loc_sale' },
-            { data: 'loc_buy' },
-            { data: 'dist' },
-            { data: 'other' },
+            { data: 'orgname' },
+            { data: 'headname' },
+            { data: 'orgtype' },
+            { data: 'orgstatus' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
