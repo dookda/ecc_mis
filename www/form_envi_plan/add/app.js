@@ -149,9 +149,23 @@ $("#fieldForm").submit(function (e) {
 
     const obj = {
         data: {
+            // org: org,
             prj_cate: $('#prj_cate').val(),
             prj_name: $('#prj_name').val(),
             prj_measure: $('#prj_measure').val(),
+
+            act_1: $('#act_1').val(),
+            act_2: $('#act_2').val(),
+            act_3: $('#act_3').val(),
+            act_4: $('#act_4').val(),
+            act_5: $('#act_5').val(),
+            act_6: $('#act_6').val(),
+            act_7: $('#act_7').val(),
+            act_8: $('#act_8').val(),
+            act_9: $('#act_9').val(),
+            act_10: $('#act_10').val(),
+            act_11: $('#act_11').val(),
+
             prj_detail: $('#prj_detail').val(),
             prj_obj: $('#prj_obj').val(),
             prj_site: $('#prj_site').val(),
@@ -167,6 +181,7 @@ $("#fieldForm").submit(function (e) {
             budg_68: $('#budg_68').val(),
             budg_69: $('#budg_69').val(),
             budg_70: $('#budg_70').val(),
+            // prj_operat: org,
             prj_operat: $('#prj_operat').val(),
             fund: $('#fund').val(),
             proc_stat: $('#proc_stat').val(),

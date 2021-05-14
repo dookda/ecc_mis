@@ -97,6 +97,9 @@ let sendData = () => {
             orgcontact: $('#orgcontact').val(),
             orgtel: $('#orgtel').val(),
             orgemail: $('#orgemail').val(),
+            orgline: $('#orgline').val(),
+            orgfacebook: $('#orgfacebook').val(),
+            website: $('#website').val(),
             headname: $('#headname').val(),
             headvno: $('#headvno').val(),
             headvmoo: $('#headvmoo').val(),
@@ -113,6 +116,20 @@ let sendData = () => {
             lat: $('#lat').val(),
             lon: $('#lon').val(),
             orgtype: $('#orgtype').val(),
+            typ_commutrav: $("#typ_commutrav").is(":checked") ? $("#typ_commutrav").val() : '',
+            typ_commucomfort: $("#typ_commucomfort").is(":checked") ? $("#typ_commucomfort").val() : '',
+            typ_commulearn: $("#typ_commulearn").is(":checked") ? $("#typ_commulearn").val() : '',
+            typ_commuforest: $("#typ_commuforest").is(":checked") ? $("#typ_commuforest").val() : '',
+            typ_houseforest: $("#typ_houseforest").is(":checked") ? $("#typ_houseforest").val() : '',
+            typ_mangforest: $("#typ_mangforest").is(":checked") ? $("#typ_mangforest").val() : '',
+            typ_watmanage: $("#typ_watmanage").is(":checked") ? $("#typ_watmanage").val() : '',
+            typ_landmange: $("#typ_landmange").is(":checked") ? $("#typ_landmange").val() : '',
+            typ_fishing: $("#typ_fishing").is(":checked") ? $("#typ_fishing").val() : '',
+            typ_industwaste: $("#typ_industwaste").is(":checked") ? $("#typ_industwaste").val() : '',
+            typ_housewaste: $("#typ_housewaste").is(":checked") ? $("#typ_housewaste").val() : '',
+            typ_airpollution: $("#typ_airpollution").is(":checked") ? $("#typ_airpollution").val() : '',
+            typ_noisepollution: $("#typ_noisepollution").is(":checked") ? $("#typ_noisepollution").val() : '',
+            typ_other: $("#typ_other").is(":checked") ? $("#typ_other").val() : '',
             orgtypeother: $('#orgtypeother').val(),
             orgstatus: $('#orgstatus').val(),
             orgtarget: $('#orgtarget').val(),
@@ -123,6 +140,8 @@ let sendData = () => {
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
+
+
     console.log(obj);
     axios.post(url + "/org-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
@@ -146,7 +165,7 @@ let refreshPage = () => {
     location.reload(true);
 }
 
-$('#imgfile').change(function (evt) {
+$("#imgfile").change(function (evt) {
     console.log(evt);
     var files = evt.target.files;
     var file = files[0];
@@ -160,10 +179,53 @@ $('#imgfile').change(function (evt) {
     resize();
 });
 
-let selAmp = (e) => {
-    console.log(e)
-    axios.get(url + "/")
-}
+$("#headpro").change(e => {
+    // console.log(e.target.value);
+    axios.get(url + "/eec-api/get-th-amp/" + e.target.value).then(r => {
+        $("#headamp").empty()
+        $("#headtam").empty()
+        $("#headamp").append(`<option value=""></option>`)
+        r.data.data.map(i => {
+            $("#headamp").append(`<option value="${i.ap_idn}">${i.amp_name}</option>`)
+        })
+    })
+})
+
+$("#headamp").change(e => {
+    axios.get(url + "/eec-api/get-th-tam/" + e.target.value).then(r => {
+
+        console.log(r);
+        $("#headtam").empty()
+        $("#headtam").append(`<option value=""></option>`)
+        r.data.data.map(i => {
+            $("#headtam").append(`<option value="${i.tb_idn}">${i.tam_name}</option>`)
+        })
+    })
+})
+
+$("#orgpro").change(e => {
+    // console.log(e.target.value);
+    axios.get(url + "/eec-api/get-th-amp/" + e.target.value).then(r => {
+        $("#orgamp").empty()
+        $("#orgtam").empty()
+        $("#orgamp").append(`<option value=""></option>`)
+        r.data.data.map(i => {
+            $("#orgamp").append(`<option value="${i.ap_idn}">${i.amp_name}</option>`)
+        })
+    })
+})
+
+$("#orgamp").change(e => {
+    axios.get(url + "/eec-api/get-th-tam/" + e.target.value).then(r => {
+
+        console.log(r);
+        $("#orgtam").empty()
+        $("#orgtam").append(`<option value=""></option>`)
+        r.data.data.map(i => {
+            $("#orgtam").append(`<option value="${i.tb_idn}">${i.tam_name}</option>`)
+        })
+    })
+})
 
 let resize = () => {
     if (window.File && window.FileReader && window.FileList && window.Blob) {

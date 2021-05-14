@@ -10,67 +10,16 @@ let logout = () => {
 uid && org ? null : logout();
 $("#aut").html(`${org}`)
 
-typ == "admin" ? $("#isadmin").show() : $("#isadmin").hide();
-
+if (typ == "admin") {
+    $("#isadmin").show()
+    $("#isadmin2").show()
+} else {
+    $("#isadmin").hide()
+    $("#isadmin2").hide()
+}
 const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
-
-$(document).ready(function () {
-    let table = $('#myTable').DataTable({
-        ajax: {
-            type: "POST",
-            url: url + '/projmon-api/getdata',
-            data: { org: org, typ: typ },
-            dataSrc: 'data'
-        },
-        columns: [
-            { data: 'prj_order' },
-            // { data: 'prj_cate' },
-            // {
-            //     data: '',
-            //     render: (data, type, row, meta) => {
-            //         return `${meta.row + 1}`
-            //     }
-            // },
-            {
-                data: '',
-                render: (data, type, row) => {
-                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
-                    // return `${row.prj_name}`
-                }
-            },
-            { data: 'prj_operat' },
-            { data: 'budget' },
-            // { data: 'proc_stat' },
-            { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `
-                       <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไข</a>
-                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "11%"
-            }
-        ],
-        searching: true,
-        scrollX: false,
-        // order: [2, 'asc'],
-    });
-
-    // table.column(2).visible(false);
-
-    table.on('search.dt', function () {
-        let data = table.rows({ search: 'applied' }).data()
-        getProc_stat(data);
-        getOpert_stat(data);
-        getPrj_cate(data);
-        getBudget(data);
-        getMap(data)
-    });
-
-    loadMap();
-})
+// const url = "http://localhost:3700";
+// const url = 
 
 let latlng;
 
@@ -131,11 +80,70 @@ let loadMap = () => {
     L.control.layers(baseMap, overlayMap).addTo(map);
 }
 
+let loadTable = () => {
+    let table = $('#myTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/projmon-api/getdata',
+            data: { org: org, typ: typ },
+            dataSrc: 'data'
+        },
+        columns: [
+            { data: 'prj_order' },
+            // { data: 'prj_cate' },
+            // {
+            //     data: '',
+            //     render: (data, type, row, meta) => {
+            //         return `${meta.row + 1}`
+            //     }
+            // },
+            {
+                data: '',
+                render: (data, type, row) => {
+                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
+                    // return `${row.prj_name}`
+                }
+            },
+            { data: 'prj_operat' },
+            { data: 'budget' },
+            // { data: 'proc_stat' },
+            { data: 'opert_stat' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `
+                       <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
+                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'prj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                width: "15%"
+            }
+        ],
+        searching: true,
+        scrollX: false,
+        // order: [2, 'asc'],
+    });
+
+    // table.column(2).visible(false);
+
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data()
+        getProc_stat(data);
+        getOpert_stat(data);
+        getPrj_cate(data);
+        getBudget(data);
+        getMap(data)
+    });
+    loadMap();
+}
+
+loadTable()
+
 // map.addLayer(drawnItems);
 
-let confirmDelete = (prj_id, prj_name) => {
+let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id)
     $("#projName").text(prj_name)
+    $("#tbType").val(tbType)
     $("#deleteModal").modal("show")
 }
 
@@ -148,9 +156,26 @@ let closeModal = () => {
 let deleteValue = () => {
     // console.log($("#projId").val());
     let prj_id = $("#projId").val()
-    axios.post(url + "/projmon-api/deletedata", { prj_id: prj_id }).then(r => {
-        r.data.data == "success" ? closeModal() : null
-    })
+    if ($("#tbType").val() == "prj") {
+        axios.post(url + "/projmon-api/deletedata", { prj_id: prj_id }).then(r => {
+            if (r.data.data == "success") {
+                $('#editModal').modal('hide')
+                $('#deleteModal').modal('hide')
+                $('#myTable').DataTable().ajax.reload();
+            }
+        })
+    }
+
+    if ($("#tbType").val() == "nonprj") {
+        axios.post(url + "/projmon-api/deletedatanonprj", { prj_id: prj_id }).then(r => {
+            if (r.data.data == "success") {
+                $('#editModal').modal('hide')
+                $('#deleteModal').modal('hide')
+                $('#mTable').DataTable().ajax.reload();
+            }
+        })
+    }
+
 }
 
 let getMap = (x) => {
@@ -366,8 +391,39 @@ let barChart = (datarr, chartdiv, unit) => {
     chart.data = datarr
 }
 
-
-
+let loadTable2 = () => {
+    let table = $('#mTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/projmon-api/getnonprojdata',
+            data: { org: org, typ: typ },
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
+            { data: 'prj_name' },
+            { data: 'prj_measure' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `
+                       <a type="button" class="btn btn-margin btn-info" href="./../edit_nonprj/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
+                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'nonprj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "11%"
+            }
+        ],
+        searching: true,
+        scrollX: false,
+        // order: [2, 'asc'],
+    });
+}
+loadTable2()
 
 
 

@@ -48,9 +48,9 @@
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <!-- Template Main CSS File -->
-    <link href="./style.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <link rel="stylesheet" href="./../assets/css/style.css">
+    <link href="./style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -99,7 +99,7 @@
                     <hr>
                     <form id="myform">
                         <h3>ส่วนที่ 1 ข้อมูลทั่วไป</h3>
-
+                        <input type="hidden" id="orgid">
 
                         <div class="form-group">
                             <label>ชื่อกลุ่ม เครือข่าย องค์กร</label>
@@ -119,6 +119,20 @@
                             <input type="text" class="form-control" id="orgemail">
                         </div>
 
+                        <div class="form-group">
+                            <label>line</label>
+                            <input type="text" class="form-control" id="orgline">
+                        </div>
+
+                        <div class="form-group">
+                            <label>facebook</label>
+                            <input type="text" class="form-control" id="orgfacebook">
+                        </div>
+
+                        <div class="form-group">
+                            <label>website</label>
+                            <input type="text" class="form-control" id="website">
+                        </div>
 
                         <h3>ส่วนที่ 2 ประธาน/หัวหน้ากลุ่ม</h3>
 
@@ -142,34 +156,32 @@
                             <input type="text" class="form-control" id="headvname">
                         </div>
 
-
-
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="form-control" id="headpro">
+                            <select class="form-control" id="headpro" onchange="loadheadamp(this.value)">
                                 <option value=""></option>
-                                <option value="จันทบุรี">จันทบุรี</option>
-                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
-                                <option value="ชลบุรี">ชลบุรี</option>
-                                <option value="ตราด">ตราด</option>
-                                <option value="นครนายก">นครนายก</option>
-                                <option value="ปราจีนบุรี">ปราจีนบุรี</option>
-                                <option value="ระยอง">ระยอง</option>
-                                <option value="สระแก้ว">สระแก้ว</option>
+                                <option value="22">จันทบุรี</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="23">ตราด</option>
+                                <option value="26">นครนายก</option>
+                                <option value="25">ปราจีนบุรี</option>
+                                <option value="21">ระยอง</option>
+                                <option value="27">สระแก้ว</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <input type="text" class="form-control" id="headamp">
+                            <select class="form-control" id="headamp" onchange="loadheadtam(this.value)"></select>
                         </div>
+
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <input type="text" class="form-control" id="headtam">
+                            <select class="form-control" id="headtam"></select>
                         </div>
 
-
                         <h3>ส่วนที่ 3 สถานที่ตั้งกลุ่ม เครือข่าย องค์กร</h3>
-
 
                         <div class="form-group">
                             <label>บ้านเลขที่</label>
@@ -187,25 +199,27 @@
 
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="form-control" id="orgpro">
+                            <select class="form-control" id="orgpro" onchange="loadorgamp(this.value)">
                                 <option value=""></option>
-                                <option value="จันทบุรี">จันทบุรี</option>
-                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
-                                <option value="ชลบุรี">ชลบุรี</option>
-                                <option value="ตราด">ตราด</option>
-                                <option value="นครนายก">นครนายก</option>
-                                <option value="ปราจีนบุรี">ปราจีนบุรี</option>
-                                <option value="ระยอง">ระยอง</option>
-                                <option value="สระแก้ว">สระแก้ว</option>
+                                <option value="22">จันทบุรี</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="23">ตราด</option>
+                                <option value="26">นครนายก</option>
+                                <option value="25">ปราจีนบุรี</option>
+                                <option value="21">ระยอง</option>
+                                <option value="27">สระแก้ว</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <input type="text" class="form-control" id="orgamp">
+                            <select class="form-control" id="orgamp" onchange="loadorgtam(this.value)"></select>
                         </div>
+
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <input type="text" class="form-control" id="orgtam">
+                            <select class="form-control" id="orgtam"></select>
                         </div>
 
                         <label>ย้ายหมุดไปยังสถานที่ทำการของท่าน</label>
@@ -224,27 +238,121 @@
 
                         <div class="form-group">
                             <label for="insti">ประเภทงานของกลุ่ม เครือข่าย องค์กร</label>
-                            <select class="form-control" id="orgtype">
-                                <option value=""></option>
-                                <option value="ประถมศึกษา">เกษตร(เกษตรอินทรีย์ เกษตรปลอดภัย ฯ)</option>
-                                <option value="ท่องเที่ยวชุมชน">ท่องเที่ยวชุมชน</option>
-                                <option value="ชุมชนน่าอยู่">ชุมชนน่าอยู่</option>
-                                <option value="การเรียนรู้บนฐานชุมชน">การเรียนรู้บนฐานชุมชน</option>
-                                <option value="ทรัพยากร ป่าชุมชน">ทรัพยากร ป่าชุมชน</option>
-                                <option value="ทรัพยากร ป่าครอบครัว วนเกษตร">ทรัพยากร ป่าครอบครัว วนเกษตร</option>
-                                <option value="ทรัพยากร ป่าชายเล">ทรัพยากร ป่าชายเลน</option>
-                                <option value="ทรัพยากร การจัดการน้ำ">ทรัพยากร การจัดการน้ำ</option>
-                                <option value="ทรัพยากร ที่ดิน">ทรัพยากร ที่ดิน</option>
-                                <option value="ทรัพยากร ประมงและชายฝั่ง">ทรัพยากร ประมงและชายฝั่ง</option>
-                                <option value="สิ่งแวดล้อม ด้านขยะอุตสาหกรรม">สิ่งแวดล้อม ด้านขยะอุตสาหกรรม</option>
-                                <option value="สิ่งแวดล้อม ด้านขยะครัวเรือน">สิ่งแวดล้อม ด้านขยะครัวเรือน</option>
-                                <option value="สิ่งแวดล้อม ทางอากาศ">สิ่งแวดล้อม ทางอากาศ</option>
-                                <option value="สิ่งแวดล้อม ทางเสียง">สิ่งแวดล้อม ทางเสียง</option>
-                                <option value="อื่นๆ">อื่นๆ</option>
-                            </select>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    value="เกษตร(เกษตรอินทรีย์ เกษตรปลอดภัย ฯ)" id="typ_organic">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    เกษตร(เกษตรอินทรีย์ เกษตรปลอดภัย ฯ)
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ท่องเที่ยวชุมชน"
+                                    id="typ_commutrav">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ท่องเที่ยวชุมชน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ชุมชนน่าอยู่"
+                                    id="typ_commucomfort">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ชุมชนน่าอยู่
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="การเรียนรู้บนฐานชุมชน"
+                                    id="typ_commulearn">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    การเรียนรู้บนฐานชุมชน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร ป่าชุมชน"
+                                    id="typ_commuforest">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร ป่าชุมชน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร ป่าครอบครัว วนเกษตร"
+                                    id="typ_houseforest">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร ป่าครอบครัว วนเกษตร
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร ป่าชายเลน"
+                                    id="typ_mangforest">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร ป่าชายเลน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร การจัดการน้ำ"
+                                    id="typ_watmanage">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร การจัดการน้ำ
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร ที่ดิน"
+                                    id="typ_landmange">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร ที่ดิน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ทรัพยากร ประมงและชายฝั่ง"
+                                    id="typ_fishing">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ทรัพยากร ประมงและชายฝั่ง
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="สิ่งแวดล้อม ด้านขยะอุตสาหกรรม"
+                                    id="typ_industwaste">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    สิ่งแวดล้อม ด้านขยะอุตสาหกรรม
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="สิ่งแวดล้อม ด้านขยะครัวเรือน"
+                                    id="typ_housewaste">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    สิ่งแวดล้อม ด้านขยะครัวเรือน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="สิ่งแวดล้อม ทางอากาศ"
+                                    id="typ_airpollution">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    สิ่งแวดล้อม ทางอากาศ
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="สิ่งแวดล้อม ทางเสียง"
+                                    id="typ_noisepollution">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    สิ่งแวดล้อม ทางเสียง
+                                </label>
+                            </div>
+
                             <div class="form-group">
                                 <label>ประเภทอื่น ๆ โปรดระบุ</label>
-                                <input type="tex" class="form-control" id="orgtypeother">
+                                <input type="tex" class="form-control" id="typ_other">
                             </div>
                         </div>
 
@@ -252,7 +360,7 @@
                             <label>สถานะของกลุ่ม เครือข่าย องค์กร</label>
                             <select class="form-control" id="orgstatus">
                                 <option value=""></option>
-                                <option value="ยังเคลื่อนงานอยู่">ยังเคลื่อนงานอยู่</option>
+                                <option value="ยังขับเคลื่อนอยู่">ยังขับเคลื่อนอยู่</option>
                                 <option value="หยุดขับเคลื่อน">หยุดขับเคลื่อน</option>
                                 <option value="เปลี่ยนเป้าหมาย">เปลี่ยนเป้าหมาย</option>
                             </select>
@@ -284,14 +392,13 @@
                             <label>ผู้ให้ข้อมูล</label>
                             <input type="text" class="form-control" id="orgreportor">
                         </div>
-
                     </form>
 
                     <hr>
-                    <a class="btn btn-light pull-right m-1" href="./index.html"><i class="fa fa-clipboard"></i>&nbsp;
-                        เริ่มต้นใหม่</a>
+                    <a class="btn btn-light pull-right m-1" href="./../report/"><i class="fa fa-clipboard"></i>&nbsp;
+                        หน้ารายงาน</a>
                     <button class="btn btn-info pull-right m-1" onclick="sendData()"><i class="fa fa-plus"
-                            aria-hidden="true"></i>&nbsp;ส่ง
+                            aria-hidden="true"></i>&nbsp;แก้ไข
                     </button>
                 </div>
             </div>
@@ -306,8 +413,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>ส่งข้อมูลสำเร็จ </p>
-                    <p>ขอบคุณที่กรุณาตอบแบบสอบถามค่ะ</p>
+                    <p>แก้ไขข้อมูลสำเร็จ </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoList()">ปิด</button>
@@ -315,7 +421,10 @@
             </div>
         </div>
     </div>
-
+    <br>
+    <br>
+    <br>
+    <br>
     <!-- ======= Footer ======= -->
     <footer id="footer">
         <div class="container">
