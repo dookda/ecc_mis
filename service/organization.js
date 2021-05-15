@@ -3,6 +3,9 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
+// const multer = require('multer')
+// const upload = multer()
+
 app.post("/org-api/getone", (req, res) => {
     const { orgid } = req.body;
     const sql = `SELECT *,ST_AsGeojson(geom) as geojson 
@@ -30,7 +33,7 @@ app.post("/org-api/getdata", (req, res) => {
 app.post("/org-api/insert", async (req, res) => {
     const { data } = req.body;
     let orgid = Date.now()
-    // console.log(data);
+
     await eec.query(`INSERT INTO organization(orgid)VALUES('${orgid}')`)
     let d;
     for (d in data) {

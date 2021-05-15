@@ -118,8 +118,6 @@ let loadData = (orgid) => {
             loadorgtam(r.data.data[0].orgamp)
         }, 1000)
 
-
-
         setTimeout(() => {
             r.data.data.map(i => {
                 console.log(i)
@@ -183,18 +181,40 @@ let loadData = (orgid) => {
 loadData(orgid);
 
 $("#imgfile").change(function (evt) {
-    console.log(evt);
-    var files = evt.target.files;
-    var file = files[0];
-    if (file) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+    var filesToUploads = document.getElementById('imgfile').files;
+    var file = filesToUploads[0];
+    var reader = new FileReader();
+
+    reader.onloadend = (e) => {
+        let imageOriginal = reader.result;
+        resizeImage(file);
+        document.getElementById('preview').src = imageOriginal;
     }
-    resize();
+    reader.readAsDataURL(file);
 });
+
+let resizeImage = (file) => {
+    var maxW = 600;
+    var maxH = 600;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var img = document.createElement('img');
+    var result = '';
+    img.onload = function () {
+        var iw = img.width;
+        var ih = img.height;
+        var scale = Math.min((maxW / iw), (maxH / ih));
+        var iwScaled = iw * scale;
+        var ihScaled = ih * scale;
+        canvas.width = iwScaled;
+        canvas.height = ihScaled;
+        context.drawImage(img, 0, 0, iwScaled, ihScaled);
+        result += canvas.toDataURL('image/jpeg', 0.5);
+        dataurl = result;
+        // document.getElementById('rez').src = that.imageResize;
+    }
+    img.src = URL.createObjectURL(file);
+}
 
 let sendData = () => {
     console.log(geom.toGeoJSON());
@@ -262,48 +282,6 @@ let gotoList = () => {
 
 let refreshPage = () => {
     location.reload(true);
-}
-
-let resize = () => {
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        var filesToUploads = document.getElementById('imgfile').files;
-        var file = filesToUploads[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var img = document.createElement("img");
-                img.src = e.target.result;
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-                var MAX_WIDTH = 600;
-                var MAX_HEIGHT = 600;
-                var width = img.width;
-                var height = img.height;
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, width, height);
-                dataurl = canvas.toDataURL(file.type);
-                // console.log(dataurl)
-                // document.getElementById('output').src = dataurl;
-            }
-            reader.readAsDataURL(file);
-        }
-    } else {
-        alert('The File APIs are not fully supported in this browser.');
-    }
 }
 
 

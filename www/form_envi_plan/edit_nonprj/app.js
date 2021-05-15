@@ -15,8 +15,8 @@ let id = searchParams.get('id')
 
 console.log(id)
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 $("#prj_measure").change(i => {
     let a = $("#prj_measure").val()
