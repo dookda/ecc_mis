@@ -2,46 +2,46 @@ const express = require('express');
 const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
-
-app.post("/green-api/adddata", async (req, res) => {
-    const { proj_name, response, gtype, place, area, geom } = req.body;
-    const proj_id = Date.now()
-    const sql = `INSERT INTO green_area(
-                    proj_id,proj_name,response,gtype,place,area,dt
-                )VALUES(
-                    '${proj_id}','${proj_name}','${response}','${gtype}','${place}',${area},now()
-                )`
-    const sqlGeom = `INSERT INTO green_area_geom(
-                    proj_id, geom
-                )VALUES(
-                    '${proj_id}', ST_GeomfromGeoJSON('${JSON.stringify(geom.geometry)}')
-                )`
-
-    await eec.query(sqlGeom)
-    await eec.query(sql).then(r => {
-        res.status(200).json({
-            data: "success"
-        })
-    })
-})
+const geo = con.geo;
 
 app.post("/green-api/insert", async (req, res) => {
     const { data } = req.body;
     let proj_id = Date.now()
-    await eec.query(`INSERT INTO green_area(proj_id)VALUES('${proj_id}')`)
+    await geo.query(`INSERT INTO _52_gr_park(proj_id)VALUES('${proj_id}')`)
     let d;
     for (d in data) {
+        // console.log(data[d]);
         if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE green_area SET ${d}='${data[d]}' WHERE proj_id='${proj_id}'`;
-            await eec.query(sql)
+            let sql = `UPDATE _52_gr_park SET ${d}='${data[d]}' WHERE proj_id='${proj_id}'`;
+            await geo.query(sql)
         }
     }
 
     if (data.geom !== 0) {
-        data.geom.map(async (i) => {
-            let sql = `INSERT INTO green_area_geom(proj_id, geom)VALUES('${proj_id}', ST_GeomfromGeoJSON('${JSON.stringify(i.geometry)}'))`;
-            await eec.query(sql)
-        })
+        let sql = `UPDATE _52_gr_park SET geom = ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}') 
+            WHERE proj_id='${proj_id}'`;
+        await geo.query(sql)
+    }
+    res.status(200).json({
+        data: "success"
+    })
+})
+
+app.post("/green-api/update", async (req, res) => {
+    const { gid, data } = req.body;
+    let d;
+    for (d in data) {
+        // console.log(data[d]);
+        if (data[d] !== '' && d !== 'geom') {
+            let sql = `UPDATE _52_gr_park SET ${d}='${data[d]}' WHERE gid='${gid}'`;
+            await geo.query(sql)
+        }
+    }
+
+    if (data.geom !== "") {
+        let sql = `UPDATE _52_gr_park SET geom = ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}') 
+            WHERE gid='${gid}'`;
+        await geo.query(sql)
     }
     res.status(200).json({
         data: "success"
@@ -49,24 +49,54 @@ app.post("/green-api/insert", async (req, res) => {
 })
 
 app.post("/green-api/getdata", (req, res) => {
-    const { userId } = req.body;
-    const sql = `SELECT a.*, ST_AsGeojson(geom) as geojson  
-            FROM green_area a
-            LEFT JOIN green_area_geom b
-            ON a.proj_id = b.proj_id`
+    const { userid } = req.body;
+    const sql = `SELECT gid, gr_name,tambon_idn,amphoe_idn,prov_code,
+    tam_nam_t, amphoe_t, prov_nam_t,type,sup_type,rai,agency,tree,   
+    ST_AsGeojson(geom) as geojson  
+    FROM _52_gr_park`;
 
-    eec.query(sql).then(r => {
+    geo.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
         })
     })
 })
 
-app.post("/green-api/deletedata", (req, res) => {
-    const { proj_id } = req.body;
-    const sql = `DELETE FROM green_area WHERE proj_id='${proj_id}'`
+app.post("/green-api/getgeojson", async (req, res) => {
+    const { gid } = req.body;
+    const sql = `SELECT gid, gr_name,tambon_idn,amphoe_idn,prov_code,
+            tam_nam_t, amphoe_t, prov_nam_t,type,sup_type,rai,agency,tree,   
+            ST_AsGeojson(geom) as geojson  
+            FROM _52_gr_park WHERE gid=${gid}`
+    let jsonFeatures = [];
+    await geo.query(sql).then(r => {
+        var rows = r.rows;
+        // console.log(rows);
+        rows.forEach((e) => {
+            let feature = {
+                type: 'Feature',
+                properties: e,
+                geometry: JSON.parse(e.geojson)
+            };
+            jsonFeatures.push(feature);
+        });
+        let geoJson = {
+            type: 'FeatureCollection',
+            features: jsonFeatures
+        };
 
-    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: geoJson
+        })
+    })
+    // console.log(jsonFeatures);
+})
+
+app.post("/green-api/delete", (req, res) => {
+    const { orgid } = req.body;
+    const sql = `DELETE FROM _52_gr_park WHERE gid='${orgid}'`
+    console.log(sql);
+    geo.query(sql).then(r => {
         res.status(200).json({
             data: "success"
         })

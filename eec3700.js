@@ -85,3 +85,6 @@ app.use(org);
 
 const iot = require('./service/iot');
 app.use(iot);
+
+const notice = require('./service/notice');
+app.use(notice);

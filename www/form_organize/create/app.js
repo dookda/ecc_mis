@@ -60,8 +60,8 @@ let onLocationFound = (e) => {
     $("#lon").val(e.latlng.lng)
 }
 
-// map.on("locationfound", onLocationFound);
-// map.locate({ setView: true, maxZoom: 16 });
+map.on("locationfound", onLocationFound);
+map.locate({ setView: true, maxZoom: 16 });
 // var lc = L.control.locate({
 //     position: 'topleft',
 //     strings: {

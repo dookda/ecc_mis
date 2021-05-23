@@ -6,7 +6,7 @@ const iot = con.iot;
 
 app.get("/eec-api/iot-get", (req, res) => {
     const { val } = req.params
-    const sql = `SELECT * FROM iotwatlev`;
+    const sql = `SELECT * FROM iotwatlev ORDER BY ts DESC limit 10`;
     iot.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
@@ -51,6 +51,28 @@ app.post("/eec-api/iot-data", (req, res) => {
             });
         });
     }
+})
+
+app.get("/eec-api/iot-data-bytype/:type", (req, res) => {
+    const type = req.params.type
+    // console.log(type);
+    const sql = `SELECT ${type} as val, extract(epoch from ts) as ts FROM iotwatlev ORDER BY ts DESC limit 1`;
+    iot.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/iot-data-bytype-last20/:type", (req, res) => {
+    const type = req.params.type
+    // console.log(type);
+    const sql = `SELECT ${type} as val, extract(epoch from ts) as ts FROM iotwatlev ORDER BY ts DESC limit 10`;
+    iot.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
 })
 
 // token generate

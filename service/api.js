@@ -227,13 +227,26 @@ app.get("/eec-api/get-th-amp/:procode", (req, res) => {
 
 app.get("/eec-api/get-th-tam/:ampcode", (req, res) => {
     const ampcode = req.params.ampcode;
-    const sql = `SELECT pv_idn, pro_name, ap_idn, amp_name, tb_idn, tam_name FROM tambon_4326 WHERE ap_idn='${ampcode}'`;
+    const sql = `SELECT pv_idn, pro_name, ap_idn, amp_name, tb_idn, tam_name 
+        FROM tambon_4326 WHERE ap_idn='${ampcode}'`;
     th.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
         });
     });
 })
+
+app.get("/eec-api/get-th-onetam/:tamcode", (req, res) => {
+    const tamcode = req.params.tamcode;
+    const sql = `SELECT pv_idn, pro_name, ap_idn, amp_name, tb_idn, tam_name 
+        FROM tambon_4326 WHERE tb_idn='${tamcode}'`;
+    th.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
 
 
 
