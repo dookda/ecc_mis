@@ -88,3 +88,6 @@ app.use(iot);
 
 const notice = require('./service/notice');
 app.use(notice);
+
+const biodiversity = require('./service/biodiversity');
+app.use(biodiversity);

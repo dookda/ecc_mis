@@ -12,19 +12,45 @@ app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
 
     if (lyr == "pro") {
         sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
-            FROM eec_pro_4326
-            WHERE prov_code = '${val}'`;
+            FROM province_4326
+            WHERE pv_idn = '${val}'`;
     } else if (lyr == "amp") {
         sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
-            FROM eec_amp_4326
-            WHERE area_code = '${val}'`;
+            FROM amphoe_4326
+            WHERE ap_idn = '${val}'`;
     } else if (lyr == "tam") {
         sql = `SELECT ST_AsGeoJSON(ST_Envelope(ST_FlipCoordinates(geom))) as geom
-            FROM eec_tam_4326
-            WHERE area_code = '${val}'`;
+            FROM tambon_4326
+            WHERE tb_idn = '${val}'`;
     }
 
-    eec.query(sql).then((r) => {
+    th.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.get("/eec-api/get-bound/:lyr/:val", (req, res) => {
+    const lyr = req.params.lyr;
+    const val = req.params.val;
+    let sql;
+
+    if (lyr == "pro") {
+        sql = `SELECT ST_AsGeoJSON(geom) as geom
+            FROM province_4326
+            WHERE pv_idn = '${val}'`;
+    } else if (lyr == "amp") {
+        sql = `SELECT ST_AsGeoJSON(geom) as geom
+            FROM amphoe_4326
+            WHERE ap_idn = '${val}'`;
+    } else if (lyr == "tam") {
+        sql = `SELECT ST_AsGeoJSON(geom) as geom
+            FROM tambon_4326
+            WHERE tb_idn = '${val}'`;
+    }
+
+    th.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
         });

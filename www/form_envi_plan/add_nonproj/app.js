@@ -14,8 +14,8 @@ let refreshPage = () => {
     window.open("./../report/index.html", "_self");
 }
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 $("#prj_cate").change(i => {
     console.log(i)
@@ -55,7 +55,7 @@ $("#fieldForm").submit(function (e) {
     const obj = {
         data: {
             prj_operat: org,
-            prj_name: $('#prj_name').val(),
+            prj_cate: $('#prj_cate').val(),
             prj_measure: $('#prj_measure').val(),
             act_1: $('#act_1').val(),
             act_2: $('#act_2').val(),

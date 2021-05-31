@@ -95,21 +95,31 @@
                 <!-- ฟอร์มนำเข้า -->
                 <hr>
                 <div class="mt-3 mb-20" data-aos="fade-up">
-                    <h4>ร้องเรียน-แจ้งข่าว </h4>
+                    <h4>ข้อมูลจากสำรวจความหลากหลายทางชีวภาพ</h4>
 
                     <div class="form-group">
-                        <label>เรื่อง</label>
-                        <input type="text" class="form-control" id="noticename">
+                        <label>ชื่อชนิดที่พบ</label>
+                        <input type="text" class="form-control" id="bioname">
                     </div>
 
                     <div class="form-group">
                         <label>รายละเอียด</label>
-                        <input type="text" class="form-control" id="noticedetail">
+                        <input type="text" class="form-control" id="biodetail">
                     </div>
 
                     <div class="form-group">
-                        <label>ชื่อสถานที่</label>
-                        <input type="text" class="form-control" id="noticeplace">
+                        <label>ชื่อสถานที่ที่พบ</label>
+                        <input type="text" class="form-control" id="bioplace">
+                    </div>
+
+                    <div class="form-group">
+                        <label>ประเภท</label>
+                        <select class="form-control" id="biotype">
+                            <option value=""></option>
+                            <option value="พืช">พืช</option>
+                            <option value="สัตว์">สัตว์</option>
+                            <option value="ไม่ทราบ">ไม่ทราบ</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -194,17 +204,12 @@
     <br>
 
     <!-- ======= Footer ======= -->
-    <footer id="footer">
+    <footer id="footer " style="background-color: #e5e6e5; text-align: center;">
         <div class="container">
             <div class="copyright">
                 &copy; Copyright 2021 <strong><span>EnGRIDs by GeoCMU</span></strong>. All Rights Reserved
             </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/ -->
-                Designed by <a href="https://engrids.soc.cmu.ac.th/">EnGRIDs</a>
+            <div class="credits">Designed by <a href="https://engrids.soc.cmu.ac.th/">EnGRIDs</a>
             </div>
         </div>
     </footer><!-- End  Footer -->

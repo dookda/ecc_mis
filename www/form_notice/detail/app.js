@@ -98,6 +98,7 @@ axios.post(url + "/notice-api/getdataone", { proj_id: proj_id }).then(r => {
     $('#noticename').val(r.data.data[0].noticename);
     $('#noticedetail').val(r.data.data[0].noticedetail);
     $('#noticeplace').val(r.data.data[0].noticeplace);
+    $('#noticetype').val(r.data.data[0].noticetype);
     $('#lat').val(r.data.data[0].lat);
     $('#lon').val(r.data.data[0].lon);
     $("#preview").attr("src", r.data.data[0].img);
@@ -121,6 +122,7 @@ let sendData = () => {
             noticename: $('#noticename').val(),
             noticedetail: $('#noticedetail').val(),
             noticeplace: $('#noticeplace').val(),
+            noticetype: $('#noticetype').val(),
             pro: $('#pro').val(),
             amp: $('#amp').val(),
             tam: $('#tam').val(),

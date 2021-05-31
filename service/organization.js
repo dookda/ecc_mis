@@ -20,7 +20,7 @@ app.post("/org-api/getone", (req, res) => {
 
 app.post("/org-api/getdata", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT gid,orgname,headname,orgtype,orgstatus,orgid 
+    const sql = `SELECT *,ST_AsGeojson(geom) as geojson 
         FROM organization`;
 
     eec.query(sql).then(r => {
@@ -64,7 +64,7 @@ app.post("/org-api/update", async (req, res) => {
             await eec.query(sql)
         }
     }
-    if (data.geom !== "") {
+    if (data.geom !== "" && data.geom.geometry) {
         let sql = `UPDATE organization SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE orgid='${orgid}'`
         await eec.query(sql)

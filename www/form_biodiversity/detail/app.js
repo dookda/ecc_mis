@@ -85,7 +85,7 @@ map.on('click', (e) => {
     $("#lon").val(e.latlng.lng)
 });
 
-axios.post(url + "/notice-api/getdataone", { proj_id: proj_id }).then(r => {
+axios.post(url + "/biodiversity-api/getdataone", { proj_id: proj_id }).then(r => {
     // console.log(r);
     getAmp(r.data.data[0].pro);
     getTam(r.data.data[0].amp);
@@ -95,9 +95,10 @@ axios.post(url + "/notice-api/getdataone", { proj_id: proj_id }).then(r => {
         $('#tam').val(r.data.data[0].tam);
     }, 1000);
 
-    $('#noticename').val(r.data.data[0].noticename);
-    $('#noticedetail').val(r.data.data[0].noticedetail);
-    $('#noticeplace').val(r.data.data[0].noticeplace);
+    $('#bioname').val(r.data.data[0].bioname);
+    $('#biodetail').val(r.data.data[0].biodetail);
+    $('#bioplace').val(r.data.data[0].bioplace);
+    $('#biotype').val(r.data.data[0].biotype);
     $('#lat').val(r.data.data[0].lat);
     $('#lon').val(r.data.data[0].lon);
     $("#preview").attr("src", r.data.data[0].img);
@@ -135,7 +136,7 @@ let sendData = () => {
         }
     }
     console.log(obj);
-    axios.post(url + "/notice-api/update", obj).then((r) => {
+    axios.post(url + "/biodiversity-api/update", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
     return false;

@@ -406,7 +406,7 @@ let loadTable2 = () => {
                     return `${meta.row + 1}`
                 }
             },
-            { data: 'prj_name' },
+            { data: 'prj_cate' },
             { data: 'prj_measure' },
             {
                 data: null,

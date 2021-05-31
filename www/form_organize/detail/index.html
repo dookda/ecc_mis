@@ -199,7 +199,7 @@
 
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="form-control" id="orgpro" onchange="loadorgamp(this.value)">
+                            <select class="form-control" id="pro" onchange="getAmp(this.value)">
                                 <option value=""></option>
                                 <option value="22">จันทบุรี</option>
                                 <option value="24">ฉะเชิงเทรา</option>
@@ -214,13 +214,17 @@
 
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <select class="form-control" id="orgamp" onchange="loadorgtam(this.value)"></select>
+                            <select class="form-control" id="amp" onchange="getTam(this.value)"></select>
                         </div>
 
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <select class="form-control" id="orgtam"></select>
+                            <select class="form-control" id="tam" onchange="getTamOne(this.value)"></select>
                         </div>
+
+                        <input type="hidden" id="pro_name">
+                        <input type="hidden" id="amp_name">
+                        <input type="hidden" id="tam_name">
 
                         <label>ย้ายหมุดไปยังสถานที่ทำการของท่าน</label>
                         <div id="map"></div>
@@ -267,6 +271,14 @@
                                     id="typ_commulearn">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     การเรียนรู้บนฐานชุมชน
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="กลุ่มอาชีพ เศรษฐกิจชุมชน"
+                                    id="typ_commuecon" name="typ_commuecon">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    กลุ่มอาชีพ/เศรษฐกิจชุมชน
                                 </label>
                             </div>
 

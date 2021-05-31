@@ -85,42 +85,59 @@ let loadheadtam = (e) => {
     })
 }
 
-let loadorgamp = (e) => {
+let getAmp = (e) => {
     axios.get(url + "/eec-api/get-th-amp/" + e).then(r => {
-        $("#orgamp").empty()
-        $("#orgtam").empty()
-        $("#orgamp").append(`<option value=""></option>`)
+        $("#amp").empty()
+        $("#tam").empty()
+        $("#amp").append(`<option value=""></option>`)
         r.data.data.map(i => {
-            $("#orgamp").append(`<option value="${i.ap_idn}">${i.amp_name}</option>`)
+            $("#amp").append(`<option value="${i.ap_idn}">${i.amp_name}</option>`)
         })
     })
 }
 
-let loadorgtam = (e) => {
+let getTam = (e) => {
     axios.get(url + "/eec-api/get-th-tam/" + e).then(r => {
-        $("#orgtam").empty()
-        $("#orgtam").append(`<option value=""></option>`)
+        // console.log(r);
+        $("#tam").empty()
+        $("#tam").append(`<option value=""></option>`)
         r.data.data.map(i => {
-            $("#orgtam").append(`<option value="${i.tb_idn}">${i.tam_name}</option>`)
+            $("#tam").append(`<option value="${i.tb_idn}">${i.tam_name}</option>`)
+        })
+    })
+}
+
+let getTamOne = (e) => {
+    axios.get(url + "/eec-api/get-th-onetam/" + e).then(r => {
+        r.data.data.map(i => {
+            // console.log(i);
+            $("#pro_name").val(i.pro_name)
+            $("#amp_name").val(i.amp_name)
+            $("#tam_name").val(i.tam_name)
         })
     })
 }
 
 let loadData = (orgid) => {
     axios.post(url + "/org-api/getone", { orgid: orgid }).then(async r => {
-        console.log(r);
+        // console.log(r);
 
         loadheadamp(r.data.data[0].headpro)
         loadheadtam(r.data.data[0].headamp)
 
-        setTimeout(() => {
-            loadorgamp(r.data.data[0].orgpro)
-            loadorgtam(r.data.data[0].orgamp)
-        }, 1000)
+        getAmp(r.data.data[0].orgpro);
+        getTam(r.data.data[0].orgamp);
+
+        setTimeout(async () => {
+            $('#pro').val(r.data.data[0].orgpro);
+            $('#amp').val(r.data.data[0].orgamp);
+            $('#tam').val(r.data.data[0].orgtam);
+            getTamOne($('#tam').val());
+        }, 1500)
 
         setTimeout(() => {
             r.data.data.map(i => {
-                console.log(i)
+                // console.log(i)
                 $('#orgid').val(i.orgid)
                 $('#orgname').val(i.orgname)
                 $('#orgcontact').val(i.orgcontact)
@@ -140,26 +157,27 @@ let loadData = (orgid) => {
                 $('#orgvno').val(i.orgvno)
                 $('#orgvmoo').val(i.orgvmoo)
                 $('#orgvname').val(i.orgvname)
-                $('#orgpro').val(i.orgpro)
-                $('#orgamp').val(i.orgamp)
-                $('#orgtam').val(i.orgtam)
+                // $('#orgpro').val(i.orgpro)
+                // $('#orgamp').val(i.orgamp)
+                // $('#orgtam').val(i.orgtam)
                 $('#lat').val(i.lat)
                 $('#lon').val(i.lon)
-                i.typ_organic !== null ? $("#typ_organic").prop('checked', true) : null
-                i.typ_commutrav !== null ? $("#typ_commutrav").prop('checked', true) : null
-                i.typ_commucomfort !== null ? $("#typ_commucomfort").prop('checked', true) : null
-                i.typ_commulearn !== null ? $("#typ_commulearn").prop('checked', true) : null
-                i.typ_commuforest !== null ? $("#typ_commuforest").prop('checked', true) : null
-                i.typ_houseforest !== null ? $("#typ_houseforest").prop('checked', true) : null
-                i.typ_mangforest !== null ? $("#typ_mangforest").prop('checked', true) : null
-                i.typ_watmanage !== null ? $("#typ_watmanage").prop('checked', true) : null
-                i.typ_landmange !== null ? $("#typ_landmange").prop('checked', true) : null
-                i.typ_fishing !== null ? $("#typ_fishing").prop('checked', true) : null
-                i.typ_industwaste !== null ? $("#typ_industwaste").prop('checked', true) : null
-                i.typ_housewaste !== null ? $("#typ_housewaste").prop('checked', true) : null
-                i.typ_airpollution !== null ? $("#typ_airpollution").prop('checked', true) : null
-                i.typ_noisepollution !== null ? $("#typ_noisepollution").prop('checked', true) : null
-                i.typ_other !== null ? $("#typ_other").prop('checked', true) : null
+                i.typ_organic !== null ? $("#typ_organic").prop('checked', true) : null;
+                i.typ_commutrav !== null ? $("#typ_commutrav").prop('checked', true) : null;
+                i.typ_commucomfort !== null ? $("#typ_commucomfort").prop('checked', true) : null;
+                i.typ_commulearn !== null ? $("#typ_commulearn").prop('checked', true) : null;
+                i.typ_commuecon !== null ? $("#typ_commuecon").prop('checked', true) : null;
+                i.typ_commuforest !== null ? $("#typ_commuforest").prop('checked', true) : null;
+                i.typ_houseforest !== null ? $("#typ_houseforest").prop('checked', true) : null;
+                i.typ_mangforest !== null ? $("#typ_mangforest").prop('checked', true) : null;
+                i.typ_watmanage !== null ? $("#typ_watmanage").prop('checked', true) : null;
+                i.typ_landmange !== null ? $("#typ_landmange").prop('checked', true) : null;
+                i.typ_fishing !== null ? $("#typ_fishing").prop('checked', true) : null;
+                i.typ_industwaste !== null ? $("#typ_industwaste").prop('checked', true) : null;
+                i.typ_housewaste !== null ? $("#typ_housewaste").prop('checked', true) : null;
+                i.typ_airpollution !== null ? $("#typ_airpollution").prop('checked', true) : null;
+                i.typ_noisepollution !== null ? $("#typ_noisepollution").prop('checked', true) : null;
+                i.typ_other !== null ? $("#typ_other").prop('checked', true) : null;
 
                 $('#orgtypeother').val(i.orgtypeother)
                 $('#orgstatus').val(i.orgstatus)
@@ -217,7 +235,7 @@ let resizeImage = (file) => {
 }
 
 let sendData = () => {
-    console.log(geom.toGeoJSON());
+    // console.log(geom.toGeoJSON());
     const obj = {
         orgid: $('#orgid').val(),
         data: {
@@ -238,15 +256,21 @@ let sendData = () => {
             orgvno: $('#orgvno').val(),
             orgvmoo: $('#orgvmoo').val(),
             orgvname: $('#orgvname').val(),
-            orgpro: $('#orgpro').val(),
-            orgamp: $('#orgamp').val(),
-            orgtam: $('#orgtam').val(),
+            // orgpro: $('#orgpro').val(),
+            // orgamp: $('#orgamp').val(),
+            // orgtam: $('#orgtam').val(),
+            orgpro: $('#pro').val(),
+            orgamp: $('#amp').val(),
+            orgtam: $('#tam').val(),
+            pro_name: $('#pro_name').val(),
+            amp_name: $('#amp_name').val(),
+            tam_name: $('#tam_name').val(),
             lat: $('#lat').val(),
             lon: $('#lon').val(),
-            orgtype: $('#orgtype').val(),
             typ_commutrav: $("#typ_commutrav").is(":checked") ? $("#typ_commutrav").val() : '',
             typ_commucomfort: $("#typ_commucomfort").is(":checked") ? $("#typ_commucomfort").val() : '',
             typ_commulearn: $("#typ_commulearn").is(":checked") ? $("#typ_commulearn").val() : '',
+            typ_commuecon: $("#typ_commuecon").is(":checked") ? $("#typ_commuecon").val() : '',
             typ_commuforest: $("#typ_commuforest").is(":checked") ? $("#typ_commuforest").val() : '',
             typ_houseforest: $("#typ_houseforest").is(":checked") ? $("#typ_houseforest").val() : '',
             typ_mangforest: $("#typ_mangforest").is(":checked") ? $("#typ_mangforest").val() : '',

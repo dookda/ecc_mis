@@ -6,7 +6,7 @@ const eec = con.eec;
 app.post("/notice-api/getdataone", (req, res) => {
     const { proj_id } = req.body;
     // console.log(proj_id);
-    const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, lat,lon,
+    const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, noticetype, lat,lon,
             pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
             ST_AsGeojson(geom) as geojson  
         FROM noticetb WHERE proj_id='${proj_id}'`;
@@ -20,7 +20,7 @@ app.post("/notice-api/getdataone", (req, res) => {
 
 app.post("/notice-api/getdata", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, 
+    const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, noticetype,lat,lon,
             pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
             ST_AsGeojson(geom) as geojson  
         FROM noticetb`;
@@ -57,6 +57,7 @@ app.post("/notice-api/insert", async (req, res) => {
 
 app.post("/notice-api/update", async (req, res) => {
     const { proj_id, data } = req.body;
+    console.log(proj_id, data.geom);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'geom') {
@@ -65,7 +66,7 @@ app.post("/notice-api/update", async (req, res) => {
         }
     }
 
-    if (data.geom !== "") {
+    if (data.geom !== "" && data.geom.geometry) {
         let sql = `UPDATE noticetb SET geom = ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}') 
             WHERE proj_id='${proj_id}'`;
         await eec.query(sql)

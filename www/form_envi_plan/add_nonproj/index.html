@@ -96,9 +96,21 @@
 
                 <div class="container">
                     <form id="fieldForm">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <h6>ชื่อ (แผนงาน โครงการ)</h6>
                             <input type="text" class="form-control" id="prj_name" required>
+                        </div> -->
+
+
+                        <div class="form-group">
+                            <h6>ประเภทของแผนงานโครงการ</h6>
+                            <select class="form-control" id="prj_cate">
+                                <option value="Flagship">Flagship</option>
+                                <option value="ยุทธศาสตร์ที่ 1">ยุทธศาสตร์ที่ 1</option>
+                                <option value="ยุทธศาสตร์ที่ 2">ยุทธศาสตร์ที่ 2</option>
+                                <option value="ยุทธศาสตร์ที่ 3">ยุทธศาสตร์ที่ 3</option>
+                                <option value="ยุทธศาสตร์ที่ 4">ยุทธศาสตร์ที่ 4</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -138,7 +150,6 @@
                             <h6>แนวทางการปฎิบัติ</h6>
                             <ul id="list_measure"></ul>
                         </div>
-
 
                         <div class="mt-1">
                             <button type="submit" class="btn btn-info" id="button">

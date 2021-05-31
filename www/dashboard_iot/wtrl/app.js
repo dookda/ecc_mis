@@ -100,7 +100,6 @@ let showChart = (typ, unit, dat) => {
     })
 }
 
-
 axios.get(url + "/eec-api/iot-data-bytype-last20/rangd").then(async (r) => {
     let data = [];
     let time = (new Date()).getTime();

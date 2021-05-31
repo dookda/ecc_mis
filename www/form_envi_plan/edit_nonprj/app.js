@@ -111,7 +111,7 @@ let getValue = (id) => {
         console.log(r.data.data[0]);
         $('#prj_id').val(r.data.data[0].prj_id)
         $('#prj_measure').val(r.data.data[0].prj_measure)
-        $('#prj_name').val(r.data.data[0].prj_name)
+        $('#prj_cate').val(r.data.data[0].prj_cate)
         if (r.data.data[0].prj_measure) {
             getActivity(r.data.data[0].prj_measure)
         }
@@ -137,7 +137,7 @@ $("#fieldForm").submit(function (e) {
             act_9: $('#act_9').val(),
             act_10: $('#act_10').val(),
             act_11: $('#act_11').val(),
-            prj_name: $('#prj_name').val()
+            prj_cate: $('#prj_cate').val()
         }
     }
     console.log(obj);
