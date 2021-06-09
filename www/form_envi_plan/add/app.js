@@ -6,8 +6,9 @@ let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-uid && typ == "admin" ? null : logout();
-$("#aut").html(`${org}`)
+// uid && typ == "admin" ? null : logout();
+uid && org ? null : logout();
+$("#aut").html(`${org}`);
 
 let latlng = {
     lat: 13.305567,
@@ -70,12 +71,12 @@ let refreshPage = () => {
     window.open("./../report/index.html", "_self");
 }
 
-tinymce.init({
-    selector: 'textarea',
-    menubar: false,
-    statusbar: false,
-    toolbar: true
-})
+// tinymce.init({
+//     selector: 'textarea',
+//     menubar: false,
+//     statusbar: false,
+//     toolbar: true
+// })
 
 $("#prj_cate").change(i => {
     console.log(i)
@@ -143,9 +144,18 @@ let getActivity = (prj_measure) => {
     })
 }
 
+let getData = () => {
+    axios.get(url + "/login-api/getorg").then(r => {
+        r.data.data.map(i => {
+            $("#prj_operat").append(`<option value="${i.prj_operat}">${i.prj_operat}</option>`)
+        })
+    })
+}
+getData();
+
 $("#fieldForm").submit(function (e) {
     e.preventDefault();
-    tinyMCE.triggerSave();
+    // tinyMCE.triggerSave();
 
     const obj = {
         data: {
@@ -168,7 +178,7 @@ $("#fieldForm").submit(function (e) {
 
             prj_detail: $('#prj_detail').val(),
             prj_obj: $('#prj_obj').val(),
-            prj_site: $('#prj_site').val(),
+            // prj_site: $('#prj_site').val(),
             prj_time: $('#prj_time').val(),
             budget: $('#budget').val(),
             budg_61: $('#budg_61').val(),
@@ -188,7 +198,7 @@ $("#fieldForm").submit(function (e) {
             proc_troub: $('#proc_troub').val(),
             fund_troub: $('#fund_troub').val(),
             fund_accpt: $('#fund_accpt').val(),
-            fund_year: $('#fund_year').val(),
+            // fund_year: $('#fund_year').val(),
             opert_stat: $('#opert_stat').val(),
             opert_estm: $('#opert_estm').val(),
             budg_year: $('#budg_year').val(),
@@ -197,13 +207,13 @@ $("#fieldForm").submit(function (e) {
             prj_rai: $('#prj_rai').val(),
             prj_name_c: $('#prj_name_c').val(),
             prj_obj_c: $('#prj_obj_c').val(),
-            prj_method: $('#prj_method').val(),
+            // prj_method: $('#prj_method').val(),
             prj_tech: $('#prj_tech').val(),
-            prj_area: $('#prj_area').val(),
+            // prj_area: $('#prj_area').val(),
             prj_output: $('#prj_output').val(),
             prj_troub: $('#prj_troub').val(),
             prj_comnt: $('#prj_comnt').val(),
-            prj_info: $('#prj_info').val(),
+            // prj_info: $('#prj_info').val(),
             // filename: $('#filename').val(),
             coor_name: $('#coor_name').val(),
             coor_pos: $('#coor_pos').val(),
@@ -212,7 +222,7 @@ $("#fieldForm").submit(function (e) {
             geom: geom
         }
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/projmon-api/insertdata", obj).then((r) => {
         r.data.data == "success" ? refreshPage() : null
     })

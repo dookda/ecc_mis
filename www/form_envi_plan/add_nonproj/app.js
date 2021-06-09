@@ -6,7 +6,11 @@ let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-uid && typ == "admin" ? null : logout();
+// uid && typ == "admin" ? null : logout();
+
+uid && org ? null : logout();
+$("#aut").html(`${org}`);
+
 $("#aut").html(`${org}`)
 
 let refreshPage = () => {
@@ -14,8 +18,8 @@ let refreshPage = () => {
     window.open("./../report/index.html", "_self");
 }
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 $("#prj_cate").change(i => {
     console.log(i)

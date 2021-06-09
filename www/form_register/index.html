@@ -63,14 +63,33 @@
             </div>
 
             <div class="form-group">
-                <h5>จังหวัด: </h5>
-                <select class="form-control" id="prov">
-                    <option value="ฉะเชิงเทรา" selected>ฉะเชิงเทรา</option>
-                    <option value="ชลบุรี">ชลบุรี</option>
-                    <option value="ระยอง">ระยอง</option>
-                    <option value="จังหวัดอื่น ๆ">จังหวัดอื่น ๆ</option>
+                <label>จังหวัด:</label>
+                <select class="form-control" id="pro" onchange="getAmp(this.value)">
+                    <option value=""></option>
+                    <option value="22">จันทบุรี</option>
+                    <option value="24">ฉะเชิงเทรา</option>
+                    <option value="20">ชลบุรี</option>
+                    <option value="23">ตราด</option>
+                    <option value="26">นครนายก</option>
+                    <option value="25">ปราจีนบุรี</option>
+                    <option value="21">ระยอง</option>
+                    <option value="27">สระแก้ว</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label>อำเภอ:</label>
+                <select class="form-control" id="amp" onchange="getTam(this.value)"></select>
+            </div>
+
+            <div class="form-group">
+                <label>ตำบล:</label>
+                <select class="form-control" id="tam" onchange="getTamOne(this.value)"></select>
+            </div>
+
+            <input type="hidden" id="pro_name">
+            <input type="hidden" id="amp_name">
+            <input type="hidden" id="tam_name">
 
             <div class="form-group">
                 <h5>อาชีพ: </h5>
@@ -173,7 +192,7 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>อัพเดทข้อมูลแล้ว </p>
+                    <p>ลงทะเบียนสำเร็จ </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
@@ -196,9 +215,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
-<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/versions/2.8.0/sdk.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-
-<script src="./register.js"></script>
+<script src="./app.js"></script>
 
 </html>

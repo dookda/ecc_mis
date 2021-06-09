@@ -5,7 +5,7 @@ token = 'ZWVjSW9UYnlFbkdSSURzU3RhdGlvbjE=';
 setInterval(async () => {
     let obj = {
         token: token,
-        stname: "sta2",
+        stname: "station_o4",
         deep: Math.floor(Math.random() * 90) + 100,
         temperature: Math.floor(Math.random() * 90) + 10,
         humidity: Math.floor(Math.random() * 90) + 10

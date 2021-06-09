@@ -17,7 +17,7 @@ app.post("/login-api/insert", (req, res) => {
 })
 
 app.get("/login-api/getorg", (req, res) => {
-    const sql = `SELECT DISTINCT prj_operat FROM eecprj_mon ORDER BY prj_operat`
+    const sql = `SELECT DISTINCT organize as prj_operat FROM eecprj_user ORDER BY organize`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

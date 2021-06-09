@@ -7,7 +7,8 @@ setInterval(async () => {
         stname: "sta1",
         do: Math.floor(Math.random() * 90) + 10,
         ec: Math.floor(Math.random() * 90) + 100,
-        ph: Math.floor(Math.random() * 90) + 10
+        ph: Math.floor(Math.random() * 90) + 10,
+        tmp: Math.floor(Math.random() * 90) + 10,
     }
     axios.post(url, obj).then(r => {
         console.log(r);

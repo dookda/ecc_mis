@@ -91,3 +91,6 @@ app.use(notice);
 
 const biodiversity = require('./service/biodiversity');
 app.use(biodiversity);
+
+const gwater = require('./service/gwater');
+app.use(gwater);

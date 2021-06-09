@@ -75,6 +75,23 @@ app.get("/eec-api/iot-data-bytype-last20/:type", (req, res) => {
     });
 })
 
+app.post("/eec-api/test", (req, res) => {
+    const { stname, deep, humidity, temperature, token } = req.body
+    console.log(stname, deep, humidity, temperature, token, "daa")
+    const tokenServer = 'ZWVjSW9UYnlFbkdSSURzU3RhdGlvbjE=';
+
+
+
+    // if (token == tokenServer) {
+    //     const sql = `INSERT INTO iotdata(sta, val, param, val1, param1, val2, param2, ts)VALUES('${sta}', '${val}', '${param}', '${val1}', '${param1}', '${val2}', '${param2}',now())`;
+    //     iot.query(sql).then((r) => {
+    //         res.status(200).json({
+    //             status: "insert ok"
+    //         });
+    //     });
+    // }
+})
+
 // token generate
 // console.log(Buffer.from("eecIoTbyEnGRIDsStation1").toString('base64'))
 // console.log(Buffer.from("c2FrZGFob21odWFu", 'base64').toString())

@@ -227,4 +227,14 @@ app.post("/projmon-api/deletedatanonprj", (req, res) => {
     })
 })
 
+app.get("/projmon-api/export", (req, res) => {
+
+    const sql = `SELECT * FROM projmon`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 module.exports = app;

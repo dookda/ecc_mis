@@ -4,7 +4,6 @@ var map = L.map('map', {
     zoomControl: false
 });
 
-
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -104,141 +103,105 @@ lc.start();
 
 var chart;
 
-let showChart = async (station, param, unit, dat) => {
+let showChart = async (param, cat, dat) => {
     Highcharts.chart(param, {
-        chart: {
-            type: 'spline',
-            animation: Highcharts.svg,
-            // marginRight: 100,
-            events: {
-                load: function () {
-                    var series = this.series[0];
-                    setInterval(async () => {
-                        await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api.php", { station: station, param: param, limit: 1 }).then((r) => {
-                            console.log(r);
 
-                            let x = (new Date()).getTime();
-                            let y = Number(r.data.data[0].val);
-                            return series.addPoint([x, y], true, true);
-                        })
-                    }, 10000);
-                }
-            },
-            zoomType: 'x'
-        },
-
-        time: {
-            useUTC: false
-        },
-
-        title: false,
-        accessibility: {
-            announceNewData: {
-                enabled: true,
-                minAnnounceInterval: 15000,
-                announcementFormatter: function (allSeries, newSeries, newPoint) {
-                    if (newPoint) {
-                        return 'New point added. Value: ' + newPoint.y;
-                    }
-                    return false;
-                }
+        title: {
+            text: '',
+            style: {
+                display: 'none'
             }
         },
-
-        xAxis: {
-            type: 'datetime',
-            tickPixelInterval: 120,
-            minorTickInterval: 'auto',
-            startOnTick: false,
-            endOnTick: false
+        subtitle: {
+            text: '',
+            style: {
+                display: 'none'
+            }
         },
 
         yAxis: {
             title: {
-                text: unit
-            },
-            // min: -5,
-            // max: 5,
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }],
-            tickInterval: 1
+                text: param
+            }
         },
 
-        tooltip: {
-            headerFormat: '<b>{series.name}</b><br/>',
-            //  pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f} cm'
-            pointFormat: 'เวลา {point.x:%H:%M:%S} น.<br/>{point.y:.2f} cm'
+        xAxis: {
+            categories: cat
         },
 
         legend: {
-            enabled: false
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
         },
 
-        exporting: {
-            enabled: false
-        },
-
-        plotOptions: {
-            series: {
-                marker: {
-                    enabled: false
-                }
-            }
-        },
         series: [{
             name: param,
             data: dat
-        }]
-    })
+        }],
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    });
 }
 
-$("#station").on("change", async function () {
-    let station = this.value;
-    let deep = "deep";
-    let humidity = "humidity";
-    let temperature = "temperature";
-    await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api.php", { station: station, param: deep, limit: 15 }).then(async (r) => {
-        console.log(r);
-        let data = [];
-        let time = (new Date()).getTime();
-        r.data.data.map((i, k) => {
-            data.push({
-                x: time + k * 500,
-                y: Number(i.val)
-            });
-        })
-        showChart(station, deep, "cm", data)
-    })
+let last = []
+let loadData = async (station) => {
+    try {
+        let resp = await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php", { station: station, limit: 15 });
+        let datDeep = [];
+        let datTemp = [];
+        let datHumi = [];
+        let cat = [];
+        let d;
+        let t;
+        resp.data.data.map(i => {
+            d = i.d;
+            t = i.t;
+            $("#sta").text(`${i.stname}`);
+            $("#date").text(`${i.d}`);
+            $("#time").text(`${i.t}`);
+            cat.push(i.t);
+            datDeep.push(Number(i.deep));
+            datTemp.push(Number(i.temperature));
+            datHumi.push(Number(i.humidity));
+        });
 
-    await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api.php", { station: station, param: humidity, limit: 15 }).then(async (r) => {
-        console.log(r);
-        let data = [];
-        let time = (new Date()).getTime();
-        r.data.data.map((i, k) => {
-            data.push({
-                x: time + k * 500,
-                y: Number(i.val)
-            });
-        })
-        showChart(station, humidity, "%", data)
-    })
+        if (last.toString() !== cat.toString()) {
+            await showChart("deep", cat, datDeep);
+            await showChart("temperature", cat, datTemp);
+            await showChart("humidity", cat, datHumi);
+        }
+        // console.log(last, cat);
+        last = cat;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-    await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api.php", { station: station, param: temperature, limit: 15 }).then((r) => {
-        console.log(r);
-        let data = [];
-        let time = (new Date()).getTime();
+loadData("station_01");
 
-        r.data.data.map((i, k) => {
-            data.push({
-                x: time + k * 500,
-                y: Number(i.val)
-            });
-        })
-        showChart(station, temperature, "°C", data)
-    })
+$("#station").on("change", function () {
+    console.log(this.value);
+    loadData(this.value);
+
+    setInterval(async () => {
+        await loadData(this.value);
+    }, 10000);
 })
+
+
 
 

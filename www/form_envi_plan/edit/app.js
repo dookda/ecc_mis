@@ -81,12 +81,12 @@ let refreshPage = () => {
     window.open("./../report/index.html", "_self");
 }
 
-tinymce.init({
-    selector: 'textarea',
-    menubar: false,
-    statusbar: false,
-    toolbar: true,
-})
+// tinymce.init({
+//     selector: 'textarea',
+//     menubar: false,
+//     statusbar: false,
+//     toolbar: true,
+// })
 
 $("#div_proc_troub").hide()
 $("#div_fund_troub").hide()
@@ -133,7 +133,7 @@ $("#opert_stat").change(i => {
 
 $("#prj_measure").change(i => {
     let a = $("#prj_measure").val()
-    console.log(a);
+    // console.log(a);
     getActivity($("#prj_measure").val())
 })
 
@@ -141,11 +141,11 @@ let getActivity = (prj_measure) => {
     axios.post(url + "/projmon-api/getmeasure", { prj_measure: prj_measure }).then(r => {
         $("#list_measure").empty()
         axios.post(url + "/projmon-api/getmeasurebyact", { prj_id: id }).then(x => {
-            // console.log(x, prj_measure);
+
             if (x.data.data[0].prj_measure == prj_measure) {
                 r.data.data.map((i, k) => {
 
-                    console.log(x);
+                    // console.log(x);
                     if (k + 1 == 1) {
                         $("#list_measure").append(`<li>${i.prj_detail}</li>
                         <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
@@ -196,7 +196,7 @@ let getActivity = (prj_measure) => {
                         <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
                         <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_10 == null ? "" : x.data.data[0].act_10}">`)
                     }
-                    if (k + 1 == 10) {
+                    if (k + 1 == 11) {
                         $("#list_measure").append(`<li>${i.prj_detail}</li>
                         <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
                         <br><input type="text" class="form-control" id="act_${k + 1}" value="${x.data.data[0].act_11 == null ? "" : x.data.data[0].act_11}">`)
@@ -218,6 +218,15 @@ let getActivity = (prj_measure) => {
     })
 }
 
+let getData = () => {
+    axios.get(url + "/login-api/getorg").then(r => {
+        r.data.data.map(i => {
+            $("#prj_operat").append(`<option value="${i.prj_operat}">${i.prj_operat}</option>`)
+        })
+    })
+}
+getData();
+
 let getValue = (id) => {
     map.eachLayer((lyr) => {
         if (lyr.options.name == 'geojson') {
@@ -237,10 +246,10 @@ let getValue = (id) => {
         $('#prj_cate').val(r.data.data[0].prj_cate)
         $('#prj_measure').val(r.data.data[0].prj_measure)
         $('#prj_name').val(r.data.data[0].prj_name)
-        // $('#prj_detail').val(await r.data.data[0].prj_detail)
-        await tinymce.get("prj_detail").setContent(r.data.data[0].prj_detail ? r.data.data[0].prj_detail : "-");
-        // $('#prj_obj').val(await r.data.data[0].prj_obj)
-        await tinymce.get("prj_obj").setContent(r.data.data[0].prj_obj ? r.data.data[0].prj_obj : "-");
+        $('#prj_detail').val(await r.data.data[0].prj_detail)
+        // await tinymce.get("prj_detail").setContent(r.data.data[0].prj_detail ? r.data.data[0].prj_detail : "-");
+        $('#prj_obj').val(await r.data.data[0].prj_obj)
+        // await tinymce.get("prj_obj").setContent(r.data.data[0].prj_obj ? r.data.data[0].prj_obj : "-");
         $('#prj_site').val(r.data.data[0].prj_site)
         $('#prj_time').val(r.data.data[0].prj_time)
         $('#budget').val(r.data.data[0].budget)
@@ -270,19 +279,19 @@ let getValue = (id) => {
         $('#prj_locate').val(r.data.data[0].prj_locate)
         $('#prj_rai').val(r.data.data[0].prj_rai)
         $('#prj_name_c').val(r.data.data[0].prj_name_c)
-        // await $('#prj_obj_c').val(r.data.data[0].prj_obj_c)
-        await tinymce.get("prj_obj_c").setContent(r.data.data[0].prj_obj_c ? `${r.data.data[0].prj_obj_c}` : "-");
+        await $('#prj_obj_c').val(r.data.data[0].prj_obj_c)
+        // await tinymce.get("prj_obj_c").setContent(r.data.data[0].prj_obj_c ? `${r.data.data[0].prj_obj_c}` : "-");
         // await $('#prj_method').val(r.data.data[0].prj_method)
         // await tinymce.get("prj_method").setContent(r.data.data[0].prj_method ? r.data.data[0].prj_method : "-");
-        // await $('#prj_tech').val(r.data.data[0].prj_tech)
-        await tinymce.get("prj_tech").setContent(r.data.data[0].prj_tech ? r.data.data[0].prj_tech : "-");
+        await $('#prj_tech').val(r.data.data[0].prj_tech)
+        // await tinymce.get("prj_tech").setContent(r.data.data[0].prj_tech ? r.data.data[0].prj_tech : "-");
         $('#prj_area').val(r.data.data[0].prj_area)
-        // await $('#prj_output').val(r.data.data[0].prj_output)
-        await tinymce.get("prj_output").setContent(r.data.data[0].prj_output ? r.data.data[0].prj_output : "-");
-        // await $('#prj_troub').val(r.data.data[0].prj_troub)
-        await tinymce.get("prj_troub").setContent(r.data.data[0].prj_troub ? r.data.data[0].prj_troub : "-");
-        // await $('#prj_comnt').val(r.data.data[0].prj_comnt)
-        await tinymce.get("prj_comnt").setContent(r.data.data[0].prj_comnt ? r.data.data[0].prj_comnt : "-");
+        await $('#prj_output').val(r.data.data[0].prj_output)
+        // await tinymce.get("prj_output").setContent(r.data.data[0].prj_output ? r.data.data[0].prj_output : "-");
+        await $('#prj_troub').val(r.data.data[0].prj_troub)
+        // await tinymce.get("prj_troub").setContent(r.data.data[0].prj_troub ? r.data.data[0].prj_troub : "-");
+        await $('#prj_comnt').val(r.data.data[0].prj_comnt)
+        // await tinymce.get("prj_comnt").setContent(r.data.data[0].prj_comnt ? r.data.data[0].prj_comnt : "-");
         // await $('#prj_info').val(r.data.data[0].prj_info)
         // await tinymce.get("prj_info").setContent(r.data.data[0].prj_info ? r.data.data[0].prj_info : "-");
         // filename: $('#filename').val(),
@@ -313,71 +322,70 @@ getValue(id)
 
 $("#fieldForm").submit(function (e) {
     e.preventDefault();
-    tinyMCE.triggerSave();
-
+    // tinyMCE.triggerSave();
     const obj = {
         data: {
             prj_id: $('#prj_id').val(),
             prj_cate: $('#prj_cate').val(),
             prj_measure: $('#prj_measure').val(),
-            act_1: $('#act_1').val(),
-            act_2: $('#act_2').val(),
-            act_3: $('#act_3').val(),
-            act_4: $('#act_4').val(),
-            act_5: $('#act_5').val(),
-            act_6: $('#act_6').val(),
-            act_7: $('#act_7').val(),
-            act_8: $('#act_8').val(),
-            act_9: $('#act_9').val(),
-            act_10: $('#act_10').val(),
-            act_11: $('#act_11').val(),
-            prj_name: $('#prj_name').val(),
-            prj_detail: $('#prj_detail').val(),
-            prj_obj: $('#prj_obj').val(),
-            prj_site: $('#prj_site').val(),
-            prj_time: $('#prj_time').val(),
-            budget: $('#budget').val(),
-            budg_61: $('#budg_61').val(),
-            budg_62: $('#budg_62').val(),
-            budg_63: $('#budg_63').val(),
-            budg_64: $('#budg_64').val(),
-            budg_65: $('#budg_65').val(),
-            budg_66: $('#budg_66').val(),
-            budg_67: $('#budg_67').val(),
-            budg_68: $('#budg_68').val(),
-            budg_69: $('#budg_69').val(),
-            budg_70: $('#budg_70').val(),
+            act_1: $('#act_1').val() == "" ? "-" : $('#act_1').val(),
+            act_2: $('#act_2').val() == "" ? "-" : $('#act_2').val(),
+            act_3: $('#act_3').val() == "" ? "-" : $('#act_3').val(),
+            act_4: $('#act_4').val() == "" ? "-" : $('#act_4').val(),
+            act_5: $('#act_5').val() == "" ? "-" : $('#act_5').val(),
+            act_6: $('#act_6').val() == "" ? "-" : $('#act_6').val(),
+            act_7: $('#act_7').val() == "" ? "-" : $('#act_7').val(),
+            act_8: $('#act_8').val() == "" ? "-" : $('#act_8').val(),
+            act_9: $('#act_9').val() == "" ? "-" : $('#act_9').val(),
+            act_10: $('#act_10').val() == "" ? "-" : $('#act_10').val(),
+            act_11: $('#act_11').val() == "" ? "-" : $('#act_11').val(),
+            prj_name: $('#prj_name').val() == "" ? "-" : $('#prj_name').val(),
+            prj_detail: $('#prj_detail').val() == "" ? "-" : $('#prj_detail').val(),
+            prj_obj: $('#prj_obj').val() == "" ? "-" : $('#prj_obj').val(),
+            // prj_site: $('#prj_site').val(),
+            prj_time: $('#prj_time').val() == "" ? "-" : $('#prj_time').val(),
+            budget: $('#budget').val() == "" ? 0 : $('#budget').val(),
+            budg_61: $('#budg_61').val() == "" ? 0 : $('#budg_61').val(),
+            budg_62: $('#budg_62').val() == "" ? 0 : $('#budg_62').val(),
+            budg_63: $('#budg_63').val() == "" ? 0 : $('#budg_63').val(),
+            budg_64: $('#budg_64').val() == "" ? 0 : $('#budg_64').val(),
+            budg_65: $('#budg_65').val() == "" ? 0 : $('#budg_65').val(),
+            budg_66: $('#budg_66').val() == "" ? 0 : $('#budg_66').val(),
+            budg_67: $('#budg_67').val() == "" ? 0 : $('#budg_67').val(),
+            budg_68: $('#budg_68').val() == "" ? 0 : $('#budg_68').val(),
+            budg_69: $('#budg_69').val() == "" ? 0 : $('#budg_69').val(),
+            budg_70: $('#budg_70').val() == "" ? 0 : $('#budg_70').val(),
             prj_operat: $('#prj_operat').val(),
-            fund: $('#fund').val(),
+            fund: $('#fund').val() == "" ? "-" : $('#fund').val(),
             proc_stat: $('#proc_stat').val(),
-            proc_troub: $('#proc_troub').val(),
-            fund_troub: $('#fund_troub').val(),
+            proc_troub: $('#proc_troub').val() == "" ? "-" : $('#proc_troub').val(),
+            fund_troub: $('#fund_troub').val() == "" ? "-" : $('#fund_troub').val(),
             fund_accpt: $('#fund_accpt').val(),
-            fund_year: $('#fund_year').val(),
+            // fund_year: $('#fund_year').val(),
             opert_stat: $('#opert_stat').val(),
             opert_estm: $('#opert_estm').val(),
-            budg_year: $('#budg_year').val(),
+            budg_year: $('#budg_year').val() == "" ? "-" : $('#budg_year').val(),
             prj_type: $('#prj_type').val(),
-            prj_locate: $('#prj_locate').val(),
+            prj_locate: $('#prj_locate').val() == "" ? "-" : $('#prj_locate').val(),
             prj_rai: $('#prj_rai').val(),
-            prj_name_c: $('#prj_name_c').val(),
-            prj_obj_c: $('#prj_obj_c').val(),
-            prj_method: $('#prj_method').val(),
-            prj_tech: $('#prj_tech').val(),
-            prj_area: $('#prj_area').val(),
-            prj_output: $('#prj_output').val(),
-            prj_troub: $('#prj_troub').val(),
-            prj_comnt: $('#prj_comnt').val(),
-            prj_info: $('#prj_info').val(),
+            prj_name_c: $('#prj_name_c').val() == "" ? "-" : $('#prj_name_c').val(),
+            prj_obj_c: $('#prj_obj_c').val() == "" ? "-" : $('#prj_obj_c').val(),
+            // prj_method: $('#prj_method').val(),
+            prj_tech: $('#prj_tech').val() == "" ? "-" : $('#prj_tech').val(),
+            // prj_area: $('#prj_area').val(),
+            prj_output: $('#prj_output').val() == "" ? "-" : $('#prj_output').val(),
+            prj_troub: $('#prj_troub').val() == "" ? "-" : $('#prj_troub').val(),
+            prj_comnt: $('#prj_comnt').val() == "" ? "-" : $('#prj_comnt').val(),
+            // prj_info: $('#prj_info').val(),
             // filename: $('#filename').val(),
-            coor_name: $('#coor_name').val(),
-            coor_pos: $('#coor_pos').val(),
-            coor_tel: $('#coor_tel').val(),
-            coor_email: $('#coor_email').val(),
+            coor_name: $('#coor_name').val() == "" ? "-" : $('#coor_name').val(),
+            coor_pos: $('#coor_pos').val() == "" ? "-" : $('#coor_pos').val(),
+            coor_tel: $('#coor_tel').val() == "" ? "-" : $('#coor_tel').val(),
+            coor_email: $('#coor_email').val() == "" ? "-" : $('#coor_email').val(),
             geom: geom
         }
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/projmon-api/updatedata", obj).then((r) => {
         r.data.data == "success" ? refreshPage() : null
     })

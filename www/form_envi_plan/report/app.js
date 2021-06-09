@@ -403,6 +403,7 @@ let loadTable2 = () => {
             {
                 data: '',
                 render: (data, type, row, meta) => {
+                    console.log(row);
                     return `${meta.row + 1}`
                 }
             },
