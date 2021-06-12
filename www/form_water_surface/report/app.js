@@ -3,8 +3,8 @@ $(document).ready(() => {
 
 });
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
@@ -97,6 +97,7 @@ let getChart = (ws_id) => {
     });
 }
 
+
 let loadTable = () => {
     let table = $('#myTable').DataTable({
         ajax: {
@@ -121,7 +122,7 @@ let loadTable = () => {
                     // console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.ws_id},'${row.ws_station}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
+                       <a class="btn btn-margin btn-outline-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</a>`
                 }
             }
         ],
@@ -129,10 +130,10 @@ let loadTable = () => {
         scrollX: false,
     });
 
-    table.on('search.dt', function () {
-        let data = table.rows({ search: 'applied' }).data();
-        console.log(data);
-    });
+    // table.on('search.dt', function () {
+    //     let data = table.rows({ search: 'applied' }).data();
+    //     filterSta(data);
+    // });
 }
 
 let geneChart = (arr, div, tt, unit) => {
@@ -178,6 +179,85 @@ let geneChart = (arr, div, tt, unit) => {
     columnTemplate.strokeOpacity = 1;
 }
 
+
+let getStation = () => {
+    axios.get(url + "/ws-api/getstation").then(r => {
+        // console.log(r);
+        r.data.data.map(i => $("#sta").append(`<option value="${i.ws_station}">${i.ws_river} (${i.ws_station})</option>`))
+    })
+}
+getStation();
+
+let getSeries = (sta) => {
+    let ws_wqi = [];
+    let ws_bod = [];
+    let ws_do = [];
+    let ws_fcb = [];
+    let ws_nh3n = [];
+    let ws_tcb = [];
+    axios.post(url + "/ws-api/getstationone", { ws_station: sta }).then(async r => {
+        console.log(r);
+        await r.data.data.map(i => {
+            ws_wqi.push({ "date": i.ws_date, "value": Number(i.ws_wqi) });
+            ws_bod.push({ "date": i.ws_date, "value": Number(i.ws_bod) });
+            ws_do.push({ "date": i.ws_date, "value": Number(i.ws_do) });
+            ws_fcb.push({ "date": i.ws_date, "value": Number(i.ws_fcb) });
+            ws_nh3n.push({ "date": i.ws_date, "value": Number(i.ws_nh3n) });
+            ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
+        });
+
+        lineChart("_ws_wqi", "WQI", ws_wqi);
+        lineChart("_ws_bod", "DO(mg/l)", ws_bod);
+        lineChart("_ws_do", "BOD(mg/l)", ws_do);
+        lineChart("_ws_fcb", "FCB (MPN/100ml)", ws_fcb);
+        lineChart("_ws_nh3n", "แอมโมเนีย (mg/l)", ws_nh3n);
+        lineChart("_ws_tcb", "TCB(MPN/100ml)", ws_tcb);
+    })
+}
+getSeries("BK01");
+$("#sta").change(function () {
+    getSeries(this.value);
+})
+
+let lineChart = (div, label, series) => {
+
+    am4core.useTheme(am4themes_animated);
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
+
+    // Add data
+    chart.data = series;
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.grid.template.location = 0;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+    // Create series
+    function createSeries(field, name) {
+        var series = chart.series.push(new am4charts.LineSeries());
+        series.dataFields.valueY = field;
+        series.dataFields.dateX = "date";
+        series.name = name;
+        series.tooltipText = "{dateX}: [b]{valueY}[/]";
+        series.strokeWidth = 2;
+
+        var bullet = series.bullets.push(new am4charts.CircleBullet());
+        bullet.circle.stroke = am4core.color("#fff");
+        bullet.circle.strokeWidth = 2;
+
+        return series;
+    }
+
+    var series1 = createSeries("value", label);
+
+    chart.legend = new am4charts.Legend();
+    chart.cursor = new am4charts.XYCursor();
+}
+
+lineChart()
 
 
 
