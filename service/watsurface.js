@@ -3,6 +3,27 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
+app.get("/ws-api/getstation", (req, res) => {
+    const sql = `SELECT DISTINCT ws_station, ws_river FROM surwater ORDER BY ws_station`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/ws-api/getstationone", (req, res) => {
+    const { ws_station } = req.body;
+    const sql = `SELECT *, TO_CHAR(ws_date, 'DD-MM-YYYY') as date FROM surwater 
+                    WHERE ws_station='${ws_station}'
+                    ORDER BY ws_date`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/ws-api/getone", (req, res) => {
     const { ws_id } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
