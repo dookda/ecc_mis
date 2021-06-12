@@ -3,8 +3,8 @@ $(document).ready(() => {
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
@@ -75,21 +75,26 @@ let getChart = (ws_id) => {
     }
     axios.post(url + "/ws-api/getone", obj).then((r) => {
         console.log(r);
-        $("#staname").text(r.data.data[0].ws_station)
-        $("#charttitle").show()
+        $("#staname").text(r.data.data[0].ws_station);
+        $("#date").text(r.data.data[0].date)
+        $("#charttitle").show();
         for (const [key, value] of Object.entries(r.data.data[0])) {
+
             if (v[key] && value) {
-                $("#chartd").append(
-                    `<div class="col-sm-4">
-                        <div class="card p-1">
-                            <div class="card-body" id="${key}"></div>
-                        </div>
-                    </div>`
-                )
-                geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1]);
+                // console.log(key, value);
+                if (Number(value) < 9999999) {
+                    $("#chartd").append(
+                        `<div class="col-sm-4">
+                            <div class="card p-1">
+                                <div class="card-body" id="${key}"></div>
+                            </div>
+                        </div>`
+                    )
+                    geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1]);
+                }
             }
         }
-    })
+    });
 }
 
 let loadTable = () => {
@@ -121,6 +126,12 @@ let loadTable = () => {
             }
         ],
         searching: true,
+        scrollX: false,
+    });
+
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data();
+        console.log(data);
     });
 }
 

@@ -38,7 +38,8 @@ function getChart(wq_id) {
     }
     axios.post(url + "/wq-api/getone", obj).then((r) => {
         $("#chartdiv").show()
-        console.log(r.data.data[0]);
+        $("#chartModal").modal("show");
+        // console.log(r.data.data[0]);
         geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].af_wq_bod }, { "cat": "หลังบำบัด", "val": r.data.data[0].bf_wq_bod }], "wq_bod", "ค่าบีโอดี (BOD)", "mg/L")
         geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].af_wq_cod }, { "cat": "หลังบำบัด", "val": r.data.data[0].bf_wq_cod }], "wq_cod", "ค่าซีโอดี (COD)", "mg/L")
         geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].af_wq_cond }, { "cat": "หลังบำบัด", "val": r.data.data[0].bf_wq_cond }], "wq_cond", "ความนำไฟฟ้า (Conductivity)", "μs/cm")
@@ -72,10 +73,10 @@ let loadTable = () => {
             {
                 data: '',
                 render: (data, type, row) => {
-                    return `${row.wq_id} <span class="badge bg-info text-white">aa</span>`
+                    return ` <span class="badge bg-info text-white">${row.id}</span>`
                 }
             },
-            { data: 'report_n' },
+            // { data: 'report_n' },
             { data: 'prov' },
             { data: 'date' },
             // { data: 'proc_stat' },
@@ -135,7 +136,7 @@ let geneChart = (arr, div, tt, unit) => {
     axis.title.rotation = 270;
     axis.title.align = "center";
     axis.title.valign = "top";
-    axis.title.dy = 40;
+    axis.title.dy = 20;
 
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());

@@ -117,8 +117,8 @@
                 <table id="myTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>เลขอ้างอิง</th>
-                            <th>ชื่อรายงาน</th>
+                            <th>ลำดับ</th>
+                            <!-- <th>ชื่อรายงาน</th> -->
                             <th>จังหวัด</th>
                             <th>วันที่รายงาน</th>
                             <!-- <th>สถานะงบประมาณ</th>
@@ -131,38 +131,7 @@
             </div>
 
         </section><!-- End Services Section -->
-        <div id="chartdiv">
-            <label for="">ที่ได้จากการตรวจวัด</label>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_bod"></div>
-                <div class="col-sm-4 wqchart" id="wq_cod"></div>
-                <div class="col-sm-4 wqchart" id="wq_cond"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_do"></div>
-                <div class="col-sm-4 wqchart" id="wq_fcb"></div>
-                <div class="col-sm-4 wqchart" id="wq_og"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_ph"></div>
-                <div class="col-sm-4 wqchart" id="wq_sal"></div>
-                <div class="col-sm-4 wqchart" id="wq_ses"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_ss"></div>
-                <div class="col-sm-4 wqchart" id="wq_tcb"></div>
-                <div class="col-sm-4 wqchart" id="wq_tds"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_temp"></div>
-                <div class="col-sm-4 wqchart" id="wq_tkn"></div>
-                <div class="col-sm-4 wqchart" id="wq_tn"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 wqchart" id="wq_tp"></div>
-                <div class="col-sm-4 wqchart" id="wq_turb"></div>
-            </div>
-        </div>
+
         <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
         <div class="container-fluid mt-3 mb-6">
             <p> <span class="ver">ปรับปรุง 14/03/2021</span></p>
@@ -196,6 +165,118 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="chartModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="chartdiv">
+                        <label for="">ที่ได้จากการตรวจวัด</label>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_bod"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_cod"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_cond"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_do"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_fcb"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_og"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_ph"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_sal"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_ses"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_ss"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_tcb"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_tds"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_temp"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_tkn"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_tn"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_tp"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body wqchart" id="wq_turb"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
         </div>

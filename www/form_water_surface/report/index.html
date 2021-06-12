@@ -115,10 +115,21 @@
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                     </div>
                 </div>
+                <hr>
+                <div class="container">
+                    <span id="charttitle">
+                        <h5>ค่าจากการตรวจวัด ของสถานี <span id="staname"></span> วันที่ <span id="date"></span></h5>
+                    </span>
+                    <div class="spinner-border" role="status" id="spinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="row" id="chartd"></div>
+                </div>
+                <hr>
                 <table id="myTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>สถานี/หมายเลขอ้างอิง</th>
+                            <th>รหัสสถานี</th>
                             <th>สถานที่</th>
                             <th>ชื่อแหล่งน้ำ</th>
                             <th>วันที่รายงาน</th>
@@ -128,16 +139,7 @@
                 </table>
 
             </div>
-            <hr>
-            <div class="container">
-                <span id="charttitle">
-                    <h5>ค่าจากการตรวจวัด ของสถานี <span id="staname"></span></h5>
-                </span>
-                <div class="spinner-border" role="status" id="spinner">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <div class="row" id="chartd"></div>
-            </div>
+
 
         </section><!-- End Services Section -->
 

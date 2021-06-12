@@ -55,15 +55,27 @@ const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
     CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-let mk1 = L.marker([12.8661616, 100.9989804]).bindPopup('อบต.ห้วยใหญ่3'),
-    mk2 = L.marker([12.848099999999983, 100.95313000000002]).bindPopup('อบต.ห้วยใหญ่2'),
-    mk3 = L.marker([12.846510200000028, 100.9376361]).bindPopup('อบต.ห้วยใหญ่1'),
-    mk4 = L.marker([12.694406999999996, 101.44470699999997]).bindPopup('อบต.สำนักทอง1'),
-    mk5 = L.marker([12.703484000000008, 101.468717]).bindPopup('อบต.สำนักทอง2'),
-    mk6 = L.marker([12.70139960000001, 101.49543049999]).bindPopup('อบต.กะเฉด3'),
-    mk7 = L.marker([12.985111299999994, 101.6776677]).bindPopup('อบต.เขาชะเมา1'),
-    mk8 = L.marker([12.909515899999995, 101.71460159999998]).bindPopup('อบต.น้ำเป็น2'),
-    mk9 = L.marker([12.836749900000017, 101.73254899999998]).bindPopup('อบต.น้ำเป็น3');
+let mk = [
+    { latlon: [12.8661616, 100.9989804], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.848099999999983, 100.95313000000002], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.846510200000028, 100.9376361], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.694406999999996, 101.44470699999997], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.703484000000008, 101.468717], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.70139960000001, 101.49543049999], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.985111299999994, 101.6776677], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.909515899999995, 101.71460159999998], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` },
+    { latlon: [12.836749900000017, 101.73254899999998], name: `<b>station 01</b> <br> อบต.ห้วยใหญ่` }
+]
+
+let mk1 = L.marker(mk[0].latlon).bindPopup(mk[0].name),
+    mk2 = L.marker(mk[1].latlon).bindPopup(mk[1].name),
+    mk3 = L.marker(mk[2].latlon).bindPopup(mk[2].name),
+    mk4 = L.marker(mk[3].latlon).bindPopup(mk[3].name),
+    mk5 = L.marker(mk[4].latlon).bindPopup(mk[4].name),
+    mk6 = L.marker(mk[5].latlon).bindPopup(mk[5].name),
+    mk7 = L.marker(mk[6].latlon).bindPopup(mk[6].name),
+    mk8 = L.marker(mk[7].latlon).bindPopup(mk[7].name),
+    mk9 = L.marker(mk[8].latlon).bindPopup(mk[8].name);
 
 var sensor = L.layerGroup([mk1, mk2, mk3, mk4, mk5, mk6, mk7, mk8, mk9]);
 
@@ -105,7 +117,6 @@ var chart;
 
 let showChart = async (param, cat, dat) => {
     Highcharts.chart(param, {
-
         title: {
             text: '',
             style: {
@@ -118,28 +129,23 @@ let showChart = async (param, cat, dat) => {
                 display: 'none'
             }
         },
-
         yAxis: {
             title: {
                 text: param
             }
         },
-
         xAxis: {
             categories: cat
         },
-
         legend: {
             layout: 'vertical',
             align: 'right',
             verticalAlign: 'middle'
         },
-
         series: [{
             name: param,
             data: dat
         }],
-
         responsive: {
             rules: [{
                 condition: {
@@ -160,7 +166,7 @@ let showChart = async (param, cat, dat) => {
 let last = []
 let loadData = async (station) => {
     try {
-        let resp = await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php", { station: station, limit: 15 });
+        let resp = await axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php", { station: station, limit: 20 });
         let datDeep = [];
         let datTemp = [];
         let datHumi = [];
@@ -194,7 +200,17 @@ let loadData = async (station) => {
 loadData("station_01");
 
 $("#station").on("change", function () {
-    console.log(this.value);
+    // console.log();
+    this.value == 'station_01' ? map.setView(mk[0].latlon, 16) : null;
+    this.value == 'station_02' ? map.setView(mk[1].latlon, 16) : null;
+    this.value == 'station_03' ? map.setView(mk[2].latlon, 16) : null;
+    this.value == 'station_04' ? map.setView(mk[3].latlon, 16) : null;
+    this.value == 'station_05' ? map.setView(mk[4].latlon, 16) : null;
+    this.value == 'station_06' ? map.setView(mk[5].latlon, 16) : null;
+    this.value == 'station_07' ? map.setView(mk[6].latlon, 16) : null;
+    this.value == 'station_08' ? map.setView(mk[7].latlon, 16) : null;
+    this.value == 'station_09' ? map.setView(mk[8].latlon, 16) : null;
+
     loadData(this.value);
 
     setInterval(async () => {

@@ -5,7 +5,8 @@ const eec = con.eec;
 
 app.post("/ws-api/getone", (req, res) => {
     const { ws_id } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
                 FROM surwater
                 WHERE ws_id='${ws_id}'`
     eec.query(sql).then(r => {
