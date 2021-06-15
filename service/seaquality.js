@@ -25,6 +25,17 @@ app.post("/sq-api/getdata", (req, res) => {
     })
 })
 
+app.post("/sq-api/getsummarize", (req, res) => {
+    const { sq_pro } = req.body;
+    const sql = `SELECT sq_date, avg(sq_po43p) as sq_po43p, avg(sq_no3n) as sq_no3n, avg(sq_ph) as sq_ph, avg(sq_mwqi) as sq_mwqi
+        FROM seaquality WHERE sq_pro = '${sq_pro}' and sq_date > '2016/01/01' GROUP BY 1 ORDER BY 1`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/sq-api/insert", async (req, res) => {
     const { data } = req.body;
     let sq_id = Date.now()

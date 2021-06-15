@@ -18,7 +18,17 @@ app.post("/wq-api/getone", (req, res) => {
 
 app.post("/wq-api/getdata", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson FROM watquality_bf`
+    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, TO_CHAR(af_date, 'DD-MM-YYYY') as af_date FROM v_watquality`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/wq-api/getdatabystation", (req, res) => {
+    const { syst } = req.body;
+    const sql = `SELECT v.* FROM v_watquality v WHERE syst='${syst}' ORDER BY v.bf_date`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

@@ -1422,6 +1422,11 @@ td.highlight {
   width: 100%;
 }
 
+.mwqichart{
+  height: 35vh;
+  width: 100%;
+}
+
 .card-stats .card-body {
   padding: 15px 15px 0;
 }

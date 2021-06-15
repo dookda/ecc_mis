@@ -76,9 +76,9 @@ let loadTable = () => {
                     return ` <span class="badge bg-info text-white">${row.id}</span>`
                 }
             },
-            // { data: 'report_n' },
             { data: 'prov' },
-            { data: 'date' },
+            { data: 'syst' },
+            { data: 'bf_date' },
             // { data: 'proc_stat' },
             // { data: 'opert_stat' },
             {
@@ -98,11 +98,7 @@ let loadTable = () => {
 
     // table.on('search.dt', function () {
     //     let data = table.rows({ search: 'applied' }).data()
-    //     getProc_stat(data)
-    //     getOpert_stat(data);
-    //     getPrj_cate(data);
-    //     getBudget(data);
-    //     getMap(data)
+    //     console.log(data);
     // });
 }
 
@@ -151,11 +147,110 @@ let geneChart = (arr, div, tt, unit) => {
     columnTemplate.strokeOpacity = 1;
 }
 
+let getStation = (syst) => {
+    axios.post(url + "/wq-api/getdatabystation", { syst: syst }).then(async (r) => {
+        console.log(r);
+        let cbod = [];
+        let ccod = [];
+        let cdo = [];
+        let cph = [];
+        let css = [];
+        let ctemp = [];
+        await r.data.data.map(i => {
+            cbod.push({ date: i.bf_date, value1: i.bf_wq_bod, value2: i.af_wq_bod });
+            ccod.push({ date: i.bf_date, value1: i.bf_wq_cod, value2: i.af_wq_cod });
+            cdo.push({ date: i.bf_date, value1: i.bf_wq_do, value2: i.af_wq_do });
+            cph.push({ date: i.bf_date, value1: i.bf_wq_ph, value2: i.af_wq_ph });
+            css.push({ date: i.bf_date, value1: i.bf_wq_ss, value2: i.af_wq_ss });
+            ctemp.push({ date: i.bf_date, value1: i.bf_wq_temp, value2: i.af_wq_temp });
+        });
+        compareChart("c_bod", cbod, "BOD", "(mg/L)");
+        compareChart("c_cod", ccod, "COD", "(mg/L)");
+        compareChart("c_do", cdo, "DO", "(mg/L)");
+        compareChart("c_ph", cph, "pH", "(pH)");
+        compareChart("c_ss", css, "SS", "(mg/L)");
+        compareChart("c_temp", ctemp, "Temperature", "(°C)");
+    })
+}
 
 
+let compareChart = (div, data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
 
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
 
+    // Add data
+    chart.data = data;
 
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.minGridDistance = 50;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + unit;
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value1";
+    series.dataFields.dateX = "date";
+    series.strokeWidth = 2;
+    series.name = "ก่อนบำบัด";
+    series.minBulletDistance = 10;
+    series.tooltipText = "{valueY}";
+    series.showOnInit = true;
+
+    // Create series
+    var series2 = chart.series.push(new am4charts.LineSeries());
+    series2.dataFields.valueY = "value2";
+    series2.dataFields.dateX = "date";
+    series2.strokeWidth = 2;
+    series2.name = "หลังบำบัด";
+    series2.strokeDasharray = "3,4";
+    series2.tooltipText = "{valueY}";
+    series2.showOnInit = true;
+
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    var bullethover = bullet.states.create("hover");
+    bullethover.properties.scale = 1.3;
+
+    var bullet2 = series2.bullets.push(new am4charts.CircleBullet());
+    bullet2.circle.strokeWidth = 2;
+    bullet2.circle.radius = 4;
+    bullet2.circle.fill = am4core.color("#fff");
+
+    var bullethover2 = bullet2.states.create("hover");
+    bullethover2.properties.scale = 1.3;
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.fullWidthLineX = true;
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.lineX.strokeOpacity = 0;
+    chart.cursor.lineX.fill = am4core.color("#000");
+    chart.cursor.lineX.fillOpacity = 0.1;
+
+    chart.legend = new am4charts.Legend();
+
+    // Create a horizontal scrollbar with previe and place it underneath the date axis
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    dateAxis.start = 0.40;
+    dateAxis.keepSelection = true;
+}
+
+$("#sta").on("change", function () {
+    getStation(this.value)
+});
+
+getStation("ทม.แสนสุข (เหนือ)");
 
 
 

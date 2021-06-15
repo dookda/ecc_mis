@@ -112,21 +112,89 @@
                     <div class="card-body">
                         <a class="btn btn-success" href="./../create/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
+                        <hr>
+                        <div class="col-sm-4 form-group">
+                            <label for="sta">เลือกจุดตรวจวัด:</label>
+                            <select class="form-control" name="sta" id="sta">
+                                <option value="ทม.แสนสุข (เหนือ)">ทม.แสนสุข (เหนือ)</option>
+                                <option value="ทน.ระยอง">ทน.ระยอง</option>
+                                <option value="โรงปรับปรุงคุณภาพน้ำ จ.ชลบุรี">โรงปรับปรุงคุณภาพน้ำ จ.ชลบุรี</option>
+                                <option value="โรงานปรับปรุงคุณภาพน้ำแสนสุขเหนือ">โรงานปรับปรุงคุณภาพน้ำแสนสุขเหนือ
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <table id="myTable" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <!-- <th>ชื่อรายงาน</th> -->
-                            <th>จังหวัด</th>
-                            <th>วันที่รายงาน</th>
-                            <!-- <th>สถานะงบประมาณ</th>
-                            <th>สถานะการดำเนินงาน</th> -->
-                            <th>เพิ่มข้อมูล</th>
-                        </tr>
-                    </thead>
-                </table>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="cchart" id="c_bod"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="cchart" id="c_cod"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="cchart" id="c_do"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="cchart" id="c_ph"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="cchart" id="c_ss"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="cchart" id="c_temp"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table id="myTable" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ลำดับ</th>
+                                    <th>จังหวัด</th>
+                                    <th>ระบบ</th>
+                                    <th>วันที่รายงาน</th>
+                                    <!-- <th>สถานะงบประมาณ</th>
+                                    <th>สถานะการดำเนินงาน</th> -->
+                                    <th>เพิ่มข้อมูล</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
 
             </div>
 

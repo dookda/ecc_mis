@@ -65,8 +65,9 @@ let loadTable = () => {
             // { data: 'prj_name' },
             {
                 data: '',
-                render: (data, type, row) => {
-                    return `${row.sq_id} <span class="badge bg-info text-white">aa</span>`
+                render: (data, type, row, meta) => {
+                    // console.log(meta.row);
+                    return `${meta.row + 1}`
                 }
             },
             { data: 'sta_loc' },
@@ -99,12 +100,8 @@ let loadTable = () => {
 
 let geneChart = (arr, div, tt, unit) => {
     am4core.useTheme(am4themes_animated);
-    // Themes end
-
-    // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
 
-    // Add data
     chart.data = arr
 
     var title = chart.titles.create();
@@ -112,7 +109,6 @@ let geneChart = (arr, div, tt, unit) => {
     title.fontSize = 18;
     title.marginBottom = 5;
 
-    // Create axes
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "cat";
     categoryAxis.renderer.grid.template.location = 0;
@@ -142,6 +138,85 @@ let geneChart = (arr, div, tt, unit) => {
     columnTemplate.strokeOpacity = 1;
 }
 
+let getDataByPro = (sq_pro) => {
+    let sq_po43p = [];
+    let sq_no3n = [];
+    let sq_ph = [];
+    let sq_mwqi = [];
+
+    axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
+        await r.data.data.map(i => {
+            sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
+            sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
+            sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
+            sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
+        });
+
+        lineChart("sq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
+        lineChart("sq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
+        lineChart("sq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
+        lineChart("sq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
+    })
+}
+
+let lineChart = (div, data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
+
+    // Add data
+    chart.data = data;
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.minGridDistance = 50;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = unit;
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "dat";
+    series.dataFields.dateX = "cat";
+    series.strokeWidth = 2;
+    series.name = label;
+    series.minBulletDistance = 10;
+    series.tooltipText = "{valueY}";
+    series.showOnInit = true;
+
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    var bullethover = bullet.states.create("hover");
+    bullethover.properties.scale = 1.3;
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.fullWidthLineX = true;
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.lineX.strokeOpacity = 0;
+    chart.cursor.lineX.fill = am4core.color("#000");
+    chart.cursor.lineX.fillOpacity = 0.1;
+
+    chart.legend = new am4charts.Legend();
+
+    // Create a horizontal scrollbar with previe and place it underneath the date axis
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    dateAxis.start = 0.50;
+    dateAxis.keepSelection = true;
+}
+
+getDataByPro("ชลบุรี");
+$("#prov").change(function () {
+    getDataByPro(this.value);
+})
 
 
 

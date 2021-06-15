@@ -206,12 +206,12 @@ let getSeries = (sta) => {
             ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
         });
 
-        lineChart("_ws_wqi", "WQI", ws_wqi);
-        lineChart("_ws_bod", "DO(mg/l)", ws_bod);
-        lineChart("_ws_do", "BOD(mg/l)", ws_do);
-        lineChart("_ws_fcb", "FCB (MPN/100ml)", ws_fcb);
-        lineChart("_ws_nh3n", "แอมโมเนีย (mg/l)", ws_nh3n);
-        lineChart("_ws_tcb", "TCB(MPN/100ml)", ws_tcb);
+        lineChart("_ws_wqi", "WQI", "WQI", ws_wqi);
+        lineChart("_ws_bod", "DO", "(mg/l)", ws_bod);
+        lineChart("_ws_do", "BOD", "(mg/l)", ws_do);
+        lineChart("_ws_fcb", "FCB", "(MPN/100ml)", ws_fcb);
+        lineChart("_ws_nh3n", "แอมโมเนีย", "(mg/l)", ws_nh3n);
+        lineChart("_ws_tcb", "TCB", "(MPN/100ml)", ws_tcb);
     })
 }
 getSeries("BK01");
@@ -219,7 +219,7 @@ $("#sta").change(function () {
     getSeries(this.value);
 })
 
-let lineChart = (div, label, series) => {
+let lineChart = (div, label, unit, series) => {
 
     am4core.useTheme(am4themes_animated);
 
@@ -234,6 +234,7 @@ let lineChart = (div, label, series) => {
     dateAxis.renderer.grid.template.location = 0;
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + unit;
 
     // Create series
     function createSeries(field, name) {
@@ -245,8 +246,12 @@ let lineChart = (div, label, series) => {
         series.strokeWidth = 2;
 
         var bullet = series.bullets.push(new am4charts.CircleBullet());
-        bullet.circle.stroke = am4core.color("#fff");
         bullet.circle.strokeWidth = 2;
+        bullet.circle.radius = 4;
+        bullet.circle.fill = am4core.color("#fff");
+
+        var bullethover = bullet.states.create("hover");
+        bullethover.properties.scale = 1.3;
 
         return series;
     }

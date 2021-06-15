@@ -91,6 +91,7 @@ let showMarker = (lat, lon) => {
 
 $("#chartdiv").hide()
 let getChart = (w_id) => {
+    console.log(w_id);
     let obj = { w_id: w_id }
     axios.post(url + "/waste-api/getone", obj).then((r) => {
         $("#chartdiv").show()
@@ -113,59 +114,62 @@ let getChart = (w_id) => {
         }],
             "w_total",
             "ปริมาณน้ำเสีย",
-            "ลิตร/วัน"
+            "ลิตร/วัน",
+            r.data.data[0].insti
         );
 
-        pieChart([
+        pieChart(r.data.data[0].insti, [
             {
                 cat: "อาคารชุด/บ้านพัก",
-                val: r.data.data[0].no_house
+                val: r.data.data[0].no_house ? r.data.data[0].no_house : 0
             }, {
                 cat: "โรงแรม",
-                val: r.data.data[0].no_hotel
+                val: r.data.data[0].no_hotel ? r.data.data[0].no_hotel : 0
             }, {
                 cat: "หอพัก",
-                val: r.data.data[0].no_dorm
+                val: r.data.data[0].no_dorm ? r.data.data[0].no_dorm : 0
             }, {
                 cat: "บ้านจัดสรร",
-                val: r.data.data[0].no_vhouse
+                val: r.data.data[0].no_vhouse ? r.data.data[0].no_vhouse : 0
             }, {
                 cat: "สถานบริการ",
-                val: r.data.data[0].no_serv
+                val: r.data.data[0].no_serv ? r.data.data[0].no_serv : 0
             }, {
                 cat: "โรงพยาบาล",
-                val: r.data.data[0].no_hospi
+                val: r.data.data[0].no_hospi ? r.data.data[0].no_hospi : 0
             }, {
                 cat: "ร้านอาหาร",
-                val: r.data.data[0].no_restur
+                val: r.data.data[0].no_restur ? r.data.data[0].no_restur : 0
             }, {
                 cat: "ตลาด",
-                val: r.data.data[0].no_market
+                val: r.data.data[0].no_market ? r.data.data[0].no_market : 0
             }, {
                 cat: "ห้างสรรพสินค้า",
-                val: r.data.data[0].no_mall
+                val: r.data.data[0].no_mall ? r.data.data[0].no_mall : 0
             }, {
                 cat: "สำนักงาน",
-                val: r.data.data[0].no_office
+                val: r.data.data[0].no_office ? r.data.data[0].no_office : 0
             }, {
                 cat: "โรงเรียน",
-                val: r.data.data[0].no_school
+                val: r.data.data[0].no_school ? r.data.data[0].no_school : 0
             }, {
                 cat: "สถานีบริการน้ำมัน",
-                val: r.data.data[0].no_gassta
+                val: r.data.data[0].no_gassta ? r.data.data[0].no_gassta : 0
             }, {
                 cat: "วัด",
-                val: r.data.data[0].no_temple
+                val: r.data.data[0].no_temple ? r.data.data[0].no_temple : 0
             }, {
                 cat: "ศูนย์ราชการ",
-                val: r.data.data[0].no_govcent
+                val: r.data.data[0].no_govcent ? r.data.data[0].no_govcent : 0
             }, {
                 cat: "คลินิก",
-                val: r.data.data[0].no_clinic
+                val: r.data.data[0].no_clinic ? r.data.data[0].no_clinic : 0
             }
         ]);
     })
 }
+
+getChart(129953.638292806);
 
 let loadTable = () => {
     let table = $('#myTable').DataTable({
@@ -179,8 +183,9 @@ let loadTable = () => {
             // { data: 'prj_name' },
             {
                 data: '',
-                render: (data, type, row) => {
-                    return `${row.insti} <span class="badge bg-info text-white">aa</span>`
+                render: (data, type, row, meta) => {
+                    // console.log(meta.row);
+                    return `${row.insti}`
                 }
             },
             { data: 'prov' },
@@ -200,10 +205,13 @@ let loadTable = () => {
         ],
         searching: true,
     });
-
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data();
+        getDatatable(data);
+    });
 }
 
-let geneChart = (arr, div, tt, unit) => {
+let geneChart = (arr, div, tt, unit, place) => {
     am4core.useTheme(am4themes_animated);
 
     // Create chart instance
@@ -213,7 +221,7 @@ let geneChart = (arr, div, tt, unit) => {
     chart.data = arr
 
     var title = chart.titles.create();
-    title.text = tt;
+    title.text = tt + " " + place;
     title.fontSize = 18;
     title.marginBottom = 5;
 
@@ -247,28 +255,126 @@ let geneChart = (arr, div, tt, unit) => {
     columnTemplate.strokeOpacity = 1;
 }
 
-let pieChart = (arr) => {
-    am4core.useTheme(am4themes_animated);
+let pieChart = (place, arr) => {
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        var chart = am4core.create("w_each", am4charts.PieChart);
+        chart.data = arr;
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "val";
+        pieSeries.dataFields.category = "cat";
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeOpacity = 1;
 
-    // Create chart
-    var chart = am4core.create("w_each", am4charts.PieChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+        // This creates initial animation
+        pieSeries.hiddenState.properties.opacity = 1;
+        pieSeries.hiddenState.properties.endAngle = -90;
+        pieSeries.hiddenState.properties.startAngle = -90;
 
-    chart.data = arr
+        var title = chart.titles.create();
+        title.text = "สัดส่วนของแหล่งกำเนิดน้ำเสียของ" + place;
+        title.fontSize = 18;
+        title.marginBottom = 5;
 
-    var series = chart.series.push(new am4charts.PieSeries());
-    series.dataFields.value = "val";
-    series.dataFields.radiusValue = "val";
-    series.dataFields.category = "cat";
-    series.slices.template.cornerRadius = 6;
-    series.colors.step = 3;
-
-    series.hiddenState.properties.endAngle = -90;
-    series.hiddenInLegend = true;
-    chart.legend = new am4charts.Legend();
+        chart.hiddenState.properties.radius = am4core.percent(0);
+    });
 }
 
+let getDatatable = async (data) => {
+    let no_hospi = [];
+    let no_hotel = [];
+    let no_house = [];
+    let no_market = [];
+    let no_office = [];
+    let no_restur = [];
+    let no_mall = [];
+    let no_vhouse = [];
+    let no_dorm = [];
+    let no_serv = [];
 
+    await data.map(i => {
+        no_house.push({ "cat": i.insti, "val": i.no_house ? Number(i.no_house) * 500 : 0 });
+        no_hotel.push({ "cat": i.insti, "val": i.no_hotel ? Number(i.no_hotel) * 1000 : 0 });
+        no_dorm.push({ "cat": i.insti, "val": i.no_dorm ? Number(i.no_dorm) * 80 : 0 });
+        no_serv.push({ "cat": i.insti, "val": i.no_serv ? Number(i.no_serv) * 400 : 0 });
+        no_vhouse.push({ "cat": i.insti, "val": i.no_vhouse ? Number(i.no_vhouse) * 180 : 0 });
+        no_restur.push({ "cat": i.insti, "val": i.no_restur ? Number(i.no_restur) * 800 : 0 });
+        no_hospi.push({ "cat": i.insti, "val": i.no_hospi ? Number(i.no_hospi) * 25 : 0 });
+        no_market.push({ "cat": i.insti, "val": i.no_market ? Number(i.no_market) * 70 : 0 });
+        no_mall.push({ "cat": i.insti, "val": i.no_mall ? Number(i.no_mall) * 5 : 0 });
+        no_office.push({ "cat": i.insti, "val": i.no_office ? Number(i.no_office) * 3 : 0 });
+    })
+
+    compareWasteWater("no_house", no_house);
+    compareWasteWater("no_hotel", no_hotel);
+    compareWasteWater("no_dorm", no_dorm);
+    compareWasteWater("no_serv", no_serv);
+    compareWasteWater("no_vhouse", no_vhouse);
+    compareWasteWater("no_restur", no_restur);
+    compareWasteWater("no_hospi", no_hospi);
+    compareWasteWater("no_market", no_market);
+    compareWasteWater("no_mall", no_mall);
+    compareWasteWater("no_office", no_office);
+}
+
+let compareWasteWater = (div, data) => {
+    am4core.ready(function () {
+
+        // Themes begin
+        am4core.useTheme(am4themes_animated);
+        // Themes end
+
+        // Create chart instance
+        var chart = am4core.create(div, am4charts.XYChart);
+        // chart.scrollbarX = new am4core.Scrollbar();
+
+        // Add data
+        chart.data = data;
+
+        // Create axes
+        var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "cat";
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.minGridDistance = 30;
+        categoryAxis.renderer.labels.template.horizontalCenter = "right";
+        categoryAxis.renderer.labels.template.verticalCenter = "middle";
+        categoryAxis.renderer.labels.template.rotation = 270;
+        categoryAxis.tooltip.disabled = true;
+        categoryAxis.renderer.minHeight = 110;
+
+        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        valueAxis.renderer.minWidth = 50;
+        valueAxis.title.text = "ลิตร/วัน";
+
+        // Create series
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.sequencedInterpolation = true;
+        series.dataFields.valueY = "val";
+        series.dataFields.categoryX = "cat";
+        series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+        series.columns.template.strokeWidth = 0;
+
+        series.tooltip.pointerOrientation = "vertical";
+
+        series.columns.template.column.cornerRadiusTopLeft = 10;
+        series.columns.template.column.cornerRadiusTopRight = 10;
+        series.columns.template.column.fillOpacity = 0.8;
+
+        // on hover, make corner radiuses bigger
+        var hoverState = series.columns.template.column.states.create("hover");
+        hoverState.properties.cornerRadiusTopLeft = 0;
+        hoverState.properties.cornerRadiusTopRight = 0;
+        hoverState.properties.fillOpacity = 1;
+
+        series.columns.template.adapter.add("fill", function (fill, target) {
+            return chart.colors.getIndex(target.dataItem.index);
+        });
+
+        // Cursor
+        chart.cursor = new am4charts.XYCursor();
+
+    });
+}
 
 
 
