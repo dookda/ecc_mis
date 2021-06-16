@@ -94,3 +94,6 @@ app.use(biodiversity);
 
 const gwater = require('./service/gwater');
 app.use(gwater);
+
+const garbage = require('./service/garbage');
+app.use(garbage);

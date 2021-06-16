@@ -152,10 +152,10 @@ let getDataByPro = (sq_pro) => {
             sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
         });
 
-        lineChart("sq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
-        lineChart("sq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
-        lineChart("sq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
-        lineChart("sq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
+        lineChart("csq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
+        lineChart("csq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
+        lineChart("csq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
+        lineChart("csq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
     })
 }
 

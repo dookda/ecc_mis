@@ -44,7 +44,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <link href="./../assets/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
 
 </head>
 
@@ -82,165 +82,121 @@
 
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
-            <div class="container mt-5" data-aos="fade-up">
+            <div class="container" data-aos="fade-up">
 
-                <!-- <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลน้ำเสีย</h2>
+                <div class="section-title">
+                    <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำทะเล</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลน้ำเสียเป็นการนำเข้าข้อมูลน้ำเสียในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
+                        การนำเข้าข้อมูลค่าพารามิเตอร์คุณภาพน้ำทะเลในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
                     </p>
-                </div> -->
+                </div>
+
+                <!-- ใส่แผนที่ -->
+                <div class="container">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <!-- รับค่า ID Line -->
+                                <div id="card">
+                                    <img alt="" id="profile">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
 
             </div>
             <!-- ฟอร์มนำเข้า -->
             <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากอาคารชุด/บ้านพัก</h5>
-                                </div>
-                                <div class="compareChart" id="no_house"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากโรงแรม</h5>
-                                </div>
-                                <div class="compareChart" id="no_hotel"></div>
-                            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-sm-4 form-group">
+                            รายงานข้อมูลคุณภาพน้ำทะเล
+                            <hr>
+                            <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
+                            <select class="form-control" id="prov">
+                                <option value="ชลบุรี">ชลบุรี</option>
+                                <option value="ระยอง">ระยอง</option>
+                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากหอพัก</h5>
-                                </div>
-                                <div class="compareChart" id="no_dorm"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากสถานบริการ</h5>
-                                </div>
-                                <div class="compareChart" id="no_serv"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากบ้านจัดสรร</h5>
-                                </div>
-                                <div class="compareChart" id="no_vhouse"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากโรงพยาบาล</h5>
-                                </div>
-                                <div class="compareChart" id="no_restur"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากภัตาคาร/ร้านอาหาร</h5>
-                                </div>
-                                <div class="compareChart" id="no_hospi"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากตลาด</h5>
-                                </div>
-                                <div class="compareChart" id="no_market"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากห้างสรรพสินค้า</h5>
-                                </div>
-                                <div class="compareChart" id="no_mall"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากสำนักงาน</h5>
-                                </div>
-                                <div class="compareChart" id="no_office"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
 
                 <div class="card">
                     <div class="card-body">
+                        <div class="mwqichart" id="summarize"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+
                         <a class="btn btn-success" href="./../create/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                         <hr>
                         <table id="myTable" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>พื้นที่รับผิดชอบ</th>
+                                    <th>ลำดับ:</th>
+                                    <th>อปท.</th>
                                     <th>จังหวัด</th>
-                                    <!-- <th>จังหวัด</th> -->
-                                    <th>วันที่รายงาน</th>
-                                    <!-- <th>สถานะงบประมาณ</th>
-                                    <th>สถานะการดำเนินงาน</th> -->
+                                    <th>ปีที่รายงาน</th>
                                     <th>เพิ่มข้อมูล</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
+            </div>
 
-                <div id="chartdiv">
+        </section><!-- End Services Section -->
+
+        <div class="container" id="chartdiv">
+
+            <div class="row">
+                <div class="col-sm-5 ">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm wqchart" id="w_total"></div>
-                                <div class="col-sm wqchart" id="w_each"></div>
+                        <div class="card-body ">
+                            <div class="gbchart">
+                                <label>ข้อมูล</label>
+                                <span class="badge badge-secondary">
+                                    <span id="year"></span>
+                                </span>
+                                <br>
+                                <span class="badge badge-success" style="font-size: 40px;" id="staDetail"></span>
+                                <p></p>
+                                <div class="row">
+                                    <div class="col-sm-4" style="text-align: right;">
+                                        <i class="bi bi-people-fill " style="font-size: 100px;"></i>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <label>จำนวนประชากร</label><br>
+                                        <span class="badge badge-primary" style="font-size: 50px;" id="populace"></span>
+                                        &nbsp;คน
+                                    </div>
+                                </div>
+                                <hr>
+                                <label>ปริมาณขยะที่เกิดขึ้น</label>
+                                <br>
+                                <span class="badge badge-warning" style="font-size: 90px;" id="amtwas"></span>
+                                <span class="badge badge-secondary" style="font-size: 25px;">ตัน/วัน</span>
                             </div>
-                            <div class="mt-5" id="map"></div>
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="gbchart" id="gbDetail"></div>
+                        </div>
+                    </div>
 
+                </div>
             </div>
-        </section>
+
+        </div>
         <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
         <div class="container-fluid mt-3 mb-6">
             <p> <span class="ver">ปรับปรุง 14/03/2021</span></p>
@@ -263,6 +219,21 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
+
+    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>ท่านต้องการลบโครงการ <span id="projName"></span></p>
+                    <input type="hidden" id="projId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
