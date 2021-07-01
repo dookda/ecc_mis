@@ -1,6 +1,38 @@
-.wqchart{
-    height: 250px;
+
+body {
+    font-family: "Kanit",sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.72222;
 }
+
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+#map{
+    height: 350px;
+}
+
+.gchart {
+    width: 100%;
+    height: 380px;
+}
+
+#areaChart {
+    width: 100%;
+    height: 380px;
+}
+
+#cntChart{
+    width: 100%;
+    height: 380px;
+}
+
 
 .m{
     margin: 2px 2px 2px 2px;

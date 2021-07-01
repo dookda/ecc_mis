@@ -58,17 +58,31 @@
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- .nav-menu -->
-            <!-- social icon -->
-            <div class="header-social-links">
-                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
-                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li class="active"><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
+                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                </ul>
+            </nav>
+
+            <div class="">
+                <a class="" style="color: dimgray !important;"><i class="bi bi-person-square"></i>&nbsp;<span
+                        id="usrname"></span>
+                </a>&nbsp;||&nbsp;
+                <a href="./../../form_register/login/index.html" class="btn btn-light"
+                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
+                    ออกจากระบบ</a>
+                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
+                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
             </div>
 
         </div>
 
-    </header><!-- End Header -->
+    </header>
 
     <main id="main">
         <!-- ======= Services Section ======= -->
@@ -102,91 +116,100 @@
                         <div class="card" id="map"></div>
                     </div>
                     <div id="form" data-aos="fade-up">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <h6>ชื่อพื้นที่สีเขียว</h6>
-                                    <input type="text" class="form-control" id="gr_name" required>
-                                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <h6>ชื่อพื้นที่สีเขียว</h6>
+                                            <input type="text" class="form-control" id="gr_name" required>
+                                        </div>
 
-                                <div class="form-group">
-                                    <label>จังหวัด</label>
-                                    <select class="form-control" id="pro" onchange="getAmp(this.value)">
-                                        <option value=""></option>
-                                        <option value="22">จันทบุรี</option>
-                                        <option value="24">ฉะเชิงเทรา</option>
-                                        <option value="20">ชลบุรี</option>
-                                        <option value="23">ตราด</option>
-                                        <option value="26">นครนายก</option>
-                                        <option value="25">ปราจีนบุรี</option>
-                                        <option value="21">ระยอง</option>
-                                        <option value="27">สระแก้ว</option>
-                                    </select>
-                                </div>
+                                        <div class="form-group">
+                                            <label>จังหวัด</label>
+                                            <select class="form-control" id="pro" onchange="getAmp(this.value)">
+                                                <option value=""></option>
+                                                <option value="22">จันทบุรี</option>
+                                                <option value="24">ฉะเชิงเทรา</option>
+                                                <option value="20">ชลบุรี</option>
+                                                <option value="23">ตราด</option>
+                                                <option value="26">นครนายก</option>
+                                                <option value="25">ปราจีนบุรี</option>
+                                                <option value="21">ระยอง</option>
+                                                <option value="27">สระแก้ว</option>
+                                            </select>
+                                        </div>
 
-                                <div class="form-group">
-                                    <label>อำเภอ</label>
-                                    <select class="form-control" id="amp" onchange="getTam(this.value)"></select>
-                                </div>
+                                        <div class="form-group">
+                                            <label>อำเภอ</label>
+                                            <select class="form-control" id="amp"
+                                                onchange="getTam(this.value)"></select>
+                                        </div>
 
-                                <div class="form-group">
-                                    <label>ตำบล</label>
-                                    <select class="form-control" id="tam" onchange="getTamOne(this.value)"></select>
+                                        <div class="form-group">
+                                            <label>ตำบล</label>
+                                            <select class="form-control" id="tam"
+                                                onchange="getTamOne(this.value)"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="hidden" id="pro_name">
+                                        <input type="hidden" id="amp_name">
+                                        <input type="hidden" id="tam_name">
+
+
+                                        <div class="form-group">
+                                            <label for="type">ประเภทพื้นที่สีเขียว &nbsp;(<a
+                                                    href="http://thaigreenurban.onep.go.th/frmTassaban.aspx">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a>)</label>
+                                            <select class="form-control" id="type" required>
+                                                <option value=""></option>
+                                                <option value="ประเภทที่1">พื้นที่สีเขียวเพื่อการบริการ สาธารณะ</option>
+                                                <option value="ประเภทที่2">พื้นที่สีเขียวเพื่ออรรถประโยชน์</option>
+                                                <option value="ประเภทที่3">พื้นที่สีเขียวริ้วยาวตามแนวสาธารณูปการ
+                                                </option>
+                                                <option value="ประเภทที่4">พื้นที่สีเขียวเพื่อเศรษฐกิจชุมชน</option>
+                                                <option value="ประเภทที่5">พื้นที่สีเขียวธรรมชาติ </option>
+                                                <option value="ประเภทที่6">
+                                                    พื้นที่สีเขียวที่ยังไม่มีการใช้ประโยชน์หรือรอการพัฒนา
+                                                </option>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>เนื้อที่ (ไร่)</label>
+                                            <input type="number" class="form-control" id="rai">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>จำนวนต้นไม้ (ต้น)</label>
+                                            <input type="number" class="form-control" id="tree">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>หน่วยงานที่รับผิดชอบดูแล</label>
+                                            <input type="text" class="form-control" id="agency">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="mt-1">
+                                    <button class="btn btn-success" id="button"
+                                        onclick="sendData()">&nbsp;บันทึก</button>&nbsp;&nbsp;
+                                    <button class="btn btn-light" id="refresh"
+                                        onclick="gotoList()">&nbsp;หน้ารายงาน</button>&nbsp;&nbsp;
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <input type="hidden" id="pro_name">
-                                <input type="hidden" id="amp_name">
-                                <input type="hidden" id="tam_name">
-
-
-                                <div class="form-group">
-                                    <label for="type">ประเภทพื้นที่สีเขียว &nbsp;(<a
-                                            href="http://thaigreenurban.onep.go.th/frmTassaban.aspx">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a>)</label>
-                                    <select class="form-control" id="type" required>
-                                        <option value=""></option>
-                                        <option value="ประเภทที่1">พื้นที่สีเขียวเพื่อการบริการ สาธารณะ</option>
-                                        <option value="ประเภทที่2">พื้นที่สีเขียวเพื่ออรรถประโยชน์</option>
-                                        <option value="ประเภทที่3">พื้นที่สีเขียวริ้วยาวตามแนวสาธารณูปการ</option>
-                                        <option value="ประเภทที่4">พื้นที่สีเขียวเพื่อเศรษฐกิจชุมชน</option>
-                                        <option value="ประเภทที่5">พื้นที่สีเขียวธรรมชาติ </option>
-                                        <option value="ประเภทที่6">พื้นที่สีเขียวที่ยังไม่มีการใช้ประโยชน์หรือรอการพัฒนา
-                                        </option>
-                                    </select>
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label>เนื้อที่ (ไร่)</label>
-                                    <input type="number" class="form-control" id="rai">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>จำนวนต้นไม้ (ต้น)</label>
-                                    <input type="number" class="form-control" id="tree">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>หน่วยงานที่รับผิดชอบดูแล</label>
-                                    <input type="text" class="form-control" id="agency">
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="mt-1">
-                            <button class="btn btn-success" id="button"
-                                onclick="sendData()">&nbsp;บันทึก</button>&nbsp;&nbsp;
-                            <button class="btn btn-light" id="refresh"
-                                onclick="gotoList()">&nbsp;หน้ารายงาน</button>&nbsp;&nbsp;
                         </div>
                     </div>
                 </div>
+
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <div class="mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 29/06/2021</span></p>
+                </div>
             </div>
-        </section><!-- End Services Section -->
-        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container mt-3">
-            <p> <span class="ver">ปรับปรุง 23/03/2021</span></p>
-        </div>
+        </section>
     </main><!-- End #main -->
 
 

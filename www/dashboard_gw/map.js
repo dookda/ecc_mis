@@ -1,6 +1,6 @@
 
 let map = L.map('map', {
-    center: [13.736717, 100.523186],
+    center: [13.305567, 101.383101],
     zoom: 10,
     // layers: [CartoDB_Positron, marker]
 })

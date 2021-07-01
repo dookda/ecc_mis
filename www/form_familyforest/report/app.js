@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadMap();
 });
@@ -16,8 +21,8 @@ let marker, gps, dataurl;
 
 console.log(usr);
 
-const url = 'http://localhost:3700';
-// const url = 'https://rti2dss.com:3200';
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -59,55 +64,22 @@ var day = ("0" + now.getDate()).slice(-2);
 var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-$('#dt').val(today);
-
-$("#plantlist").on("change", function () {
-    // console.log(this.value);
-    if (this.value) {
-        axios.post(url + "/ff-api/getpacelgid", { gid: this.value }).then(r => {
-            console.log(r);
-            $("#ffid").val(`${r.data.data[0].ffid}`);
-            $("#fplant").val(`${r.data.data[0].fplant}`);
-            $("#ftype").val(`${r.data.data[0].ftype}`);
-        })
-    }
-})
-
-let getDetail = (ffid) => {
-    axios.post(url + "/ff-api/getpacelone", { ffid: ffid }).then(r => {
-        // console.log(r);
-        $("#plantlist").empty();
-        $("#plantlist").append(`<option >เลือกชนิดพืช</option>`)
-        r.data.data.map(i => $("#plantlist").append(`<option value="${i.gid}">${i.fplant}</option>`));
-    })
-}
-
-let getParcel = (ffid) => {
-    let json = fc.toGeoJSON();
-    json.features.map((i) => {
-        if (i.properties.name == ffid) {
-            let a = L.geoJSON(i);
-            map.fitBounds(a.getBounds());
-        }
-    });
-
-    getDetail(ffid)
-}
-
-axios.post(url + "/ff-api/getpacellist", { usr: usr }).then(r => {
-    $("#fname").val(usr);
+axios.post(url + "/ff-api/getparcelall", { usr: usr }).then(r => {
     r.data.data.map(i => {
-        let dat = {
-            "type": "Feature",
-            "geometry": JSON.parse(i.geom),
-            "properties": {
-                "name": i.ffid
+        if (i.geom) {
+            let dat = {
+                "type": "Feature",
+                "geometry": JSON.parse(i.geom),
+                "properties": {
+                    "name": i.ffid
+                }
             }
-        }
 
-        let json = L.geoJSON(dat);
-        json.addTo(fc);
-        $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
+            let json = L.geoJSON(dat);
+            json.addTo(fc);
+            // $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
+        }
+        // console.log(i);
     })
     map.fitBounds(fc.getBounds());
     // console.log(fc);
@@ -117,10 +89,64 @@ fc.on("click", (e) => {
     console.log(e.layer.toGeoJSON());
 });
 
+let getData = async (data) => {
+    let eat = 0;
+    let use = 0;
+    let herb = 0;
+    let econ = 0;
+    await data.map(i => {
+        console.log(i);
+        eat += Number(i.eat);
+        use += Number(i.use);
+        econ += Number(i.econ);
+        herb += Number(i.herb);
+        // i.ftype == "พืชกินได้" ? eat += Number(i.eat) : null;
+        // i.ftype == "พืชใช้สอย" ? use += Number(i.use) : null;
+        // i.ftype == "พืชเศรษฐกิจ" ? econ += Number(i.econ) : null;
+        // i.ftype == "พืชสมุนไพร" ? herb += Number(i.herb) : null;
+    });
+
+    let dataArr = [
+        {
+            cat: "พืชกินได้",
+            val: eat
+        }, {
+            cat: "พืชใช้สอย",
+            val: use
+        }, {
+            cat: "พืชเศรษฐกิจ",
+            val: herb
+        }, {
+            cat: "พืชสมุนไพร",
+            val: econ
+        }
+    ];
+    console.log(dataArr);
+    showChart(dataArr);
+}
+
+let showChart = (dataArr) => {
+    am4core.useTheme(am4themes_animated);
+    var chart = am4core.create("chartType", am4charts.PieChart);
+    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+    chart.data = dataArr;
+
+    var series = chart.series.push(new am4charts.PieSeries());
+    series.dataFields.value = "val";
+    series.dataFields.radiusValue = "val";
+    series.dataFields.category = "cat";
+    series.slices.template.cornerRadius = 6;
+    series.colors.step = 3;
+
+    series.hiddenState.properties.endAngle = -90;
+    chart.legend = new am4charts.Legend();
+}
+
 let table = $('#myTable').DataTable({
     ajax: {
         type: "POST",
-        url: url + '/ff-api/getdaily',
+        url: url + '/ff-api/getalldaily',
         data: { userid: usr },
         dataSrc: 'data'
     },
@@ -132,7 +158,7 @@ let table = $('#myTable').DataTable({
             }
         },
         { data: 'fplant' },
-        { data: 'ftype' },
+        // { data: 'ftype' },
         { data: 'date' },
         {
             data: '',
@@ -164,42 +190,17 @@ let table = $('#myTable').DataTable({
     ],
     searching: true,
     scrollX: true,
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'print'
+    ],
     // order: [2, 'asc'],
 });
 
-let sendData = () => {
-    let obj = {
-        data: {
-            userid: usr,
-            ffid: $("#ffid").val(),
-            fplant: $("#fplant").val(),
-            ftype: $("#ftype").val(),
-            eat: $("#eat").val(),
-            eat_unit: $("#eat_unit").val(),
-            use: $("#use").val(),
-            use_unit: $("#use_unit").val(),
-            econ: $("#econ").val(),
-            econ_unit: $("#econ_unit").val(),
-            herb: $("#herb").val(),
-            herb_unit: $("#herb_unit").val(),
-            dt: $("#dt").val()
-        }
-    }
-
-    axios.post(url + "/ff-api/insertdaily", obj).then(r => {
-        $('#okModal').modal('show');
-        setZero();
-    });
-}
-
-let setZero = () => {
-    $("#eat").val(0);
-    $("#use").val(0);
-    $("#econ").val(0);
-    $("#herb").val(0);
-}
-
-setZero();
+table.on('search.dt', function () {
+    let data = table.rows({ search: 'applied' }).data();
+    getData(data);
+});
 
 let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id);

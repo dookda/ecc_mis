@@ -859,6 +859,13 @@ let barChart = (datArr, unit, title) => {
   chart.cursor = new am4charts.XYCursor();
 }
 
+// let showHistoryChart = (id) => {
+//   let sta_id = id.target.options.id
+//   axios.post(url + '/eec-api/get-hist', { sta_id: sta_id }).then((r) => {
+//   }).catch((err) => {
+//   });
+// }
+
 let showDataTable = async () => {
   let table = $('#tab').DataTable({
     ajax: {
@@ -899,9 +906,9 @@ let showDataTable = async () => {
       }
     ],
     select: true,
-    pageLength: 5,
+    pageLength: 7,
     responsive: {
-      details: false
+      details: true
     }
   });
   $('#tab tbody').on('click', 'tr', function () {

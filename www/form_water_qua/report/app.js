@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadTable()
 
@@ -79,8 +84,21 @@ let loadTable = () => {
             { data: 'prov' },
             { data: 'syst' },
             { data: 'bf_date' },
-            // { data: 'proc_stat' },
-            // { data: 'opert_stat' },
+
+            { data: 'bf_wq_bod' },
+            { data: 'bf_wq_cod' },
+            { data: 'bf_wq_do' },
+            { data: 'bf_wq_ph' },
+            { data: 'bf_wq_ss' },
+            { data: 'bf_wq_temp' },
+
+            { data: 'af_wq_bod' },
+            { data: 'af_wq_cod' },
+            { data: 'af_wq_do' },
+            { data: 'af_wq_ph' },
+            { data: 'af_wq_ss' },
+            { data: 'af_wq_temp' },
+
             {
                 data: null,
                 render: function (data, type, row, meta) {
@@ -94,6 +112,11 @@ let loadTable = () => {
             }
         ],
         searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
     });
 
     // table.on('search.dt', function () {

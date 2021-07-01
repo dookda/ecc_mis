@@ -17,6 +17,8 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
@@ -45,15 +47,15 @@
     <link rel="stylesheet" href="./../assets/css/style.css">
     <!-- <link href="../../main_eac/assets/css/style.css" rel="stylesheet"> -->
 
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
 
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -65,36 +67,33 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="">เข้าสู่ระบบ</a></li>
                 </ul>
-            </nav><!-- .nav-menu -->
+            </nav>
 
-            <!-- social icon -->
-            <div class="header-social-links">
-                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
-                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+            <div class="">
+                <a class="" style="color: dimgray !important;"><i class="bi bi-person-square"></i>&nbsp;<span
+                        id="usrname"></span>
+                </a>&nbsp;||&nbsp;
+                <a href="./../../form_register/login/index.html" class="btn btn-light"
+                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
+                    ออกจากระบบ</a>
+                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
+                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
             </div>
 
         </div>
-
-    </header><!-- End Header -->
-    <br>
-    <br>
-    <br>
+    </header>
 
     <main id="main">
-
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
             <div class="container" data-aos="fade-up">
                 <br>
                 <br>
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลป่าครอบครัว</h2>
+                    <h2>ข้อมูลป่าครอบครัว</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลป่าครอบครัวเป็นการนำเข้าข้อมูลกิจกรรมป่าครอบครัวในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลป่าครอบครัวเป็นการนำเข้าข้อมูลกิจกรรมป่าครอบครัวในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
 
@@ -116,96 +115,18 @@
                         </div>
                     </div>
                     <hr>
-                    <h4>นำเข้าแปลงป่าครอบครัว</h4>
+                    <h4>ข้อมูลแปลงป่าครอบครัว</h4>
                     <h6>กรุณาวาดแปลงพื้นที่ป่าครอบครัวของท่านลงบนแผนที่ เพื่อนำเข้ารายละเอียดของป่าครอบครัว</h6>
-                    <div class="card mt-1 p-0">
-                        <div id="map"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="patient">ชื่อเจ้าของแปลง:</label><br>
-                        <input type="text" class="form-control" id="fname" disabled>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="patient">หมายเลขแปลง:</label><br>
-                        <div class="list-group" id="listItem"></div>
-                    </div>
-
-                    <label for="">การนำไปใช้ประโยชน์:</label>
                     <div class="card">
                         <div class="card-body">
-
-                            <div class="form-group" id="typeto">
-                                <label for="forest4">ชนิด:</label>
-                                <select class="form-control" id="plantlist"></select>
-                            </div>
-
-                            <input type="hidden" id="ffid">
-                            <input type="hidden" id="fplant">
-                            <input type="hidden" id="ftype">
-
-                            <label for="">รูปแบบการใช้ประโยชน์:</label>
-
-                            <div class="row">
-                                <div class="col-sm">
-                                    <label for=""><b>ใช้เป็นอาหาร จำนวน:</b></label>
-                                    <input type="number" step="any" class="form-control" id="eat">
-                                    <label for="">หน่วยนับ:</label>
-                                    <select class="form-control" id="eat_unit">
-                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                        <option value="ต้น">ต้น</option>
-                                        <option value="ต้น">กอ</option>
-                                        <option value="ต้น">ถัง</option>
-                                    </select>
-                                    <br>
-                                </div>
-                                <div class="col-sm">
-                                    <label for=""><b>ใช้เป็นยารักษาโรค จำนวน:</b></label>
-                                    <input type="number" step="any" class="form-control" id="use">
-                                    <label for="">หน่วยนับ:</label>
-                                    <select class="form-control" id="use_unit">
-                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                        <option value="ต้น">ต้น</option>
-                                        <option value="ต้น">กอ</option>
-                                        <option value="ต้น">ถัง</option>
-                                    </select>
-                                    <br>
-                                </div>
-                                <div class="col-sm">
-                                    <label for=""><b>ใช้เป็นที่อยู่อาศัย/ใช้สอย จำนวน:</b></label>
-                                    <input type="number" step="any" class="form-control" id="econ">
-                                    <label for="">หน่วยนับ:</label>
-                                    <select class="form-control" id="econ_unit">
-                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                        <option value="ต้น">ต้น</option>
-                                        <option value="ต้น">กอ</option>
-                                        <option value="ต้น">ถัง</option>
-                                    </select>
-                                    <br>
-                                </div>
-                                <div class="col-sm">
-                                    <label for=""><b>ใช้แปรรูป/ผลิตภัณฑ์ จำนวน:</b></label>
-                                    <input type="number" step="any" class="form-control" id="herb">
-                                    <label for="">หน่วยนับ:</label>
-                                    <select class="form-control" id="herb_unit">
-                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                        <option value="ต้น">ต้น</option>
-                                        <option value="ต้น">กอ</option>
-                                        <option value="ต้น">ถัง</option>
-                                    </select>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="date">วันที่รายงาน:</label><br>
-                                <input type="date" class="form-control" id="dt">
-                            </div>
-                            <hr>
-                            <button class="btn btn-success" type="button" id="button"
-                                onclick="return sendData()">&nbsp;บันทึก</button>&nbsp;&nbsp;
+                            <div id="chartType"></div>
                         </div>
                     </div>
 
+                    <div class="card mt-1 p-0">
+                        <div id="map"></div>
+                    </div>
                     <div class="card">
                         <div class="card-body">
                             <table id="myTable" class="table table-striped table-bordered wrap" style="width:100%">
@@ -213,8 +134,8 @@
                                     <tr>
                                         <th>ลำดับ</th>
                                         <!-- <th>ยุทธศาสตร์</th> -->
-                                        <th>ชื่อผู้ใช้</th>
-                                        <th>ประเภท</th>
+                                        <th>ชื่อพืช</th>
+                                        <!-- <th>ประเภท</th> -->
                                         <th>วันที่</th>
                                         <th>ใช้บริโภค</th>
                                         <th>ใช้เป็นยารักษาโรค</th>
@@ -226,19 +147,14 @@
                                 </thead>
                             </table>
                         </div>
-
                     </div>
                 </div>
-                <p>
-
-            </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <div class="mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 29/06/2021</span></p>
+                </div>
             </div>
         </section><!-- End Services Section -->
-
-        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container-fluid mt-3 mb-6">
-            <p> <span class="ver">ปรับปรุง 15/06/2021</span></p>
-        </div>
     </main><!-- End #main -->
 
     <br>
@@ -315,6 +231,14 @@
 
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
@@ -324,6 +248,10 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
     <script src="app.js"></script>
 
 </body>

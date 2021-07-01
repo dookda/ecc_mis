@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่ง</title>
+    <title>ระบบนำเข้าข้อมูลปริมาณขยะ</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -50,7 +50,7 @@
     <!-- Template Main CSS File -->
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="./../assets/css/style.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
 </head>
 
 </head>
@@ -64,27 +64,31 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li><a href="./../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="">เข้าสู่ระบบ</a></li>
                 </ul>
-            </nav><!-- .nav-menu -->
+            </nav>
 
-            <!-- social icon -->
-            <div class="header-social-links">
-                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
-                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+            <div class="">
+                <a class="" style="color: dimgray !important;"><i class="bi bi-person-square"></i>&nbsp;<span
+                        id="usrname"></span>
+                </a>&nbsp;||&nbsp;
+                <a href="./../../form_register/login/index.html" class="btn btn-light"
+                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
+                    ออกจากระบบ</a>
+                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
+                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
             </div>
 
         </div>
 
     </header><!-- End Header -->
-
+    <br>
+    <br>
+    <br>
     <main id="main">
 
         <!-- ======= Services Section ======= -->
@@ -93,190 +97,176 @@
                 <div class="section-title">
                     <h2>ระบบนำเข้าข้อมูลขยะ</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลข้อมูลขยะในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลข้อมูลขยะในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
-
-                <!-- ใส่แผนที่ -->
-                <div class="">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <!-- รับค่า ID Line -->
-                                <div id="card">
-                                    <img alt="" id="profile">
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 ml-1">
-                                <h5> <span class="badge badge-info" id="displayName"></span></h5>
-                                <span id="statusMessage"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <h3>Map</h3>
-                    <div class="card mt-1 p-0">
-                        <div id="map"></div>
-                    </div>
+                <hr>
+                <h3>แผนที่</h3>
+                <label>กรุณาคลิกที่แผนที่เพื่อนำเข้าจุดที่ต้องการรายงานปริมาณขยะ</label>
+                <div class="card mt-1 p-0">
+                    <div id="map"></div>
                 </div>
                 <!-- ฟอร์มนำเข้า -->
-                <div class="mt-3 mb-3">
-
-                    <div class="form-group">
-                        <!-- วันที่: sq_date -->
-                        <label for="sq_date">ชื่อ อปท.:</label>
-                        <input type="text" class="form-control" id="dla" required>
-                    </div>
-                    <form id="gform">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <!-- ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่างน้ำ: sq_spname -->
-                                    <label for="wq_spname">ปี:</label>
-                                    <input type="number" class="form-control" id="year">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="sel1">จังหวัด:</label>
-                                    <select class="form-control" id="prov">
-                                        <option value="20">ชลบุรี</option>
-                                        <option value="21">ระยอง</option>
-                                        <option value="24">ฉะเชิงเทรา</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="sq_time">ประชากร (คน):</label>
-                                    <input type="number" class="form-control" id="populace" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_round">ปริมาณขยะที่เกิดขึ้น (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="amt_was" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_do">จำนวน อปท. ที่มีการให้บริการ (แห่ง):</label>
-                                    <input type="number" class="form-control" id="dla_ser">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_tcb">ปริมาณขยะที่เกิดขึ้นใน อปท. พื้นที่ให้บริการ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="was_dla">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่เก็บขนไปกำจัด (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="amt_coll">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="amt_benf">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่ไม่มีการให้บริการ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="nwas_dla">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่กำจัดไม่ถูกต้อง (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="was_ncor">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่กำจัดถูกต้อง (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="was_corr">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">การนำไปใช้ประโยชน์ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="use_benf">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">การนำไป กำจัด (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="removal">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">Landfill (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="landfill ">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="sq_po43p">Compost (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="compost">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">Incinerator (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="incinrt">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">อื่น ๆ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="other">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">จำนวน อปท. ที่ไม่มีการให้บริการ (แห่ง):</label>
-                                    <input type="number" class="form-control" id="dla_nser">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่เกิดขึ้นในพื้นที่ไม่ให้บริการ (แห่ง):</label>
-                                    <input type="number" class="form-control" id="was_ndla">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="was_benf">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่กำจัดไม่ถูกต้อง (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="nwas_cor">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="all_benf">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ขยะทั่วไป (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="ge_was">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">ขยะอินทรีย์ (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="orga_was">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">รีไซเคิล (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="recy_was">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">อันตราย (ตัน/วัน):</label>
-                                    <input type="number" class="form-control" id="dang_was">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">การบริโภคอาหาร (กิโลกรัม):</label>
-                                    <input type="number" class="form-control" id="eat_food">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sq_po43p">การผลิตของเสีย สิ่งปฏิกูล (กิโลกรัม):</label>
-                                    <input type="number" class="form-control" id="was_prod">
-                                </div>
-                            </div>
+                <div class="card mt-3 mb-3">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <!-- วันที่: sq_date -->
+                            <label for="sq_date">ชื่อ อปท.:</label>
+                            <input type="text" class="form-control" id="dla" required>
                         </div>
-                    </form>
-                    <!-- submit button -->
-                    <p></p>
-                    <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
-                            class="fa fa-clipboard"></i>&nbsp;
-                        กลับหน้ารายงาน</a>
-                    <a class="btn btn-warning pull-right m-1" onclick="refreshPage()"><i
-                            class="fa fa-refresh"></i>&nbsp;
-                        reset</a>
-                    <a class="btn btn-success pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
-                            aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
-                    </a>
+                        <form id="gform">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <!-- ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่างน้ำ: sq_spname -->
+                                        <label for="wq_spname">ปี:</label>
+                                        <input type="number" class="form-control" id="year">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sel1">จังหวัด:</label>
+                                        <select class="form-control" id="prov">
+                                            <option value="20">ชลบุรี</option>
+                                            <option value="21">ระยอง</option>
+                                            <option value="24">ฉะเชิงเทรา</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sq_time">ประชากร (คน):</label>
+                                        <input type="number" class="form-control" id="populace" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_round">ปริมาณขยะที่เกิดขึ้น (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="amt_was" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_do">จำนวน อปท. ที่มีการให้บริการ (แห่ง):</label>
+                                        <input type="number" class="form-control" id="dla_ser">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_tcb">ปริมาณขยะที่เกิดขึ้นใน อปท. พื้นที่ให้บริการ
+                                            (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="was_dla">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่เก็บขนไปกำจัด (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="amt_coll">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="amt_benf">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่ไม่มีการให้บริการ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="nwas_dla">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่กำจัดไม่ถูกต้อง (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="was_ncor">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่กำจัดถูกต้อง (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="was_corr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">การนำไปใช้ประโยชน์ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="use_benf">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">การนำไป กำจัด (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="removal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">Landfill (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="landfill ">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="sq_po43p">Compost (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="compost">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">Incinerator (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="incinrt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">อื่น ๆ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="other">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">จำนวน อปท. ที่ไม่มีการให้บริการ (แห่ง):</label>
+                                        <input type="number" class="form-control" id="dla_nser">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่เกิดขึ้นในพื้นที่ไม่ให้บริการ (แห่ง):</label>
+                                        <input type="number" class="form-control" id="was_ndla">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="was_benf">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่กำจัดไม่ถูกต้อง (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="nwas_cor">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ปริมาณขยะที่ถูกนำไปใช้ประโยชน์ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="all_benf">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ขยะทั่วไป (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="ge_was">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">ขยะอินทรีย์ (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="orga_was">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">รีไซเคิล (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="recy_was">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">อันตราย (ตัน/วัน):</label>
+                                        <input type="number" class="form-control" id="dang_was">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">การบริโภคอาหาร (กิโลกรัม):</label>
+                                        <input type="number" class="form-control" id="eat_food">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sq_po43p">การผลิตของเสีย สิ่งปฏิกูล (กิโลกรัม):</label>
+                                        <input type="number" class="form-control" id="was_prod">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- submit button -->
+                        <p></p>
+                        <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
+                                class="fa fa-clipboard"></i>&nbsp;
+                            กลับหน้ารายงาน</a>
+                        <a class="btn btn-warning pull-right m-1" onclick="refreshPage()"><i
+                                class="fa fa-refresh"></i>&nbsp;
+                            เริ่มใหม่</a>
+                        <a class="btn btn-success pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
+                                aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
+                        </a>
+                    </div>
+                </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <div class="container-fluid mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 17/06/2021</span></p>
                 </div>
             </div>
         </section><!-- End Services Section -->
-
-        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container-fluid mt-3 mb-6">
-            <p> <span class="ver">ปรับปรุง 16/03/2021</span></p>
-        </div>
     </main><!-- End #main -->
 
-
+    <br>
+    <br>
+    <br>
+    <br>
 
 
 
@@ -285,19 +275,14 @@
     <!-- ======= Footer ======= -->
     <footer id="footer">
         <div class="container">
+
             <div class="copyright">
-                &copy; Copyright 2021 <strong><span>EnGRIDs by GeoCMU</span></strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/ -->
-                Designed by <a href="https://engrids.soc.cmu.ac.th/">EnGRIDs</a>
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:3%"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
             </div>
         </div>
     </footer><!-- End  Footer -->
-
 
     <!-- Vendor JS Files -->
     <script src="./../assets/vendor/jquery/jquery.min.js"></script>

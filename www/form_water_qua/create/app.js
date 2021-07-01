@@ -1,7 +1,7 @@
-$(document).ready(() => {
-    // loadMap();
-    // getData();
-});
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';

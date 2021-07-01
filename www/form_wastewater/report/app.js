@@ -1,11 +1,16 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadTable()
     loadMap()
 });
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.305567,
+    lng: 101.383101
 }
 let map = L.map('map', {
     center: latlng,
@@ -191,7 +196,13 @@ let loadTable = () => {
             { data: 'prov' },
             // { data: 'prov' },
             { data: 'date' },
-            // { data: 'proc_stat' },
+
+            { data: 'no_hospi' },
+            { data: 'no_hotel' },
+            { data: 'no_mall' },
+            { data: 'no_market' },
+            { data: 'no_office' },
+            { data: 'no_restur' },
             // { data: 'opert_stat' },
             {
                 data: null,
@@ -204,6 +215,11 @@ let loadTable = () => {
             }
         ],
         searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
     });
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();

@@ -11,7 +11,7 @@ app.post("/profile-api/register", async (req, res) => {
     for (d in data) {
         if (data[d] !== '') {
             let sql = `UPDATE register SET ${d}='${data[d]}' WHERE reg_id='${reg_id}'`;
-            console.log(sql);
+            // console.log(sql);
             await eec.query(sql)
         }
     }
@@ -23,7 +23,7 @@ app.post("/profile-api/register", async (req, res) => {
 app.post("/profile-api/getprofile", (req, res) => {
     const { userid } = req.body;
     console.log(userid);
-    const sql = `SELECT * FROM regis WHERE userid = '${userid}'`
+    const sql = `SELECT * FROM register WHERE userid = '${userid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -43,5 +43,16 @@ app.post("/profile-api/updateprofile", (req, res) => {
     });
 })
 
+app.post("/profile-api/userlogin", (req, res) => {
+    const { usrname, pass } = req.body;
+    const sql = "SELECT usrname, reg_id FROM register WHERE tel=$1 and pass=$2";
+    const val = [usrname, pass];
+
+    eec.query(sql, val).then(r => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
 
 module.exports = app;

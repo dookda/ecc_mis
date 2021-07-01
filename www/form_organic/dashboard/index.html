@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>ระบบนำเข้าข้อมูลเกษตรอินทรีย์</title>
+
+    <!-- Favicons -->
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+
+    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <!-- amchart -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/dataviz.js"></script>
+    <!-- <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <link href="./fontawesome/css/all.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li class="active"><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
+                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                </ul>
+            </nav>
+
+            <div class="">
+                <a class="" style="color: dimgray !important;"><i class="bi bi-person-square"></i>&nbsp;<span
+                        id="usrname"></span>
+                </a>&nbsp;||&nbsp;
+                <a href="./../../form_register/login/index.html" class="btn btn-light"
+                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
+                    ออกจากระบบ</a>
+                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
+                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+    <br>
+    <br>
+    <br>
+
+    <main id="main">
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>ระบบนำเข้าข้อมูลเกษตรอินทรีย์</h2>
+                    <p>
+                        ระบบนำเข้าข้อมูลเกษตรอินทรีย์
+                        เป็นการนำเข้าข้อมูลเกษตรอินทรีย์ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                    </p>
+                </div>
+
+                <div class="container">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <!-- รับค่า ID Line -->
+                                <div id="card">
+                                    <img alt="" id="profile">
+
+                                </div>
+                            </div>
+                            <div class="col-xs-4 aml-1">
+                                <h5> <span class="badge badge-info" id="displayName"></span></h5>
+                                <span id="statusMessage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="jumbotron mt-6">
+                        <h5>ข้อมูลเกษตรอินทรีย์</h5>
+                        จำนวน <span id="siteCnt"></span> ข้อมูล -->
+                    <!-- <p></p>
+            <p></p>
+            <a type="button" class="btn btn-primary" href="./../add/index.html">เพิ่มโครงการใหม่</a> -->
+                    <!-- </div> -->
+                    <main id="main">
+                        <!-- แสดงข้อมูลกราฟทุกสถานี -->
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="card card-stats">
+                                    <button class="btn btn-info flex-fill" onclick="showALL()">
+                                        <i class="fas fa-chart-pie p-2" aria-hidden="true"></i>
+                                        ภาพรวม</button>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="card card-stats">
+                                    <button class="btn btn-info flex-fill" onclick="showA()">
+                                        <i class="fas fa-seedling  p-2" aria-hidden="true"></i>
+                                        การเพาะปลูก</button>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="card card-stats">
+                                    <button class="btn btn-info flex-fill" onclick="showB()">
+                                        <i class="fas fa-paw p-2" aria-hidden="true"></i>
+                                        ปศุสัตว์</button>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="card card-stats">
+                                    <button class="btn btn-info flex-fill" onclick="showC()">
+                                        <i class="fas fa-fish p-2" aria-hidden="true"></i>
+                                        การประมง</button>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="card card-stats">
+                                    <button class="btn btn-info flex-fill" onclick="showD()">
+                                        <i class="fas fa-hand-holding-usd p-2" aria-hidden="true"></i>
+                                        การใช้ประโยชน์</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group card card-stats">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div id="chart"></div>
+                                    </div>
+                                </div>
+                                <div class="row" id="legend">
+                                    <div class="col-sm">
+                                        <h6>Legend</h6>
+                                        <div id="legenddiv"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+            <div class="container-fluid mt-1 mb-1">
+                <div class="card-deck">
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <br>แปลงทั้งหมด<br>
+                            <span class="ch3" id="allvalue"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <span style="color: rgb(91,192,222);">
+                                <img src="./icon/planting.png" width="40" height="40" style="vertical-align:middle">
+                            </span>
+                            <br>การเกษตรกรรม<br>
+                            <span class="ch3" id="agri"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-paw" aria-hidden="true"></i>
+                            <br>ปศุสัตว์<br>
+                            <span class="ch3" id="animal"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-tint" aria-hidden="true"></i>
+                            <br>การประมง<br>
+                            <span class=" ch3" id="fisher"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <br>ซื้อขาย<br>
+                            <span class="ch3" id="buysell"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            <br>กักเก็บ<br>
+                            <span class="ch3" id="keep"></span><br>แปลง
+                        </div>
+                    </div>
+
+                    <div class="card card-stats center">
+                        <div class="c-body">
+                            <i class="fa fa-archive" aria-hidden="true"></i>
+                            <br>แปรรูป<br>
+                            <span class="ch3" id="transform"></span><br>แปลง
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+                        <br>
+                        <div class="form-group card card-stats">
+                            <div class="row card-body">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <h6><b>ข้อมูลแปลงทั้งหมด</b></h6>
+                                        <div class="card" id="map"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <table id="myTable" class="table table-striped table-bordered display nowrap"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>ชื่อแปลง</th>
+                                                <!-- <th>หน่วยงาน/ผู้รับผิดชอบ:</th> -->
+                                                <!-- <th>ประเภท</th> -->
+                                                <th>ประเภทของแปลง</th>
+                                                <th>ชนิด</th>
+                                                <th>แก้ไข</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="form-group" style="font-family: 'Kanit', sans-serif;">
+                            <a href="https://eec-onep.online/" class="btn btn-primary">
+                                <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>&nbsp;&nbsp;
+
+                            <a href="./../add/index.html" class="btn btn-success">
+                                <i class="fas fa-plus-square" aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล</a>&nbsp;&nbsp;
+
+                            <a href="./../update/index.html" class="btn btn-warning">
+                                <i class="fas fa-tasks" aria-hidden="true"></i>&nbsp;จัดการข้อมูล</a>
+                        </div>
+
+                        <div class="modal" id="agriModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">ข้อมูลของแปลง <span id="proj_name"></span></h5>
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>วันที่เก็บผลผลิต</h6>
+                                        <p><span id="countdown"></span></p>
+                                        <h6><span id="A1"></span></h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- <a href="/form_insee/dashboard/" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</a> -->
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal" id="animalModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">ข้อมูลของแปลง <span id="D1"></span></h5>
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>จำนวนสัตว์ที่เลี้ยง<span id="animalval"></span></h6>
+                                        <h6><span id="A1"></span></h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- <a href="/form_insee/dashboard/" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</a> -->
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal" id="fisherModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">ข้อมูลของการทำประมง <span id="F1"></span></h5>
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6><b><span id="val0"></span></b></h6>
+                                        <h6><span id="val1"></span></h6>
+                                        <h6><span id="val2"></span></h6>
+                                        <h6><span id="val3"></span></h6>
+                                        <h6><span id="val4"></span></h6>
+                                        <h6><span id="val5"></span></h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- <a href="/form_insee/dashboard/" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</a> -->
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">ยืนยันการลบข้อมูล</h5>
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>ท่านต้องการลบแปลงพื้นที่ของท่าน <span id="proj_name"></span></p>
+                                        <input type="hidden" id="proj_id">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="./../dashboard/index.html" class="btn btn-danger"
+                                            onclick="deleteValue()">ยืนยัน</a>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <div class="container-fluid mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 25/06/2021</span></p>
+                </div>
+            </div>
+        </section><!-- End Services Section -->
+
+
+    </main><!-- End #main -->
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container">
+
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:3%"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+            </div>
+        </div>
+    </footer><!-- End  Footer -->
+
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- amchart -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<script src="./app.js"></script>
+
+</html>

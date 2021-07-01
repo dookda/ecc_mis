@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadMap();
     // getData();
@@ -12,10 +17,10 @@ let map = L.map('map', {
     zoom: 13
 });
 let marker, gps;
-const url = 'http://localhost:3700';
-// const url = 'https://rti2dss.com:3200';
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
-let usr = "poon";
+let usr = urid;
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -172,7 +177,7 @@ let resizeImage = (file) => {
     img.src = URL.createObjectURL(file);
 }
 
-
+$("#fname").val(urname);
 let chkData = () => {
     let fname = $("#fname").val();
     if (!geom) {
@@ -226,12 +231,14 @@ let postData = async () => {
         }
         axios.post(url + "/ff-api/insert", obj).then(r => console.log("พืชสมุนไพร ok"));
     })
+
     let fname = $("#fname").val();
     let frai = $("#frai").val();
     let flandtype = $("#flandtype").val();
     let datObj = {
         ffid: ffid,
         data: {
+            userid: urid,
             fname: fname,
             frai: frai,
             flandtype: flandtype,
@@ -243,7 +250,8 @@ let postData = async () => {
 }
 
 let gotoDaily = () => {
-    location.href = "./dailyform.html";
+    console.log("ok");
+    location.href = "./../daily/index.html";
     sessionStorage.setItem('usr', usr);
 }
 

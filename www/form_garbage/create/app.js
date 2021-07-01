@@ -1,10 +1,16 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
+
 $(document).ready(() => {
     loadMap();
 });
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.305567,
+    lng: 101.383101
 }
 let map = L.map('map', {
     center: latlng,

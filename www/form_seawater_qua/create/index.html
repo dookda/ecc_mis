@@ -30,8 +30,8 @@
     <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
 
     <!-- Favicons -->
-    <link href="./../assets/img/favicon.png" rel="icon">
-    <link href="./../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -40,17 +40,17 @@
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap"> -->
     <!-- Vendor CSS Files -->
     <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link href="./../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/venobox/venobox.css" rel="stylesheet">
-    <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="./../../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../../assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <!-- Template Main CSS File -->
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="./../assets/css/style.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
 </head>
 
 </head>
@@ -64,27 +64,31 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li><a href="./../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="">เข้าสู่ระบบ</a></li>
                 </ul>
-            </nav><!-- .nav-menu -->
+            </nav>
 
-            <!-- social icon -->
-            <div class="header-social-links">
-                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
-                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+            <div class="">
+                <a class="" style="color: dimgray !important;"><i class="bi bi-person-square"></i>&nbsp;<span
+                        id="usrname"></span>
+                </a>&nbsp;||&nbsp;
+                <a href="./../../form_register/login/index.html" class="btn btn-light"
+                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
+                    ออกจากระบบ</a>
+                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
+                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
             </div>
 
         </div>
 
     </header><!-- End Header -->
-
+    <br>
+    <br>
+    <br>
     <main id="main">
 
         <!-- ======= Services Section ======= -->
@@ -93,218 +97,170 @@
                 <div class="section-title">
                     <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่ง</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่งเป็นการนำเข้าข้อมูลคุณภาพของน้ำทะเลและชายฝั่งในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่งเป็นการนำเข้าข้อมูลคุณภาพของน้ำทะเลและชายฝั่งในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
 
                 <!-- ใส่แผนที่ -->
                 <div class="container-fluid">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <!-- รับค่า ID Line -->
-                                <div id="card">
-                                    <img alt="" id="profile">
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 ml-1">
-                                <h5> <span class="badge badge-info" id="displayName"></span></h5>
-                                <span id="statusMessage"></span>
-                            </div>
-                        </div>
-                    </div>
                     <hr>
-                    <h3>Map</h3>
+                    <h3>แผนที่</h3>
+                    <h6>กรุณาคลิกที่แผนที่เพื่อนำเข้าตำแหน่งที่ตรวจวัดคุณภาพน้ำทะเลและชายฝั่ง</h6>
                     <div class="card mt-1 p-0">
                         <div id="map"></div>
                     </div>
-                </div>
-                <!-- ฟอร์มนำเข้า -->
-                <div class="container-fluid mt-3 mb-3">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm">
-                                <!-- ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่างน้ำ: sq_spname -->
-                                <label for="wq_spname">ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่าง:</label>
-                                <input type="text" class="form-control" id="sq_spname">
-                            </div>
-                            <div class="col-sm">
-                                <!-- วันที่: sq_date -->
-                                <label for="sq_date">วันเดือนปี:</label>
-                                <input type="date" class="form-control" id="sq_date" required>
-                            </div>
-                            <div class="col-sm">
-                                <!-- เวลา: sq_time -->
-                                <label for="sq_time">เวลา:</label>
-                                <input type="time" class="form-control" id="sq_time" required>
-                            </div>
-                            <div class="col-sm">
-                                <!-- ลำดับครั้งที่เก็บตัวอย่าง: sq_round -->
-                                <label for="sq_round">ลำดับครั้งที่เก็บตัวอย่าง:</label>
-                                <input type="number" class="form-control" id="sq_order" required>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm">
-                                <!-- สถานที่ตรวจวัด จังหวัด อำเภอ ตำบล: sq_pro -->
-                                <label for="sta_loc">สถานที่ตรวจวัด:</label>
-                                <input type="text" class="form-control" id="sta_loc">
-                            </div>
-                        </div>
-                        <!-- <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">จังหวัด:</label>
-                                    <select class="form-control" id="pro">
-                                        <option value="EEC">กลุ่มจังหวัด EEC</option>
-                                        <option value="20">ชลบุรี</option>
-                                        <option value="21">ระยอง</option>
-                                        <option value="24">ฉะเชิงเทรา</option>
-                                    </select>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <!-- ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่างน้ำ: sq_spname -->
+                                    <label for="wq_spname">ชื่อ-นามสกุล ผู้เก็บข้อมูลตัวอย่าง:</label>
+                                    <input type="text" class="form-control" id="sq_spname">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- วันที่: sq_date -->
+                                    <label for="sq_date">วันเดือนปี:</label>
+                                    <input type="date" class="form-control" id="sq_date" required>
+                                </div>
+                                <div class="col-sm">
+                                    <!-- เวลา: sq_time -->
+                                    <label for="sq_time">เวลา:</label>
+                                    <input type="time" class="form-control" id="sq_time" required>
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ลำดับครั้งที่เก็บตัวอย่าง: sq_round -->
+                                    <label for="sq_round">ลำดับครั้งที่เก็บตัวอย่าง:</label>
+                                    <input type="number" class="form-control" id="sq_order" required>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">อำเภอ:</label>
-                                    <select class="form-control" id="amp">
-                                    </select>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <!-- สถานที่ตรวจวัด จังหวัด อำเภอ ตำบล: sq_pro -->
+                                    <label for="sta_loc">สถานที่ตรวจวัด:</label>
+                                    <input type="text" class="form-control" id="sta_loc">
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">ตำบล:</label>
-                                    <select class="form-control" id="tam">
-                                    </select>
-                                </div>
-                            </div>
-                        </div> -->
-                        <br>
-                        <div class="row">
-                            <div class="col-sm">
-                                <!-- ค่าดีโอ: sq_do -->
-                                <label for="sq_do">ค่าดีโอ (mg/l):</label>
-                                <input type="number" class="form-control" id="sq_do">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด: sq_date -->
-                                <label for="sq_tcb">ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด (MPN/100ml):</label>
-                                <input type="number" class="form-control" id="sq_tcb">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ฟอสเฟต-ฟอสฟอรัส: sq_po43p -->
-                                <label for="sq_po43p">ฟอสเฟต-ฟอสฟอรัส (μg-P/l):</label>
-                                <input type="number" class="form-control" id="sq_po43p">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ไนเตรท-ไนโตรเจน: sq_no3n -->
-                                <label for="sq_po43p">ไนเตรท-ไนโตรเจน (μg-N/l):</label>
-                                <input type="number" class="form-control" id="sq_no3n">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm">
-                                <!-- อุณหภูมิ: sq_temp -->
-                                <label for="sq_do">อุณหภูมิ (ºC):</label>
-                                <input type="number" class="form-control" id="sq_temp">
-                            </div>
-                            <div class="col-sm">
-                                <!-- สารแขวนลอย: sq_ss -->
-                                <label for="sq_ss">สารแขวนลอย:</label>
-                                <input type="number" class="form-control" id="sq_ss">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ความเป็นกรด ด่าง: sq_ph -->
-                                <label for="sq_ph">ค่าความเป็นกรด ด่าง:</label>
-                                <input type="number" class="form-control" id="sq_ph">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ปริมาณแอมโมเนีย: sq_nh3 -->
-                                <label for="sq_nh3">ปริมาณแอมโมเนีย (μg-N/l):</label>
-                                <input type="number" class="form-control" id="sq_nh3">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm">
-                                <!-- ค่ามาตรฐานคุณภาพน้ำทะเล: sq_mwqi -->
-                                <label for="sq_mwqi">ค่ามาตรฐานคุณภาพน้ำทะเล:</label>
-                                <input type="number" class="form-control" id="sq_mwqi">
-                            </div>
-                            <div class="col-sm">
-                                <!-- ปริมาณสารตะกั่ว: sq_pb -->
-                                <label for="sq_pb">ปริมาณสารตะกั่ว (μg/l):</label>
-                                <input type="number" class="form-control" id="sq_pb">
                             </div>
 
-                        </div>
-
-                        <!-- file upload -->
-                        <br>
-                        <form>
-                            <div class="form-group">
-                                <label for="img">อัพโหลดรูปภาพ</label>
-                                <input type="file" class="form-control-file" id="img">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <!-- ค่าดีโอ: sq_do -->
+                                    <label for="sq_do">ค่าดีโอ (mg/l):</label>
+                                    <input type="number" class="form-control" id="sq_do">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด: sq_date -->
+                                    <label for="sq_tcb">ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด (MPN/100ml):</label>
+                                    <input type="number" class="form-control" id="sq_tcb">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ฟอสเฟต-ฟอสฟอรัส: sq_po43p -->
+                                    <label for="sq_po43p">ฟอสเฟต-ฟอสฟอรัส (μg-P/l):</label>
+                                    <input type="number" class="form-control" id="sq_po43p">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ไนเตรท-ไนโตรเจน: sq_no3n -->
+                                    <label for="sq_po43p">ไนเตรท-ไนโตรเจน (μg-N/l):</label>
+                                    <input type="number" class="form-control" id="sq_no3n">
+                                </div>
                             </div>
-                        </form>
-                        <!-- submit button -->
-                        <p></p>
-                        <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
-                                class="fa fa-clipboard"></i>&nbsp;
-                            กลับหน้ารายงาน</a>
-                        <a class="btn btn-success pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
-                                aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
-                        </a>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <!-- อุณหภูมิ: sq_temp -->
+                                    <label for="sq_do">อุณหภูมิ (ºC):</label>
+                                    <input type="number" class="form-control" id="sq_temp">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- สารแขวนลอย: sq_ss -->
+                                    <label for="sq_ss">สารแขวนลอย:</label>
+                                    <input type="number" class="form-control" id="sq_ss">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ความเป็นกรด ด่าง: sq_ph -->
+                                    <label for="sq_ph">ค่าความเป็นกรด ด่าง:</label>
+                                    <input type="number" class="form-control" id="sq_ph">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ปริมาณแอมโมเนีย: sq_nh3 -->
+                                    <label for="sq_nh3">ปริมาณแอมโมเนีย (μg-N/l):</label>
+                                    <input type="number" class="form-control" id="sq_nh3">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <!-- ค่ามาตรฐานคุณภาพน้ำทะเล: sq_mwqi -->
+                                    <label for="sq_mwqi">ค่ามาตรฐานคุณภาพน้ำทะเล:</label>
+                                    <input type="number" class="form-control" id="sq_mwqi">
+                                </div>
+                                <div class="col-sm">
+                                    <!-- ปริมาณสารตะกั่ว: sq_pb -->
+                                    <label for="sq_pb">ปริมาณสารตะกั่ว (μg/l):</label>
+                                    <input type="number" class="form-control" id="sq_pb">
+                                </div>
+
+                            </div>
+
+                            <!-- file upload -->
+                            <br>
+                            <form>
+                                <div class="form-group">
+                                    <label for="img">อัพโหลดรูปภาพ</label>
+                                    <input type="file" class="form-control-file" id="img">
+                                </div>
+                            </form>
+                            <!-- submit button -->
+                            <p></p>
+                            <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
+                                    class="fa fa-clipboard"></i>&nbsp;
+                                กลับหน้ารายงาน</a>
+                            <a href="" class="btn btn-success pull-right m-1" onclick="insertData()"><i
+                                    class="fa fa-plus" aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
+                            </a>
+                        </div>
                     </div>
+                </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <div class="container-fluid mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 29/06/2021</span></p>
                 </div>
             </div>
         </section><!-- End Services Section -->
-
-        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container-fluid mt-3 mb-6">
-            <p> <span class="ver">ปรับปรุง 16/03/2021</span></p>
-        </div>
     </main><!-- End #main -->
-
-
-
-
-
-
-
+    <br>
+    <br>
+    <br>
+    <br>
     <!-- ======= Footer ======= -->
     <footer id="footer">
         <div class="container">
+
             <div class="copyright">
-                &copy; Copyright 2021 <strong><span>EnGRIDs by GeoCMU</span></strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/ -->
-                Designed by <a href="https://engrids.soc.cmu.ac.th/">EnGRIDs</a>
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:3%"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
             </div>
         </div>
     </footer><!-- End  Footer -->
 
 
     <!-- Vendor JS Files -->
-    <script src="./../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="./../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="./../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
-    <script src="./../assets/vendor/php-email-form/validate.js"></script>
-    <script src="./../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
-    <script src="./../assets/vendor/counterup/counterup.min.js"></script>
-    <script src="./../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
-    <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="./../assets/vendor/venobox/venobox.min.js"></script>
-    <script src="./../assets/vendor/aos/aos.js"></script>
+    <script src="./../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="./../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./../../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="./../../assets/vendor/php-email-form/validate.js"></script>
+    <script src="./../../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="./../../assets/vendor/counterup/counterup.min.js"></script>
+    <script src="./../../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="./../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../../assets/vendor/venobox/venobox.min.js"></script>
+    <script src="./../../assets/vendor/aos/aos.js"></script>
 
     <!-- Template Main JS File -->
-    <script src="./../assets/js/main.js"></script>
+    <script src="./../../assets/js/main.js"></script>
 
     <!-- start dooklink -->
     <!-- jQuery library -->

@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadMap();
 });
@@ -11,13 +16,13 @@ let map = L.map('map', {
     zoom: 13
 });
 
-let usr = sessionStorage.getItem('usr');
+let usr = urid;
 let marker, gps, dataurl;
 
 console.log(usr);
 
-const url = 'http://localhost:3700';
-// const url = 'https://rti2dss.com:3200';
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -83,20 +88,37 @@ let getDetail = (ffid) => {
 }
 
 let getParcel = (ffid) => {
-    let json = fc.toGeoJSON();
-    json.features.map((i) => {
-        if (i.properties.name == ffid) {
-            let a = L.geoJSON(i);
-            map.fitBounds(a.getBounds());
+    map.eachLayer(i => {
+        console.log(i);
+        if (i.options.name) {
+            map.removeLayer(i);
         }
     });
 
+    let style = {
+        fillColor: '#FED976',
+        weight: 4,
+        opacity: 1,
+        color: '#FC4E2A',
+        dashArray: '5',
+        fillOpacity: 0.7
+    }
+
+    let json = fc.toGeoJSON();
+    json.features.map((i) => {
+        if (i.properties.name == ffid) {
+            let a = L.geoJSON(i, { name: "current", style: style }).addTo(map);
+            map.fitBounds(a.getBounds());
+        }
+    });
     getDetail(ffid)
 }
 
-axios.post(url + "/ff-api/getpacellist", { usr: usr }).then(r => {
-    $("#fname").val(usr);
-    r.data.data.map(i => {
+axios.post(url + "/ff-api/getpacellist", { userid: urid }).then(r => {
+    $("#fname").val(urname);
+    console.log(r);
+    r.data.data.map((i, k) => {
+        // console.log(k);
         let dat = {
             "type": "Feature",
             "geometry": JSON.parse(i.geom),
@@ -107,7 +129,7 @@ axios.post(url + "/ff-api/getpacellist", { usr: usr }).then(r => {
 
         let json = L.geoJSON(dat);
         json.addTo(fc);
-        $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
+        $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">แปลงที่ ${k + 1} (รหัสแปลง ${i.ffid})</a>`);
     })
     map.fitBounds(fc.getBounds());
     // console.log(fc);
@@ -121,7 +143,7 @@ let table = $('#myTable').DataTable({
     ajax: {
         type: "POST",
         url: url + '/ff-api/getdaily',
-        data: { userid: usr },
+        data: { userid: urid },
         dataSrc: 'data'
     },
     columns: [
@@ -131,6 +153,7 @@ let table = $('#myTable').DataTable({
                 return `${meta.row + 1}`
             }
         },
+        { data: 'ffid' },
         { data: 'fplant' },
         { data: 'ftype' },
         { data: 'date' },
@@ -168,13 +191,17 @@ let table = $('#myTable').DataTable({
     ],
     searching: true,
     scrollX: true,
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'print'
+    ],
     // order: [2, 'asc'],
 });
 
 let sendData = () => {
     let obj = {
         data: {
-            userid: usr,
+            userid: urid,
             ffid: $("#ffid").val(),
             fplant: $("#fplant").val(),
             ftype: $("#ftype").val(),

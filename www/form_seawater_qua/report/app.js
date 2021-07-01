@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadTable()
 
@@ -38,18 +43,17 @@ function getChart(sq_id) {
     }
     axios.post(url + "/sq-api/getone", obj).then((r) => {
         $("#chartdiv").show()
-        console.log(r.data.data[0]);
+        // console.log(r.data.data[0]);
         geneChart([{ "cat": "ค่าดีโอ", "val": r.data.data[0].sq_do }], "sq_do", "ค่าดีโอ", "mg/L");
         geneChart([{ "cat": "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "val": r.data.data[0].sq_tcb }], "sq_tcb", "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "MPN/100ml");
         geneChart([{ "cat": "ฟอสเฟต-ฟอสฟอรัส", "val": r.data.data[0].sq_po43p }], "sq_po43p", "ฟอสเฟต-ฟอสฟอรัส", "μg-P/l");
         geneChart([{ "cat": "ไนเตรท-ไนโตรเจน", "val": r.data.data[0].sq_no3n }], "sq_no3n", "ไนเตรท-ไนโตรเจน", "μg-N/l");
         geneChart([{ "cat": "อุณหภูมิ", "val": r.data.data[0].sq_temp }], "sq_temp", "อุณหภูมิ", "ºC");
         geneChart([{ "cat": "สารแขวนลอย", "val": r.data.data[0].sq_ss }], "sq_ss", "สารแขวนลอย", "");
-        geneChart([{ "cat": "ค่าความเป็นกรด ด่าง", "val": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH");
+        geneChart([{ "cat": "ค่าความเป็นกรด-ด่าง", "val": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH");
         geneChart([{ "cat": "ปริมาณแอมโมเนีย", "val": r.data.data[0].sq_nh3 }], "sq_nh3", "ปริมาณแอมโมเนีย", "μg-N/l");
         geneChart([{ "cat": "ค่ามาตรฐานคุณภาพน้ำทะเล", "val": r.data.data[0].sq_mwqi }], "sq_mwqi", "ค่ามาตรฐานคุณภาพน้ำทะเล", "");
         geneChart([{ "cat": "ปริมาณสารตะกั่ว", "val": r.data.data[0].sq_pb }], "sq_pb", "ปริมาณสารตะกั่ว", "μg/l");
-
     })
 }
 
@@ -73,12 +77,22 @@ let loadTable = () => {
             { data: 'sta_loc' },
             // { data: 'prov' },
             { data: 'date' },
-            // { data: 'proc_stat' },
+
+            { data: 'sq_do' },
+            { data: 'sq_tcb' },
+            { data: 'sq_po43p' },
+            { data: 'sq_no3n' },
+            { data: 'sq_temp' },
+            { data: 'sq_ss' },
+            { data: 'sq_ph' },
+            { data: 'sq_nh3' },
+            { data: 'sq_mwqi' },
+            { data: 'sq_pb' },
             // { data: 'opert_stat' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    // console.log(data);
+                    console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
@@ -86,6 +100,11 @@ let loadTable = () => {
             }
         ],
         searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
     });
 
     // table.on('search.dt', function () {

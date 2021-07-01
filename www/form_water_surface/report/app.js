@@ -1,3 +1,8 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
 $(document).ready(() => {
     loadTable()
 
@@ -116,6 +121,14 @@ let loadTable = () => {
             { data: 'ws_location' },
             { data: 'ws_river' },
             { data: 'date' },
+
+            { data: 'ws_do' },
+            { data: 'ws_bod' },
+            { data: 'ws_tcb' },
+            { data: 'ws_fcb' },
+            { data: 'ws_nh3n' },
+            { data: 'ws_wqi' },
+            { data: 'ws_tp' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
@@ -123,11 +136,16 @@ let loadTable = () => {
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.ws_id},'${row.ws_station}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <a class="btn btn-margin btn-outline-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</a>`
-                }
+                },
+                // width: '30%'
             }
         ],
         searching: true,
-        scrollX: false,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
     });
 
     // table.on('search.dt', function () {

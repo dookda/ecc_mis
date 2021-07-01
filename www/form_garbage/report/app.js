@@ -1,3 +1,9 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
+
+
 $(document).ready(() => {
     loadTable()
 
@@ -137,6 +143,12 @@ let loadTable = () => {
             { data: 'dla' },
             { data: 'prov' },
             { data: 'year' },
+
+            { data: 'amt_was' },
+            { data: 'amt_coll' },
+            { data: 'amt_benf' },
+            { data: 'was_ncor' },
+
             {
                 data: null,
                 render: function (data, type, row, meta) {
@@ -148,6 +160,11 @@ let loadTable = () => {
             }
         ],
         searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
     });
     getChart(1897)
 }

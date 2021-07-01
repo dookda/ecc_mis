@@ -15,8 +15,8 @@ app.post("/ff-api/geteatlist", (req, res) => {
 })
 
 app.post("/ff-api/getpacellist", (req, res) => {
-    const { usr } = req.body;
-    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user WHERE fname='${usr}'`;
+    const { userid } = req.body;
+    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user WHERE userid='${userid}'`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -71,35 +71,19 @@ app.post("/ff-api/getdaily", (req, res) => {
     })
 })
 
-app.post("/ff-api/getstationone", (req, res) => {
-    const { ws_station } = req.body;
-    const sql = `SELECT *, TO_CHAR(ws_date, 'DD-MM-YYYY') as date FROM surwater 
-                    WHERE ws_station='${ws_station}'
-                    ORDER BY ws_date`
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
-
-app.post("/ws-api/getone", (req, res) => {
-    const { ws_id } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-                TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
-                FROM surwater
-                WHERE ws_id='${ws_id}'`
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
-
-app.post("/ws-api/getdata", (req, res) => {
+app.post("/ff-api/getalldaily", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-            TO_CHAR(ws_date, 'DD-MM-YYYY') as date FROM surwater`
+    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date FROM familyforest_daily`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/ff-api/getparcelall", (req, res) => {
+    const { ffid } = req.body;
+    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
