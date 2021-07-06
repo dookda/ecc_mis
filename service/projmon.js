@@ -5,7 +5,7 @@ const eec = con.eec;
 
 app.post("/projmon-api/getdata", (req, res) => {
     const { org, typ } = req.body;
-    console.log(org, typ);
+    // console.log(org, typ);
     if (typ == 'admin') {
         const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
         FROM eecprj_mon ORDER BY prj_cate ASC`
@@ -177,14 +177,14 @@ app.post("/projmon-api/getnonprojdata", (req, res) => {
     const { org, typ } = req.body;
     // console.log(org, typ);
     if (typ == 'admin') {
-        const sql = `SELECT * FROM eecprj_monnonprj ORDER BY dt DESC`
+        const sql = `SELECT * FROM eecprj_monnonprj ORDER BY prj_cate ASC`
         eec.query(sql).then(r => {
             res.status(200).json({
                 data: r.rows
             })
         })
     } else if (typ == 'editor') {
-        const sql = `SELECT * FROM eecprj_monnonprj WHERE prj_operat='${org}' ORDER BY dt ASC`
+        const sql = `SELECT * FROM eecprj_monnonprj WHERE prj_operat='${org}' ORDER BY prj_cate ASC`
         eec.query(sql).then(r => {
             res.status(200).json({
                 data: r.rows

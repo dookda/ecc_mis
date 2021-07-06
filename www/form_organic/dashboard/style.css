@@ -158,3 +158,8 @@ i.fa-camera {
 #legenddiv {
     height: 2vh;
   }
+
+#chartorgan{
+    height: 65vh;
+    width: 100%;
+}

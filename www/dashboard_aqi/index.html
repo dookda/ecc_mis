@@ -40,6 +40,7 @@
     <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <!-- Template Main CSS File -->
     <link href="./../assets/css/style.css" rel="stylesheet">
 
@@ -57,16 +58,18 @@
                     <li><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="">เข้าสู่ระบบ</a></li>
-                </ul>
-            </nav><!-- .nav-menu -->
 
-            <!-- social icon -->
+                    <li><a href="https://www.facebook.com/EECENV">facebook</a></li>
+                    <li><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+                        </a></li>
+                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
+                </ul>
+            </nav>
             <div class="header-social-links">
-                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
-                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+                <a href="https://www.facebook.com/EECENV" class="facebook"><img src="./../../assets/img/onep_logo.png"
+                        class="img-circle" style="width:35px"></a>
             </div>
 
         </div>
@@ -78,12 +81,10 @@
 
     <main id="main">
         <!-- ======= Services Section ======= -->
-        <section id="services" class="services">
+        <section id="services" class="services" data-aos="fade-up">
 
             <!-- <div class="container" data-aos="fade-up"> -->
             <div class="section-title">
-                <br>
-                <br>
                 <h2>ระบบรายงานสถานการณ์คุณภาพอากาศ</h2>
                 <p>
                     ระบบรายงานสถานการณ์คุณภาพอากาศในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
@@ -100,10 +101,7 @@
                         ชื่อสถานี:</span><span id="sta_th"></span> <span style="font-size: small;"> สถานที่:</span>
                     <span id="area_th"></span>
                 </div>
-            </div>
 
-            <br>
-            <div class="container-fluid mt-1 mb-1">
                 <div class="card-deck">
                     <div class="card card-stats">
                         <div class="c-body center">
@@ -176,66 +174,57 @@
                     </div>
 
                 </div>
-            </div>
 
-            <div class="card-deck p-3 mb-1">
-                <div class="card card-stats">
-                    <div class="card-body p2">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">จังหวัด:</label>
-                                    <select class="form-control" id="pro">
-                                        <option value="eec">eec</option>
-                                        <option value="20">ชลบุรี</option>
-                                        <option value="21">ระยอง</option>
-                                        <option value="24">ฉะเชิงเทรา</option>
-                                    </select>
+                <div class="card-deck p-3 mb-1">
+                    <div class="card card-stats">
+                        <div class="card-body p2">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">จังหวัด:</label>
+                                        <select class="form-control" id="pro">
+                                            <option value="eec">eec</option>
+                                            <option value="20">ชลบุรี</option>
+                                            <option value="21">ระยอง</option>
+                                            <option value="24">ฉะเชิงเทรา</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">อำเภอ:</label>
-                                    <select class="form-control" id="amp">
-                                    </select>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">อำเภอ:</label>
+                                        <select class="form-control" id="amp">
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="sel1">ตำบล:</label>
-                                    <select class="form-control" id="tam">
-                                    </select>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">ตำบล:</label>
+                                        <select class="form-control" id="tam">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- แสดงแผนที่ -->
-            <div class="card-deck p-3 mb-1">
-                <div class="card card-stats">
-                    <div class="card-body p-1 ">
-                        <div class="border-10" id="map"></div>
+                <!-- แสดงแผนที่ -->
+                <div class="card p-1 ">
+                    <div class="border-10" id="map"></div>
+                </div>
+
+                <div class="card-deck p-3 mb-1">
+                    <div class="card card-stats">
+                        <div class="card-body p-1 ">
+                            <img class="border-10" src="./aqi.png" width="100%">
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card-deck p-3 mb-1">
-                <div class="card card-stats">
-                    <div class="card-body p-1 ">
-                        <img class="border-10" src="./aqi.png" width="100%">
-                    </div>
-                </div>
-            </div>
-            <!-- หัวข้อ -->
-            <div class="container-fluid mt-1 mb-1 center">
+                <!-- หัวข้อ -->
                 <br>
                 <h6 style="font-weight: bold">เรียกดูข้อมูลคุณภาพอากาศ ตามประเภทข้อมูล</h6>
-            </div>
 
-            <!-- //Show curent weather near me -->
-            <div class="container">
                 <div class="card-deck p-3">
                     <div class="card card-stats">
 
@@ -267,10 +256,7 @@
                             <i class="las la-fan fa-2x p-2" aria-hidden="true"></i>SO<sub>2</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- แสดงข้อมูลตารางแต่ละสถานี -->
-            <div class="container-fluid mt-3 mb-6">
                 <div class="row">
                     <div class="col-sm-6">
 
@@ -309,9 +295,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- กราฟค่าตรวจวัดแต่ละพารามิเตอร์ -->
-            <div class="container-fluid mt-3 mb-6">
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-stats text-center">
@@ -394,13 +378,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 16/03/2021</span></p>
+                </div>
             </div>
-            <!-- </div> -->
         </section>
     </main>
-    <div class="container-fluid mt-3 mb-6">
-        <p> <span class="ver">ปรับปรุง 16/03/2021</span></p>
-    </div>
 
     <br>
     <br>

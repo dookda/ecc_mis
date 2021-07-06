@@ -1,3 +1,7 @@
+let urid = sessionStorage.getItem('id');
+let urname = sessionStorage.getItem('name');
+$("#usrname").text(urname);
+urid ? null : location.href = "./../../form_register/login/index.html";
 
 let map = L.map('map', {
     center: [13.156242, 101.339052],
@@ -428,7 +432,7 @@ function showSal() {
 
 barChart = async (data, unit, title, header) => {
     am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("chart", am4charts.XYChart);
+    var chart = am4core.create("gwchart", am4charts.XYChart);
     chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
     chart.data = await data;
 

@@ -1,8 +1,8 @@
 sessionStorage.clear();
 
-// var url = 'http://localhost:3700';
+var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+// var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);
@@ -11,6 +11,20 @@ function onLocationError(e) {
 function refreshPage() {
     location.reload(true);
 }
+
+let getProv = () => {
+    axios.get(url + "/eec-api/get-th-prov").then(r => {
+        console.log(r)
+        $("#pro").empty()
+        $("#amp").empty()
+        $("#tam").empty()
+        $("#pro").append(`<option value=""></option>`)
+        r.data.data.map(i => {
+            $("#pro").append(`<option value="${i.pv_idn}">${i.pro_name}</option>`)
+        })
+    })
+}
+getProv()
 
 let getAmp = (e) => {
     axios.get(url + "/eec-api/get-th-amp/" + e).then(r => {
@@ -92,6 +106,7 @@ let sendData = () => {
             tam: $('#tam').val(),
             ocup: $('#ocup').val(),
             sex: $('#sex').val(),
+            address: $('#address').val(),
             // workshop: $('input[name="workshop"]:checked').val()
         }
     }
@@ -110,3 +125,4 @@ $("#passcheck").hide()
 $("#password2").on("change", function () {
     $("#password2").val() == $("#password").val() ? $("#passcheck").hide() : $("#passcheck").show();
 })
+

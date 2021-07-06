@@ -3,7 +3,6 @@ let urname = sessionStorage.getItem('name');
 $("#usrname").text(urname);
 urid ? null : location.href = "./../../form_register/login/index.html";
 
-
 let userid;
 
 let main = async () => {

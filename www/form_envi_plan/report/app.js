@@ -17,8 +17,8 @@ if (typ == "admin") {
     $("#isadmin").hide()
     $("#isadmin2").hide()
 }
-const url = "https://eec-onep.online:3700";
-// const url = "http://localhost:3700";
+// const url = "https://eec-onep.online:3700";
+const url = "http://localhost:3700";
 // const url = 
 
 let latlng;
@@ -89,14 +89,14 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
-            { data: 'prj_order' },
+            // { data: 'prj_order' },
             // { data: 'prj_cate' },
-            // {
-            //     data: '',
-            //     render: (data, type, row, meta) => {
-            //         return `${meta.row + 1}`
-            //     }
-            // },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -243,15 +243,16 @@ let getPrj_cate = async (x) => {
         cat: e,
         val: ev
     }]
-    barChart(dat, "chart1", "โครงการ")
+    barChart(dat, "chart1", "จำนวนโครงการ")
 }
 
 let getBudget = async (x) => {
-    let a = "งบประมาณประจำปี 2561"
-    let b = "งบประมาณประจำปี 2562"
-    let c = "งบประมาณประจำปี 2563"
-    let d = "งบประมาณประจำปี 2564"
-    let av = 0, bv = 0, cv = 0, dv = 0
+    let a = "งบประมาณประจำปี 2561";
+    let b = "งบประมาณประจำปี 2562";
+    let c = "งบประมาณประจำปี 2563";
+    let d = "งบประมาณประจำปี 2564";
+    let e = "งบประมาณประจำปี 2565";
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map(i => {
 
@@ -263,6 +264,8 @@ let getBudget = async (x) => {
             cv += Number(i.budg_63)
         } else if (i.budg_64) {
             dv += Number(i.budg_64)
+        } else if (i.budg_65) {
+            ev += Number(i.budg_65)
         }
     })
     let dat = [{
@@ -277,6 +280,9 @@ let getBudget = async (x) => {
     }, {
         cat: d,
         val: dv
+    }, {
+        cat: e,
+        val: ev
     }]
 
     // console.log(dat);
@@ -309,7 +315,7 @@ let getProc_stat = async (x) => {
         cat: c,
         val: cv
     }]
-    barChart(dat, "chart3", "โครงการ")
+    barChart(dat, "chart3", "จำนวนโครงการ")
 }
 
 let getOpert_stat = async (x) => {
@@ -320,7 +326,7 @@ let getOpert_stat = async (x) => {
     let e = "ดำเนินการเรียบร้อยแล้ว"
     let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
-    await x.map(i => {
+    await x.map((i, k) => {
         // console.log(i);
         if (i.opert_stat == a) {
             av++
@@ -333,6 +339,7 @@ let getOpert_stat = async (x) => {
         } else if (i.opert_stat == e) {
             ev++
         }
+        $("#projtotal").text(k + 1)
     })
     let dat = [{
         cat: "อยู่ระหว่างการศึกษาความเหมาะสมฯ",
@@ -350,7 +357,65 @@ let getOpert_stat = async (x) => {
         cat: e,
         val: ev
     }]
-    barChart(dat, "chart4", "โครงการ")
+    // barChart(dat, "chart4", "จำนวนโครงการ");
+    ratioChart(dat, "chart5", "จำนวนโครงการ");
+}
+
+let ratioChart = (dat, div, label) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.PieChart);
+
+    // Add and configure Series
+    var pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = "val";
+    pieSeries.dataFields.category = "cat";
+
+    // Let's cut a hole in our Pie chart the size of 30% the radius
+    chart.innerRadius = am4core.percent(30);
+
+    // Put a thick white border around each Slice
+    pieSeries.slices.template.stroke = am4core.color("#fff");
+    pieSeries.slices.template.strokeWidth = 2;
+    pieSeries.slices.template.strokeOpacity = 1;
+    pieSeries.slices.template.cursorOverStyle = [
+        {
+            "property": "cursor",
+            "value": "pointer"
+        }
+    ];
+
+    pieSeries.alignLabels = false;
+    pieSeries.labels.template.bent = true;
+    pieSeries.labels.template.radius = 3;
+    pieSeries.labels.template.padding(0, 0, 0, 0);
+
+    pieSeries.labels.template.disabled = true;
+    pieSeries.ticks.template.disabled = true;
+
+    // Create a base filter effect (as if it's not there) for the hover to return to
+    var shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+    shadow.opacity = 0;
+
+    // Create hover state
+    var hoverState = pieSeries.slices.template.states.getKey("hover"); // normally we have to create the hover state, in this case it already exists
+
+    // Slightly shift the shadow and make it more prominent on hover
+    var hoverShadow = hoverState.filters.push(new am4core.DropShadowFilter);
+    hoverShadow.opacity = 0.7;
+    hoverShadow.blur = 5;
+
+    // Add a legend
+    chart.legend = new am4charts.Legend();
+    chart.legend.position = "right";
+    chart.legend.fontSize = "12px";
+    // chart.legend.valueLabels.template.align = "left"
+    // chart.legend.valueLabels.template.textAlign = "start"
+
+    chart.data = dat;
 }
 
 let barChart = (datarr, chartdiv, unit) => {
@@ -403,7 +468,7 @@ let loadTable2 = () => {
             {
                 data: '',
                 render: (data, type, row, meta) => {
-                    console.log(row);
+                    // console.log(row);
                     return `${meta.row + 1}`
                 }
             },

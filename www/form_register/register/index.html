@@ -26,22 +26,22 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 
     <!-- Favicons -->
-    <link href="./../assets/img/favicon.png" rel="icon">
-    <link href="./../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
-    <link href="./../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="./../assets/vendor/venobox/venobox.css" rel="stylesheet">
-    <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="./../../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../../assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <!-- Template Main CSS File -->
-    <link rel="stylesheet" href="./../assets/css/style.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -66,16 +66,19 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+
+                    <li><a href="https://www.facebook.com/EECENV">facebook</a></li>
+
+                    <li><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+                        </a></li>
+                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
                 </ul>
             </nav>
-
-            <div class="">
-
-                <a href="./../../form_register/login/index.html" class="btn btn-light"
-                    style="color: dimgray !important;"><i class="bi bi-box-arrow-right"></i>
-                    เข้าสู่ระบบ</a>
-                <a href="https://www.facebook.com/EECENV" class="btn btn-light"
-                    style="font-size: 16px; color: dimgray !important;"><i class="icofont-facebook"></i>facebook</a>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV" class="facebook"><img src="./../../assets/img/onep_logo.png"
+                        class="img-circle" style="width:35px"></a>
             </div>
 
         </div>
@@ -127,16 +130,21 @@
                             </div>
 
                             <div class="form-group">
+                                <label>ที่อยู่:</label>
+                                <input type="email" class="form-control" id="address">
+                            </div>
+
+                            <div class="form-group">
                                 <label>จังหวัด:</label>
                                 <select class="form-control" id="pro" onchange="getAmp(this.value)">
-                                    <option value=""></option>
+                                    <!-- <option value=""></option> -->
                                     <!-- <option value="22">จันทบุรี</option> -->
-                                    <option value="24">ฉะเชิงเทรา</option>
-                                    <option value="20">ชลบุรี</option>
+                                    <!-- <option value="24">ฉะเชิงเทรา</option> -->
+                                    <!-- <option value="20">ชลบุรี</option> -->
                                     <!-- <option value="23">ตราด</option>
                                         <option value="26">นครนายก</option>
                                         <option value="25">ปราจีนบุรี</option> -->
-                                    <option value="21">ระยอง</option>
+                                    <!-- <option value="21">ระยอง</option> -->
                                     <!-- <option value="27">สระแก้ว</option> -->
                                 </select>
                             </div>
@@ -156,13 +164,11 @@
                             <input type="hidden" id="tam_name">
 
                             <div class="form-group">
-                                <label>อาชีพ: </label>
+                                <label>กลุ่มอาชีพและองค์กร: </label>
                                 <select class="form-control" id="ocup">
-                                    <option value="ข้าราชการ">รับราชการ</option>
-                                    <option value="พนักงานรัฐวิสาหกิจ">พนักงานรัฐวิสาหกิจ</option>
-                                    <option value="พนักงานรัฐวิสาหกิจ">เกษตรกร</option>
-                                    <option value="นักเรียน-นักศึกษา">นักเรียน-นักศึกษา</option>
-                                    <option value="บุคลทั่วไป">บุคลทั่วไป</option>
+                                    <option value="ภาครัฐ">ภาครัฐ</option>
+                                    <option value="เอกชน">เอกชน</option>
+                                    <option value="ประชาชน">ประชาชน</option>
                                 </select>
                             </div>
 

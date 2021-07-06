@@ -1,6 +1,6 @@
-// var url = 'http://localhost:3700';
+var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+// var url = 'https://eec-onep.online:3700';
 
 sessionStorage.clear();
 
@@ -16,9 +16,10 @@ let gotoRegister = () => {
     location.href = "./../register/index.html";
 }
 
-let gotoInput = (id, name) => {
+let gotoInput = (id, name, auth) => {
     sessionStorage.setItem('id', id);
     sessionStorage.setItem('name', name);
+    sessionStorage.setItem('eecauth', auth);
     location.href = "./../../input_eec.html";
 }
 
@@ -40,7 +41,7 @@ let sendData = () => {
     }
     axios.post(url + "/profile-api/userlogin", obj).then(r => {
         if (r.data.data.length > 0) {
-            gotoInput(r.data.data[0].reg_id, r.data.data[0].usrname)
+            gotoInput(r.data.data[0].regid, r.data.data[0].usrname, r.data.data[0].auth)
         } else {
             $("#detail").empty();
             $("#detail").append(`ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง`);
