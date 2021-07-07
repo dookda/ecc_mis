@@ -190,6 +190,9 @@ let showAreaChart = (data) => {
 
     // Add a legend
     chart.legend = new am4charts.Legend();
+    chart.legend.position = "right";
+    // chart.legend.valueLabels.template.textAlign = "end";
+    // chart.legend.itemContainers.template.paddingLeft = 15;
 
     chart.data = data;
 }

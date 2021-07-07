@@ -104,9 +104,9 @@ map.pm.addControls({
     drawRectangle: true,
     drawCircleMarker: false,
     cutPolygon: false,
-    editMode: false,
+    editMode: true,
     dragMode: false,
-    removalMode: false,
+    removalMode: true,
 });
 
 let geom = "";
