@@ -439,3 +439,12 @@ section{
 .card-d:hover #card11{
   display: none;
 }
+
+.closeall{
+  pointer-events: none; 
+  filter: grayscale(100%);
+  opacity: 0.3; 
+}
+.off{
+  pointer-events: none; 
+}

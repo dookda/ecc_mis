@@ -38,26 +38,27 @@
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
-            <nav class="nav-menu d-none d-lg-block">
+            <nav class="nav-menu d-none d-lg-block" id="navbar">
                 <ul>
                     <li><a href="./index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
 
-                    <li><a href="./../../form_register/profile/index.html"><i
+                    <!-- <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
-                        </a></li>
-                    <li><a href="./../../form_register/login/index.html"></a><i class="bi bi-box-arrow-right"></i>
-                        ออกจากระบบ</a></li>
+                        </a></li>-->
+                    <!-- <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>  -->
                 </ul>
             </nav>
             <div class="header-social-links" style="margin-top: auto;">
-                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i>
-
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png" class="img-circle"
+                        style="width:35px"></a>
             </div>
         </div>
 
@@ -118,14 +119,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm">
-                            <div class="card soft-violet">
-                                <!-- <div class="overlay center" id="manual"></div> -->
-                                <div class="circle">
-                                    <img src="./assets/img/11.png" width="65px" height="auto">
+
+                        <div class="col-sm ">
+                            <div class='card-d' id="cardair">
+                                <div class="card Soft-blue" style="opacity: 1; position:relative;"
+                                    onclick="window.location.href='./form_biodiversity/list/index.html'">
+                                    <!-- <div class="overlay" id="air"></div> -->
+                                    <div class="circle" style="filter: none;">
+                                        <img src=" ./assets/img/green.png" width="80px" height="auto">
+                                    </div>
+                                    <p style="margin-top: 11px;"><b>โมดูลทรัพยากรชีวภาพ</b></p>
                                 </div>
-                                <p><b>คู่มือการใช้งาน</b></p>
                             </div>
+                        </div>
+                        <div class="row-content">
+                            <div class="col-sm">
+                                <div class="card soft-violet" id="manualB">
+                                    <!-- <div class="overlay center" id="manual"></div> -->
+                                    <div class="circle">
+                                        <img src="./assets/img/11.png" width="65px" height="auto">
+                                    </div>
+                                    <p><b>คู่มือการใช้งาน</b></p>
+                                </div>
+                            </div>
+                            <div class="col-sm" id="g01"></div>
+                            <div class="col-sm" id="g01"></div>
+                            <div class="col-sm" id="g01"></div>
                         </div>
                     </div>
                 </div>
@@ -168,13 +187,6 @@
     <!-- Template Main JS File -->
     <script src="./assets/js/main.js"></script>
     <!-- <script src=".assets/js/app.js"></script> -->
-    <script>
-        let urid = sessionStorage.getItem('id');
-        let urname = sessionStorage.getItem('name');
-        $("#usrname").text(urname);
-        urid ? null : location.href = "./form_register/login";
-
-    </script>
 </body>
 
 </html>

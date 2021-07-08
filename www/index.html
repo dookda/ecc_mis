@@ -36,35 +36,35 @@
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container-fluid row d-flex justify-content-between align-items-center">
-      <div class="col-sm" style="text-align: center;">
-        <nav class="nav-menu d-none d-lg-block">
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <div class="col-sm">
+        <nav class="nav-menu d-none d-lg-block" id="navbar">
           <ul>
-            <li><a href="./index.html">หน้าหลัก</a></li>
-            <li class="active"><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+            <li class="active"><a href="./index.html">หน้าหลัก</a></li>
+            <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
             <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
             <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
             <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
             <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
-            <li><a href="./../../form_register/profile/index.html"><i class="bi bi-person-square"></i>&nbsp;<span
-                  id="usrname"></span>
-              </a></li>
-            <li><a href="./../../form_register/login/index.html"></a><i class="bi bi-box-arrow-right"></i>
-              ออกจากระบบ</a></li>
+            <!-- <li><a href="./../../form_register/profile/index.html"><i class="bi bi-person-square"></i>&nbsp;<span
+                  id="usrname"></span></a></li>-->
+            <!-- <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                ออกจากระบบ</a></li>  -->
           </ul>
         </nav>
-
-        <div class="header-social-links" style="margin-top: auto;">
-          <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
-        </div>
       </div>
+      <div class="header-social-links" style="align-items: center;">
+        <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"  style="font-size:28px;"></i></a>
+        <a><img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"></a>
+      </div>
+    </div>
   </header><!-- End Header -->
 
   <main id="main">
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center" style="background-image: url(assets/img/BG2.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;">
+    <section id="hero" class="d-flex align-items-center" style="background-image: url(assets/img/BG2.jpg);background-position: center;
+    background-repeat: no-repeat; background-size: cover;">
       <div class="container d-flex flex-column align-items-center" data-aos="zoom-in" data-aos-delay="100" id="blur">
         <img src="./assets/img/onep_logo.png" id="oneplogo">
         <h1><b>ระบบสารสนเทศเพื่อการจัดการสิ่งแวดล้อม</b></h1>
@@ -161,14 +161,6 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-
-  <script>
-    let urid = sessionStorage.getItem('id');
-    let urname = sessionStorage.getItem('name');
-    $("#usrname").text(urname);
-    urid ? null : location.href = "./form_register/login";
-
-  </script>
 </body>
 
 </html>

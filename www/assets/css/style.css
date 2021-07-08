@@ -36,6 +36,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@media (max-width: 500px) {
+  #main {
+        font-size: 16px;
+  }
+}
+
+
 h{
   font-family: "Kanit", sans-serif;
 }
@@ -480,6 +487,11 @@ body {
     padding-top: 58px;
   }
 }
+@media (max-width: 500px) {
+  #hero .container {
+    padding-top: 16px;
+  }
+}
 
 #hero h1 {
   margin: 0;
@@ -546,9 +558,9 @@ body {
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
-section {
-  /* padding: 60px 0; */
-}
+/* section {
+  padding: 60px 0;
+} */
 
 .section-bg {
   background-color: #e7f8f6;
@@ -635,6 +647,13 @@ section {
     justify-content: flex-end;
   }
 }
+
+@media (min-width: 769px) {
+  .cta .cta-btn-container {
+    font-size: 16px;
+  }
+}
+
 
 /*--------------------------------------------------------------
 # About

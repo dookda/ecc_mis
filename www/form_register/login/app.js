@@ -17,10 +17,10 @@ let gotoRegister = () => {
 }
 
 let gotoInput = (id, name, auth, aproved) => {
-    sessionStorage.setItem('id', id);
-    sessionStorage.setItem('name', name);
+    sessionStorage.setItem('eecid', id);
+    sessionStorage.setItem('eecname', name);
     sessionStorage.setItem('eecauth', auth);
-    location.href = "./../../input_eec.html";
+    location.href = "./../../index.html";
 }
 
 let loginWithUsername = (e) => {

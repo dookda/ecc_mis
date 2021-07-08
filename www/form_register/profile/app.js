@@ -1,5 +1,5 @@
-let urid = sessionStorage.getItem('id');
-let urname = sessionStorage.getItem('name');
+let urid = sessionStorage.getItem('eecid');
+let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let fromadmin = sessionStorage.getItem('fromadmin');
 $("#usrname").text(urname);

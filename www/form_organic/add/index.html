@@ -69,7 +69,7 @@
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
-
+                    <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
                     <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
@@ -79,7 +79,9 @@
                 </ul>
             </nav>
             <div class="header-social-links">
-                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png" class="img-circle"
+                style="width:35px"></a> -->
             </div>
 
         </div>
@@ -157,152 +159,210 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                     <br>
                 </div>
                 <hr>
-
-                <div class="row center">
-                    <div class="form-group">
-                        <a href="https://eec-onep.online/" class="btn btn-primary">
-                            <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a> &nbsp;&nbsp;
-                        <a href="./../dashboard/index.html" class="btn btn-info">
-                            <i class="fas fa-chart-bar" aria-hidden="true"></i>&nbsp;หน้ารายงาน</a> &nbsp;&nbsp;
-                        <a href="./../update/index.html" class="btn btn-warning">
-                            <i class="fas fa-tasks" aria-hidden="true"></i>&nbsp;จัดการข้อมูล</a>
-
+                <div>
+                    <div class="row center">
+                        <div class="form-group">
+                            <a href="https://eec-onep.online/" class="btn btn-primary">
+                                <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a> &nbsp;&nbsp;
+                            <a href="./../dashboard/index.html" class="btn btn-info">
+                                <i class="fas fa-chart-bar" aria-hidden="true"></i>&nbsp;หน้ารายงาน</a> &nbsp;&nbsp;
+                            <a href="./../update/index.html" class="btn btn-warning">
+                                <i class="fas fa-tasks" aria-hidden="true"></i>&nbsp;จัดการข้อมูล</a>
+                        </div>
+                    </div>
+                    <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                    <div class="container-fluid mt-3 mb-6">
+                        <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
 
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-                            <h4 class="modal-title">รายละเอียดของแปลงที่วาด</h4>
-                        </div>
-                        <div class="modal-body">
-                            <!-- <p>Some text in the modal.</p> -->
-                            <form id="FormModal">
-                                <div class=" form-group" id="into">
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <h6>แปลงที่</h6>
-                                            <input type="number" class="form-control" id="into1">
-                                        </div>
-                                        <div class="col-sm">
-                                            <h6>ชื่อแปลง</h6>
-                                            <input type="text" class="form-control" id="into2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" form-group" id="Type">
-                                    <div class="col-sm">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                                <h4 class="modal-title">รายละเอียดของแปลงที่วาด</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <p>Some text in the modal.</p> -->
+                                <form id="FormModal">
+                                    <div class=" form-group" id="into">
                                         <div class="row">
-                                            <h6>การทำเกษตรอินทรีย์</h6>
                                             <div class="col-sm">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="Tagri">
-                                                    <label class="form-check-label" for="exampleRadios1">
-                                                        เพาะปลูก
-                                                    </label>
-                                                </div>
+                                                <h6>แปลงที่</h6>
+                                                <input type="number" class="form-control" id="into1">
                                             </div>
-                                            <div class=" col-sm">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="Tanimal">
-                                                    <label class=" form-check-label" for="exampleRadios1">
-                                                        ปศุสัตว์
-                                                    </label>
-                                                </div>
+                                            <div class="col-sm">
+                                                <h6>ชื่อแปลง</h6>
+                                                <input type="text" class="form-control" id="into2">
                                             </div>
-                                            <div class=" col-sm">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="Tfishery">
-                                                    <label class="form-check-label" for="exampleRadios1">
-                                                        การประมง
-                                                    </label>
+                                        </div>
+                                    </div>
+                                    <div class=" form-group" id="Type">
+                                        <div class="col-sm">
+                                            <div class="row">
+                                                <h6>การทำเกษตรอินทรีย์</h6>
+                                                <div class="col-sm">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="exampleRadios" id="Tagri">
+                                                        <label class="form-check-label" for="exampleRadios1">
+                                                            เพาะปลูก
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class=" col-sm">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="exampleRadios" id="Tanimal">
+                                                        <label class=" form-check-label" for="exampleRadios1">
+                                                            ปศุสัตว์
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class=" col-sm">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="exampleRadios" id="Tfishery">
+                                                        <label class="form-check-label" for="exampleRadios1">
+                                                            การประมง
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class=" form-group" id="TypeA" style="display:none">
-                                    <h6>การเพาะปลูก</h6>
-                                    <div class=" form-group" id="indexmap">
+                                    <div class=" form-group" id="TypeA" style="display:none">
+                                        <h6>การเพาะปลูก</h6>
+                                        <div class=" form-group" id="indexmap">
+                                            <div class="row">
+                                                <div class="col-sm" id="desc0">
+                                                    <p>ประเภทของพืช</p>
+                                                    <select class="form-control" id="TypeA1">
+                                                        <option value="ข้าว">ข้าว
+                                                        </option>
+                                                        <option value="พืชไร่">พืชไร่
+                                                        </option>
+                                                        <option value="ผัก">ผัก</option>
+                                                        <option value="ผลไม้">ผลไม้
+                                                        </option>
+                                                        <option value="สมุนไพร่">สมุนไพร
+                                                        </option>
+                                                        <option value="อื่นๆ">อื่นๆ
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm" id="desc1">
+                                                    <p>ชนิดของพืชที่ปลูก</p>
+                                                    <input type="text" class="form-control" id="cateAgri">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" form-group">
+                                            <div class="row">
+                                                <div class="col-sm" id="desc2">
+                                                    <p>วันที่ปลูก</p>
+                                                    <input type="date" class="form-control" id="dateAgri" required>
+                                                </div>
+                                                <div class="col-sm" id="desc3">
+                                                    <p>วันที่คาดว่าจะเก็บเกี่ยว</p>
+                                                    <input type="date" class="form-control" id="dateAgout" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="standselect">
+                                            <p>การรับรองมาตรฐาน</p>
+                                            <select class="form-control" id="standAgri">
+                                                <option value="ไม่มีการรับรอง">
+                                                    ไม่มีการรับรองมาตรฐาน</option>
+                                                <option value="มีการรับรอง">
+                                                    มีการรับรองมาตราฐาน</option>
+                                                <!-- <option value="All">มีและไม่มีการรับรองมาตราฐาน</option> -->
+                                            </select>
+                                            <br>
+                                            <div id="standetail">
+                                                <div class="row">
+                                                    <div class="col-sm" id="Namestand" style="display:none">
+                                                        <p>ชื่อของมาตรฐานที่ได้รับการรับรอง
+                                                        </p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namestand">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="area">
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="KeepValue">
+                                                            ขนาดพื้นที่ของแปลงที่ปลูก
+                                                        </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="areaAgri">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="Unit">
+                                                            หน่วย
+                                                        </label>
+                                                        <select class="form-control" id="unitAgri">
+                                                            <option value="ไร่">ไร่
+                                                            </option>
+                                                            <option value="ตารางวา">
+                                                                ตารางวา</option>
+                                                            <option value="ตารางเมตร">
+                                                                ตารางเมตร</option>
+                                                            <option value="ตารางกิโลเมตร">
+                                                                ตารางกิโลเมตร</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" form-group" id="TypeB" style="display:none">
+                                        <h6>การทำปศุสัตว์</h6>
                                         <div class="row">
-                                            <div class="col-sm" id="desc0">
-                                                <p>ประเภทของพืช</p>
-                                                <select class="form-control" id="TypeA1">
-                                                    <option value="ข้าว">ข้าว
-                                                    </option>
-                                                    <option value="พืชไร่">พืชไร่
-                                                    </option>
-                                                    <option value="ผัก">ผัก</option>
-                                                    <option value="ผลไม้">ผลไม้
-                                                    </option>
-                                                    <option value="สมุนไพร่">สมุนไพร
-                                                    </option>
-                                                    <option value="อื่นๆ">อื่นๆ
-                                                    </option>
+                                            <div class="col-sm">
+                                                <label for="L">ชนิดของสัตว์</label>
+                                                <select class="form-control" id="selAni">
+                                                    <option value=""></option>
+                                                    <option value="ไก่">ไก่</option>
+                                                    <option value="เป็ด">เป็ด</option>
+                                                    <option value="หมู">หมู</option>
+                                                    <option value="วัว">วัว</option>
+                                                    <option value="ควาย">ควาย</option>
+                                                    <option value="อื่นๆ">อื่นๆ</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm" id="desc1">
-                                                <p>ชนิดของพืชที่ปลูก</p>
-                                                <input type="text" class="form-control" id="cateAgri">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="L">สายพันธุ์ของสัตว์</label>
+                                                    <input type="text" class="form-control" id="cateAni">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class=" form-group">
-                                        <div class="row">
-                                            <div class="col-sm" id="desc2">
-                                                <p>วันที่ปลูก</p>
-                                                <input type="date" class="form-control" id="dateAgri" required>
-                                            </div>
-                                            <div class="col-sm" id="desc3">
-                                                <p>วันที่คาดว่าจะเก็บเกี่ยว</p>
-                                                <input type="date" class="form-control" id="dateAgout" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="standselect">
-                                        <p>การรับรองมาตรฐาน</p>
-                                        <select class="form-control" id="standAgri">
-                                            <option value="ไม่มีการรับรอง">
-                                                ไม่มีการรับรองมาตรฐาน</option>
-                                            <option value="มีการรับรอง">
-                                                มีการรับรองมาตราฐาน</option>
-                                            <!-- <option value="All">มีและไม่มีการรับรองมาตราฐาน</option> -->
-                                        </select>
-                                        <br>
-                                        <div id="standetail">
-                                            <div class="row">
-                                                <div class="col-sm" id="Namestand" style="display:none">
-                                                    <p>ชื่อของมาตรฐานที่ได้รับการรับรอง
-                                                    </p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namestand">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="Lplot">จำนวนที่เลี้ยงไว้ (ตัว)</label>
+                                                    <input type="number" class="form-control" id="quanAni">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group" id="area">
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="KeepValue">
-                                                        ขนาดพื้นที่ของแปลงที่ปลูก
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control" id="areaAgri">
+                                                    <label for="Larea">ขนาดของพื้นที่ที่เลี้ยงสัตว์</label>
+                                                    <input type="number" step="0.01" class="form-control" id="areaAni">
                                                 </div>
                                             </div>
                                             <div class="col-sm">
@@ -310,13 +370,12 @@
                                                     <label for="Unit">
                                                         หน่วย
                                                     </label>
-                                                    <select class="form-control" id="unitAgri">
-                                                        <option value="ไร่">ไร่
+                                                    <select class="form-control" id="unitAni">
+                                                        <option value="ไร่">ไร่</option>
+                                                        <option value="ตารางวา">ตารางวา
                                                         </option>
-                                                        <option value="ตารางวา">
-                                                            ตารางวา</option>
-                                                        <option value="ตารางเมตร">
-                                                            ตารางเมตร</option>
+                                                        <option value="ตารางเมตร">ตารางเมตร
+                                                        </option>
                                                         <option value="ตารางกิโลเมตร">
                                                             ตารางกิโลเมตร</option>
                                                     </select>
@@ -324,668 +383,623 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class=" form-group" id="TypeB" style="display:none">
-                                    <h6>การทำปศุสัตว์</h6>
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <label for="L">ชนิดของสัตว์</label>
-                                            <select class="form-control" id="selAni">
-                                                <option value=""></option>
-                                                <option value="ไก่">ไก่</option>
-                                                <option value="เป็ด">เป็ด</option>
-                                                <option value="หมู">หมู</option>
-                                                <option value="วัว">วัว</option>
-                                                <option value="ควาย">ควาย</option>
-                                                <option value="อื่นๆ">อื่นๆ</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <label for="L">สายพันธุ์ของสัตว์</label>
-                                                <input type="text" class="form-control" id="cateAni">
+                                    <div class=" form-group" id="TypeC" style="display:none">
+                                        <h6>การประมง</h6>
+                                        <div class=" form-group">
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <p>ประเภทของน้ำ</p>
+                                                    <select class="form-control" id="watercat">
+                                                        <option value="น้ำจืด">น้ำจืด</option>
+                                                        <option value="น้ำเค็ม">น้ำเค็ม</option>
+                                                        <option value="น้ำกร่อย">น้ำกร่อย</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <p>จำนวนชนิดของสัตว์น้ำ</p>
+                                                    <select class="form-control" id="fishselect">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <label for="Lplot">จำนวนที่เลี้ยงไว้ (ตัว)</label>
-                                                <input type="number" class="form-control" id="quanAni">
+                                            <div class=" form-group" id="fish1">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <p>สัตว์น้ำชนิดที่ 1</p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namefish1">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>ปริมาณ/จำนวน</p>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="fishnum1">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="fishunit1">
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" form-group" id="fish2" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <p>สัตว์น้ำชนิดที่ 2</p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namefish2">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>ปริมาณ/จำนวน</p>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="fishnum2">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="fishunit2">
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" form-group" id="fish3" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <p>สัตว์น้ำชนิดที่ 3</p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namefish3">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>ปริมาณ/จำนวน</p>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="fishnum3">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="fishunit3">
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" form-group" id="fish4" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <p>สัตว์น้ำชนิดที่ 4</p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namefish4">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>ปริมาณ/จำนวน</p>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="fishnum4">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="fishunit4">
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" form-group" id="fish5" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <p>สัตว์น้ำชนิดที่ 5</p>
+                                                        <input type="text" name="namestand" class="form-control"
+                                                            id="namefish5">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>ปริมาณ/จำนวน</p>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="fishnum5">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="fishunit5">
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <label for="Larea">ขนาดของพื้นที่ที่เลี้ยงสัตว์</label>
-                                                <input type="number" step="0.01" class="form-control" id="areaAni">
+                                    <div class=" form-group" id="Use">
+                                        <div class=" form-group">
+                                            <div class="col-sm">
+                                                <div class="row">
+                                                    <h6>การนำไปใช้ประโยชน์</h6>
+                                                    <div class="col-sm">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="BuySellUse">
+                                                            <label class="form-check-label" for="flexCheckChecked">
+                                                                การซื้อขาย
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="KeepUse">
+                                                            <label class="form-check-label" for="flexCheckChecked">
+                                                                การกักเก็บ
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="TransUse">
+                                                            <label class="form-check-label" for="flexCheckChecked">
+                                                                การแปรรูป
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <label for="Unit">
-                                                    หน่วย
-                                                </label>
-                                                <select class="form-control" id="unitAni">
-                                                    <option value="ไร่">ไร่</option>
-                                                    <option value="ตารางวา">ตารางวา
+                                            <div class=" form-group" id="BS">
+                                                <select class="form-control" id="BSselect" style="display:none">
+                                                    <option value="ซื้อขาย">ทั้งซื้อและขาย
                                                     </option>
-                                                    <option value="ตารางเมตร">ตารางเมตร
+                                                    <option value="ซื้อ">ซื้ออย่างเดียว
                                                     </option>
-                                                    <option value="ตารางกิโลเมตร">
-                                                        ตารางกิโลเมตร</option>
+                                                    <option value="ขาย">ขายอย่างเดียว
+                                                    </option>
+                                                    <!-- <option value="No">ไม่มีการซื้อขาย</option> -->
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class=" form-group" id="TypeC" style="display:none">
-                                    <h6>การประมง</h6>
-                                    <div class=" form-group">
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <p>ประเภทของน้ำ</p>
-                                                <select class="form-control" id="watercat">
-                                                    <option value="น้ำจืด">น้ำจืด</option>
-                                                    <option value="น้ำเค็ม">น้ำเค็ม</option>
-                                                    <option value="น้ำกร่อย">น้ำกร่อย</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm">
-                                                <p>จำนวนชนิดของสัตว์น้ำ</p>
-                                                <select class="form-control" id="fishselect">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class=" form-group" id="fish1">
+                                        <div class=" form-group" id=Buy style="display:none">
+                                            <h6>การซื้อต่อเดือน</h6>
                                             <div class="row">
                                                 <div class="col-sm">
-                                                    <p>สัตว์น้ำชนิดที่ 1</p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namefish1">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>ปริมาณ/จำนวน</p>
-                                                    <input type="number" step="0.01" class="form-control" id="fishnum1">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="fishunit1">
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" form-group" id="fish2" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <p>สัตว์น้ำชนิดที่ 2</p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namefish2">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>ปริมาณ/จำนวน</p>
-                                                    <input type="number" step="0.01" class="form-control" id="fishnum2">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="fishunit2">
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" form-group" id="fish3" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <p>สัตว์น้ำชนิดที่ 3</p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namefish3">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>ปริมาณ/จำนวน</p>
-                                                    <input type="number" step="0.01" class="form-control" id="fishnum3">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="fishunit3">
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" form-group" id="fish4" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <p>สัตว์น้ำชนิดที่ 4</p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namefish4">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>ปริมาณ/จำนวน</p>
-                                                    <input type="number" step="0.01" class="form-control" id="fishnum4">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="fishunit4">
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" form-group" id="fish5" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <p>สัตว์น้ำชนิดที่ 5</p>
-                                                    <input type="text" name="namestand" class="form-control"
-                                                        id="namefish5">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>ปริมาณ/จำนวน</p>
-                                                    <input type="number" step="0.01" class="form-control" id="fishnum5">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="fishunit5">
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" form-group" id="Use">
-                                    <div class=" form-group">
-                                        <div class="col-sm">
-                                            <div class="row">
-                                                <h6>การนำไปใช้ประโยชน์</h6>
-                                                <div class="col-sm">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="BuySellUse">
-                                                        <label class="form-check-label" for="flexCheckChecked">
-                                                            การซื้อขาย
+                                                    <div class="form-group">
+                                                        <label for="BValue">
+                                                            ปริมาณจำนวนที่ซื้อมา
                                                         </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="BuyValue">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="KeepUse">
-                                                        <label class="form-check-label" for="flexCheckChecked">
-                                                            การกักเก็บ
+                                                    <div class="form-group">
+                                                        <label for="BUnit">
+                                                            หน่วยที่ใช้ในการซื้อ
                                                         </label>
+                                                        <select class="form-control" id="BuyUnit">
+                                                            <option value="กรัม">กรัม
+                                                            </option>
+                                                            <option value="กิโลกรัม">
+                                                                กิโลกรัม</option>
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="กระสอบ">กระสอบ
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="BMony">
+                                                            ซื้อมาเท่าไร (บาท)
+                                                        </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="BuyMony">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="TransUse">
-                                                        <label class="form-check-label" for="flexCheckChecked">
-                                                            การแปรรูป
-                                                        </label>
+                                                    <div class="form-group">
+                                                        <label for="BLocat">แหล่งที่ซื้อมา
+                                                            :</label>
+                                                        <input type="text" class="form-control" id="BuyLocat">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class=" form-group" id="BS">
-                                            <select class="form-control" id="BSselect" style="display:none">
-                                                <option value="ซื้อขาย">ทั้งซื้อและขาย
-                                                </option>
-                                                <option value="ซื้อ">ซื้ออย่างเดียว
-                                                </option>
-                                                <option value="ขาย">ขายอย่างเดียว
-                                                </option>
-                                                <!-- <option value="No">ไม่มีการซื้อขาย</option> -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class=" form-group" id=Buy style="display:none">
-                                        <h6>การซื้อต่อเดือน</h6>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="BValue">
-                                                        ปริมาณจำนวนที่ซื้อมา
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control" id="BuyValue">
+                                        <div class=" form-group" id="Sell" style="display:none">
+                                            <h6>การขายต่อเดือน</h6>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="SValue">
+                                                            ปริมาณจำนวนที่ขายไป
+                                                        </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="SellValue">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="SUnit">
+                                                            หน่วยที่ใช้ในการขาย
+                                                        </label>
+                                                        <select class="form-control" id="SellUnit">
+                                                            <option value="กรัม">กรัม
+                                                            </option>
+                                                            <option value="กิโลกรัม">
+                                                                กิโลกรัม</option>
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="กระสอบ">กระสอบ
+                                                            </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="BUnit">
-                                                        หน่วยที่ใช้ในการซื้อ
-                                                    </label>
-                                                    <select class="form-control" id="BuyUnit">
-                                                        <option value="กรัม">กรัม
-                                                        </option>
-                                                        <option value="กิโลกรัม">
-                                                            กิโลกรัม</option>
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="กระสอบ">กระสอบ
-                                                        </option>
-                                                    </select>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="SMony">ขายไป (บาท)
+                                                        </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="SellMony">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="BMony">
-                                                        ซื้อมาเท่าไร (บาท)
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control" id="BuyMony">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="BLocat">แหล่งที่ซื้อมา
-                                                        :</label>
-                                                    <input type="text" class="form-control" id="BuyLocat">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="SLocat">แหล่งที่ขาย
+                                                            :</label>
+                                                        <input type="text" class="form-control" id="SellLocat">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class=" form-group" id="Sell" style="display:none">
-                                        <h6>การขายต่อเดือน</h6>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="SValue">
-                                                        ปริมาณจำนวนที่ขายไป
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control"
-                                                        id="SellValue">
+                                        <div class="form-group" id="Keep" style="display:none">
+                                            <h6>การกักเก็บต่อเดือน</h6>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="KeepValue">
+                                                            ปริมาณจำนวนที่เก็บไว้
+                                                        </label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            id="KeepValue">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="SUnit">
-                                                        หน่วยที่ใช้ในการขาย
-                                                    </label>
-                                                    <select class="form-control" id="SellUnit">
-                                                        <option value="กรัม">กรัม
-                                                        </option>
-                                                        <option value="กิโลกรัม">
-                                                            กิโลกรัม</option>
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="กระสอบ">กระสอบ
-                                                        </option>
-                                                    </select>
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <label for="KeepUnit">
+                                                            หน่วย
+                                                        </label>
+                                                        <select class="form-control" id="KeepUnit">
+                                                            <option value="กรัม">กรัม
+                                                            </option>
+                                                            <option value="กิโลกรัม">
+                                                                กิโลกรัม</option>
+                                                            <option value="ตัว">ตัว</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="กระสอบ">กระสอบ
+                                                            </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="SMony">ขายไป (บาท)
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control" id="SellMony">
+                                        <div class="form-group" id="Transform" style="display:none">
+                                            <h6>การแปรรูปผลผลิต</h6>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <p>จำนวนผลิตภัณฑ์</p>
+                                                    <select class="form-control" id="prodselect">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="SLocat">แหล่งที่ขาย
-                                                        :</label>
-                                                    <input type="text" class="form-control" id="SellLocat">
+                                            <div class="form-group" id="product1">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ชื่อผลิตภัณฑ์ 1</label>
+                                                        <input type="text" class="form-control" id="Transname1">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
+                                                        <input type="number" class="form-control" id="staple1">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="stapleUnit1">
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="กระสอบ">กระสอบ</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="ต้น">ต้น</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
+                                                        <input type="number" class="form-control" id="prodValue1">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="prodUnit1">
+                                                            <option value="กล่อง">กล่อง</option>
+                                                            <option value="กระปุก">กระปุก</option>
+                                                            <option value="ขวด">ขวด</option>
+                                                            <option value="ชิ้น">ชิ้น</option>
+                                                            <option value="ซอง">ซอง</option>
+                                                            <option value="ถุง">ถุง</option>
+                                                            <option value="ถ้วย">ถ้วย</option>
+                                                            <option value="อัน">อัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
+                                                        <input type="number" class="form-control" id="prodMoney1">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">แหล่งที่ขาย</label>
+                                                        <input type="text" class="form-control" id="prodLocat1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="product2" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ชื่อผลิตภัณฑ์ 2</label>
+                                                        <input type="text" class="form-control" id="Transname2">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
+                                                        <input type="number" class="form-control" id="staple2">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="stapleUnit2">
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="กระสอบ">กระสอบ</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="ต้น">ต้น</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
+                                                        <input type="number" class="form-control" id="prodValue2">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="prodUnit2">
+                                                            <option value="กล่อง">กล่อง</option>
+                                                            <option value="กระปุก">กระปุก</option>
+                                                            <option value="ขวด">ขวด</option>
+                                                            <option value="ชิ้น">ชิ้น</option>
+                                                            <option value="ซอง">ซอง</option>
+                                                            <option value="ถุง">ถุง</option>
+                                                            <option value="ถ้วย">ถ้วย</option>
+                                                            <option value="อัน">อัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
+                                                        <input type="number" class="form-control" id="prodMoney2">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">แหล่งที่ขาย</label>
+                                                        <input type="text" class="form-control" id="prodLocat2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="product3" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ชื่อผลิตภัณฑ์ 3</label>
+                                                        <input type="text" class="form-control" id="Transname3">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
+                                                        <input type="number" class="form-control" id="staple3">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="stapleUnit3">
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="กระสอบ">กระสอบ</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="ต้น">ต้น</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
+                                                        <input type="number" class="form-control" id="prodValue3">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="prodUnit3">
+                                                            <option value="กล่อง">กล่อง</option>
+                                                            <option value="กระปุก">กระปุก</option>
+                                                            <option value="ขวด">ขวด</option>
+                                                            <option value="ชิ้น">ชิ้น</option>
+                                                            <option value="ซอง">ซอง</option>
+                                                            <option value="ถุง">ถุง</option>
+                                                            <option value="ถ้วย">ถ้วย</option>
+                                                            <option value="อัน">อัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
+                                                        <input type="number" class="form-control" id="prodMoney3">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">แหล่งที่ขาย</label>
+                                                        <input type="text" class="form-control" id="prodLocat3">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="product4" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ชื่อผลิตภัณฑ์ 4</label>
+                                                        <input type="text" class="form-control" id="Transname4">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
+                                                        <input type="number" class="form-control" id="staple4">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="stapleUnit4">
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="กระสอบ">กระสอบ</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="ต้น">ต้น</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
+                                                        <input type="number" class="form-control" id="prodValue4">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="prodUnit4">
+                                                            <option value="กล่อง">กล่อง</option>
+                                                            <option value="กระปุก">กระปุก</option>
+                                                            <option value="ขวด">ขวด</option>
+                                                            <option value="ชิ้น">ชิ้น</option>
+                                                            <option value="ซอง">ซอง</option>
+                                                            <option value="ถุง">ถุง</option>
+                                                            <option value="ถ้วย">ถ้วย</option>
+                                                            <option value="อัน">อัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
+                                                        <input type="number" class="form-control" id="prodMoney4">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">แหล่งที่ขาย</label>
+                                                        <input type="text" class="form-control" id="prodLocat4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="product5" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ชื่อผลิตภัณฑ์ 5</label>
+                                                        <input type="text" class="form-control" id="Transname5">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
+                                                        <input type="number" class="form-control" id="staple5">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="stapleUnit5">
+                                                            <option value="กรัม">กรัม</option>
+                                                            <option value="กิโลกรัม">กิโลกรัม</option>
+                                                            <option value="กระสอบ">กระสอบ</option>
+                                                            <option value="ตัน">ตัน</option>
+                                                            <option value="ต้น">ต้น</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
+                                                        <input type="number" class="form-control" id="prodValue5">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <p>หน่วย</p>
+                                                        <select class="form-control" id="prodUnit5">
+                                                            <option value="กล่อง">กล่อง</option>
+                                                            <option value="กระปุก">กระปุก</option>
+                                                            <option value="ขวด">ขวด</option>
+                                                            <option value="ชิ้น">ชิ้น</option>
+                                                            <option value="ซอง">ซอง</option>
+                                                            <option value="ถุง">ถุง</option>
+                                                            <option value="ถ้วย">ถ้วย</option>
+                                                            <option value="อัน">อัน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
+                                                        <input type="number" class="form-control" id="prodMoney5">
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <label for="nf-report">แหล่งที่ขาย</label>
+                                                        <input type="text" class="form-control" id="prodLocat5">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group" id="Keep" style="display:none">
-                                        <h6>การกักเก็บต่อเดือน</h6>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="KeepValue">
-                                                        ปริมาณจำนวนที่เก็บไว้
-                                                    </label>
-                                                    <input type="number" step="0.01" class="form-control"
-                                                        id="KeepValue">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="form-group">
-                                                    <label for="KeepUnit">
-                                                        หน่วย
-                                                    </label>
-                                                    <select class="form-control" id="KeepUnit">
-                                                        <option value="กรัม">กรัม
-                                                        </option>
-                                                        <option value="กิโลกรัม">
-                                                            กิโลกรัม</option>
-                                                        <option value="ตัว">ตัว</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="กระสอบ">กระสอบ
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <h6><label for="img">อัพโหลดรูปภาพ</label></h6>
+                                            <input type="file" class="form-control-file" id="imgfile">
+                                            <img src="" id="preview" width="250px">
+                                            <h6><label for="nfdate">วันที่รายงาน</label></h6>
+                                            <input type="date" class="form-control" id="rpdate" required>
                                         </div>
-                                    </div>
-                                    <div class="form-group" id="Transform" style="display:none">
-                                        <h6>การแปรรูปผลผลิต</h6>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <p>จำนวนผลิตภัณฑ์</p>
-                                                <select class="form-control" id="prodselect">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="product1">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ชื่อผลิตภัณฑ์ 1</label>
-                                                    <input type="text" class="form-control" id="Transname1">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
-                                                    <input type="number" class="form-control" id="staple1">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="stapleUnit1">
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="กระสอบ">กระสอบ</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="ต้น">ต้น</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
-                                                    <input type="number" class="form-control" id="prodValue1">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="prodUnit1">
-                                                        <option value="กล่อง">กล่อง</option>
-                                                        <option value="กระปุก">กระปุก</option>
-                                                        <option value="ขวด">ขวด</option>
-                                                        <option value="ชิ้น">ชิ้น</option>
-                                                        <option value="ซอง">ซอง</option>
-                                                        <option value="ถุง">ถุง</option>
-                                                        <option value="ถ้วย">ถ้วย</option>
-                                                        <option value="อัน">อัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
-                                                    <input type="number" class="form-control" id="prodMoney1">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="nf-report">แหล่งที่ขาย</label>
-                                                    <input type="text" class="form-control" id="prodLocat1">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="product2" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ชื่อผลิตภัณฑ์ 2</label>
-                                                    <input type="text" class="form-control" id="Transname2">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
-                                                    <input type="number" class="form-control" id="staple2">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="stapleUnit2">
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="กระสอบ">กระสอบ</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="ต้น">ต้น</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
-                                                    <input type="number" class="form-control" id="prodValue2">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="prodUnit2">
-                                                        <option value="กล่อง">กล่อง</option>
-                                                        <option value="กระปุก">กระปุก</option>
-                                                        <option value="ขวด">ขวด</option>
-                                                        <option value="ชิ้น">ชิ้น</option>
-                                                        <option value="ซอง">ซอง</option>
-                                                        <option value="ถุง">ถุง</option>
-                                                        <option value="ถ้วย">ถ้วย</option>
-                                                        <option value="อัน">อัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
-                                                    <input type="number" class="form-control" id="prodMoney2">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="nf-report">แหล่งที่ขาย</label>
-                                                    <input type="text" class="form-control" id="prodLocat2">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="product3" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ชื่อผลิตภัณฑ์ 3</label>
-                                                    <input type="text" class="form-control" id="Transname3">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
-                                                    <input type="number" class="form-control" id="staple3">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="stapleUnit3">
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="กระสอบ">กระสอบ</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="ต้น">ต้น</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
-                                                    <input type="number" class="form-control" id="prodValue3">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="prodUnit3">
-                                                        <option value="กล่อง">กล่อง</option>
-                                                        <option value="กระปุก">กระปุก</option>
-                                                        <option value="ขวด">ขวด</option>
-                                                        <option value="ชิ้น">ชิ้น</option>
-                                                        <option value="ซอง">ซอง</option>
-                                                        <option value="ถุง">ถุง</option>
-                                                        <option value="ถ้วย">ถ้วย</option>
-                                                        <option value="อัน">อัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
-                                                    <input type="number" class="form-control" id="prodMoney3">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="nf-report">แหล่งที่ขาย</label>
-                                                    <input type="text" class="form-control" id="prodLocat3">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="product4" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ชื่อผลิตภัณฑ์ 4</label>
-                                                    <input type="text" class="form-control" id="Transname4">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
-                                                    <input type="number" class="form-control" id="staple4">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="stapleUnit4">
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="กระสอบ">กระสอบ</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="ต้น">ต้น</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
-                                                    <input type="number" class="form-control" id="prodValue4">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="prodUnit4">
-                                                        <option value="กล่อง">กล่อง</option>
-                                                        <option value="กระปุก">กระปุก</option>
-                                                        <option value="ขวด">ขวด</option>
-                                                        <option value="ชิ้น">ชิ้น</option>
-                                                        <option value="ซอง">ซอง</option>
-                                                        <option value="ถุง">ถุง</option>
-                                                        <option value="ถ้วย">ถ้วย</option>
-                                                        <option value="อัน">อัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
-                                                    <input type="number" class="form-control" id="prodMoney4">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="nf-report">แหล่งที่ขาย</label>
-                                                    <input type="text" class="form-control" id="prodLocat4">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="product5" style="display:none">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ชื่อผลิตภัณฑ์ 5</label>
-                                                    <input type="text" class="form-control" id="Transname5">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ปริมาณวัตถุดิบที่ใช้</label>
-                                                    <input type="number" class="form-control" id="staple5">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="stapleUnit5">
-                                                        <option value="กรัม">กรัม</option>
-                                                        <option value="กิโลกรัม">กิโลกรัม</option>
-                                                        <option value="กระสอบ">กระสอบ</option>
-                                                        <option value="ตัน">ตัน</option>
-                                                        <option value="ต้น">ต้น</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">จำนวนผลิตภัณฑ์ที่แปรรูปได้</label>
-                                                    <input type="number" class="form-control" id="prodValue5">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <p>หน่วย</p>
-                                                    <select class="form-control" id="prodUnit5">
-                                                        <option value="กล่อง">กล่อง</option>
-                                                        <option value="กระปุก">กระปุก</option>
-                                                        <option value="ขวด">ขวด</option>
-                                                        <option value="ชิ้น">ชิ้น</option>
-                                                        <option value="ซอง">ซอง</option>
-                                                        <option value="ถุง">ถุง</option>
-                                                        <option value="ถ้วย">ถ้วย</option>
-                                                        <option value="อัน">อัน</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <label for="nf-report">ราคาของผลิตภัณฑ์ (บาท)</label>
-                                                    <input type="number" class="form-control" id="prodMoney5">
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="nf-report">แหล่งที่ขาย</label>
-                                                    <input type="text" class="form-control" id="prodLocat5">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <h6><label for="img">อัพโหลดรูปภาพ</label></h6>
-                                        <input type="file" class="form-control-file" id="imgfile">
-                                        <img src="" id="preview" width="250px">
-                                        <h6><label for="nfdate">วันที่รายงาน</label></h6>
-                                        <input type="date" class="form-control" id="rpdate" required>
-                                    </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-dismiss="modal"
-                                onclick="closeModal()">ปิด</button>
-                            <button type="button" class="btn btn-warning" onclick="saveModal()">บันทึก</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal"
+                                    onclick="closeModal()">ปิด</button>
+                                <button type="button" class="btn btn-warning" onclick="saveModal()">บันทึก</button>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
-            </div>
+
         </section><!-- End Services Section -->
 
-        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container-fluid mt-3 mb-6">
-            <p> <span class="ver">ปรับปรุง 25/06/2021</span></p>
-        </div>
     </main><!-- End #main -->
-
     <br>
     <br>
     <br>
