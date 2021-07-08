@@ -21,6 +21,7 @@ if (fromadmin) {
     pfid = urid;
     pfname = urname;
     $('#autharea').hide();
+    $('#approvedarea').hide();
     eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
         </button>`) : null;
@@ -63,6 +64,8 @@ let getData = async () => {
         $('#sex').val(r.data.data[0].sex);
         $('#address').val(r.data.data[0].address);
         $('#auth').val(r.data.data[0].auth);
+        $('#dt').val(r.data.data[0].dt);
+        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false)
     })
 }
 
@@ -117,11 +120,11 @@ let getTamOne = (e) => {
 
 let checkdata = async () => {
     var x = document.getElementById("user_name").value;
-    console.log(x);
+    // console.log(x);
     let a = 0;
     $("#detail").empty();
     if (!x) {
-        console.log(x);
+        // console.log(x);
         $("#detail").append(`<span> ชื่อ </span>`);
         a += 1
     }
@@ -163,10 +166,11 @@ let sendData = () => {
             ocup: $('#ocup').val(),
             sex: $('#sex').val(),
             address: $('#address').val(),
-            auth: $('#auth').val()
+            auth: $('#auth').val(),
+            approved: $("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ'
         }
     }
-
+    // console.log(obj);
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
         $('#okmodal').modal('show');
     })

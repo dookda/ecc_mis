@@ -6,7 +6,7 @@ const eec = con.eec;
 app.post("/profile-api/register", async (req, res) => {
     const { data } = req.body;
     let regid = Date.now()
-    await eec.query(`INSERT INTO register(regid, auth, ndate)VALUES('${regid}','user',now())`)
+    await eec.query(`INSERT INTO register(regid, auth, ndate, approved)VALUES('${regid}','user',now(),'ยังไม่ได้ตรวจสอบ')`)
     let d;
     for (d in data) {
         if (data[d] !== '') {
@@ -34,7 +34,7 @@ app.post("/profile-api/getuser", (req, res) => {
 app.post("/profile-api/getprofile", (req, res) => {
     const { regid } = req.body;
     // console.log(userid);
-    const sql = `SELECT * FROM register WHERE regid = '${regid}'`
+    const sql = `SELECT *, TO_CHAR(ndate, 'DD Mon YYYY') as dt FROM register WHERE regid = '${regid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -44,6 +44,10 @@ app.post("/profile-api/getprofile", (req, res) => {
 
 app.post("/profile-api/updateprofile", async (req, res) => {
     const { regid, data } = req.body;
+
+    let sql = `UPDATE register SET editdate=now() WHERE regid='${regid}'`;
+    await eec.query(sql)
+
     for (d in data) {
         if (data[d] !== '') {
             let sql = `UPDATE register SET ${d}='${data[d]}' WHERE regid='${regid}'`;
@@ -59,7 +63,7 @@ app.post("/profile-api/updateprofile", async (req, res) => {
 
 app.post("/profile-api/userlogin", (req, res) => {
     const { usrname, pass } = req.body;
-    const sql = "SELECT usrname, regid, auth FROM register WHERE tel=$1 and pass=$2";
+    const sql = "SELECT usrname, regid, auth, approved FROM register WHERE tel=$1 and pass=$2";
     const val = [usrname, pass];
 
     eec.query(sql, val).then(r => {

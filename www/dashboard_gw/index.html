@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบรายงานคุณภาพน้ำบาดาล</title>
+    <title>ระบบรายงานสถานการณ์คุณภาพน้ำบาดาล</title>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
@@ -65,10 +65,8 @@
     <!-- Template Main CSS File -->
     <!-- <link href="style.css" rel="stylesheet"> -->
     <!-- end Theme bootstrap -->
-
     <link rel="stylesheet" href="./../assets/css/style.css" />
-    <!-- <link rel="stylesheet" href="./style.css" /> -->
-
+    <link rel="stylesheet" href="./style.css" />
 
 </head>
 
@@ -85,7 +83,7 @@
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
-                    <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li>
+                    <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
                     <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
@@ -94,26 +92,26 @@
                 </ul>
             </nav>
             <div class="header-social-links">
-                <a href="https://www.facebook.com/EECENV" class="facebook"><img src="./../../assets/img/onep_logo.png"
-                        class="img-circle" style="width:35px"></a>
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png"
+                    class="img-circle" style="width:35px"></a> -->
             </div>
-
         </div>
 
     </header><!-- End Header -->
+    <br>
+    <br>
+    <br>
     <main id="main">
         <!-- ======= Services Section ======= -->
-        <section id="services" class="services" data-aos="fade-up">
-            <!-- <div class="container" data-aos="fade-up"> -->
-
+        <section id="services" class="services">
             <div class="section-title">
-                <p></p>
                 <h2>ระบบรายงานสถานการณ์คุณภาพน้ำบาดาล</h2>
                 <p>
-                    ระบบรายงานสถานการณ์คุณภาพน้ำบาดาลในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                    ระบบรายงานสถานการณ์คุณภาพน้ำบาดาลในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
                 </p>
             </div>
-
+            <p></p>
             <!-- แสดงข้อมูลบ่อน้ำบาดาล ณ ตำแหน่งผู้ใช้ -->
             <div class="container-fluid mt-1 mb-1">
                 <div class="col-12">
@@ -138,7 +136,10 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <br>
+            <!-- แสดงข้อมูลบ่อบาดาล ณ ตำแหน่งผู้ใช้ -->
+            <div class="container-fluid mt-1 mb-1">
                 <div class="card-deck">
                     <div class="card card-stats">
                         <div class="c-body center">
@@ -149,7 +150,6 @@
                             <span class="ch3" id="av-depth"></span><br>เมตร
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -159,7 +159,6 @@
                             <span class="ch3" id="av-wl"></span><br>เมตร
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -169,7 +168,6 @@
                             <span class="ch3" id="av-ec"></span><br> µs/cm
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -179,7 +177,6 @@
                             <span class="ch3" id="av-ph"></span>
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -189,7 +186,6 @@
                             <span class="ch3" id="av-temp"></span><br> องศาเซลเซียส
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -199,7 +195,6 @@
                             <span class="ch3" id="av-tds"></span><br>mg/L
                         </div>
                     </div>
-
                     <div class="card card-stats">
                         <div class="c-body center">
                             <span style="color: rgb(91,192,222);">
@@ -210,85 +205,95 @@
                         </div>
                     </div>
                 </div>
-                <!-- select(จังหวัด-อำเภอ-ตำบล) -->
-                <div class="card-deck p-3 mb-1">
-                    <div class="card card-stats">
-                        <div class="card-body p2">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="sel1">จังหวัด:</label>
-                                        <select class="form-control" id="pro">
-                                            <option value="eec">eec</option>
-                                            <option value="20">ชลบุรี</option>
-                                            <option value="21">ระยอง</option>
-                                            <option value="24">ฉะเชิงเทรา</option>
-                                        </select>
-                                    </div>
+            </div>
+            <!-- select(จังหวัด-อำเภอ-ตำบล) -->
+            <div class="card-deck p-3 mb-1">
+                <div class="card card-stats">
+                    <div class="card-body p2">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="sel1">จังหวัด:</label>
+                                    <select class="form-control" id="pro">
+                                        <option value="eec">eec</option>
+                                        <option value="20">ชลบุรี</option>
+                                        <option value="21">ระยอง</option>
+                                        <option value="24">ฉะเชิงเทรา</option>
+                                    </select>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="sel1">อำเภอ:</label>
-                                        <select class="form-control" id="amp">
-                                        </select>
-                                    </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="sel1">อำเภอ:</label>
+                                    <select class="form-control" id="amp">
+                                    </select>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="sel1">ตำบล:</label>
-                                        <select class="form-control" id="tam">
-                                        </select>
-                                    </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="sel1">ตำบล:</label>
+                                    <select class="form-control" id="tam">
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="card p-1">
-                    <div id="map"></div>
+            </div>
+            <!-- แสดงแผนที่ -->
+            <div class="card-deck p-3">
+                <div class="card card-stats">
+                    <div class="card-body p-1" id="map">
+                        <div></div>
+                    </div>
                 </div>
+            </div>
 
+            <!-- หัวข้อ -->
+            <div class="container-fluid mt-1 mb-1 center">
                 <br>
                 <h6 style="font-weight: bold">เรียกดูบ่อสังเกตการณ์น้ำบาดาล ตามประเภทข้อมูล</h6>
+            </div>
 
-
+            <!-- //Show GW near me ***************** ฝากใส่เพิ่มค่ะ -->
+            <div class="container">
                 <div class="card-deck p-3">
                     <div class="card card-stats">
-
-                        <button class="btn btn-info flex-fill" onclick="showDepth()">
+                        <button class="btn btn-info flex-fill" onclick="getshow('showDepth')">
                             <i class="las las la-swimming-pool p-2" aria-hidden="true"></i>ความลึก</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showWl()">
+                        <button class="btn btn-info flex-fill" onclick="getshow('showWl')">
                             <i class="las la-water p-2" aria-hidden="true"></i>ระดับน้ำ</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showEc()">
+                        <button class="btn btn-info flex-fill" onclick="showEc('ec')">
                             <i class="las la-chart-line p-2" aria-hidden="true"></i>ค่าการนำไฟฟ้า</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showPh()">
+                        <button class="btn btn-info flex-fill" onclick="showPh('ph')">
                             <i class="las la-tachometer-alt p-2" aria-hidden="true"></i>ค่าความเป็นกรด-ด่าง</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showTemp()">
+                        <button class="btn btn-info flex-fill" onclick="getshow('showTemp')">
                             <i class="las la-temperature-high p-2" aria-hidden="true"></i>ค่าอุณหภูมิ</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showTds()">
+                        <button class="btn btn-info flex-fill" onclick="getshow('showTds')">
                             <i class="las la-star-half-alt p-2" aria-hidden="true"></i>ค่าความขุ่น</button>
                     </div>
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showSal()">
+                        <button class="btn btn-info flex-fill" onclick="getshow('showSal')">
                             <i class="las la-biohazard p-2" aria-hidden="true"></i>ค่าความเค็ม</button>
                     </div>
 
                 </div>
+            </div>
 
+            <!-- แสดงข้อมูลตารางแต่ละสถานี -->
+            <div class="container-fluid mt-3 mb-6">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm">
                         <div class="card card-stats">
                             <div class="card-body ">
                                 <table id="tab" class="table table-striped table-bordered dt-responsive nowrap"
@@ -303,107 +308,382 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <!-- <div class="spinner-border" id="spinner"></div> -->
                             </div>
                         </div>
                     </div>
 
                     <!-- แสดงข้อมูลกราฟทุกสถานี -->
-                    <div class="col-sm-6">
+                    <div class="col-sm">
                         <div class="card card-stats">
-                            <div class="card-body">
-                                <div id="gwchart"></div>
+                            <div class="card-body center">
+                                <div class="form-inline" id="years" style="display: none;">
+                                    <div class="form-group">
+                                        <!-- <h5>รายปี</h5>&nbsp;&nbsp;&nbsp; -->
+                                        <select class="form-control" id="year">
+                                            <option value="2563">2563</option>
+                                            <option value="2562">2562</option>
+                                            <option value="2561">2561</option>
+                                            <option value="2560">2560</option>
+                                            <option value="2559">2559</option>
+                                            <option value="2558">2558</option>
+                                            <option value="2557">2557</option>
+                                            <option value="2556">2556</option>
+                                            <option value="2555">2555</option>
+                                            <option value="2554">2554</option>
+                                            <option value="2553">2553</option>
+                                        </select>
+                                        <input type="hidden" id="type">
+                                    </div>
+                                </div>
+                                <div id="chart"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card card-stats text-center">
-                            <div class="card-body ">
-                                ข้อมูลบ่อสังเกตการณ์น้ำบาดาล<h3><span id="sta_name"></span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        wl (m)
-                                        <div class="chartHist p-0" id="chart1"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        Ec (µs/cm)
-                                        <div class="chartHist p-0" id="chart2"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        pH
-                                        <div class="chartHist p-0" id="chart3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        Temp (°C)
-                                        <div class="chartHist p-0" id="chart4"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        Tds (mg/L)
-                                        <div class="chartHist p-0" id="chart5"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        Sal (ppt)
-                                        <div class="chartHist p-0" id="chart6"></div>
-                                    </div>
+            <!-- กราฟค่าตรวจวัดแต่ละพารามิเตอร์ -->
+            <div class=" form-group" id="realtime">
+                <div class="container-fluid mt-3 mb-6">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-stats text-center">
+                                <div class="card-body ">
+                                    ข้อมูลบ่อสังเกตการณ์น้ำบาดาล
+                                    <h3><span id="sta_name"></span></h3>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            wl (m)
+                                            <div class="chartHist p-0" id="chart1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            Ec (µs/cm)
+                                            <div class="chartHist p-0" id="chart2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            pH
+                                            <div class="chartHist p-0" id="chart3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            Temp (°C)
+                                            <div class="chartHist p-0" id="chart4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            Tds (mg/L)
+                                            <div class="chartHist p-0" id="chart5"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body ">
+                                            Sal (ppt)
+                                            <div class="chartHist p-0" id="chart6"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-3 mb-6">
-                    <p>
-                        <span class="ver">ปรับปรุง 23/06/2021</span>
-                    </p>
+            </div>
+            <!-- กราฟแสดงข้อมูลย้อนหลังของแต่ละพารามิเตอร์ -->
+            <div class=" form-group" id="timeline" style="display:none">
+                <div class="container-fluid mt-3 mb-6">
+                    <div class="card card-stats text-center">
+                        <div class="card-body ">
+                            <P>ข้อมูลคุณภาพน้ำบาดาลของบ่อสังเกตการณ์ย้อนหลัง ตั้งแต่ปี 2553-2563</P>
+                            <h3><span id="sta_name2"></span></h3>
+                        </div>
+                    </div>
+                    <div class="card card-stats text-center">
+                        <div class="card-body ">
+                            <h5><span> กลุ่มที่ 1 ทางกายภาพ และเคมี</span></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ค่าความเป็นกรด-ด่าง</h6>
+                                    <div class="chartHist p-0" id="chart7"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ค่าการนำไฟฟ้า</h6>
+                                    <div class="chartHist p-0" id="chart8"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>แคลเซียม</h6>
+                                    <div class="chartHist p-0" id="chart9"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>แมกนีเซียม</h6>
+                                    <div class="chartHist p-0" id="chart10"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>โซเดียม</h6>
+                                    <div class="chartHist p-0" id="chart11"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>โพแทสเซียม</h6>
+                                    <div class="chartHist p-0" id="chart12"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>เหล็ก</h6>
+                                    <div class="chartHist p-0" id="chart13"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>แมงกานีส</h6>
+                                    <div class="chartHist p-0" id="chart14"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ซัลเฟต</h6>
+                                    <div class="chartHist p-0" id="chart15"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>คลอไรด์</h6>
+                                    <div class="chartHist p-0" id="chart16"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ฟลูออไรด์</h6>
+                                    <div class="chartHist p-0" id="chart17"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ไนเตรต</h6>
+                                    <div class="chartHist p-0" id="chart18"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ปริมาณสารทั้งหมดที่ละลายได้</h6>
+                                    <div class="chartHist p-0" id="chart19"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid mt-3 mb-6">
+                    <div class="card card-stats text-center">
+                        <div class="card-body ">
+                            <!-- <P>ข้อมูลคุณภาพน้ำบาดาลของบ่อสังเกตการณ์ย้อนหลัง ตั้งแต่ปี 2553-2563</P> -->
+                            <h5><span>กลุ่มที่ 2 โลหะหนัก และสารพิษ</span></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ทองแดง</h6>
+                                    <div class="chartHist p-0" id="chart21"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>สังกะสี</h6>
+                                    <div class="chartHist p-0" id="chart22"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>สารหนู</h6>
+                                    <div class="chartHist p-0" id="chart23"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ตะกั่ว</h6>
+                                    <div class="chartHist p-0" id="chart24"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>แคดเมียม</h6>
+                                    <div class="chartHist p-0" id="chart25"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>โครเมียม</h6>
+                                    <div class="chartHist p-0" id="chart26"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ปรอท</h6>
+                                    <div class="chartHist p-0" id="chart27"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>เซเลเนียม</h6>
+                                    <div class="chartHist p-0" id="chart28"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>นิกเกิล</h6>
+                                    <div class="chartHist p-0" id="chart29"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>เงิน</h6>
+                                    <div class="chartHist p-0" id="chart30"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>เบเรียม</h6>
+                                    <div class="chartHist p-0" id="chart31"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-body center">
+                                    <h6>ไซยาไนด์</h6>
+                                    <div class="chartHist p-0" id="chart32"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+    <div class="container-fluid mt-3 mb-6">
+        <p>
+            <span class="ver">ปรับปรุง 08/07/2021</span>
+        </p>
+    </div>
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
         <div class="container">
 
             <div class="copyright">
-                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                <img src="./../assets/img/onep_logo.png" class="img-circle" style="width:3%"> &nbsp;
                 สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
 
             </div>
