@@ -1,8 +1,9 @@
-let urid = sessionStorage.getItem('id');
-let urname = sessionStorage.getItem('name');
-let urauth = sessionStorage.getItem('.....');
-$("#usrname").text(urname);
-urid ? null : location.href = "./form_register/login";
+let urid = sessionStorage.getItem('eecid');
+let urname = sessionStorage.getItem('eecname');
+let eecauth = sessionStorage.getItem('eecauth');
+// urid ? null : location.href = "./../../form_register/login/index.html";
+
+console.log(eecauth);
 
 $("#cardwc").on("click", function () {
     $("#cardwaterA").hide()
