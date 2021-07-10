@@ -100,3 +100,6 @@ app.use(garbage);
 
 const familyforest = require('./service/familyforest');
 app.use(familyforest);
+
+const waterlevel = require('./service/waterlevel');
+app.use(waterlevel);

@@ -43,3 +43,18 @@ $('#tabmenu').mouseleave(function () {
     $("#cardbioB").hide()
     $("#cardotherB").hide()
 })
+
+
+if (eecauth !== "admin") {
+    // $('#cardwc1').css("pointer-events", "none");
+    //โมดูลคุณภาพน้ำ
+    //โมดูลชีวภาพ 
+    $('#cardbio').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+    //โมดูลอื่นๆ 
+    $('#cardother2').css("pointer-events", "none");
+    $('#cardwc2').css("pointer-events", "none");
+    //โมดูลคุณภาพน้ำ
+    // $('#cardqc').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+    //โมดูลอื่นๆ
+    $('#cardother').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+}
