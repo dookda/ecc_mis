@@ -8,13 +8,15 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
+sessionStorage.removeItem('biodiversity_proj_gid');
+
 $(document).ready(() => {
     loadTable()
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -110,7 +112,7 @@ let loadTable = () => {
             async: true,
             type: "POST",
             url: url + '/biodiversity-api/getdata',
-            data: { userid: "sakda" },
+            data: { usrid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -122,6 +124,7 @@ let loadTable = () => {
                 }
             },
             { data: 'ndate' },
+            { data: 'usrname' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
@@ -130,7 +133,7 @@ let loadTable = () => {
                             <button class="btn m btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
                             <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
-                width: "30%"
+                // width: "30%"
             }
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -192,7 +195,7 @@ let loadBiotype = async (d) => {
     await d.map(i => {
         i.biotype == "สัตว์" ? zoo += 1 : null
         i.biotype == "พืช" ? plant += 1 : null
-        i.biotype == "อื่นๆ" ? other += 1 : null
+        i.biotype == "ไม่ทราบ" ? other += 1 : null
     })
 
     let dat = [{
@@ -202,7 +205,7 @@ let loadBiotype = async (d) => {
         name: "พืช",
         value: plant
     }, {
-        name: "อื่นๆ",
+        name: "ไม่ทราบ",
         value: other
     }]
 
@@ -258,12 +261,13 @@ let loadBiopro = async (d) => {
 }
 
 let getDetail = (e) => {
-    sessionStorage.setItem('notice_gid', e);
+    sessionStorage.setItem('biodiversity_proj_gid', e);
+    sessionStorage.setItem('biodiversity_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 
 let chartbiopro = (div, val) => {
-    console.log(val);
+    // console.log(val);
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end

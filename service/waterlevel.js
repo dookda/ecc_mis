@@ -3,14 +3,12 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
-app.post("/biodiversity-api/getdataone", (req, res) => {
-    const { proj_id } = req.body;
-    // console.log(proj_id);
-    const sql = `SELECT gid, proj_id, bioname, biodetail, bioplace, biotype, lat,lon,
-            pro, amp, tam, pro_name, amp_name, tam_name, 
-            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
+app.post("/waterlevel-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT gid, proj_id, watername, placename, waterlevel,
+            ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
             ST_AsGeojson(geom) as geojson  
-        FROM biodiversity WHERE proj_id='${proj_id}'`;
+        FROM waterlevel WHERE usrid='${usrid}' ORDER BY ndate ASC`;
 
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -19,12 +17,12 @@ app.post("/biodiversity-api/getdataone", (req, res) => {
     })
 })
 
-app.post("/waterlevel-api/getdata", (req, res) => {
-    const { userid } = req.body;
+app.post("/waterlevel-api/getalldata", (req, res) => {
+    const { usrid } = req.body;
     const sql = `SELECT gid, proj_id, watername, placename, waterlevel,
             ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
             ST_AsGeojson(geom) as geojson  
-        FROM waterlevel`;
+        FROM waterlevel WHERE usrid='${usrid}' ORDER BY ndate ASC`;
 
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -56,30 +54,10 @@ app.post("/waterlevel-api/insert", async (req, res) => {
     })
 })
 
-app.post("/biodiversity-api/update", async (req, res) => {
-    const { proj_id, data } = req.body;
-    let d;
-    for (d in data) {
-        if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE biodiversity SET ${d}='${data[d]}', ndate=now() WHERE proj_id='${proj_id}'`;
-            await eec.query(sql)
-        }
-    }
-
-    if (data.geom !== "" && data.geom.geometry) {
-        let sql = `UPDATE biodiversity SET geom = ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}') 
-            WHERE proj_id='${proj_id}'`;
-        await eec.query(sql)
-    }
-    res.status(200).json({
-        data: "success"
-    })
-})
-
 app.post("/waterlevel-api/delete", (req, res) => {
     const { proj_id } = req.body;
     const sql = `DELETE FROM waterlevel WHERE proj_id='${proj_id}'`
-    console.log(sql);
+    // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
             data: "success"

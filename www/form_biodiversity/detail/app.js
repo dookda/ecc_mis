@@ -8,7 +8,17 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
-let proj_id = sessionStorage.getItem('notice_gid');
+let proj_id = sessionStorage.getItem('biodiversity_proj_gid');
+let fromAdmin = sessionStorage.getItem('biodiversity_from_admin');
+console.log(fromAdmin);
+let link;
+if (fromAdmin) {
+    link = "./../report_admin/index.html"
+    sessionStorage.removeItem('biodiversity_from_admin');
+} else {
+    link = "./../report/index.html"
+}
+
 let userid;
 
 let main = async () => {
@@ -31,8 +41,8 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -111,7 +121,7 @@ axios.post(url + "/biodiversity-api/getdataone", { proj_id: proj_id }).then(r =>
     $('#lat').val(r.data.data[0].lat);
     $('#lon').val(r.data.data[0].lon);
     $("#preview").attr("src", r.data.data[0].img);
-    $('#reporter').val(r.data.data[0].reporter);
+    $('#reporter').val(r.data.data[0].usrname);
 
     let json = JSON.parse(r.data.data[0].geojson);
     // console.log(json);
@@ -128,9 +138,12 @@ let sendData = () => {
     const obj = {
         proj_id: proj_id,
         data: {
-            noticename: $('#noticename').val(),
-            noticedetail: $('#noticedetail').val(),
-            noticeplace: $('#noticeplace').val(),
+            usrid: urid,
+            usrname: urname,
+            bioname: $('#bioname').val(),
+            biodetail: $('#biodetail').val(),
+            bioplace: $('#bioplace').val(),
+            biotype: $('#biotype').val(),
             pro: $('#pro').val(),
             amp: $('#amp').val(),
             tam: $('#tam').val(),
@@ -139,20 +152,21 @@ let sendData = () => {
             tam_name: $('#tam_name').val(),
             lat: $('#lat').val(),
             lon: $('#lon').val(),
-            reporter: $('#reporter').val(),
             // img: dataurl ? dataurl : dataurl = "",
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
     console.log(obj);
     axios.post(url + "/biodiversity-api/update", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
+        r.data.data == "success" ? $("#okmodal").modal("show") : null;
+        sessionStorage.removeItem('biodiversity_proj_gid');
     })
     return false;
 }
 
-let gotoList = () => {
-    location.href = "./../list/index.html";
+let gotoReport = () => {
+    location.href = link;
+    sessionStorage.removeItem('biodiversity_proj_gid');
 }
 
 let refreshPage = () => {

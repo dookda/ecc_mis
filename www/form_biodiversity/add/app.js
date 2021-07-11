@@ -131,6 +131,8 @@ let sendData = () => {
     // console.log(geom[0]);
     const obj = {
         data: {
+            usrid: urid,
+            usrname: urname,
             bioname: $('#bioname').val(),
             biodetail: $('#biodetail').val(),
             bioplace: $('#bioplace').val(),
@@ -143,13 +145,12 @@ let sendData = () => {
             tam_name: $('#tam_name').val(),
             lat: $('#lat').val(),
             lon: $('#lon').val(),
-            reporter: $('#reporter').val(),
             img: dataurl ? dataurl : dataurl = "",
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
 
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/biodiversity-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
@@ -157,8 +158,8 @@ let sendData = () => {
     return false;
 }
 
-let gotoList = () => {
-    location.href = "./../list/index.html";
+let gotoReport = () => {
+    location.href = "./../report/index.html";
 }
 
 let refreshPage = () => {
@@ -203,7 +204,7 @@ let resizeImage = (file) => {
 
 let removeLayer = () => {
     map.eachLayer(i => {
-        console.log(i);
+        // console.log(i);
         i.options.name == "bnd" ? map.removeLayer(i) : null;
     })
 }
@@ -275,7 +276,7 @@ let getTamOne = (e) => {
 
     axios.get(url + "/eec-api/get-th-onetam/" + e).then(r => {
         r.data.data.map(i => {
-            console.log(i);
+            // console.log(i);
             $("#pro_name").val(i.pro_name);
             $("#amp_name").val(i.amp_name);
             $("#tam_name").val(i.tam_name);

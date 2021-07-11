@@ -8,7 +8,7 @@ app.post("/biodiversity-api/getdataone", (req, res) => {
     // console.log(proj_id);
     const sql = `SELECT gid, proj_id, bioname, biodetail, bioplace, biotype, lat,lon,
             pro, amp, tam, pro_name, amp_name, tam_name, 
-            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
+            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
             ST_AsGeojson(geom) as geojson  
         FROM biodiversity WHERE proj_id='${proj_id}'`;
 
@@ -20,12 +20,27 @@ app.post("/biodiversity-api/getdataone", (req, res) => {
 })
 
 app.post("/biodiversity-api/getdata", (req, res) => {
-    const { userid } = req.body;
+    const { usrid } = req.body;
     const sql = `SELECT gid, proj_id, bioname, biodetail, bioplace, biotype,
             pro, amp, tam, pro_name, amp_name, tam_name, lat, lon,
-            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
+            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
             ST_AsGeojson(geom) as geojson  
         FROM biodiversity`;
+
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/biodiversity-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT gid, proj_id, bioname, biodetail, bioplace, biotype,
+            pro, amp, tam, pro_name, amp_name, tam_name, lat, lon,
+            TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
+            ST_AsGeojson(geom) as geojson  
+        FROM biodiversity WHERE usrid='${usrid}' ORDER BY ndate ASC`;
 
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -80,7 +95,7 @@ app.post("/biodiversity-api/update", async (req, res) => {
 app.post("/biodiversity-api/delete", (req, res) => {
     const { proj_id } = req.body;
     const sql = `DELETE FROM biodiversity WHERE proj_id='${proj_id}'`
-    console.log(sql);
+    // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
             data: "success"
