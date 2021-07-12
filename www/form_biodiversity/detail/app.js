@@ -41,8 +41,8 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -131,7 +131,6 @@ axios.post(url + "/biodiversity-api/getdataone", { proj_id: proj_id }).then(r =>
 
     map.setView([Number(r.data.data[0].lat), Number(r.data.data[0].lon)], 12);
 })
-
 
 let sendData = () => {
     // console.log(geom[0]);

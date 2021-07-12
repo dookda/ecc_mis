@@ -1,0 +1,51 @@
+
+body {
+    font-family: "Kanit",sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.72222;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.m{
+    margin: 2px 2px 2px 2px;
+}
+
+#map{
+    height: 350px;
+}
+
+.gchart {
+    width: 100%;
+    height: 380px;
+}
+
+#chartnoticetype {
+    width: 100%;
+    height: 380px;
+}
+
+#chartnoticepro{
+    width: 100%;
+    height: 380px;
+}
+
+.btn-margin{
+    margin: 2px;
+}
+
+.chart {
+    width: 100%;
+    height: 200px;
+}
+
+.mt-20{
+    margin-top: 20px;
+}

@@ -1,12 +1,6 @@
-let urid = sessionStorage.getItem('eecid');
-let urname = sessionStorage.getItem('eecname');
-let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let urid = 'user';
 
-if (eecauth !== "admin" && eecauth !== "user") {
-    location.href = "./../../form_register/login/index.html";
-}
+$("#tbdata").hide()
 
 $(document).ready(() => {
     loadTable()
@@ -97,10 +91,11 @@ let closeModal = () => {
 let deleteValue = () => {
     // console.log($("#projId").val());
     let proj_id = $("#projId").val()
-    axios.post(url + "/notice-api/delete", { proj_id: proj_id }).then(r => {
+    axios.post(url + "/biodiversity-api/delete", { proj_id: proj_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
     })
 }
+
 
 let loadTable = () => {
     let dtable = $('#myTable').DataTable({
@@ -108,19 +103,12 @@ let loadTable = () => {
         ajax: {
             async: true,
             type: "POST",
-            url: url + '/notice-api/getownerdata',
+            url: url + '/biodiversity-api/getdata',
             data: { usrid: urid },
             dataSrc: 'data'
         },
         columns: [
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    return `${meta.row + 1}`
-                }
-            },
-            { data: 'noticename' },
-            { data: 'noticedetail' },
+            { data: 'bioname' },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -128,15 +116,16 @@ let loadTable = () => {
                 }
             },
             { data: 'ndate' },
+            { data: 'usrname' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(row);
                     return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
-                            <button class="btn btn-margin btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
-                            <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                            <button class="btn m btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
+                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
-                // width: "32%"
+                // width: "30%"
             }
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -150,8 +139,8 @@ let loadTable = () => {
     dtable.on('search.dt', function () {
         let data = dtable.rows({ search: 'applied' }).data()
         getMarker(data);
-        loadNoticetype(data);
-        loadNoticepro(data);
+        loadBiotype(data);
+        loadBiopro(data);
     });
 }
 
@@ -163,8 +152,8 @@ let zoomMap = (lat, lon) => {
 let onEachFeature = (feature, layer) => {
     // console.log(feature);
     if (feature.properties) {
-        layer.bindPopup(`<b>${feature.properties.noticename}</b>
-            <br>${feature.properties.noticedetail}
+        layer.bindPopup(`<b>${feature.properties.bioname}</b>
+            <br>${feature.properties.biodetail}
             <br><img src="${feature.properties.img}" width="240px">`,
             { maxWidth: 240 });
     }
@@ -176,10 +165,11 @@ let getMarker = (d) => {
     });
 
     d.map(i => {
-        // console.log(i);
+
         if (i.geojson) {
+
             let json = JSON.parse(i.geojson);
-            json.properties = { noticename: i.noticename, noticedetail: i.noticedetail, img: i.img };
+            json.properties = { bioname: i.bioname, biodetail: i.biodetail, img: i.img };
 
             L.geoJson(json, {
                 onEachFeature: onEachFeature,
@@ -189,33 +179,32 @@ let getMarker = (d) => {
     });
 }
 
-let loadNoticetype = async (d) => {
-    // console.log(d);
-    let hazard = 0;
-    let diaster = 0;
+let loadBiotype = async (d) => {
+    let zoo = 0;
+    let plant = 0;
     let other = 0;
 
     await d.map(i => {
-        i.noticetype == "มลพิษ" ? hazard += 1 : null
-        i.noticetype == "ภัยธรรมชาติ" ? diaster += 1 : null
-        i.noticetype == "อื่นๆ" ? other += 1 : null
+        i.biotype == "สัตว์" ? zoo += 1 : null
+        i.biotype == "พืช" ? plant += 1 : null
+        i.biotype == "ไม่ทราบ" ? other += 1 : null
     })
 
     let dat = [{
-        name: "มลพิษ",
-        value: hazard
+        name: "สัตว์",
+        value: zoo
     }, {
-        name: "ภัยธรรมชาติ",
-        value: diaster
+        name: "พืช",
+        value: plant
     }, {
-        name: "อื่นๆ",
+        name: "ไม่ทราบ",
         value: other
     }]
 
-    pieChart("chartnoticetype", dat)
+    pieChart("chartbiotype", dat)
 }
 
-let loadNoticepro = async (d) => {
+let loadBiopro = async (d) => {
     let chan = 0;
     let csao = 0;
     let chon = 0;
@@ -260,22 +249,29 @@ let loadNoticepro = async (d) => {
         value: skeaw
     }];
 
-    chartbiopro("chartnoticepro", dat)
+    chartbiopro("chartbiopro", dat)
 }
 
 let getDetail = (e) => {
-    sessionStorage.setItem('notice_gid', e);
+    sessionStorage.setItem('biodiversity_proj_gid', e);
+    sessionStorage.setItem('biodiversity_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 
 let chartbiopro = (div, val) => {
+    // console.log(val);
+    // Themes begin
     am4core.useTheme(am4themes_animated);
+    // Themes end
 
+    // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
     chart.scrollbarX = new am4core.Scrollbar();
 
+    // Add data
     chart.data = val;
 
+    // Create axes
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "name";
     categoryAxis.renderer.grid.template.location = 0;

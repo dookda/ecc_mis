@@ -56,10 +56,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:tambon_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:amphoe_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:province_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -70,8 +85,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบจังหวัด": pro,
-    "พื้นที่สีเขียว": lyrs
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map)
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -129,33 +145,16 @@ let onEachFeature = (fc, lyr) => {
     }
 }
 
-// axios.post("http://localhost:3700/green-api/getdata", { id: "id" }).then(r => {
-//     console.log(r.data.data);
-//     let data = r.data.data.features
-//     data.map(i => {
-//         lyrs.addLayer(L.geoJSON(i, {
-//             id: i.gid,
-//             onEachFeature: onEachFeature
-//         }))
-//     })
-// })
-
 map.on('pm:create', e => {
     geom = e.layer.toGeoJSON();
 });
-
-// lyrs.on('pm:edit', e => {
-//     console.log(e)
-//     $("#form").show()
-// })
-
-// document.getElementById('agdate').valueAsDate = new Date();
 
 let sendData = () => {
     // console.log(geom[0]);
     const obj = {
         data: {
-            userid: userid,
+            usrid: urid,
+            usrname: urname,
             gr_name: $('#gr_name').val(),
             prov_nam_t: $('#pro_name').val(),
             amphoe_t: $('#amp_name').val(),
@@ -183,7 +182,7 @@ let sendData = () => {
 }
 
 let gotoList = () => {
-    location.href = "./../list/index.html";
+    location.href = "./../report/index.html";
 }
 
 let refreshPage = () => {
@@ -226,8 +225,32 @@ let resizeImage = (file) => {
     img.src = URL.createObjectURL(file);
 }
 
+let removeLayer = () => {
+    map.eachLayer(i => {
+        // console.log(i);
+        i.options.name == "bnd" ? map.removeLayer(i) : null;
+    })
+}
+
+var boundStyle = {
+    "color": "#ff7800",
+    "fillColor": "#fffcf5",
+    "weight": 5,
+    "opacity": 0.45,
+    "fillOpacity": 0.25
+};
 
 let getAmp = (e) => {
+    removeLayer();
+    axios.get(`${url}/eec-api/get-bound/pro/${e}`).then(async (r) => {
+        let geojson = await JSON.parse(r.data.data[0].geom);
+        // console.log(geojson);
+        let a = L.geoJSON(geojson, {
+            style: boundStyle,
+            name: "bnd"
+        }).addTo(map);
+        map.fitBounds(a.getBounds());
+    })
     axios.get(url + "/eec-api/get-th-amp/" + e).then(r => {
         $("#amp").empty()
         $("#tam").empty()
@@ -239,6 +262,17 @@ let getAmp = (e) => {
 }
 
 let getTam = (e) => {
+    removeLayer();
+    axios.get(`${url}/eec-api/get-bound/amp/${e}`).then(async (r) => {
+        let geojson = await JSON.parse(r.data.data[0].geom);
+        // console.log(geojson);
+        let a = L.geoJSON(geojson, {
+            style: boundStyle,
+            name: "bnd"
+        }).addTo(map);
+        map.fitBounds(a.getBounds());
+    })
+
     axios.get(url + "/eec-api/get-th-tam/" + e).then(r => {
         // console.log(r);
         $("#tam").empty()
@@ -250,12 +284,23 @@ let getTam = (e) => {
 }
 
 let getTamOne = (e) => {
+    removeLayer();
+    axios.get(`${url}/eec-api/get-bound/tam/${e}`).then(async (r) => {
+        let geojson = await JSON.parse(r.data.data[0].geom);
+        // console.log(geojson);
+        let a = L.geoJSON(geojson, {
+            style: boundStyle,
+            name: "bnd"
+        }).addTo(map);
+        map.fitBounds(a.getBounds());
+    })
+
     axios.get(url + "/eec-api/get-th-onetam/" + e).then(r => {
         r.data.data.map(i => {
             console.log(i);
-            $("#pro_name").val(i.pro_name)
-            $("#amp_name").val(i.amp_name)
-            $("#tam_name").val(i.tam_name)
+            $("#pro_name").val('จ.' + i.pro_name);
+            $("#amp_name").val('อ.' + i.amp_name);
+            $("#tam_name").val('ต.' + i.tam_name);
         })
     })
 }

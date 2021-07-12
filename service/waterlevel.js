@@ -22,7 +22,7 @@ app.post("/waterlevel-api/getalldata", (req, res) => {
     const sql = `SELECT gid, proj_id, watername, placename, waterlevel,
             ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
             ST_AsGeojson(geom) as geojson  
-        FROM waterlevel WHERE usrid='${usrid}' ORDER BY ndate ASC`;
+        FROM waterlevel ORDER BY ndate ASC`;
 
     eec.query(sql).then(r => {
         res.status(200).json({

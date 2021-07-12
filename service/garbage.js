@@ -6,8 +6,7 @@ const eec = con.eec;
 app.post("/gb-api/getone", (req, res) => {
     const { gb_id } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
-                FROM garbage
-                WHERE gb_id='${gb_id}'`
+                FROM garbage WHERE gb_id='${gb_id}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -65,17 +64,17 @@ app.post("/gb-api/insert", async (req, res) => {
 })
 
 app.post("/gb-api/update", async (req, res) => {
-    const { data, tb, wq_id } = req.body;
+    const { data, gb_id } = req.body;
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE ${tb} SET ${d}='${data[d]}' WHERE gb_id='${gb_id}'`
+            let sql = `UPDATE garbage SET ${d}='${data[d]}' WHERE gb_id='${gb_id}'`
             // console.log(sql);
             await eec.query(sql)
         }
     }
 
     if (data.geom !== "") {
-        let sql = `UPDATE ${tb}  
+        let sql = `UPDATE garbage
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE gb_id='${gb_id}'`
         // console.log(data.geom);

@@ -1,12 +1,7 @@
-let urid = sessionStorage.getItem('eecid');
-let urname = sessionStorage.getItem('eecname');
-let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let urid = 'user';
 
-if (eecauth !== "admin" && eecauth !== "office") {
-    location.href = "./../../form_register/login/index.html";
-}
+$("#tbdata").hide()
+
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
@@ -320,6 +315,12 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
             { data: 'gr_name' },
             {
                 data: '',
@@ -331,10 +332,25 @@ let loadTable = () => {
                 data: '',
                 render: (data, type, row) => {
                     // console.log();
-                    return `${row.type == "ประเภทที่1" ? 1 : null}`
+                    if (row.type == "ประเภทที่1") {
+                        return 1;
+                    } else if (row.type == "ประเภทที่2") {
+                        return 2;
+                    } else if (row.type == "ประเภทที่3") {
+                        return 3;
+                    } else if (row.type == "ประเภทที่4") {
+                        return 4;
+                    } else if (row.type == "ประเภทที่5") {
+                        return 5;
+                    } else if (row.type == "ประเภทที่6") {
+                        return 6;
+                    } else {
+                        return 'ไม่ระบุ'
+                    }
                 }
             },
             { data: 'rai' },
+            { data: 'usrname' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
@@ -363,6 +379,7 @@ let loadTable = () => {
 
 let getDetail = (e) => {
     sessionStorage.setItem('green_gid', e);
+    sessionStorage.setItem('green_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 

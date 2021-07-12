@@ -48,11 +48,25 @@ app.post("/green-api/update", async (req, res) => {
     })
 })
 
+app.post("/green-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT gid, gr_name,tambon_idn,amphoe_idn,prov_code,
+    tam_nam_t, amphoe_t, prov_nam_t,type,sup_type,rai,agency,tree,   
+    ST_AsGeojson(geom) as geojson, usrname  
+    FROM _52_gr_park WHERE usrid='${usrid}'`;
+
+    geo.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/green-api/getdata", (req, res) => {
     const { userid } = req.body;
     const sql = `SELECT gid, gr_name,tambon_idn,amphoe_idn,prov_code,
     tam_nam_t, amphoe_t, prov_nam_t,type,sup_type,rai,agency,tree,   
-    ST_AsGeojson(geom) as geojson  
+    ST_AsGeojson(geom) as geojson, usrname  
     FROM _52_gr_park`;
 
     geo.query(sql).then(r => {

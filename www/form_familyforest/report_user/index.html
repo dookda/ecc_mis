@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลพื้นที่สีเขียว</title>
+    <title>ระบบนำเข้าข้อมูลป่าครอบครัว</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -19,11 +19,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <!-- end dooklink -->
+
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 
@@ -47,10 +48,10 @@
     <!-- <link href="../../main_eac/assets/css/style.css" rel="stylesheet"> -->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -59,22 +60,21 @@
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- .nav-menu -->
-
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
-                    <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
+                    <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
-                    <li><a href="./../../form_register/profile/index.html"><i
+                    <!-- <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
                     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li>
+                            ออกจากระบบ</a></li> -->
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -85,11 +85,11 @@
             </div>
 
         </div>
-
     </header>
     <br>
     <br>
     <br>
+
     <main id="main">
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
@@ -97,9 +97,9 @@
                 <br>
                 <br>
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลพื้นที่สีเขียว</h2>
+                    <h2>ข้อมูลป่าครอบครัว</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลพื้นที่สีเขียวในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลป่าครอบครัวเป็นการนำเข้าข้อมูลกิจกรรมป่าครอบครัวในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
 
@@ -121,43 +121,32 @@
                         </div>
                     </div>
                     <hr>
-                    <h4>พื้นที่สีเขียว</h4>
-                    <h6>สรุปภาพของพื้นที่สีเขียว (ผลการค้นหาจะเปลี่ยนไปเมื่อท่านสืบค้นข้อมูลจากตาราง)</h6>
+                    <h4>ข้อมูลแปลงป่าครอบครัว</h4>
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm" style="text-align: center;">
-                                    จำนวนสีเขียว (แห่ง)
-                                    <div id="cntChart"></div>
-                                </div>
-                                <div class="col-sm" style="text-align: center;">
-                                    เนื้อที่พื้นที่สีเขียว (ไร่)
-                                    <div id="areaChart"></div>
-                                </div>
-                            </div>
+                            <div id="chartType"></div>
                         </div>
                     </div>
 
                     <div class="card mt-1 p-0">
                         <div id="map"></div>
                     </div>
-                    <div class="card">
+                    <div class="card" id="tbdata">
                         <div class="card-body">
-                            <a class="btn btn-success" href="./../add/index.html"><i
-                                    class="bi bi-plus-circle-fill"></i>&nbsp;เพิ่มข้อมูลพื้นที่สีเขียว</a>
-                            <hr>
-                            <label for="">ดาวโหลดข้อมูล</label>
-                            <table id="myTable" class="table table-striped table-bordered display nowrap"
-                                style="width:100%">
+                            <table id="myTable" class="table table-striped table-bordered wrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ชื่อสถานที่</th>
-                                        <th>ที่อยู่</th>
-                                        <th>ประเภท</th>
-                                        <th>เนื้อที่ (ไร่)</th>
-                                        <th>ผู้ให้ข้อมูล</th>
+                                        <!-- <th>ยุทธศาสตร์</th> -->
+                                        <th>ชื่อพืช</th>
+                                        <!-- <th>ประเภท</th> -->
+                                        <th>วันที่</th>
+                                        <th>ใช้บริโภค</th>
+                                        <th>ใช้เป็นยารักษาโรค</th>
+                                        <th>ใช้สอย</th>
+                                        <th>ใช้แปรรูปเพื่อขาย</th>
+                                        <!-- <th>สถานะงบประมาณ</th> -->
                                         <th>แก้ไข</th>
                                     </tr>
                                 </thead>
@@ -197,10 +186,26 @@
                 <div class="modal-body">
                     <p>ท่านต้องการลบโครงการ <span id="projName"></span></p>
                     <input type="hidden" id="projId">
+                    <input type="hidden" id="tbType">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="okModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    เพิ่มข้อมูลสำเร็จ
+                    <!-- <input type="hidden" id="tbType"> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="confirmAdd()">ปิด</button>
+                    <!-- <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button> -->
                 </div>
             </div>
         </div>
@@ -229,10 +234,6 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script> -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 
@@ -244,16 +245,17 @@
     <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
         charset="utf-8"></script>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./app.js"></script>
 
 </body>

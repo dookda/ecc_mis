@@ -7,7 +7,18 @@ urid ? null : location.href = "./../../form_register/login/index.html";
 if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
+
 let green_gid = sessionStorage.getItem('green_gid');
+let fromAdmin = sessionStorage.getItem('green_from_admin');
+// console.log(fromAdmin);
+let link;
+if (fromAdmin) {
+    link = "./../report_admin/index.html"
+    sessionStorage.removeItem('green_from_admin');
+} else {
+    link = "./../report/index.html"
+}
+
 let userid;
 
 let main = async () => {
@@ -195,12 +206,14 @@ let sendData = () => {
 
     axios.post(url + "/green-api/update", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
+        sessionStorage.removeItem('green_proj_gid');
     })
     return false;
 }
 
 let gotoList = () => {
-    location.href = "./../list/index.html";
+    location.href = link;
+    sessionStorage.removeItem('green_proj_gid');
 }
 
 let refreshPage = () => {

@@ -7,8 +7,8 @@ urid ? null : location.href = "./../../form_register/login/index.html";
 if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 16.820378,
@@ -256,7 +256,7 @@ let showCountChart = (data) => {
 }
 
 let getDataForChart = (data) => {
-    // console.log(data);
+    console.log(data);
     let cba = 0;
     let cb = 0;
     let rya = 0;
@@ -315,8 +315,8 @@ let loadTable = () => {
         ajax: {
             async: true,
             type: "POST",
-            url: url + '/green-api/getdata',
-            data: { userid: "sakda" },
+            url: url + '/green-api/getownerdata',
+            data: { usrid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -384,7 +384,6 @@ let loadTable = () => {
 
 let getDetail = (e) => {
     sessionStorage.setItem('green_gid', e);
-    sessionStorage.setItem('green_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 
@@ -431,49 +430,6 @@ let geneChart = (arr, div, tt, unit) => {
     columnTemplate.strokeOpacity = 1;
 }
 
-let pieChart = () => {
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("chartdiv", am4charts.PieChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-    chart.data = [
-        {
-            cat: "Lithuania",
-            val: 260
-        },
-        {
-            country: "Czechia",
-            value: 230
-        },
-        {
-            country: "Ireland",
-            value: 200
-        },
-        {
-            country: "Germany",
-            value: 165
-        },
-        {
-            country: "Australia",
-            value: 139
-        },
-        {
-            country: "Austria",
-            value: 128
-        }
-    ];
-
-    var series = chart.series.push(new am4charts.PieSeries());
-    series.dataFields.value = "val";
-    series.dataFields.radiusValue = "val";
-    series.dataFields.category = "cat";
-    series.slices.template.cornerRadius = 6;
-    series.colors.step = 3;
-
-    series.hiddenState.properties.endAngle = -90;
-
-    chart.legend = new am4charts.Legend();
-}
 
 $(document).ready(() => {
     loadTable();

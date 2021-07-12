@@ -13,8 +13,8 @@ $(document).ready(() => {
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
@@ -159,7 +159,8 @@ let loadTable = () => {
                     // console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.gb_id},'${row.dla}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
+                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูรายละเอียด</button>`
                 }
             }
         ],
@@ -171,6 +172,11 @@ let loadTable = () => {
         ],
     });
     getChart(1897)
+}
+
+let getDetail = (e) => {
+    sessionStorage.setItem('garbage_id', e);
+    location.href = "./../detail/index.html";
 }
 
 
