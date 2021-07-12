@@ -21,13 +21,13 @@ let map = L.map('map', {
     zoom: 13
 });
 
-let usr = sessionStorage.getItem('usr');
+// let usr = sessionStorage.getItem('usr');
 let marker, gps, dataurl;
 
-console.log(usr);
+// console.log(usr);
 
-// const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -69,7 +69,7 @@ var day = ("0" + now.getDate()).slice(-2);
 var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-axios.post(url + "/ff-api/getparcelall", { usr: usr }).then(r => {
+axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
     r.data.data.map(i => {
         if (i.geom) {
             let dat = {
@@ -113,20 +113,20 @@ let getData = async (data) => {
 
     let dataArr = [
         {
-            cat: "พืชกินได้",
+            cat: "ใช้รับประทาน",
             val: eat
         }, {
-            cat: "พืชใช้สอย",
+            cat: "ใช้สอย",
             val: use
         }, {
-            cat: "พืชเศรษฐกิจ",
+            cat: "ใช้ทางด้านเศรษฐกิจ",
             val: herb
         }, {
-            cat: "พืชสมุนไพร",
+            cat: "ใช้เป็นสมุนไพร",
             val: econ
         }
     ];
-    console.log(dataArr);
+    // console.log(dataArr);
     showChart(dataArr);
 }
 
@@ -151,14 +151,15 @@ let showChart = (dataArr) => {
 let table = $('#myTable').DataTable({
     ajax: {
         type: "POST",
-        url: url + '/ff-api/getalldaily',
-        data: { userid: usr },
+        url: url + '/ff-api/getdaily',
+        data: { usrid: urid },
         dataSrc: 'data'
     },
     columns: [
         {
             data: '',
             render: (data, type, row, meta) => {
+                // console.log(row);
                 return `${meta.row + 1}`
             }
         },

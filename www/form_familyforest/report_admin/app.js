@@ -21,10 +21,7 @@ let map = L.map('map', {
     zoom: 13
 });
 
-let usr = sessionStorage.getItem('usr');
 let marker, gps, dataurl;
-
-console.log(usr);
 
 // const url = 'http://localhost:3700';
 const url = "https://eec-onep.online:3700";
@@ -69,7 +66,7 @@ var day = ("0" + now.getDate()).slice(-2);
 var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-axios.post(url + "/ff-api/getparcelall", { usr: usr }).then(r => {
+axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
     r.data.data.map(i => {
         if (i.geom) {
             let dat = {
@@ -152,7 +149,7 @@ let table = $('#myTable').DataTable({
     ajax: {
         type: "POST",
         url: url + '/ff-api/getalldaily',
-        data: { userid: usr },
+        data: { usrid: urid },
         dataSrc: 'data'
     },
     columns: [

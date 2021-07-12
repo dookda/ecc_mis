@@ -10,7 +10,7 @@ if (eecauth !== "admin" && eecauth !== "user") {
 
 let proj_id = sessionStorage.getItem('biodiversity_proj_gid');
 let fromAdmin = sessionStorage.getItem('biodiversity_from_admin');
-console.log(fromAdmin);
+// console.log(fromAdmin);
 let link;
 if (fromAdmin) {
     link = "./../report_admin/index.html"

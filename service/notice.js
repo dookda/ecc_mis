@@ -7,7 +7,7 @@ app.post("/notice-api/getdataone", (req, res) => {
     const { proj_id } = req.body;
     // console.log(proj_id);
     const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, noticetype, lat,lon,
-            pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
+            pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
             ST_AsGeojson(geom) as geojson  
         FROM noticetb WHERE proj_id='${proj_id}'`;
 
@@ -18,10 +18,24 @@ app.post("/notice-api/getdataone", (req, res) => {
     })
 })
 
-app.post("/notice-api/getdata", (req, res) => {
-    const { userid } = req.body;
+app.post("/notice-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
     const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, noticetype,lat,lon,
-            pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, reporter, img,   
+            pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
+            ST_AsGeojson(geom) as geojson  
+        FROM noticetb WHERE usrid='${usrid}'`;
+
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/notice-api/getalldata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT gid, proj_id, noticename, noticedetail, noticeplace, noticetype,lat,lon,
+            pro, amp, tam, pro_name, amp_name, tam_name, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, usrname, img,   
             ST_AsGeojson(geom) as geojson  
         FROM noticetb`;
 

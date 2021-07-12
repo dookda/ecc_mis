@@ -30,8 +30,8 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -131,6 +131,8 @@ let sendData = () => {
     // console.log(geom[0]);
     const obj = {
         data: {
+            usrid: urid,
+            usrname: urname,
             noticename: $('#noticename').val(),
             noticedetail: $('#noticedetail').val(),
             noticeplace: $('#noticeplace').val(),
@@ -143,7 +145,6 @@ let sendData = () => {
             tam_name: $('#tam_name').val(),
             lat: $('#lat').val(),
             lon: $('#lon').val(),
-            reporter: $('#reporter').val(),
             img: dataurl ? dataurl : dataurl = "",
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
@@ -158,7 +159,7 @@ let sendData = () => {
 }
 
 let gotoList = () => {
-    location.href = "./../list/index.html";
+    location.href = "./../report/index.html";
 }
 
 let refreshPage = () => {

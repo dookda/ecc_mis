@@ -13,8 +13,8 @@ $(document).ready(() => {
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -108,12 +108,19 @@ let loadTable = () => {
         ajax: {
             async: true,
             type: "POST",
-            url: url + '/notice-api/getdata',
-            data: { userid: "sakda" },
+            url: url + '/notice-api/getownerdata',
+            data: { usrid: urid },
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
             { data: 'noticename' },
+            { data: 'noticedetail' },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -129,7 +136,7 @@ let loadTable = () => {
                             <button class="btn btn-margin btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
                             <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
-                width: "32%"
+                // width: "32%"
             }
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -183,7 +190,7 @@ let getMarker = (d) => {
 }
 
 let loadNoticetype = async (d) => {
-    console.log(d);
+    // console.log(d);
     let hazard = 0;
     let diaster = 0;
     let other = 0;

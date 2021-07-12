@@ -9,6 +9,16 @@ if (eecauth !== "admin" && eecauth !== "user") {
 }
 
 let proj_id = sessionStorage.getItem('notice_gid');
+let fromAdmin = sessionStorage.getItem('notice_from_admin');
+// console.log(fromAdmin);
+let link;
+if (fromAdmin) {
+    link = "./../report_admin/index.html"
+    sessionStorage.removeItem('notice_from_admin');
+} else {
+    link = "./../report/index.html"
+}
+
 let userid;
 
 let main = async () => {
@@ -31,8 +41,8 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -110,7 +120,7 @@ axios.post(url + "/notice-api/getdataone", { proj_id: proj_id }).then(r => {
     $('#lat').val(r.data.data[0].lat);
     $('#lon').val(r.data.data[0].lon);
     $("#preview").attr("src", r.data.data[0].img);
-    $('#reporter').val(r.data.data[0].reporter);
+    $('#reporter').val(r.data.data[0].usrname);
 
     let json = JSON.parse(r.data.data[0].geojson);
     // console.log(json);
@@ -145,13 +155,15 @@ let sendData = () => {
     }
     console.log(obj);
     axios.post(url + "/notice-api/update", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
+        r.data.data == "success" ? $("#okmodal").modal("show") : null;
+        sessionStorage.removeItem('notice_gid');
     })
     return false;
 }
 
 let gotoList = () => {
-    location.href = "./../list/index.html";
+    sessionStorage.removeItem('notice_gid');
+    location.href = link;
 }
 
 let refreshPage = () => {

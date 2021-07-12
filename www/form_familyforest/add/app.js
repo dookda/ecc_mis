@@ -184,11 +184,8 @@ let resizeImage = (file) => {
 
 $("#fname").val(urname);
 let chkData = () => {
-    let fname = $("#fname").val();
     if (!geom) {
         $("#chkgeommodal").modal("show")
-    } else if (!fname) {
-        $("#chkfnamemodal").modal("show")
     } else {
         postData()
     }
@@ -237,14 +234,14 @@ let postData = async () => {
         axios.post(url + "/ff-api/insert", obj).then(r => console.log("พืชสมุนไพร ok"));
     })
 
-    let fname = $("#fname").val();
+    // let fname = $("#fname").val();
     let frai = $("#frai").val();
     let flandtype = $("#flandtype").val();
     let datObj = {
         ffid: ffid,
         data: {
-            userid: urid,
-            fname: fname,
+            usrid: urid,
+            usrname: urname,
             frai: frai,
             flandtype: flandtype,
             geom: geom,

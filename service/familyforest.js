@@ -15,8 +15,8 @@ app.post("/ff-api/geteatlist", (req, res) => {
 })
 
 app.post("/ff-api/getpacellist", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user WHERE userid='${userid}'`;
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user WHERE usrid='${usrid}'`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -62,8 +62,10 @@ app.post("/ff-api/insertdaily", async (req, res) => {
 })
 
 app.post("/ff-api/getdaily", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date FROM familyforest_daily WHERE userid='${userid}'`;
+
+    const { usrid } = req.body;
+    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date FROM familyforest_daily WHERE usrid='${usrid}'`;
+    // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
