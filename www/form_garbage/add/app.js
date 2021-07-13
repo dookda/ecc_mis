@@ -8,63 +8,109 @@ if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
 
-$(document).ready(() => {
-    loadMap();
-});
+
+const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+
+let marker;
+let gps = "";
 
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
-}
+};
+
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 9
 });
-let marker;
-let gps = "";
-let dataurl;
 
-// const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
 
-function loadMap() {
-    var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 8,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1,
-        lyrname: "bmap"
-    });
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
 
-    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        lyrname: "bmap"
-    });
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:tambon_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
 
-    var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true,
-        lyrname: "bmap"
-    });
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:amphoe_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
 
-    var baseMap = {
-        "แผนที่ภาพจากดาวเทียม": ghyb,
-        "แผนที่ถนน": mapbox.addTo(map)
-    }
-    var overlayMap = {
-        "ขอบเขตจังหวัด": pro.addTo(map)
-    }
-    L.control.layers(baseMap, overlayMap).addTo(map);
+const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:province_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+let lyrs = L.featureGroup().addTo(map)
+
+var baseMap = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
 }
+
+var overlayMap = {
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map)
+}
+
+L.control.layers(baseMap, overlayMap).addTo(map);
+
+let geom = null;
+let dataurl = "";
+
+let onLocationFound = (e) => {
+    // console.log(e);
+    if (geom) {
+        map.removeLayer(geom);
+    }
+    geom = L.marker(e.latlng, {
+        draggable: false,
+        name: 'p'
+    }).addTo(map);
+
+}
+
+map.on("locationfound", onLocationFound);
+map.locate({ setView: true, maxZoom: 16 });
+
+map.on('click', (e) => {
+    if (geom) {
+        map.removeLayer(geom);
+    }
+    // lc.stop();
+    geom = L.marker(e.latlng, {
+        draggable: false,
+        name: 'p'
+    }).addTo(map);
+
+});
 
 function insertData() {
     const obj = {
         data: {
+            usrid: urid,
+            usrname: urname,
             dla: $('#dla').val(),
             year: $('#year').val(),
             prov: $('#prov').val(),
@@ -94,12 +140,12 @@ function insertData() {
             dang_was: $('#dang_was').val(),
             eat_food: $('#eat_food').val(),
             was_prod: $('#was_prod').val(),
-            geom: gps == "" ? "" : gps.toGeoJSON()
+            geom: geom ? geom.toGeoJSON() : null
         }
     }
     console.log(obj.data);
     axios.post(url + "/gb-api/insert", obj).then((r) => {
-        refreshPage()
+        r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
     return false;
 }
@@ -107,6 +153,10 @@ function insertData() {
 function refreshPage() {
     // window.open('./../report/index.html', '_blank');
     $("#gform")[0].reset();
+}
+
+let gotoReport = () => {
+    location.href = "./../report/index.html";
 }
 
 

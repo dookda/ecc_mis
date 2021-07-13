@@ -43,7 +43,7 @@
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <!-- Template Main CSS File -->
     <link rel="stylesheet" href="./../../assets/css/style.css">
-
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -56,8 +56,8 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
@@ -96,31 +96,21 @@
                     </p>
                 </div>
                 <hr>
+                <h5>ตำแหน่งรายงานปริมาณขยะ</h5>
                 <div class="card">
-                    <div class="card-body">
-                        <div class="col-sm-4 form-group">
-                            เรียกดูข้อมูลปริมาณขยะตามพื้นที่ที่เลือก
-                            <hr>
-                            <label for="exampleFormControlSelect1">กรุณาเลือกจังหวัดที่ต้องการ</label>
-                            <select class="form-control" id="prov">
-                                <option value="ชลบุรี">ชลบุรี</option>
-                                <option value="ระยอง">ระยอง</option>
-                                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
-                            </select>
-                        </div>
-                    </div>
+                    <div id="map"></div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
+                        <label for="">ปริมาณขยะที่เกิดขึ้นรายปี</label>
                         <div class="mwqichart" id="summarize"></div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
-
-                        <a class="btn btn-success" href="./../create/index.html"><i
+                        <a class="btn btn-success" href="./../add/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                         <hr>
                         <table id="myTable" class="table table-striped table-bordered nowrap" style="width:100%">
@@ -134,6 +124,7 @@
                                     <th>ปริมาณขยะที่เก็บขนไปกำจัด</th>
                                     <th>ปริมาณขยะที่ถูกนำไปใช้ประโยชน์</th>
                                     <th>ปริมาณขยะที่กำจัดไม่ถูกต้อง</th>
+                                    <th>ผู้ให้ข้อมูล</th>
                                     <th>เพิ่มข้อมูล</th>
                                 </tr>
                             </thead>
@@ -170,7 +161,7 @@
                                     </label>
                                     <br>
 
-                                    <span class="badge btn-light" style="font-size: 20;">ปริมาณขยะ </span>
+                                    <span class="badge btn-light" style="font-size: 20;">ปริมาณขยะ </span><br>
                                     <span class="badge badge-danger" style="font-size: 30px;" id="amtwas"></span>
                                     <span class="badge btn-light" style="font-size: 20px;"> ตัน/วัน</span>
 

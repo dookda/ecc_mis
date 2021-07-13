@@ -1,12 +1,6 @@
-let urid = sessionStorage.getItem('eecid');
-let urname = sessionStorage.getItem('eecname');
-let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let urid = 'user';
 
-if (eecauth !== "admin" && eecauth !== "office") {
-    location.href = "./../../form_register/login/index.html";
-}
+$("#tbdata").hide()
 
 $(document).ready(() => {
     loadTable()
@@ -15,6 +9,7 @@ $(document).ready(() => {
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
+
 
 let latlng = {
     lat: 13.305567,
@@ -207,12 +202,11 @@ let getMarker = (d) => {
 }
 
 let loadTable = () => {
-    console.log(urid);
     let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/gb-api/getownerdata',
-            data: { usrid: urid },
+            url: url + '/gb-api/getdata',
+            data: { userid: "sakda" },
             dataSrc: 'data'
         },
         columns: [
@@ -258,7 +252,7 @@ let loadTable = () => {
         // loadBiotype(data);
         // loadBiopro(data);
     });
-    getChart(1897);
+    // getChart(1897);
 }
 
 let getDetail = (e) => {

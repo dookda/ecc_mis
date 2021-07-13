@@ -24,6 +24,17 @@ app.post("/gb-api/getdata", (req, res) => {
     })
 })
 
+app.post("/gb-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+        FROM garbage WHERE usrid='${usrid}'`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/gb-api/getsummarize", (req, res) => {
     const { prov } = req.body;
     const sql = `SELECT year, SUM(populace) as populace, 
@@ -48,7 +59,7 @@ app.post("/gb-api/insert", async (req, res) => {
     for (d in data) {
         if (data[d] !== '' && d !== 'geom') {
             let sql = `UPDATE garbage SET ${d}='${data[d]}' WHERE gb_id='${gb_id}'`
-            // console.log(sql);
+            console.log(sql);
             await eec.query(sql)
         }
     }

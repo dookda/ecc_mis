@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./../../assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 </head>
@@ -236,7 +237,7 @@
                         </form>
                         <!-- submit button -->
                         <p></p>
-                        <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
+                        <a class="btn btn-light pull-right m-1" onclick="gotoReport()"><i
                                 class="fa fa-clipboard"></i>&nbsp;
                             กลับหน้ารายงาน</a>
                         <a class="btn btn-warning pull-right m-1" onclick="refreshPage()"><i
@@ -275,6 +276,35 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
+
+    <div class="modal fade" id="okmodal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <span id="notify"></span>เพิ่มข้อมูลสำเร็จ
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal"
+                        onclick="gotoReport()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>กรุณาระบุตำแหน่งที่พบ โดยคลิ๊กลงบนแผนที่</p>
+                    <p></p>
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Vendor JS Files -->
     <script src="./../../assets/vendor/jquery/jquery.min.js"></script>
