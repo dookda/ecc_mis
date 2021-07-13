@@ -19,8 +19,8 @@ if (fromAdmin) {
     link = "./../report/index.html"
 }
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
     lng: 101.383101
@@ -98,7 +98,7 @@ map.on('click', (e) => {
 });
 
 axios.post(url + "/sq-api/getone", { sq_id: sq_id }).then(r => {
-    console.log(r.data.data[0]);
+    // console.log(r.data.data[0]);
     $('#sq_date').val(r.data.data[0].date);
     $('#sq_time').val(r.data.data[0].sq_time);
     $('#sq_order').val(r.data.data[0].sq_order);

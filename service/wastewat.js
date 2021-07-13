@@ -5,7 +5,8 @@ const eec = con.eec;
 
 app.post("/waste-api/getone", (req, res) => {
     const { w_id } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson,
+                    TO_CHAR(wdate, 'YYYY-MM-DD') as date  
                 FROM wastewat
                 WHERE w_id='${w_id}'`
     eec.query(sql).then(r => {
@@ -16,8 +17,22 @@ app.post("/waste-api/getone", (req, res) => {
 })
 
 app.post("/waste-api/getdata", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat`
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(wdate, 'DD-MM-YYYY') as date 
+            FROM wastewat`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/waste-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(wdate, 'DD-MM-YYYY') as date 
+            FROM wastewat WHERE usrid='${usrid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -39,7 +54,7 @@ app.post("/waste-api/insert", async (req, res) => {
         }
     }
     if (data.geom !== "") {
-        let sql = `UPDATE wastewat SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
+        let sql = `UPDATE wastewat SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom)}')
                     WHERE w_id='${w_id}'`
         // console.log(sql);
         await eec.query(sql)
@@ -50,20 +65,26 @@ app.post("/waste-api/insert", async (req, res) => {
 })
 
 app.post("/waste-api/update", async (req, res) => {
-    const { data, tb, wq_id } = req.body;
+    const { data, w_id } = req.body;
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE ${tb} SET ${d}='${data[d]}' WHERE wq_id='${wq_id}'`
+            let sql = `UPDATE wastewat SET ${d}='${data[d]}' WHERE w_id='${w_id}'`
             // console.log(sql);
             await eec.query(sql)
         }
     }
 
-    if (data.geom !== "") {
-        let sql = `UPDATE ${tb}  
+    if (data.geom.features) {
+        // console.log("fes", data.geom.features[0].geometry);
+        let sql = `UPDATE wastewat 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.features[0].geometry)}')
+                    WHERE w_id='${w_id}'`
+        await eec.query(sql)
+    } else if (data.geom) {
+        // console.log("no", data.geom);
+        let sql = `UPDATE wastewat 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
-                    WHERE wq_id='${wq_id}'`
-        // console.log(data.geom);
+                    WHERE w_id='${w_id}'`
         await eec.query(sql)
     }
     res.status(200).json({

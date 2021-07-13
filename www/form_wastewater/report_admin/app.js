@@ -10,7 +10,7 @@ if (eecauth !== "admin" && eecauth !== "office") {
 
 $(document).ready(() => {
     loadTable()
-    loadMap()
+    // loadMap()
 });
 
 let latlng = {
@@ -19,7 +19,7 @@ let latlng = {
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 7
 });
 
 let marker;
@@ -27,36 +27,56 @@ let marker;
 // const url = 'http://localhost:3700';
 const url = "https://eec-onep.online:3700";
 
-function loadMap() {
-    var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1
-    });
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
 
-    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
 
-    var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true
-    });
-    var baseMap = {
-        "Mapbox": mapbox.addTo(map),
-        "google Hybrid": ghyb
-    }
-    var overlayMap = {
-        "ขอบเขตจังหวัด": pro
-    }
-    L.control.layers(baseMap, overlayMap, { collapsed: false, }).addTo(map);
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:tambon_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:amphoe_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:province_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+let lyrs = L.featureGroup().addTo(map)
+
+var baseMap = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
 }
+
+var overlayMap = {
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map)
+}
+
+L.control.layers(baseMap, overlayMap).addTo(map);
 
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
@@ -106,11 +126,11 @@ let getChart = (w_id) => {
     axios.post(url + "/waste-api/getone", obj).then((r) => {
         $("#chartdiv").show()
 
-        if (r.data.data[0].geojson) {
-            let json = JSON.parse(r.data.data[0].geojson);
-            showMarker(json.coordinates[1], json.coordinates[0]);
-            // showMarker(json)
-        }
+        // if (r.data.data[0].geojson) {
+        //     let json = JSON.parse(r.data.data[0].geojson);
+        //     showMarker(json.coordinates[1], json.coordinates[0]);
+
+        // }
 
         geneChart([{
             "cat": "น้ำเสียรวม",
@@ -190,7 +210,6 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
-            // { data: 'prj_name' },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -202,12 +221,21 @@ let loadTable = () => {
             // { data: 'prov' },
             { data: 'date' },
 
-            { data: 'no_hospi' },
+            { data: 'no_house' },
             { data: 'no_hotel' },
-            { data: 'no_mall' },
-            { data: 'no_market' },
-            { data: 'no_office' },
+            { data: 'no_dorm' },
+            { data: 'no_vhouse' },
+            { data: 'no_serv' },
+            { data: 'no_hospi' },
             { data: 'no_restur' },
+            { data: 'no_market' },
+            { data: 'no_mall' },
+            { data: 'no_office' },
+            { data: 'no_school' },
+            { data: 'no_gassta' },
+            { data: 'no_temple' },
+            { data: 'no_govcent' },
+            { data: 'no_clinic' },
             // { data: 'opert_stat' },
             {
                 data: null,
@@ -215,10 +243,12 @@ let loadTable = () => {
                     // console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.w_id},'${row.insti}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
+                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
                 }
             }
         ],
+        order: [2, 'dasc'],
         searching: true,
         scrollX: true,
         dom: 'Bfrtip',
@@ -229,7 +259,29 @@ let loadTable = () => {
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
         getDatatable(data);
+        getMarker(data)
     });
+}
+
+let getMarker = (d) => {
+    map.eachLayer(i => {
+        i.options.name == "marker" ? map.removeLayer(i) : null;
+    });
+
+    d.map(i => {
+        if (i.geojson) {
+            let json = JSON.parse(i.geojson);
+            L.geoJson(json, {
+                name: "marker"
+            }).addTo(map)
+        }
+    });
+}
+
+let getDetail = (e) => {
+    sessionStorage.setItem('w_gid', e);
+    sessionStorage.setItem('w_from_admin', 'yes');
+    location.href = "./../detail/index.html";
 }
 
 let geneChart = (arr, div, tt, unit, place) => {

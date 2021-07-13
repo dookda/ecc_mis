@@ -1,12 +1,7 @@
-let urid = sessionStorage.getItem('eecid');
-let urname = sessionStorage.getItem('eecname');
-let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let urid = 'user';
 
-if (eecauth !== "admin" && eecauth !== "office") {
-    location.href = "./../../form_register/login/index.html";
-}
+$("#tbdata").hide();
+$("#tbdata2").hide();
 
 $(document).ready(() => {
     loadTable()
@@ -24,8 +19,8 @@ let map = L.map('map', {
 
 let marker;
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -205,8 +200,8 @@ let loadTable = () => {
     let table = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/waste-api/getownerdata',
-            data: { usrid: urid },
+            url: url + '/waste-api/getdata',
+            data: { userid: "sakda" },
             dataSrc: 'data'
         },
         columns: [

@@ -8,12 +8,10 @@ if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
 
-if (eecauth !== "admin" && eecauth !== "user") {
-    location.href = "./../../form_register/login/index.html";
-}
+let marker;
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 let latlng = {
     lat: 13.305567,
@@ -76,7 +74,7 @@ var overlayMap = {
 
 L.control.layers(baseMap, overlayMap).addTo(map);
 
-let geom = "";
+let geom = null;
 let dataurl = "";
 
 let onLocationFound = (e) => {
@@ -88,9 +86,6 @@ let onLocationFound = (e) => {
         draggable: false,
         name: 'p'
     }).addTo(map);
-
-    $("#lat").val(e.latlng.lat);
-    $("#lon").val(e.latlng.lng);
 }
 
 map.on("locationfound", onLocationFound);
@@ -106,39 +101,69 @@ map.on('click', (e) => {
         name: 'p'
     }).addTo(map);
 
-    $("#lat").val(e.latlng.lat);
-    $("#lon").val(e.latlng.lng);
 });
 
-let sendData = () => {
+let quant;
+
+let sum = () => {
+    quant = 0;
+    let a = $('#no_house').val() * 500;
+    let b = $('#no_hotel').val() * 1000;
+    let c = $('#no_dorm').val() * 80;
+    let d = $('#no_serv').val() * 400;
+    let e = $('#no_vhouse').val() * 180;
+    let f = $('#no_hospi').val() * 800;
+    let g = $('#no_restur').val() * 25;
+    let h = $('#no_market').val() * 70;
+    let i = $('#no_mall').val() * 5;
+    let j = $('#no_office').val() * 3;
+    let k = $('#no_school').val()
+    let l = $('#no_gassta').val()
+    let m = $('#no_temple').val()
+    let n = $('#no_govcent').val()
+    let o = $('#no_clinic').val()
+    quant = Number(a) + Number(b) + Number(c) + Number(d) +
+        Number(e) + Number(f) + Number(g) + Number(h) +
+        Number(i) + Number(j) + Number(k) + Number(l) +
+        Number(m) + Number(n) + Number(o);
+    // console.log(quant);
+    $("#quantity").val(quant)
+}
+
+function sendData() {
     const obj = {
         data: {
             usrid: urid,
             usrname: urname,
-            // sq_spname: $('#sq_spname').val(),
-            sq_date: $('#sq_date').val(),
-            sq_time: $('#sq_time').val(),
-            sq_order: $('#sq_order').val(),
-            sta_loc: $('#sta_loc').val(),
-            // pro: $('#pro').val(),
-            // amp: $('#amp').val(),
-            // tam: $('#tam').val(),
-            sq_do: $('#sq_do').val(),
-            sq_tcb: $('#sq_tcb').val(),
-            sq_po43p: $('#sq_po43p').val(),
-            sq_no3n: $('#sq_no3n').val(),
-            sq_temp: $('#sq_temp').val(),
-            sq_ss: $('#sq_ss').val(),
-            sq_ph: $('#sq_ph').val(),
-            sq_nh3: $('#sq_nh3').val(),
-            sq_mwqi: $('#sq_mwqi').val(),
-            sq_pb: $('#sq_pb').val(),
+            insti: $('#insti').val(),
+            prov: $('#prov').val(),
+            wdate: $('#wdate').val(),
+            no_house: $('#no_house').val(),
+            no_hotel: $('#no_hotel').val(),
+            no_dorm: $('#no_dorm').val(),
+            no_serv: $('#no_serv').val(),
+            no_vhouse: $('#no_vhouse').val(),
+            no_hospi: $('#no_hospi').val(),
+            no_restur: $('#no_restur').val(),
+            no_market: $('#no_market').val(),
+            no_mall: $('#no_mall').val(),
+            no_office: $('#no_office').val(),
+            no_school: $('#no_school').val(),
+            no_gassta: $('#no_gassta').val(),
+            no_temple: $('#no_temple').val(),
+            no_govcent: $('#no_govcent').val(),
+            no_clinic: $('#no_clinic').val(),
+            quantity: $('#quantity').val(),
+            wsystem: $('#wsystem').val(),
+            qinput: $('#qinput').val(),
+            qoutput: $('#qoutput').val(),
+
             img: dataurl ? dataurl : dataurl = '',
-            geom: geom == "" ? "" : geom.toGeoJSON()
+            geom: geom ? geom.toGeoJSON().geometry : null
         }
     }
-    // console.log(obj.data);
-    axios.post(url + "/sq-api/insert", obj).then((r) => {
+    // console.log(obj);
+    axios.post(url + "/waste-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
     return false;
@@ -148,8 +173,9 @@ let gotoReport = () => {
     location.href = "./../report/index.html";
 }
 
-let refreshPage = () => {
-    location.reload(true);
+function refreshPage() {
+    // location.reload(true);
+    window.open('./../report/index.html', '_self');
 }
 
 $("#imgfile").change(function (evt) {
