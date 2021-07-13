@@ -5,9 +5,10 @@ const eec = con.eec;
 
 app.post("/sq-api/getone", (req, res) => {
     const { sq_id } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson,
+                    TO_CHAR(sq_date, 'YYYY-MM-DD') as date 
                 FROM seaquality
-                WHERE sq_id='${sq_id}'`
+                WHERE sq_id='${sq_id}'`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -17,7 +18,23 @@ app.post("/sq-api/getone", (req, res) => {
 
 app.post("/sq-api/getdata", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(sq_date, 'DD-MM-YYYY') as date FROM seaquality`
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+            FROM seaquality ORDER BY sq_date DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/sq-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+            FROM seaquality 
+            WHERE usrid='${usrid}'
+            ORDER BY sq_date DESC`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -61,20 +78,21 @@ app.post("/sq-api/insert", async (req, res) => {
 })
 
 app.post("/sq-api/update", async (req, res) => {
-    const { data, tb, wq_id } = req.body;
+    const { data, sq_id } = req.body;
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE ${tb} SET ${d}='${data[d]}' WHERE wq_id='${wq_id}'`
-            // console.log(sql);
+            let sql = `UPDATE seaquality SET ${d}='${data[d]}' WHERE sq_id='${sq_id}'`
+            console.log(sql);
             await eec.query(sql)
         }
     }
+    // console.log(data.geom);
+    if (data.geom) {
 
-    if (data.geom !== "") {
-        let sql = `UPDATE ${tb}  
-                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
-                    WHERE wq_id='${wq_id}'`
-        // console.log(data.geom);
+        let sql = `UPDATE seaquality
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom)}')
+                    WHERE sq_id='${sq_id}'`
+        // console.log(sql);
         await eec.query(sql)
     }
     res.status(200).json({

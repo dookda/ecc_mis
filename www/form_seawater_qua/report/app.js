@@ -13,8 +13,71 @@ $(document).ready(() => {
 
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
+
+
+let latlng = {
+    lat: 13.305567,
+    lng: 101.383101
+};
+
+let map = L.map('map', {
+    center: latlng,
+    zoom: 9
+});
+
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
+
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
+
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:tambon_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:amphoe_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:province_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+let lyrs = L.featureGroup().addTo(map)
+
+var baseMap = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
+}
+
+var overlayMap = {
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map)
+}
+
+L.control.layers(baseMap, overlayMap).addTo(map);
+
 
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
@@ -63,11 +126,11 @@ function getChart(sq_id) {
 }
 
 let loadTable = () => {
-    let table = $('#myTable').DataTable({
+    let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/sq-api/getdata',
-            data: { userid: "sakda" },
+            url: url + '/sq-api/getownerdata',
+            data: { usrid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -82,7 +145,6 @@ let loadTable = () => {
             { data: 'sta_loc' },
             // { data: 'prov' },
             { data: 'date' },
-
             { data: 'sq_do' },
             { data: 'sq_tcb' },
             { data: 'sq_po43p' },
@@ -97,10 +159,11 @@ let loadTable = () => {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    console.log(data);
+                    // console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
+                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>`
                 }
             }
         ],
@@ -112,14 +175,30 @@ let loadTable = () => {
         ],
     });
 
-    // table.on('search.dt', function () {
-    //     let data = table.rows({ search: 'applied' }).data()
-    //     getProc_stat(data)
-    //     getOpert_stat(data);
-    //     getPrj_cate(data);
-    //     getBudget(data);
-    //     getMap(data)
-    // });
+    dtable.on('search.dt', function () {
+        let data = dtable.rows({ search: 'applied' }).data()
+        getMarker(data);
+    });
+}
+
+let getMarker = (d) => {
+    map.eachLayer(i => {
+        i.options.name == "marker" ? map.removeLayer(i) : null;
+    });
+
+    d.map(i => {
+        if (i.geojson) {
+            let json = JSON.parse(i.geojson);
+            L.geoJson(json, {
+                name: "marker"
+            }).addTo(map)
+        }
+    });
+}
+
+let getDetail = (e) => {
+    sessionStorage.setItem('sq_id', e);
+    location.href = "./../detail/index.html";
 }
 
 let geneChart = (arr, div, tt, unit) => {

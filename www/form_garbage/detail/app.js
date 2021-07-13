@@ -11,7 +11,7 @@ if (eecauth !== "admin" && eecauth !== "office") {
 let gb_id = sessionStorage.getItem('garbage_id');
 let fromAdmin = sessionStorage.getItem('garbage_from_admin');
 
-console.log(gb_id);
+// console.log(gb_id);
 
 let link;
 if (fromAdmin) {

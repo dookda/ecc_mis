@@ -26,8 +26,8 @@ let marker, gps, dataurl;
 
 // console.log(usr);
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -100,7 +100,7 @@ let getData = async (data) => {
     let herb = 0;
     let econ = 0;
     await data.map(i => {
-        console.log(i);
+        // console.log(i);
         eat += Number(i.eat);
         use += Number(i.use);
         econ += Number(i.econ);

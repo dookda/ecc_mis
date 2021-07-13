@@ -64,7 +64,8 @@ app.post("/ff-api/insertdaily", async (req, res) => {
 app.post("/ff-api/getdaily", (req, res) => {
 
     const { usrid } = req.body;
-    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date FROM familyforest_daily WHERE usrid='${usrid}'`;
+    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date 
+        FROM familyforest_daily WHERE usrid='${usrid}' ORDER BY dt DESC`;
     // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -75,7 +76,8 @@ app.post("/ff-api/getdaily", (req, res) => {
 
 app.post("/ff-api/getalldaily", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date FROM familyforest_daily`;
+    const sql = `SELECT *, TO_CHAR(dt, 'DD-MM-YYYY') as date 
+        FROM familyforest_daily ORDER BY dt DESC`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

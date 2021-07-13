@@ -23,8 +23,8 @@ let map = L.map('map', {
 
 let marker, gps, dataurl;
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 function loadMap() {
     var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -118,7 +118,7 @@ let getParcel = (ffid) => {
 
 axios.post(url + "/ff-api/getpacellist", { usrid: urid }).then(r => {
     $("#fname").val(urname);
-    console.log(r);
+    // console.log(r);
     r.data.data.map((i, k) => {
         // console.log(k);
         let dat = {

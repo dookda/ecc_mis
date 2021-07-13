@@ -1,12 +1,6 @@
-let urid = sessionStorage.getItem('eecid');
-let urname = sessionStorage.getItem('eecname');
-let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let urid = 'user';
 
-if (eecauth !== "admin" && eecauth !== "office") {
-    location.href = "./../../form_register/login/index.html";
-}
+$("#tbdata").hide();
 
 $(document).ready(() => {
     loadTable()
@@ -198,8 +192,7 @@ let getMarker = (d) => {
 }
 
 let getDetail = (e) => {
-    sessionStorage.setItem('sq_gid', e);
-    sessionStorage.setItem('sq_from_admin', 'yes');
+    sessionStorage.setItem('sq_id', e);
     location.href = "./../detail/index.html";
 }
 
