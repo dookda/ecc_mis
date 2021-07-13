@@ -40,7 +40,21 @@ app.post("/ws-api/getone", (req, res) => {
 app.post("/ws-api/getdata", (req, res) => {
     const { userid } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-            TO_CHAR(ws_date, 'DD-MM-YYYY') as date FROM surwater`
+            TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+            FROM surwater`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/ws-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+            TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+            FROM surwater
+            WHERE usrid='${usrid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -73,20 +87,26 @@ app.post("/ws-api/insert", async (req, res) => {
 })
 
 app.post("/ws-api/update", async (req, res) => {
-    const { data, tb, ws_id } = req.body;
+    const { data, ws_id } = req.body;
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom') {
-            let sql = `UPDATE ${tb} SET ${d}='${data[d]}' WHERE ws_id='${ws_id}'`
+            let sql = `UPDATE surwater SET ${d}='${data[d]}' WHERE ws_id='${ws_id}'`
             // console.log(sql);
             await eec.query(sql)
         }
     }
 
-    if (data.geom !== "") {
-        let sql = `UPDATE ${tb}  
+    if (data.geom.features) {
+        // console.log("fes", data.geom.features[0].geometry);
+        let sql = `UPDATE surwater 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.features[0].geometry)}')
+                    WHERE ws_id='${ws_id}'`
+        await eec.query(sql)
+    } else if (data.geom) {
+        // console.log("no", data.geom);
+        let sql = `UPDATE surwater 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE ws_id='${ws_id}'`
-        // console.log(data.geom);
         await eec.query(sql)
     }
     res.status(200).json({

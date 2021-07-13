@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="./../../assets/css/style.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -56,8 +56,8 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./index.html">หน้าหลัก</a></li>
-                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
@@ -181,10 +181,15 @@
                         </div>
                     </div>
                 </div>
-                <hr>
+                <p></p>
+                <h5>ตำแหน่งตรวจวัดคุณภาพน้ำผิวดิน</h5>
+                <div class="card" style="z-index: 0;">
+                    <div class="card-body" id="map"></div>
+                </div>
+                <p></p>
                 <div class="card">
                     <div class="card-body">
-                        <a class="btn btn-success" href="./../create/index.html"><i
+                        <a class="btn btn-success" href="./../add/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                         <hr>
                         รายการค่าจากการตรวจวัดคุณภาพน้ำผิวดินของแต่ละสถานี

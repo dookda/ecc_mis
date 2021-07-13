@@ -16,6 +16,68 @@ $(document).ready(() => {
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
+
+let latlng = {
+    lat: 13.305567,
+    lng: 101.383101
+};
+
+let map = L.map('map', {
+    center: latlng,
+    zoom: 8
+});
+
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
+
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
+
+const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:tambon_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:amphoe_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
+    layers: "th:province_4326",
+    format: "image/png",
+    transparent: true,
+    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+});
+
+let lyrs = L.featureGroup().addTo(map)
+
+var baseMap = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
+}
+
+var overlayMap = {
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map)
+}
+
+L.control.layers(baseMap, overlayMap).addTo(map);
+
 let refreshPage = () => {
     location.href = "./../report/index.html";
     // console.log("ok");
@@ -96,7 +158,7 @@ let getChart = (ws_id) => {
                     $("#chartd").append(
                         `<div class="col-sm-4">
                             <div class="card p-1">
-                                <div class="card-body" id="${key}"></div>
+                                <div class="card-body wschart" id="${key}"></div>
                             </div>
                         </div>`
                     )
@@ -109,7 +171,7 @@ let getChart = (ws_id) => {
 
 
 let loadTable = () => {
-    let table = $('#myTable').DataTable({
+    let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
             url: url + '/ws-api/getdata',
@@ -140,7 +202,8 @@ let loadTable = () => {
                     // console.log(data);
                     return `
                        <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.ws_id},'${row.ws_station}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <a class="btn btn-margin btn-outline-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</a>`
+                       <a class="btn btn-margin btn-outline-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</a>
+                       <a class="btn btn-margin btn-outline-info" href="#charttitle" onclick="getDetail(${row.ws_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</a>`
                 },
                 // width: '30%'
             }
@@ -153,10 +216,32 @@ let loadTable = () => {
         ],
     });
 
-    // table.on('search.dt', function () {
-    //     let data = table.rows({ search: 'applied' }).data();
-    //     filterSta(data);
-    // });
+    dtable.on('search.dt', function () {
+        let data = dtable.rows({ search: 'applied' }).data()
+        getMarker(data);
+    });
+}
+
+
+let getMarker = (d) => {
+    map.eachLayer(i => {
+        i.options.name == "marker" ? map.removeLayer(i) : null;
+    });
+
+    d.map(i => {
+        if (i.geojson) {
+            let json = JSON.parse(i.geojson);
+            L.geoJson(json, {
+                name: "marker"
+            }).addTo(map)
+        }
+    });
+}
+
+let getDetail = (e) => {
+    sessionStorage.setItem('ws_id', e);
+    sessionStorage.setItem('ws_from_admin', 'yes');
+    location.href = "./../detail/index.html";
 }
 
 let geneChart = (arr, div, tt, unit) => {
@@ -219,7 +304,7 @@ let getSeries = (sta) => {
     let ws_nh3n = [];
     let ws_tcb = [];
     axios.post(url + "/ws-api/getstationone", { ws_station: sta }).then(async r => {
-        console.log(r);
+        // console.log(r);
         await r.data.data.map(i => {
             ws_wqi.push({ "date": i.ws_date, "value": Number(i.ws_wqi) });
             ws_bod.push({ "date": i.ws_date, "value": Number(i.ws_bod) });
