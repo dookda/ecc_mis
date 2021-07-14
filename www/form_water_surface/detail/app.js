@@ -97,6 +97,8 @@ map.on('click', (e) => {
     }).addTo(map);
 });
 
+
+
 axios.post(url + "/ws-api/getone", { ws_id: ws_id }).then(r => {
     $("#ws_station").val(r.data.data[0].ws_station)
     $("#ws_location").val(r.data.data[0].ws_location)

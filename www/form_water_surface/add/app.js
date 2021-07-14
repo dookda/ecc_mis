@@ -100,6 +100,14 @@ map.on('click', (e) => {
     }).addTo(map);
 });
 
+let getStation = () => {
+    axios.get(url + "/ws-api/getstation").then(r => {
+        // console.log(r);
+        r.data.data.map(i => $("#ws_station").append(`<option value="${i.ws_station}">${i.ws_river} (${i.ws_station})</option>`))
+    })
+}
+getStation();
+
 $("#ws_recorder").val(urname);
 let sendData = () => {
     const obj = {
