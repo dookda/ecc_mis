@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="./../../assets/css/style.css" rel="stylesheet">
 
 </head>
@@ -128,7 +129,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>ความสามารถในการรองรับน้ำของระบบ (หน่วย: ?):</label>
+                    <label>ความสามารถในการรองรับน้ำของระบบ (หน่วย: ลบม./วัน):</label>
                     <input type="number" class="form-control" id="capacity">
                 </div>
 
@@ -168,11 +169,12 @@
                     <label>วันที่รายงาน :</label>
                     <input type="date" class="form-control" id="date">
                 </div>
-
+                <hr>
                 <div class="form-group">
-                    <a class="btn btn-light pull-right m-1" href="./../report/index.html">กลับหน้ารายงาน</a>
-                    <button class="btn btn-info pull-right m-1" onclick="insertData()"><i class="fa fa-plus"></i>&nbsp;
+                    <button class="btn btn-info  m-1" onclick="insertData()"><i class="bi bi-plus-circle"></i>&nbsp;
                         สร้างรายงาน</button>
+                    <button class="btn btn-light m-1" onclick="gotoReport()"><i
+                            class="bi bi-journal-richtext"></i>&nbsp;หน้ารายงาน</button>
                 </div>
             </div>
 

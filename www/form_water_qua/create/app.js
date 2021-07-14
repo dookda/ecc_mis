@@ -16,9 +16,15 @@ let refreshPage = () => {
     console.log("ok");
 }
 
+let gotoReport = () => {
+    location.href = "./../report/index.html";
+}
+
 let insertData = () => {
     const obj = {
         data: {
+            usrid: urid,
+            usrname: urname,
             report_n: $('#report_n').val(),
             systype: $('#systype').val(),
             capacity: $('#capacity').val(),
@@ -30,6 +36,7 @@ let insertData = () => {
     }
 
     axios.post(url + "/wq-api/createreport", obj).then(r => {
+        console.log(obj);
         if (r.data.data == "success") {
             $('#report_n').val("")
             $('#systype').val("")
@@ -41,7 +48,6 @@ let insertData = () => {
 
             $("#rid").text("หมายเลขอ้างอิง: " + r.data.rid)
             $("#qr").attr("src", r.data.qr);
-            $("#report").html(`<a class="btn btn-info" href="./../report/index.html"><i class="bi bi-file-earmark-text-fill"></i>&nbsp;ไปหน้ารายงาน</a>`)
             $("#edit").html(`<a class="btn btn-success" href="./../edit_bf/index.html?id=${r.data.rid}"><i
             class="bi bi-plus-circle-fill"></i>&nbsp;เริ่มกรอกข้อมูล</a>`)
         }

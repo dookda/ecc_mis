@@ -6,8 +6,7 @@ const qrcode = require('qrcode')
 
 app.post("/wq-api/getone", (req, res) => {
     const { wq_id } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(bf_geom) as bfgeom, ST_AsGeojson(af_geom) as afgeom 
-                FROM v_watquality
+    const sql = `SELECT * FROM v_watquality
                 WHERE wq_id='${wq_id}'`
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -17,8 +16,22 @@ app.post("/wq-api/getone", (req, res) => {
 })
 
 app.post("/wq-api/getdata", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, TO_CHAR(af_date, 'DD-MM-YYYY') as af_date FROM v_watquality`
+    const { usrid } = req.body;
+    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
+            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
+        FROM v_watquality`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/wq-api/getownerdata", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
+            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
+        FROM v_watquality WHERE usrid='${usrid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -65,16 +78,20 @@ app.post("/wq-api/update", async (req, res) => {
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom') {
             let sql = `UPDATE ${tb} SET ${d}='${data[d]}' WHERE wq_id='${wq_id}'`
-            console.log(sql);
+            // console.log(sql);
             await eec.query(sql)
         }
     }
 
-    if (data.geom !== "") {
-        let sql = `UPDATE ${tb}  
+    if (data.geom.features) {
+        let sql = `UPDATE ${tb} 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.features[0].geometry)}')
+                    WHERE wq_id='${wq_id}'`
+        await eec.query(sql)
+    } else if (data.geom) {
+        let sql = `UPDATE ${tb} 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE wq_id='${wq_id}'`
-        // console.log(data.geom);
         await eec.query(sql)
     }
     res.status(200).json({

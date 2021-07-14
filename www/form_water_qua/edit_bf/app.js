@@ -18,12 +18,12 @@ let wq_id = searchParams.get('id')
 console.log(wq_id);
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
-}
+    lat: 13.305567,
+    lng: 101.383101
+};
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 8
 });
 let marker;
 let dataurl;
@@ -80,9 +80,9 @@ map.on('click', (e) => {
     marker = L.marker(e.latlng, {
         draggable: true,
         name: 'mk'
-    });
-    // console.log(marker.toGeoJSON());
-    marker.addTo(map).bindPopup("คุณอยู่ที่นี่").openPopup();
+    }).addTo(map)
+    marker.bindPopup("ตำแหน่งตรวจวัด").openPopup();
+
     marker.on('dragend', (e) => {
         // console.log(e)
     })
@@ -98,7 +98,7 @@ let loadData = () => {
         tb: "watquality_af"
     }
     axios.post(url + "/wq-api/getone", obj).then(r => {
-        // console.log(r.data.data[0]);
+        console.log(r.data.data[0]);
         $('#wq_turb').val(r.data.data[0].bf_wq_turb)
         $('#wq_cond').val(r.data.data[0].bf_wq_cond)
         $('#wq_sal').val(r.data.data[0].bf_wq_sal)
@@ -116,8 +116,8 @@ let loadData = () => {
         $('#wq_tp').val(r.data.data[0].bf_wq_tp)
         $('#wq_fcb').val(r.data.data[0].bf_wq_fcb)
         $('#wq_tcb').val(r.data.data[0].bf_wq_tcb)
-        $('#wq_spname').val(r.data.data[0].wq_spname)
-        $('#wq_ipname').val(r.data.data[0].wq_ipname)
+        $('#wq_spname').val(r.data.data[0].usrname)
+        // $('#wq_ipname').val(r.data.data[0].wq_ipname)
 
         if (r.data.data[0].geojson) {
             let json = JSON.parse(r.data.data[0].geojson);
@@ -154,14 +154,13 @@ let saveData = () => {
             wq_fcb: $('#wq_fcb').val(),
             wq_tcb: $('#wq_tcb').val(),
             wq_spname: $('#wq_spname').val(),
-            wq_ipname: $('#wq_ipname').val(),
             img: dataurl ? dataurl : dataurl = "",
             geom: marker == null ? "" : marker.toGeoJSON()
         },
         tb: "watquality_bf",
         wq_id: wq_id,
     }
-
+    console.log(obj);
     axios.post(url + "/wq-api/update", obj).then(r => {
         r.data.data == "success" ? refreshPage() : null
     })
