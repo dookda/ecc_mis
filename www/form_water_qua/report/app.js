@@ -10,7 +10,6 @@ if (eecauth !== "admin" && eecauth !== "office") {
 
 $(document).ready(() => {
     loadTable()
-
 });
 
 const url = "https://eec-onep.online:3700";
@@ -77,7 +76,6 @@ var overlayMap = {
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
-
 
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
