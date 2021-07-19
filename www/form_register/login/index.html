@@ -138,7 +138,7 @@
                                     <button type="button" class="btn btn-warning" id="refresh" onclick="gotoRegister()">
                                         <i class="bi bi-clipboard-check"></i><span>&nbsp;ลงทะเบียน</span>
                                     </button>&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-light" id="refresh" onclick="gotoResetpass()">
+                                    <button type="button" class="btn btn-light" id="refresh" onclick="resetEmail()">
                                         <i class="bi bi-arrow-repeat"></i><span>&nbsp;ลืมรหัสผ่าน</span>
                                     </button>
                                 </div>
@@ -180,11 +180,48 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <span id="detail"></span>
-                    <p></p <p>
-                    </p>
+                    <p>
                     </p>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resetemail" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>กรุณากรอก email ที่ท่านลงทะเบียน:</label>
+                        <input type="email" class="form-control" id="existemail">
+                    </div>
+                    <p></p>
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="gotoResetpass()">
+                        <i class="bi bi-clipboard-check"></i><span>&nbsp;ส่งข้อมูล</span>
+                    </button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="responsemodal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <span id="res"></span>
+                    <p></p>
+                    <p></p>
+                </div>
+                <div class="modal-footer">&nbsp;&nbsp;
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>

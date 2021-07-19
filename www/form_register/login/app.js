@@ -1,6 +1,6 @@
-// var url = 'http://localhost:3700';
+var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+// var url = 'https://eec-onep.online:3700';
 
 sessionStorage.clear();
 
@@ -60,8 +60,18 @@ let sendData = () => {
     })
 }
 
+let resetEmail = () => {
+    $("#resetemail").modal('show');
+}
+
 let gotoResetpass = () => {
-    window.open('mailto:sakda.homhuan@gmail.com?subject=subject&body=body');
+    let obj = { email: $("#existemail").val() }
+    axios.post(url + "/profile-api/resetmail", obj).then(r => {
+        console.log(r);
+        $("#resetemail").modal('hide');
+        $("#responsemodal").modal('show');
+        $("#res").html(r.data.data)
+    })
 }
 
 

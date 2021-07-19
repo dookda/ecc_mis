@@ -3,6 +3,8 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
+const nodemailer = require("nodemailer");
+
 app.post("/profile-api/register", async (req, res) => {
     const { data } = req.body;
     let regid = Date.now()
@@ -93,5 +95,55 @@ app.post("/profile-api/delete", (req, res) => {
         })
     })
 })
+
+app.post("/profile-api/resetmail", async (req, res) => {
+    const { email } = req.body;
+
+    let sql = `SELECT email from register WHERE email='${email}'`;
+    await eec.query(sql).then(async (r) => {
+        // console.log(r.rows.length);
+
+        if (r.rows.length > 0) {
+            let newpass = Date.now()
+            await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
+
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'sakda.homhuan@uru.ac.th',
+                    pass: 'uruDa45060071'
+                }
+            });
+
+            var mailOptions = {
+                from: 'sakda.homhuan@uru.ac.th',
+                to: email,
+                subject: 'รหัสผ่านใหม่',
+                // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
+                html: `รหัสผ่านใหม่ของท่านคือ  <b>${newpass}</b> 
+                <br>เข้าสู่ระบบอีครั้งที่ https://eec-onep.online/form_register/login/index.html 
+                <br>เมื่อเข้าสู้ระบบได้แล้วกรุณาเปลี่ยนรหัสผ่านใหม่`
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    // console.log('Email sent: ' + info.response);
+                    res.status(200).json({
+                        data: `ส่งรหัสผ่านใหม่ไปยัง ${email} เรียบร้อยแล้ว`
+                    })
+                }
+            });
+        } else {
+            res.status(200).json({
+                data: `${email} ยังไม่ได้ลงทะเบียน <br>กรุณาลงทะเบียนก่อนใช้งาน`
+            })
+        }
+    })
+
+})
+
+
 
 module.exports = app;
