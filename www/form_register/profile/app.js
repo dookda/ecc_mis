@@ -27,9 +27,9 @@ if (fromadmin) {
         </button>`) : null;
 }
 
-// var url = 'http://localhost:3700';
+var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+// var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);
@@ -65,7 +65,10 @@ let getData = async () => {
         $('#address').val(r.data.data[0].address);
         $('#auth').val(r.data.data[0].auth);
         $('#dt').val(r.data.data[0].dt);
-        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false)
+
+        $("#preview").attr("src", r.data.data[0].img);
+        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false);
+        $("#imgfile").val("");
     })
 }
 
@@ -176,6 +179,54 @@ let sendData = () => {
     })
     return false;
 };
+
+let dataurl;
+$("#imgfile").change(async () => {
+    var filesToUploads = document.getElementById('imgfile').files;
+    var file = filesToUploads[0];
+    var reader = new FileReader();
+
+    reader.onloadend = (e) => {
+        let imageOriginal = reader.result;
+        resizeImage(file);
+        // document.getElementById('preview').src = imageOriginal;
+    }
+    reader.readAsDataURL(file);
+
+    setTimeout(() => {
+        // console.log(dataurl);
+        axios.post(url + "/profile-api/updateimgprofile", {
+            regid: pfid,
+            img: dataurl
+        }).then(r => {
+            getData();
+        })
+    }, 1000)
+
+});
+
+let resizeImage = (file) => {
+    var maxW = 600;
+    var maxH = 600;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var img = document.createElement('img');
+    var result = '';
+    img.onload = function () {
+        var iw = img.width;
+        var ih = img.height;
+        var scale = Math.min((maxW / iw), (maxH / ih));
+        var iwScaled = iw * scale;
+        var ihScaled = ih * scale;
+        canvas.width = iwScaled;
+        canvas.height = ihScaled;
+        context.drawImage(img, 0, 0, iwScaled, ihScaled);
+        result += canvas.toDataURL('image/jpeg', 0.5);
+        dataurl = result;
+        // document.getElementById('rez').src = that.imageResize;
+    }
+    img.src = URL.createObjectURL(file);
+}
 
 let gotoLogin = () => {
     location.href = "./../login/index.html";

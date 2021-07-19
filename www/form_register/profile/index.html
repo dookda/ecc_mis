@@ -84,7 +84,6 @@
     <br>
     <br>
 
-
     <main id="main">
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
@@ -98,138 +97,164 @@
                 <div class="mt-3 mb-20" data-aos="fade-up">
                     <div class="card">
                         <div class="card-body">
-                            <span id="userId"></span>
+                            <div class="row">
+                                <div class="col-sm-3">
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ชื่อ-นามสกุล:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="user_name">
+                                    <div class="form-group">
+                                        <img src="" id="preview" width="100%" style="border-radius: 1.5rem;">
+                                        <hr>
+                                        <label for="img">อัพโหลดรูปภาพ</label>
+                                        <input type="file" class="form-control-file" id="imgfile" accept="image/*">
+                                        <!-- <p></p>
+                                        <img src="" id="preview" width="100%"> -->
+                                    </div>
+
+                                    <!-- <div class="mt-1">
+                                        <button type="button" class="btn btn-success" onclick="updateimg()">
+                                            <i class="bi bi-box-arrow-in-right"></i><span id='n'>&nbsp;บันทึก</span>
+                                        </button>
+                                    </div> -->
+
                                 </div>
-                            </div>
+                                <div class="col-sm-9">
+                                    <span id="userId"></span>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">เบอร์โทรศัพท์:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="tele">
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">ชื่อ-นามสกุล:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="user_name">
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">รหัสผ่าน:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="password">
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">เบอร์โทรศัพท์:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="tele">
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">อีเมล์:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="email">
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">รหัสผ่าน:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="password">
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ที่อยู่:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="address">
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">อีเมล์:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="email">
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">จังหวัด:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="pro" onchange="getAmp(this.value)">
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">ที่อยู่:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="address">
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">อำเภอ:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="amp" onchange="getTam(this.value)">
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">จังหวัด:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="pro" onchange="getAmp(this.value)">
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ตำบล:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="tam" onchange="getTamOne(this.value)">
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">อำเภอ:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="amp" onchange="getTam(this.value)">
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <input type="hidden" id="pro_name">
-                            <input type="hidden" id="amp_name">
-                            <input type="hidden" id="tam_name">
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">ตำบล:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="tam" onchange="getTamOne(this.value)">
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">กลุ่มอาชีพและองค์กร:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="ocup">
-                                        <option value="สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม">
-                                            สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</option>
-                                        <option value="องค์การบริหารส่วนตำบล">องค์การบริหารส่วนตำบล (อบต.)</option>
-                                        <option value="องค์การบริหารส่วนจังหวัด">องค์การบริหารส่วนจังหวัด (อบจ.)
-                                        </option>
-                                        <option value="สำนักงานสิ่งแวดล้อมภาค">สำนักงานสิ่งแวดล้อมภาค (สสภ.)</option>
-                                        <option value="สํานักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด">
-                                            สํานักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด (ทสจ.)
-                                        </option>
-                                        <option value="กรมทรัพยากรทางทะเลและชายฝั่ง">กรมทรัพยากรทางทะเลและชายฝั่ง (ทช.)
-                                        </option>
-                                        <option value="กรมควบคุมมลพิษ">กรมควบคุมมลพิษ (คพ.)</option>
-                                        <option value="ประชาชน">ประชาชน</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <input type="hidden" id="pro_name">
+                                    <input type="hidden" id="amp_name">
+                                    <input type="hidden" id="tam_name">
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">เพศ:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="sex">
-                                        <option value="ชาย" selected>ชาย</option>
-                                        <option value="หญิง">หญิง</option>
-                                        <option value="ไม่ระบุ">ไม่ระบุ</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">กลุ่มอาชีพและองค์กร:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="ocup">
+                                                <option value="สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม">
+                                                    สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</option>
+                                                <option value="องค์การบริหารส่วนตำบล">องค์การบริหารส่วนตำบล (อบต.)
+                                                </option>
+                                                <option value="องค์การบริหารส่วนจังหวัด">องค์การบริหารส่วนจังหวัด (อบจ.)
+                                                </option>
+                                                <option value="สำนักงานสิ่งแวดล้อมภาค">สำนักงานสิ่งแวดล้อมภาค (สสภ.)
+                                                </option>
+                                                <option value="สํานักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด">
+                                                    สํานักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด (ทสจ.)
+                                                </option>
+                                                <option value="กรมทรัพยากรทางทะเลและชายฝั่ง">
+                                                    กรมทรัพยากรทางทะเลและชายฝั่ง (ทช.)
+                                                </option>
+                                                <option value="กรมควบคุมมลพิษ">กรมควบคุมมลพิษ (คพ.)</option>
+                                                <option value="ประชาชน">ประชาชน</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row" id="autharea">
-                                <label for="" class="col-sm-2 col-form-label">สิทธิ์การใช้งาน:</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" id="auth">
-                                        <option value="admin">ผู้ดูแลระบบ</option>
-                                        <option value="office">เจ้าหน้าที่</option>
-                                        <option value="user">ผู้ใช้</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">เพศ:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="sex">
+                                                <option value="ชาย" selected>ชาย</option>
+                                                <option value="หญิง">หญิง</option>
+                                                <option value="ไม่ระบุ">ไม่ระบุ</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">วันที่ลงทะเบียน:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="dt">
-                                </div>
-                            </div>
+                                    <div class="form-group row" id="autharea">
+                                        <label for="" class="col-sm-2 col-form-label">สิทธิ์การใช้งาน:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="auth">
+                                                <option value="admin">ผู้ดูแลระบบ</option>
+                                                <option value="office">เจ้าหน้าที่</option>
+                                                <option value="user">ผู้ใช้</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row" id="approvedarea">
-                                <div class="col-sm-2">
-                                </div>
-                                <div class="col-sm-10">
-                                    <div class="form-group form-check">
-                                        <input type="checkbox" class="form-check-input" id="approved">
-                                        <label class="form-check-label" for="">ผ่านการตรวจสอบข้อมูลแล้ว</label>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-2 col-form-label">วันที่ลงทะเบียน:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="dt">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" id="approvedarea">
+                                        <div class="col-sm-2">
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="approved">
+                                                <label class="form-check-label" for="">ผ่านการตรวจสอบข้อมูลแล้ว</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="mt-1" id="btnid">
+                                        <button type="button" class="btn btn-success" onclick="checkdata()">
+                                            <i class="bi bi-box-arrow-in-right"></i><span id='n'>&nbsp;บันทึก</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <hr>
-                            <div class="mt-1" id="btnid">
-                                <button type="button" class="btn btn-success" onclick="checkdata()">
-                                    <i class="bi bi-box-arrow-in-right"></i><span id='n'>&nbsp;บันทึก</span>
-                                </button>
-                            </div>
                         </div>
                     </div>
 

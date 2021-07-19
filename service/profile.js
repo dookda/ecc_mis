@@ -61,6 +61,17 @@ app.post("/profile-api/updateprofile", async (req, res) => {
     })
 })
 
+app.post("/profile-api/updateimgprofile", async (req, res) => {
+    const { img, regid } = req.body;
+
+    let sql = `UPDATE register SET img='${img}' WHERE regid='${regid}'`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
+        });
+    });
+})
+
 app.post("/profile-api/userlogin", (req, res) => {
     const { usrname, pass } = req.body;
     const sql = "SELECT usrname, regid, auth, approved FROM register WHERE tel=$1 and pass=$2";

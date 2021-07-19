@@ -60,4 +60,8 @@ let sendData = () => {
     })
 }
 
+let gotoResetpass = () => {
+    window.open('mailto:sakda.homhuan@gmail.com?subject=subject&body=body');
+}
+
 
