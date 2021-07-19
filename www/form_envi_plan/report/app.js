@@ -17,8 +17,8 @@ if (typ == "admin") {
     $("#isadmin").hide()
     $("#isadmin2").hide()
 }
-// const url = "https://eec-onep.online:3700";
-const url = "http://localhost:3700";
+const url = "https://eec-onep.online:3700";
+// const url = "http://localhost:3700";
 // const url = 
 
 let latlng;
@@ -89,14 +89,14 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
-            // { data: 'prj_order' },
+            { data: 'prj_order' },
             // { data: 'prj_cate' },
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    return `${meta.row + 1}`
-                }
-            },
+            // {
+            //     data: '',
+            //     render: (data, type, row, meta) => {
+            //         return `${meta.row + 1}`
+            //     }
+            // },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -104,6 +104,7 @@ let loadTable = () => {
                     // return `${row.prj_name}`
                 }
             },
+            { data: 'prj_group' },
             { data: 'prj_operat' },
             { data: 'budget' },
             // { data: 'proc_stat' },
