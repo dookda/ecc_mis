@@ -12,7 +12,7 @@ let map = L.map('map', {
     zoom: 8
 });
 
-var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+const mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     name: "base",
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -23,7 +23,25 @@ var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y
     zoomOffset: -1
 });
 
+const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    name: "base",
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+    maxZoom: 19
+});
+
 const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    name: "base",
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
+
+const grod = L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}", {
+    name: "base",
+    maxZoom: 20,
+    subdomains: ["mt0", "mt1", "mt2", "mt3"]
+});
+
+const gter = L.tileLayer('https://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
     name: "base",
     maxZoom: 20,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -37,34 +55,34 @@ const lu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
 });
 
 const muni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:a__04_municiple",
+    layers: "eec:a_04_municiple",
     name: "lyr",
     format: "image/png",
     transparent: true,
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     name: "lyr",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     name: "lyr",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     name: "lyr",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
 const pcontrol = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
@@ -90,10 +108,10 @@ const vill = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", 
 
 let lyrs = L.featureGroup().addTo(map)
 
-var baseMap = {
-    "Mapbox": mapbox.addTo(map),
-    "google Hybrid": ghyb
-}
+// var baseMap = {
+//     "Mapbox": mapbox.addTo(map),
+//     "google Hybrid": ghyb
+// }
 
 // var overlayMap = {
 //     "ขอบเขตตำบล": tam.addTo(map),
@@ -131,6 +149,14 @@ let lyr = {
     muni: muni,
     wbody: wbody,
     pcontrol: pcontrol
+}
+
+let base = {
+    mapbox: mapbox.addTo(map),
+    esri: esri,
+    ghyb: ghyb,
+    grod: grod,
+    gter: gter
 }
 
 // L.control.layers(baseMap, overlayMap).addTo(map);
@@ -236,7 +262,8 @@ let loadAqi = async () => {
             pm25: i.pm25,
             so2: i.so2
         }
-        let marker
+
+        let marker;
         if (Number(i.aqi) <= 25) {
             marker = L.marker([Number(i.lat), Number(i.lon)], {
                 icon: iconblue,
@@ -552,10 +579,17 @@ function showFrame(nextPosition) {
 
 let getLayer = async () => {
     await map.eachLayer(i => {
-        if (i.options.name == "lyr") {
+        console.log(i);
+        if (i.options.name == "lyr" || i.options.name == "base") {
             map.removeLayer(i)
         }
     })
+
+    let basemap = $("input[name='basemap']:checked").val();
+    base[`${basemap}`].addTo(map);
+    // if (base[`${i}`]) {
+    //     base[`${baseMap}`].addTo(map);
+    // }
 
     let chk = [];
     await $('input[type=checkbox]:checked').each(function () {
@@ -586,16 +620,18 @@ let getLayer = async () => {
             initialize(apiData, optionKind);
         }
     })
+
+
 }
 
 let eecUrl = "https://eec-onep.online:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
-let rtiUrl = "https://rti2dss.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
+// let rtiUrl = "https://rti2dss.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
 
 $("#luLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
-$("#munLegend").attr("src", eecUrl + "eec:a__04_municiple");
-$("#proLegend").attr("src", rtiUrl + "th:province_4326");
-$("#ampLegend").attr("src", rtiUrl + "th:amphoe_4326");
-$("#tamLegend").attr("src", rtiUrl + "th:tambon_4326");
+$("#munLegend").attr("src", eecUrl + "eec:_04_municiple");
+$("#proLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
+$("#ampLegend").attr("src", eecUrl + "eec:a__02_amphoe_eec");
+$("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#wbodyLegend").attr("src", eecUrl + "eec:a__14_w2_eec");
 
