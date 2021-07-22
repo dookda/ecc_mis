@@ -1,6 +1,6 @@
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.205567,
@@ -48,14 +48,14 @@ const gter = L.tileLayer('https://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}',
 });
 
 const lu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:a__46_lu_eec_59",
+    layers: "eec:a__46_lu_eec_61",
     name: "lyr",
     format: "image/png",
     transparent: true,
 });
 
 const muni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:a_04_municiple",
+    layers: "eec:a__04_municiple",
     name: "lyr",
     format: "image/png",
     transparent: true,
@@ -577,19 +577,13 @@ function showFrame(nextPosition) {
     changeRadarPosition(nextPosition + preloadingDirection, true);
 }
 
-let getLayer = async () => {
+$("input[type=checkbox]").change(async () => {
     await map.eachLayer(i => {
-        console.log(i);
-        if (i.options.name == "lyr" || i.options.name == "base") {
+        // console.log(i);
+        if (i.options.name == "lyr") {
             map.removeLayer(i)
         }
     })
-
-    let basemap = $("input[name='basemap']:checked").val();
-    base[`${basemap}`].addTo(map);
-    // if (base[`${i}`]) {
-    //     base[`${baseMap}`].addTo(map);
-    // }
 
     let chk = [];
     await $('input[type=checkbox]:checked').each(function () {
@@ -597,6 +591,7 @@ let getLayer = async () => {
     });
 
     chk.map(i => {
+        // console.log(i);
         if (lyr[`${i}`]) {
             lyr[`${i}`].addTo(map);
         }
@@ -621,14 +616,25 @@ let getLayer = async () => {
         }
     })
 
+})
 
-}
+$("input[name='basemap']").change(async (r) => {
+    await map.eachLayer(i => {
+        // console.log(i);
+        if (i.options.name == "base") {
+            map.removeLayer(i)
+        }
+    })
+
+    let basemap = $("input[name='basemap']:checked").val();
+    base[`${basemap}`].addTo(map);
+})
 
 let eecUrl = "https://eec-onep.online:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
 // let rtiUrl = "https://rti2dss.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
 
-$("#luLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
-$("#munLegend").attr("src", eecUrl + "eec:_04_municiple");
+$("#luLegend").attr("src", eecUrl + "eec:a__46_lu_eec_61");
+$("#munLegend").attr("src", eecUrl + "eec:a__04_municiple");
 $("#proLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
 $("#ampLegend").attr("src", eecUrl + "eec:a__02_amphoe_eec");
 $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");

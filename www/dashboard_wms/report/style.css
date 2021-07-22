@@ -7,7 +7,22 @@
 }
 
 #map{
-    height: 560px;
+    height: 680px;
+    border-radius: 0.8rem;
+}
+
+.layer{
+  height: 680px;
+}
+
+.scroll{
+  height:400px;
+  overflow-y: scroll;
+}
+
+.scroll-base{
+  height:150px;
+  overflow-y: scroll;
 }
 
 .btn-margin{
@@ -85,3 +100,5 @@
     .sidebar {padding-top: 15px;}
     .sidebar a {font-size: 18px;}
   }
+
+ 
