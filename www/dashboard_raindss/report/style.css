@@ -6,13 +6,21 @@
     margin: 2px 2px 2px 2px;
 }
 
+.f12{
+  font-size: 12px;
+}
+
 #map{
-    height: 680px;
+    height: 440px;
     border-radius: 0.8rem;
 }
 
 .layer{
-  height: 680px;
+  height: 640px;
+}
+
+.hchart{
+  height: 160px;
 }
 
 .scroll{
@@ -21,6 +29,11 @@
 }
 
 .scroll-base{
+  height:120px;
+  overflow-y: scroll;
+}
+
+.scroll-label{
   height:150px;
   overflow-y: scroll;
 }
