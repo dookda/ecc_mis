@@ -63,6 +63,14 @@ const lu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     zIndex: 1
 });
 
+const green = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__52_gr_park",
+    name: "lyr",
+    format: "image/png",
+    transparent: true,
+    zIndex: 1
+});
+
 const muni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__04_municiple",
     name: "lyr",
@@ -106,15 +114,6 @@ const pcontrol = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms
     zIndex: 1
 });
 
-const wbody = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:a__14_w2_eec",
-    name: "lyr",
-    format: "image/png",
-    transparent: true,
-    opacity: 0.7,
-    zIndex: 1
-});
-
 const vill = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__05_village",
     name: "lyr",
@@ -128,16 +127,15 @@ let lyrs = L.featureGroup().addTo(map)
 
 let eecUrl = "https://eec-onep.online:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&legend_options=fontName:Kanit&LAYER=";
 // let rtiUrl = "https://rti2dss.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
+
+$("#greenLegend").attr("src", eecUrl + "eec:a__52_gr_park");
 $("#luLegend").attr("src", eecUrl + "eec:a__46_lu_eec_61");
 $("#munLegend").attr("src", eecUrl + "eec:a__04_municiple");
 $("#proLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
 $("#ampLegend").attr("src", eecUrl + "eec:a__02_amphoe_eec");
 $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
-$("#wbodyLegend").attr("src", eecUrl + "eec:a__14_w2_eec");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
-$("#gwLegend").attr("src", "./img/gw.png");
-$("#radarLegend").attr("src", "./img/radar.png");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 
 
@@ -161,16 +159,17 @@ var lc = L.control.locate({
 }).addTo(map);
 
 // lc.start();
-pro.addTo(map)
+pro.addTo(map);
+green.addTo(map);
 
 let lyr = {
     tam: tam,
     amp: amp,
     pro: pro,
     vill: vill,
+    green: green,
     lu: lu,
     muni: muni,
-    wbody: wbody,
     pcontrol: pcontrol
 }
 
@@ -186,8 +185,7 @@ var yweek = getWeekNumber(new Date());
 
 for (let i = 1; i <= yweek[1]; i++) {
     // add layer chkbox
-    let chk = i == yweek[1] ? "checked" : null;
-    $("#templist").append(`<option value="temp_w${i}">สัปดาห์ที่ ${i}</option>`)
+    i == yweek[1] ? $("#templist").append(`<option value="temp_w${i}" selected>สัปดาห์ที่ ${i}</option>`) : $("#templist").append(`<option value="temp_w${i}">สัปดาห์ที่ ${i}</option>`);
     // add legend
     $("#temp_w" + i + "Legend").attr("src", `${eecUrl}eec:rain_w${i}.tif`);
     // add layer
@@ -199,7 +197,7 @@ for (let i = 1; i <= yweek[1]; i++) {
         opacity: 0.7,
         zIndex: 2
     })
-    // i == yweek[1] ? lyr[`temp_w${i}`].addTo(map) : null;
+    i == yweek[1] ? lyr[`temp_w${i}`].addTo(map) : null;
 }
 
 let base = {
@@ -318,108 +316,6 @@ let loadMeteo = async () => {
     })
 }
 
-var apiData = {};
-var mapFrames = [];
-var lastPastFramePosition = -1;
-var radarLayers = [];
-
-var optionKind = 'radar'; // can be 'radar' or 'satellite'
-
-var optionTileSize = 256; // can be 256 or 512.
-var optionColorScheme = 2; // from 0 to 8. Check the https://rainviewer.com/api/color-schemes.html for additional information
-var optionSmoothData = 1; // 0 - not smooth, 1 - smooth
-var optionSnowColors = 1; // 0 - do not show snow colors, 1 - show snow colors
-
-var animationPosition = 0;
-var animationTimer = false;
-
-var apiRequest = new XMLHttpRequest();
-apiRequest.open("GET", "https://api.rainviewer.com/public/weather-maps.json", true);
-apiRequest.onload = function (e) {
-    // store the API response for re-use purposes in memory
-    apiData = JSON.parse(apiRequest.response);
-    initialize(apiData, optionKind);
-};
-apiRequest.send();
-
-function initialize(api, kind) {
-    // remove all already added tiled layers
-    for (var i in radarLayers) {
-        map.removeLayer(radarLayers[i]);
-    }
-    mapFrames = [];
-    radarLayers = [];
-    animationPosition = 0;
-
-    if (!api) {
-        return;
-    }
-    if (kind == 'satellite' && api.satellite && api.satellite.infrared) {
-        mapFrames = api.satellite.infrared;
-
-        lastPastFramePosition = api.satellite.infrared.length - 1;
-        showFrame(lastPastFramePosition);
-    }
-    else if (api.radar && api.radar.past) {
-        mapFrames = api.radar.past;
-        if (api.radar.nowcast) {
-            mapFrames = mapFrames.concat(api.radar.nowcast);
-        }
-        lastPastFramePosition = api.radar.past.length - 1;
-        showFrame(lastPastFramePosition);
-    }
-}
-
-function addLayer(frame) {
-    if (!radarLayers[frame.path]) {
-        var colorScheme = optionKind == 'satellite' ? 0 : optionColorScheme;
-        var smooth = optionKind == 'satellite' ? 0 : optionSmoothData;
-        var snow = optionKind == 'satellite' ? 0 : optionSnowColors;
-
-        radarLayers[frame.path] = new L.TileLayer(apiData.host + frame.path + '/' + optionTileSize + '/{z}/{x}/{y}/' + colorScheme + '/' + smooth + '_' + snow + '.png', {
-            tileSize: 256,
-            opacity: 0.001,
-            zIndex: frame.time,
-            name: "lyr"
-        });
-    }
-
-    if (!map.hasLayer(radarLayers[frame.path])) {
-        map.addLayer(radarLayers[frame.path]);
-    }
-}
-
-function changeRadarPosition(position, preloadOnly) {
-    while (position >= mapFrames.length) {
-        position -= mapFrames.length;
-    }
-    while (position < 0) {
-        position += mapFrames.length;
-    }
-
-    var currentFrame = mapFrames[animationPosition];
-    var nextFrame = mapFrames[position];
-
-    addLayer(nextFrame);
-
-    if (preloadOnly) {
-        return;
-    }
-
-    animationPosition = position;
-
-    if (radarLayers[currentFrame.path]) {
-        radarLayers[currentFrame.path].setOpacity(0);
-    }
-    radarLayers[nextFrame.path].setOpacity(100);
-}
-
-function showFrame(nextPosition) {
-    var preloadingDirection = nextPosition - animationPosition > 0 ? 1 : -1;
-
-    changeRadarPosition(nextPosition);
-    changeRadarPosition(nextPosition + preloadingDirection, true);
-}
 
 $("#templist").on("change", async (e) => {
     await map.eachLayer(i => {
@@ -427,8 +323,7 @@ $("#templist").on("change", async (e) => {
             map.removeLayer(i)
         }
     })
-    lyr[`${e.target.value}`].addTo(map);
-    // console.log();
+    e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 })
 
 $("input[type=checkbox]").change(async () => {
@@ -442,7 +337,7 @@ $("input[type=checkbox]").change(async () => {
     await $('input[type=checkbox]:checked').each(function () {
         chk.push($(this).val());
     });
-    // console.log(chk);
+
     chk.map(i => {
 
         if (lyr[`${i}`]) {
@@ -453,15 +348,11 @@ $("input[type=checkbox]").change(async () => {
             loadMeteo();
         }
 
-        if (i == "radar") {
-            initialize(apiData, optionKind);
-        }
     })
 })
 
 $("input[name='basemap']").change(async (r) => {
     await map.eachLayer(i => {
-        // console.log(i);
         if (i.options.name == "base") {
             map.removeLayer(i)
         }
@@ -471,7 +362,7 @@ $("input[name='basemap']").change(async (r) => {
     base[`${basemap}`].addTo(map);
 })
 
-$("#hchart").html(`<div style="text-align: center;">คลิ๊กลงบนแผนที่เพื่อดูปริมาณน้ำฝนแต่ละสัปดาห์</div>`)
+$("#hchart").html(`<div style="text-align: center;">คลิ๊กลงบนแผนที่เพื่อดูอุณหภูมิแต่ละสัปดาห์</div>`)
 let hchart = (dat) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("hchart", am4charts.XYChart);
@@ -594,6 +485,39 @@ map.on("click", async (e) => {
             $("#landuse").html("");
         }
     });
-
-
 })
+
+var legend = L.control({ position: "bottomleft" });
+
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        // div.innerHTML += "<h4>Tegnforklaring</h4>";
+        div.innerHTML += '<i style="background: #feef42"></i><span class="kanit">0-25 °c</span><br>';
+        div.innerHTML += '<i style="background: #fecd2e"></i><span class="kanit">25-30 °c</span><br>';
+        div.innerHTML += '<i style="background: #fd9c00"></i><span class="kanit">30-33 °c</span><br>';
+        div.innerHTML += '<i style="background: #fd7602"></i><span class="kanit">33-36 °c</span><br>';
+        div.innerHTML += '<i style="background: #e24900"></i><span class="kanit">36-39 °c</span><br>';
+        div.innerHTML += '<i style="background: #cc2301"></i><span class="kanit">39-42 °c</span><br>';
+        div.innerHTML += '<i style="background: #860200"></i><span class="kanit">42 °c</span><br>';
+        return div;
+    };
+    legend.addTo(map);
+}
+
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button><br> `;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()

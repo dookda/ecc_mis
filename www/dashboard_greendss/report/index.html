@@ -148,6 +148,16 @@
                                         </div>
 
                                         <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="green" id="green"
+                                                checked>
+                                            <label class="form-check-label">
+                                                พื้นที่สีเขียว
+                                            </label>
+                                            <br>
+                                            <img id="greenLegend">
+                                        </div>
+
+                                        <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="lu" id="lu">
                                             <label class="form-check-label">
                                                 การใช้ประโยชน์ที่ดิน
@@ -165,15 +175,6 @@
                                             <img id="wbodyLegend">
                                         </div>
 
-                                        <!-- <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="aqi" id="aqi">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดคุณภาพอากาศ (กรมควบคุมมลพิษ)
-                                            </label>
-                                            <br>
-                                            <img id="aqiLegend" width="30px">
-                                        </div> -->
-
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
                                             <label class="form-check-label">
@@ -183,15 +184,6 @@
                                             <img id="meteoLegend" width="30px">
                                         </div>
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="radar" id="radar"
-                                                checked>
-                                            <label class="form-check-label">
-                                                เรดาห์น้ำฝน
-                                            </label>
-                                            <br>
-                                            <img id="radarLegend" width="30px">
-                                        </div>
 
                                     </div>
 
@@ -242,7 +234,9 @@
                                                 <div class="scroll-label">
                                                     เลือกสัปดาห์:
                                                     <p></p>
-                                                    <select class="form-control" id="templist"> </select>
+                                                    <select class="form-control" id="templist">
+                                                        <option value="">ไม่เลือก</option>
+                                                    </select>
                                                     <!-- <hr> -->
                                                 </div>
                                             </div>
