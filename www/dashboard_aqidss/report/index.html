@@ -90,14 +90,6 @@
                                 <div class="card-body layer">
                                     <label><b>ชั้นข้อมูล</b></label>
                                     <div class="scroll">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
-                                            </label>
-                                            <br>
-                                            <img id="meteoLegend" width="30px">
-                                        </div>
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="pro" id="lyr_prov"
@@ -156,16 +148,6 @@
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="green" id="green"
-                                                checked>
-                                            <label class="form-check-label">
-                                                พื้นที่สีเขียว
-                                            </label>
-                                            <br>
-                                            <img id="greenLegend">
-                                        </div>
-
-                                        <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="lu" id="lu">
                                             <label class="form-check-label">
                                                 การใช้ประโยชน์ที่ดิน
@@ -173,8 +155,6 @@
                                             <br>
                                             <img id="luLegend">
                                         </div>
-
-
                                     </div>
 
                                     <hr>
@@ -184,66 +164,180 @@
                                             <input class="form-check-input" type="radio" name="basemap" value="mapbox"
                                                 checked>
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน mapbox
+                                                แผนที่ถนน Mapbox
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="esri">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน esri
+                                                แผนที่ถนน Esri
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="grod">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน google maps
+                                                แผนที่ถนน Google maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="ghyb">
                                             <label class="form-check-label" for="">
-                                                แผนที่ผสม google maps
+                                                แผนที่ผสม Google maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="gter">
                                             <label class="form-check-label" for="">
-                                                แผนที่ภูมิประเทศ google maps
+                                                แผนที่ภูมิประเทศ Google maps
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-body legend">
+                                    <label for="">สัญลักษณ์</label>
+                                    <div class="scroll-legend">
+                                        <label for="">AQI</label><br>
+                                        <img id="aqiLegend"><br>
+                                        <label for="">PM25</label><br>
+                                        <img id="pm25Legend"><br>
+                                        <label for="">PM10</label><br>
+                                        <img id="pm10Legend"><br>
+                                        <label for="">CO</label><br>
+                                        <img id="coLegend"><br>
+                                        <label for="">O3</label><br>
+                                        <img id="o3Legend"><br>
+                                        <label for="">NO2</label><br>
+                                        <img id="no2Legend"><br>
+                                        <label for="">SO2</label><br>
+                                        <img id="so2Legend">
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-9">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="hchart ">
-                                                <div class="scroll-label">
-                                                    เลือกสัปดาห์ที่ต้องการแสดงข้อมูลอุณหภูมิลงบนแผนที่:
-                                                    <p></p>
-                                                    <select class="form-control" id="templist">
-                                                        <option value="">ไม่เลือก</option>
-                                                    </select>
-                                                    <!-- <hr> -->
-                                                </div>
+                            <h3>ระบบสนับสนุนการตัดสินใจด้านมลพิษทางอากาศ</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="hselect ">
+                                        เลือกวันที่ต้องการแสดงข้อมูลบนแผนที่
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label for="">AQI:</label>
+                                                <select class="form-control" id="aqilist">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <label for="">PM25:</label>
+                                                <select class="form-control" id="pm25list">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <label for="">PM10:</label>
+                                                <select class="form-control" id="pm10list">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <label for="">CO:</label>
+                                                <select class="form-control" id="colist">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <label for="">O3:</label>
+                                                <select class="form-control" id="o3list">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm">
+                                                <label for="">NO2:</label>
+                                                <select class="form-control" id="no2list">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm">
+                                                <label for="">SO2:</label>
+                                                <select class="form-control" id="so2list">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="hchart" id="hchart"></div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="card">
                                 <div id="map"></div>
                             </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <span id="announce"></span> <span id="latlon"></span> <span id="hloc"></span> <span
+                                        id="landuse"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="aqichart"></div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="pm25chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="pm10chart"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="cochart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="o3chart"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="so2chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="hchart" id="no2chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
