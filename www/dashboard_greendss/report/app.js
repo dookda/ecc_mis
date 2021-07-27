@@ -411,14 +411,14 @@ let hchart = (dat) => {
 
     bullet.adapter.add("fill", function (fill, target) {
         if (target.dataItem.valueY > 36) {
-            return am4core.color("#FF0000");
+            return am4core.color("#c94d00");
         }
         return fill;
     })
     var range = valueAxis.createSeriesRange(series);
     range.value = 38;
     range.endValue = 1000;
-    range.contents.stroke = am4core.color("#FF0000");
+    range.contents.stroke = am4core.color("#c94d00");
     range.contents.fill = range.contents.stroke;
 
     // // Add scrollbar
