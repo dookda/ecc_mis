@@ -55,6 +55,14 @@ const rainanual = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wm
     zIndex: 2
 });
 
+const ecobound = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__82_landscape",
+    name: "lyr",
+    format: "image/png",
+    transparent: true,
+    zIndex: 2
+});
+
 const lu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__46_lu_eec_61",
     name: "lyr",
@@ -139,8 +147,8 @@ $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#gwLegend").attr("src", "./img/gw.png");
 $("#radarLegend").attr("src", "./img/radar.png");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
-
 $("#rainanualLegend").attr("src", eecUrl + "eec:rain_anual.tif");
+$("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
 
 
 function onLocationFound(e) {
@@ -161,9 +169,7 @@ var lc = L.control.locate({
         enableHighAccuracy: true,
     }
 }).addTo(map);
-
 // lc.start();
-pro.addTo(map)
 
 let lyr = {
     tam: tam,
@@ -174,8 +180,12 @@ let lyr = {
     muni: muni,
     wbody: wbody,
     pcontrol: pcontrol,
-    rainanual: rainanual
+    rainanual: rainanual,
+    ecobound: ecobound
 }
+
+pro.addTo(map);
+ecobound.addTo(map);
 
 const getWeekNumber = (d) => {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -587,15 +597,16 @@ let hchart = (dat) => {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-        if (target.dataItem.valueY < 0) {
-            return am4core.color("#FF0000");
+        // console.log(target.dataItem.valueY);
+        if (target.dataItem.valueY > 100) {
+            return am4core.color("#0033c9");
         }
         return fill;
     })
     var range = valueAxis.createSeriesRange(series);
-    range.value = 0;
-    range.endValue = -1000;
-    range.contents.stroke = am4core.color("#FF0000");
+    range.value = 100;
+    range.endValue = 1000;
+    range.contents.stroke = am4core.color("#0033c9");
     range.contents.fill = range.contents.stroke;
 
     // // Add scrollbar

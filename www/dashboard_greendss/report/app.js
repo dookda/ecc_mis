@@ -410,14 +410,14 @@ let hchart = (dat) => {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-        if (target.dataItem.valueY < 0) {
+        if (target.dataItem.valueY > 38) {
             return am4core.color("#FF0000");
         }
         return fill;
     })
     var range = valueAxis.createSeriesRange(series);
-    range.value = 0;
-    range.endValue = -1000;
+    range.value = 38;
+    range.endValue = 1000;
     range.contents.stroke = am4core.color("#FF0000");
     range.contents.fill = range.contents.stroke;
 

@@ -59,11 +59,11 @@
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
-                    <li><a href="./../../form_register/profile/index.html"><i
+                    <!-- <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
                     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li>
+                            ออกจากระบบ</a></li> -->
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -91,6 +91,23 @@
                                     <label><b>ชั้นข้อมูล</b></label>
                                     <div class="scroll">
 
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
+                                            <label class="form-check-label">
+                                                จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                            </label>
+                                            <br>
+                                            <img id="meteoLegend" width="30px">
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="gwater" id="gwater">
+                                            <label class="form-check-label">
+                                                จุดตรวจวัดคุณภาพน้ำบาดาล
+                                            </label>
+                                            <br>
+                                            <img id="gwLegend" width="30px">
+                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="pro" id="lyr_prov"
                                                 checked>
@@ -175,31 +192,13 @@
                                         </div> -->
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
+                                            <input class="form-check-input" type="checkbox" value="ecobound"
+                                                id="ecobound" checked>
                                             <label class="form-check-label">
-                                                จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                                ขอบเขตภูมินิเวศ
                                             </label>
                                             <br>
-                                            <img id="meteoLegend" width="30px">
-                                        </div>
-
-                                        <!-- <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="hotspot"
-                                                id="hotspot">
-                                            <label class="form-check-label">
-                                                จุดความร้อน
-                                            </label>
-                                            <br>
-                                            <img id="hpLegend" width="30px">
-                                        </div> -->
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="gwater" id="gwater">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดคุณภาพน้ำบาดาล
-                                            </label>
-                                            <br>
-                                            <img id="gwLegend" width="30px">
+                                            <img id="ecoboundLegend">
                                         </div>
 
                                         <div class="form-check">
@@ -219,7 +218,7 @@
                                                 ปริมาณน้ำฝนสัปดาห์แรกถึงปัจจุบัน
                                             </label>
                                             <br>
-                                            <img id="rainanualLegend" width="80px">
+                                            <img id="rainanualLegend" width="85px">
                                         </div>
 
                                         <div id="rain"></div>
