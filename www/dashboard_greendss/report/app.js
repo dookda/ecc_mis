@@ -1,6 +1,6 @@
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.205567,
@@ -163,19 +163,21 @@ map.pm.addControls({
 
     drawRectangle: true,
     drawPolygon: true,
-    removalMode: true,
-    editControls: true
+    removalMode: false,
+    editControls: false
 });
 map.pm.toggleControls()
 
-let geom = [];
+let geom;
 map.on('pm:create', e => {
     e.layer.options.name = "da";
     geom = e.layer.toGeoJSON();
     var polygon = turf.polygon(geom.geometry.coordinates);
     var area = turf.area(polygon);
 
-    $("#arealist").append(` <li>${area}</li>`);
+    tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
+
+    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2)}</li>`);
 
     e.layer.on('pm:edit', function (x) {
         e.layer.options.name2 = "da";
