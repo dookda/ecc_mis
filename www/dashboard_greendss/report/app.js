@@ -410,13 +410,13 @@ let hchart = (dat) => {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-        if (target.dataItem.valueY > 36) {
+        if (target.dataItem.valueY > 37) {
             return am4core.color("#c94d00");
         }
         return fill;
     })
     var range = valueAxis.createSeriesRange(series);
-    range.value = 38;
+    range.value = 37;
     range.endValue = 1000;
     range.contents.stroke = am4core.color("#c94d00");
     range.contents.fill = range.contents.stroke;
@@ -427,6 +427,7 @@ let hchart = (dat) => {
     // chart.scrollbarX = scrollbarX;
 
     chart.cursor = new am4charts.XYCursor();
+    $("#remark").html(`* สีแดงหมายถึงอุณหภูมิเกิน 37 °C`);
 }
 
 let tempLyr = 'temp_w1.tif';
