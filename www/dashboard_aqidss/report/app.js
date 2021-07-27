@@ -277,7 +277,21 @@ let getDetail = (e) => {
     location.href = "./../detail/index.html";
 }
 
+let aqichk = false;
 $("#aqilist").on("change", async (e) => {
+    if (e.target.value) {
+        aqichk = true;
+        $("#aqidiv").append(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="hchart" id="aqichart"></div>
+                </div>
+            </div>`);
+    } else {
+        aqichk = false;
+        $("#aqidiv").empty()
+    }
+
     await map.eachLayer(i => {
         if (i.options.name == "aqilyr") {
             map.removeLayer(i)
@@ -287,7 +301,20 @@ $("#aqilist").on("change", async (e) => {
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
 
+let pm25chk = false;
 $("#pm25list").on("change", async (e) => {
+    if (e.target.value) {
+        pm25chk = true;
+        $("#pm25div").append(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="hchart" id="pm25chart"></div>
+                </div>
+            </div>`);
+    } else {
+        pm25chk = false;
+        $("#pm25div").empty()
+    }
     await map.eachLayer(i => {
         if (i.options.name == "pm25lyr") {
             map.removeLayer(i)
@@ -296,7 +323,20 @@ $("#pm25list").on("change", async (e) => {
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
 
+let pm10chk = false;
 $("#pm10list").on("change", async (e) => {
+    if (e.target.value) {
+        pm10chk = true;
+        $("#pm10div").append(`
+        <div class="card">
+            <div class="card-body">
+                <div class="hchart" id="pm10chart"></div>
+            </div>
+        </div>`);
+    } else {
+        pm10chk = false;
+        $("#pm10div").empty()
+    }
     await map.eachLayer(i => {
         if (i.options.name == "pm10lyr") {
             map.removeLayer(i)
@@ -305,7 +345,20 @@ $("#pm10list").on("change", async (e) => {
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
 
+let cochk = false;
 $("#colist").on("change", async (e) => {
+    if (e.target.value) {
+        cochk = true;
+        $("#codiv").append(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="hchart" id="cochart"></div>
+                </div>
+            </div>`);
+    } else {
+        cochk = false;
+        $("#codiv").empty()
+    }
     await map.eachLayer(i => {
         if (i.options.name == "colyr") {
             map.removeLayer(i)
@@ -313,7 +366,21 @@ $("#colist").on("change", async (e) => {
     })
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
+
+let o3chk = false;
 $("#o3list").on("change", async (e) => {
+    if (e.target.value) {
+        o3chk = true;
+        $("#o3div").append(`
+        <div class="card">
+            <div class="card-body">
+                <div class="hchart" id="o3chart"></div>
+            </div>
+        </div>`);
+    } else {
+        o3chk = false;
+        $("#o3div").empty()
+    }
     await map.eachLayer(i => {
         if (i.options.name == "o3lyr") {
             map.removeLayer(i)
@@ -321,17 +388,45 @@ $("#o3list").on("change", async (e) => {
     })
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
-$("#no2list").on("change", async (e) => {
+
+let so2chk = false;
+$("#so2list").on("change", async (e) => {
+    if (e.target.value) {
+        so2chk = true;
+        $("#so2div").append(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="hchart" id="so2chart"></div>
+                </div>
+            </div>`);
+    } else {
+        so2chk = false;
+        $("#so2div").empty()
+    }
     await map.eachLayer(i => {
-        if (i.options.name == "no2lyr") {
+        if (i.options.name == "so2lyr") {
             map.removeLayer(i)
         }
     })
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 });
-$("#so2list").on("change", async (e) => {
+
+let no2chk = false;
+$("#no2list").on("change", async (e) => {
+    if (e.target.value) {
+        no2chk = true;
+        $("#no2div").append(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="hchart" id="no2chart"></div>
+                </div>
+            </div>`);
+    } else {
+        no2chk = false;
+        $("#no2div").empty()
+    }
     await map.eachLayer(i => {
-        if (i.options.name == "so2lyr") {
+        if (i.options.name == "no2lyr") {
             map.removeLayer(i)
         }
     })
@@ -445,12 +540,8 @@ for (let i = 2; i <= dd; i++) {
     lyrLen = i;
 }
 
-$("#weeknow").html(`สัปดาห์ปัจจุบัน: ${dd}`);
-map.on("click", async (e) => {
-    var pnt = map.latLngToContainerPoint(e.latlng);
-    var size = map.getSize();
-    var bbox = map.getBounds().toBBoxString();
-
+let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param) => {
+    // $("#aqidiv").show();
     let aqiUrl = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
         "&QUERY_LAYERS=" + aqiLyr +
@@ -477,164 +568,23 @@ map.on("click", async (e) => {
             })
             wk++;
         })
-        hchart(dat, "aqichart", "aqi")
+        hchart(dat, div, param)
     });
+}
 
-    let pm25Url = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + pm25Lyr +
-        "&LAYERS=" + pm25Lyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
+$("#weeknow").html(`สัปดาห์ปัจจุบัน: ${dd}`);
+map.on("click", async (e) => {
+    var pnt = map.latLngToContainerPoint(e.latlng);
+    var size = map.getSize();
+    var bbox = map.getBounds().toBBoxString();
 
-    await axios.get(pm25Url).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "pm25chart", "pm25 (µg./m3)")
-    });
-
-    let pm10Url = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + pm10Lyr +
-        "&LAYERS=" + pm10Lyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(pm10Url).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "pm10chart", "pm10 (µg./m3)")
-    });
-
-    let coUrl = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + coLyr +
-        "&LAYERS=" + coLyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(coUrl).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "cochart", "CO (ppm)")
-    });
-
-    let o3Url = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + o3Lyr +
-        "&LAYERS=" + o3Lyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(o3Url).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "o3chart", "O3 (ppb)")
-    });
-
-    let so2Url = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + so2Lyr +
-        "&LAYERS=" + so2Lyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(so2Url).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "so2chart", "SO2 (ppb)")
-    });
-
-    let no2Url = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=" + no2Lyr +
-        "&LAYERS=" + no2Lyr +
-        "&Feature_count=" + lyrLen +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(no2Url).then(r => {
-        let dat = [];
-        let wk = 1;
-        r.data.features.map(i => {
-            dat.push({
-                "week": wk,
-                "value": i.properties.GRAY_INDEX
-            })
-            wk++;
-        })
-        hchart(dat, "no2chart", "NO2 (ppb)")
-    });
+    aqichk ? getFeatureInfo(aqiLyr, lyrLen, pnt, size, bbox, "aqichart", "AQI") : null;
+    pm25chk ? getFeatureInfo(pm25Lyr, lyrLen, pnt, size, bbox, "pm25chart", "pm25 (µg./m3)") : null;
+    pm10chk ? getFeatureInfo(pm10Lyr, lyrLen, pnt, size, bbox, "pm10chart", "pm10 (µg./m3)") : null;
+    cochk ? getFeatureInfo(coLyr, lyrLen, pnt, size, bbox, "cochart", "CO (ppm)") : null;
+    o3chk ? getFeatureInfo(o3Lyr, lyrLen, pnt, size, bbox, "o3chart", "O3 (ppb)") : null;
+    so2chk ? getFeatureInfo(so2Lyr, lyrLen, pnt, size, bbox, "so2chart", "SO2 (ppb)") : null;
+    no2chk ? getFeatureInfo(no2Lyr, lyrLen, pnt, size, bbox, "no2chart", "NO2 (ppb)") : null;
 
     // let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
     //     "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
