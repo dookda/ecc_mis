@@ -47,8 +47,8 @@ const gter = L.tileLayer('https://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tempanual = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:rain_anual.tif",
+const ecobound = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__82_landscape",
     name: "lyr",
     format: "image/png",
     transparent: true,
@@ -129,7 +129,7 @@ $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
-
+$("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
 
 $("#aqiLegend").attr("src", eecUrl + "eec:aqi_v_pcd_aqi_d1.tif");
 $("#pm25Legend").attr("src", eecUrl + "eec:pm25_v_pcd_aqi_d1.tif");
@@ -157,9 +157,7 @@ var lc = L.control.locate({
         enableHighAccuracy: true,
     }
 }).addTo(map);
-
 // lc.start();
-pro.addTo(map);
 
 let lyr = {
     tam: tam,
@@ -168,8 +166,12 @@ let lyr = {
     vill: vill,
     lu: lu,
     muni: muni,
-    pcontrol: pcontrol
+    pcontrol: pcontrol,
+    ecobound: ecobound
 }
+
+pro.addTo(map);
+ecobound.addTo(map);
 
 let formatDate = (a) => {
     let d = new Date();
@@ -465,7 +467,7 @@ $("input[name='basemap']").change(async (r) => {
 })
 
 $("#hchart").html(`<div style="text-align: center;">คลิ๊กลงบนแผนที่เพื่อดูอุณหภูมิแต่ละสัปดาห์</div>`)
-let hchart = (dat, div, param) => {
+let hchart = (dat, div, param, std) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
     chart.paddingRight = 20;
@@ -501,11 +503,12 @@ let hchart = (dat, div, param) => {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-        if (target.dataItem.valueY < 0) {
+        if (target.dataItem.valueY > std) {
             return am4core.color("#FF0000");
         }
         return fill;
     })
+
     var range = valueAxis.createSeriesRange(series);
     range.value = 0;
     range.endValue = -1000;
@@ -540,7 +543,7 @@ for (let i = 2; i <= dd; i++) {
     lyrLen = i;
 }
 
-let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param) => {
+let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param, std) => {
     // $("#aqidiv").show();
     let aqiUrl = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -568,23 +571,22 @@ let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param) => {
             })
             wk++;
         })
-        hchart(dat, div, param)
+        hchart(dat, div, param, std)
     });
 }
 
-$("#weeknow").html(`สัปดาห์ปัจจุบัน: ${dd}`);
 map.on("click", async (e) => {
     var pnt = map.latLngToContainerPoint(e.latlng);
     var size = map.getSize();
     var bbox = map.getBounds().toBBoxString();
 
-    aqichk ? getFeatureInfo(aqiLyr, lyrLen, pnt, size, bbox, "aqichart", "AQI") : null;
-    pm25chk ? getFeatureInfo(pm25Lyr, lyrLen, pnt, size, bbox, "pm25chart", "pm25 (µg./m3)") : null;
-    pm10chk ? getFeatureInfo(pm10Lyr, lyrLen, pnt, size, bbox, "pm10chart", "pm10 (µg./m3)") : null;
-    cochk ? getFeatureInfo(coLyr, lyrLen, pnt, size, bbox, "cochart", "CO (ppm)") : null;
-    o3chk ? getFeatureInfo(o3Lyr, lyrLen, pnt, size, bbox, "o3chart", "O3 (ppb)") : null;
-    so2chk ? getFeatureInfo(so2Lyr, lyrLen, pnt, size, bbox, "so2chart", "SO2 (ppb)") : null;
-    no2chk ? getFeatureInfo(no2Lyr, lyrLen, pnt, size, bbox, "no2chart", "NO2 (ppb)") : null;
+    aqichk ? getFeatureInfo(aqiLyr, lyrLen, pnt, size, bbox, "aqichart", "AQI", 50) : null;
+    pm25chk ? getFeatureInfo(pm25Lyr, lyrLen, pnt, size, bbox, "pm25chart", "pm25 (µg./m3)", 37) : null;
+    pm10chk ? getFeatureInfo(pm10Lyr, lyrLen, pnt, size, bbox, "pm10chart", "pm10 (µg./m3)", 80) : null;
+    cochk ? getFeatureInfo(coLyr, lyrLen, pnt, size, bbox, "cochart", "CO (ppm)", 50) : null;
+    o3chk ? getFeatureInfo(o3Lyr, lyrLen, pnt, size, bbox, "o3chart", "O3 (ppb)", 6.4) : null;
+    so2chk ? getFeatureInfo(so2Lyr, lyrLen, pnt, size, bbox, "so2chart", "SO2 (ppb)", 106) : null;
+    no2chk ? getFeatureInfo(no2Lyr, lyrLen, pnt, size, bbox, "no2chart", "NO2 (ppb)", 200) : null;
 
     // let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
     //     "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -621,5 +623,5 @@ map.on("click", async (e) => {
             lon: ${(e.latlng.lng).toFixed(2)}`);
 });
 
-$("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลคุณภาพอากาศ`)
+$("#announce").html(`เลือกชั้นข้อมูลคุณภาพอากาศแล้วคลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลคุณภาพอากาศย้อนหลัง 14 วัน`)
 
