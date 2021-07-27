@@ -1,6 +1,6 @@
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.205567,
@@ -146,6 +146,69 @@ $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 $("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
+
+
+var toggle = true;
+$("#stopEditBtn").attr('disabled', true);
+map.pm.addControls({
+    position: 'topright',
+    drawPolyline: false,
+    drawMarker: false,
+    drawCircle: false,
+    drawRectangle: true,
+    drawCircleMarker: false,
+    cutPolygon: false,
+    rotateMode: false,
+    dragMode: false,
+
+    drawRectangle: true,
+    drawPolygon: true,
+    removalMode: true,
+    editControls: true
+});
+map.pm.toggleControls()
+
+let geom = [];
+map.on('pm:create', e => {
+    e.layer.options.name = "da";
+    geom = e.layer.toGeoJSON();
+    var polygon = turf.polygon(geom.geometry.coordinates);
+    var area = turf.area(polygon);
+
+    $("#arealist").append(` <li>${area}</li>`);
+
+    e.layer.on('pm:edit', function (x) {
+        e.layer.options.name2 = "da";
+        console.log('edit', x)
+    });
+});
+
+let calArea = () => {
+    toggle = false;
+    $("#hloc").html("");
+    $("#landuse").html("");
+    $("#latlon");
+    $("#startEditBtn").attr('disabled', true);
+    $("#stopEditBtn").attr('disabled', false);
+
+    map.pm.toggleControls()
+}
+
+let stopEdit = () => {
+    toggle = true;
+    $("#startEditBtn").attr('disabled', false);
+    $("#stopEditBtn").attr('disabled', true);
+    map.pm.toggleControls()
+    $("#arealist").empty();
+
+
+    map.eachLayer((lyr) => {
+        if (lyr.options.name == 'da') {
+            console.log(lyr.options.name);
+            map.removeLayer(lyr);
+        }
+    });
+}
 
 
 function onLocationFound(e) {
@@ -438,7 +501,10 @@ for (let i = 2; i <= yweek[1]; i++) {
 }
 
 $("#weeknow").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`);
-map.on("click", async (e) => {
+$("#hloc").hide();
+$("#landuse").hide();
+$("#latlon").hide();
+let getFeatureInfo = async (e) => {
     var pnt = map.latLngToContainerPoint(e.latlng);
     var size = map.getSize()
     var bbox = map.getBounds().toBBoxString()
@@ -469,38 +535,42 @@ map.on("click", async (e) => {
         hchart(dat)
     })
 
-    // let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-    //     "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-    //     "&QUERY_LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-    //     "&LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-    //     "&Feature_count=3" +
-    //     "&INFO_FORMAT=application/json" +
-    //     "&X=" + pnt.x +
-    //     "&Y=" + pnt.y +
-    //     "&SRS=EPSG:4326" +
-    //     "&WIDTH=" + size.x +
-    //     "&HEIGHT=" + size.y +
-    //     "&BBOX=" + bbox;
+    // console.log(e.latlng);
+    await axios.post(url + "/eec-api/get-landuse-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#landuse").html(`การใช้ประโยชน์: <span class="badge bg-warning" style="font-size:14px;">${r.data.data[0].lu_des_th}</span> จำนวน: <span class="badge bg-warning" style="font-size:14px;">${(r.data.data[0].area / 1600).toFixed(2)} </span> ไร่`)
+            $("#landuse").show();
+        } else {
+            $("#landuse").html("");
+            $("#landuse").hide();
+        }
+    })
 
-    // await axios.get(urlฺBound).then(r => {
-    //     // console.log(r.data.features.length);
-
-
-    //     if (r.data.features.length > 0) {
-    //         $("#hloc").html(`${r.data.features[0].properties.tam_nam_t} 
-    //             ${r.data.features[0].properties.amphoe_t}
-    //             ${r.data.features[0].properties.prov_nam_t}`);
-    //         $("#landuse").html(`การใช้ประโยชน์ <span class="badge bg-success">${r.data.features[1].properties.lu_des_th}</span>`)
-    //     } else {
-    //         $("#hloc").html("");
-    //         $("#landuse").html("");
-    //     }
-    // });
+    await axios.post(url + "/eec-api/get-tam-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#hloc").html(`${r.data.data[0].tam_nam_t} 
+                        ${r.data.data[0].amphoe_t}
+                        ${r.data.data[0].prov_nam_t}<br>`);
+            $("#hloc").show();
+        } else {
+            $("#hloc").html("");
+            $("#hloc").hide();
+        }
+    })
 
     $("#announce").hide()
     $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-            lon: ${(e.latlng.lng).toFixed(2)}`);
-});
+            lon: ${(e.latlng.lng).toFixed(2)}<br>`);
+    $("#latlon").show();
+}
+
+let selectAction = (e) => {
+    toggle ? getFeatureInfo(e) : null;
+}
+
+map.on("click", (e) => selectAction(e));
 
 $("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลอุณหภูมิรายสัปดาห์`)
 

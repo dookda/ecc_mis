@@ -4,6 +4,7 @@ const con = require("./db");
 const eec = con.eec;
 const dat = con.dat;
 const th = con.th;
+const geo = con.geo;
 
 app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
     const lyr = req.params.lyr;
@@ -273,5 +274,50 @@ app.get("/eec-api/get-th-onetam/:tamcode", (req, res) => {
     });
 })
 
+app.post("/eec-api/get-landuse-info", (req, res) => {
+    const { lat, lon } = req.body;
+    const sql = `SELECT lu_des_th,st_area(geom) AS area
+                FROM _46_lu_eec_61  a
+                WHERE ST_Within(ST_GeomFromText('POINT(${lon} ${lat})', 4326), 
+                     ST_TransForm(a.geom, 4326)) = true`;
+    geo.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.post("/eec-api/get-tam-info", (req, res) => {
+    const { lat, lon } = req.body;
+    const sql = `SELECT tam_nam_t, amphoe_t, prov_nam_t 
+                FROM _03_tambon_eec a
+                WHERE ST_Within(ST_GeomFromText('POINT(${lon} ${lat})', 4326), 
+                     ST_TransForm(a.geom, 4326)) = true`;
+    geo.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
+app.post("/eec-api/get-geomarea", async (req, res) => {
+    const { geom } = req.body;
+    let g = [];
+    await geom.map(i => {
+        const sql = `SELECT ST_Area(ST_Transform(ST_GeomFromGeoJSON('${JSON.stringify(i.geometry)}'), 32647)) As area`;
+        geo.query(sql).then(r => {
+            // console.log(r.rows[0]);
+            g.push(r.rows[0].area);
+        })
+    })
+
+    console.log(g);
+    // const sql = `SELECT ST_Area(ST_Transform(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'), 32647)) As area`;
+    // geo.query(sql).then((r) => {
+    //     res.status(200).json({
+    //         data: r.rows
+    //     });
+    // });
+})
 
 module.exports = app;
