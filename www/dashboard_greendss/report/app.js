@@ -55,6 +55,14 @@ const tempanual = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wm
     zIndex: 2
 });
 
+const ecobound = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__82_landscape",
+    name: "lyr",
+    format: "image/png",
+    transparent: true,
+    zIndex: 2
+});
+
 const lu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__46_lu_eec_61",
     name: "lyr",
@@ -137,6 +145,7 @@ $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
+$("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
 
 
 function onLocationFound(e) {
@@ -157,10 +166,7 @@ var lc = L.control.locate({
         enableHighAccuracy: true,
     }
 }).addTo(map);
-
 // lc.start();
-pro.addTo(map);
-green.addTo(map);
 
 let lyr = {
     tam: tam,
@@ -170,8 +176,13 @@ let lyr = {
     green: green,
     lu: lu,
     muni: muni,
-    pcontrol: pcontrol
+    pcontrol: pcontrol,
+    ecobound: ecobound
 }
+
+pro.addTo(map);
+ecobound.addTo(map);
+green.addTo(map);
 
 const getWeekNumber = (d) => {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -457,35 +468,40 @@ map.on("click", async (e) => {
         hchart(dat)
     })
 
-    let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-        "&LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-        "&Feature_count=3" +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
+    // let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
+    //     "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
+    //     "&QUERY_LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
+    //     "&LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
+    //     "&Feature_count=3" +
+    //     "&INFO_FORMAT=application/json" +
+    //     "&X=" + pnt.x +
+    //     "&Y=" + pnt.y +
+    //     "&SRS=EPSG:4326" +
+    //     "&WIDTH=" + size.x +
+    //     "&HEIGHT=" + size.y +
+    //     "&BBOX=" + bbox;
 
-    await axios.get(urlฺBound).then(r => {
-        // console.log(r.data.features.length);
-        $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
+    // await axios.get(urlฺBound).then(r => {
+    //     // console.log(r.data.features.length);
+
+
+    //     if (r.data.features.length > 0) {
+    //         $("#hloc").html(`${r.data.features[0].properties.tam_nam_t} 
+    //             ${r.data.features[0].properties.amphoe_t}
+    //             ${r.data.features[0].properties.prov_nam_t}`);
+    //         $("#landuse").html(`การใช้ประโยชน์ <span class="badge bg-success">${r.data.features[1].properties.lu_des_th}</span>`)
+    //     } else {
+    //         $("#hloc").html("");
+    //         $("#landuse").html("");
+    //     }
+    // });
+
+    $("#announce").hide()
+    $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
             lon: ${(e.latlng.lng).toFixed(2)}`);
+});
 
-        if (r.data.features.length > 0) {
-            $("#hloc").html(`${r.data.features[0].properties.tam_nam_t} 
-                ${r.data.features[0].properties.amphoe_t}
-                ${r.data.features[0].properties.prov_nam_t}`);
-            $("#landuse").html(`การใช้ประโยชน์ <span class="badge bg-success">${r.data.features[1].properties.lu_des_th}</span>`)
-        } else {
-            $("#hloc").html("");
-            $("#landuse").html("");
-        }
-    });
-})
+$("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลอุณหภูมิรายสัปดาห์`)
 
 var legend = L.control({ position: "bottomleft" });
 

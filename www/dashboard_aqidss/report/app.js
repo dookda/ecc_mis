@@ -186,7 +186,6 @@ let formatDate = (a) => {
     return [day, month, year].join('-');
 }
 
-
 const dd = 14;
 
 for (let i = 1; i <= dd; i++) {

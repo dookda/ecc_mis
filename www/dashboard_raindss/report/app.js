@@ -717,4 +717,10 @@ map.on("click", async (e) => {
         }
 
     })
-})
+    $("#announce").hide()
+    console.log(e);
+    $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
+            lon: ${(e.latlng.lng).toFixed(2)}`);
+});
+
+$("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
