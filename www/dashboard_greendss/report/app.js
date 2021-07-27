@@ -410,7 +410,7 @@ let hchart = (dat) => {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-        if (target.dataItem.valueY > 38) {
+        if (target.dataItem.valueY > 36) {
             return am4core.color("#FF0000");
         }
         return fill;
