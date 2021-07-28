@@ -25,6 +25,9 @@
 }
 
 .hchart{
+  height: 280px;
+}
+#hchart{
   height: 180px;
 }
 

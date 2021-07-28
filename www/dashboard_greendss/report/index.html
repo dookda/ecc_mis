@@ -230,38 +230,34 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="card">
-                                        <div class="card-body">
-                                            <div class="hchart ">
-                                                <div class="scroll-label">
-                                                    เลือกสัปดาห์ที่ต้องการแสดงข้อมูลอุณหภูมิลงบนแผนที่:
-                                                    <p></p>
-                                                    <select class="form-control" id="templist">
-                                                        <option value="">ไม่เลือก</option>
-                                                    </select>
-                                                    <!-- <hr> -->
-                                                </div>
+                                        <div class="card-body hchart">
+                                            <div class="scroll-label">
+                                                เลือกสัปดาห์ที่ต้องการแสดงข้อมูลอุณหภูมิลงบนแผนที่:
+                                                <p></p>
+                                                <select class="form-control" id="templist">
+                                                    <option value="">ไม่เลือก</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="card">
-                                        <div class="card-body">
-                                            <div class="hchart">
-                                                <div id="hchart"></div>
-                                                <span id="remark" style="font-size: 12px;"></span>
-                                            </div>
+                                        <div class="card-body hchart"">
+                                           <span id=" announce"></span>
+                                            <span id="latlon"></span>
+                                            <span id="hloc"></span><br>
+                                            <span id="landuse"></span><br>
+
+                                            <span id="remark" style="font-size: 12px;"></span>
+                                            <div id="hchart"></div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card">
                                 <div class="card-body">
-                                    <span id="announce"></span>
-                                    <span id="latlon"></span>
-                                    <span id="hloc"></span>
-                                    <span id="landuse"></span>
-                                    <hr>
                                     คำนวณอุณภูมิจากพื้นที่สีเขียว โดยวาดลงบนแผนที่<br>
                                     <button class="btn btn-success m" id="startEditBtn"
                                         onclick="calArea()">เริ่ม</button>

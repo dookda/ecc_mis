@@ -212,7 +212,6 @@ let stopEdit = () => {
     });
 }
 
-
 function onLocationFound(e) {
     // latLng = e.latlng;
     // nearData(e)
@@ -554,7 +553,7 @@ let getFeatureInfo = async (e) => {
         if (r.data.data.length > 0) {
             $("#hloc").html(`${r.data.data[0].tam_nam_t} 
                         ${r.data.data[0].amphoe_t}
-                        ${r.data.data[0].prov_nam_t}<br>`);
+                        ${r.data.data[0].prov_nam_t}`);
             $("#hloc").show();
         } else {
             $("#hloc").html("");
@@ -563,8 +562,7 @@ let getFeatureInfo = async (e) => {
     })
 
     $("#announce").hide()
-    $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-            lon: ${(e.latlng.lng).toFixed(2)}<br>`);
+    $("#latlon").html(`พิกัด ${(e.latlng.lat).toFixed(2)}, ${(e.latlng.lng).toFixed(2)} &nbsp;`);
     $("#latlon").show();
 }
 
