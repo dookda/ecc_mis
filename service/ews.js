@@ -1,14 +1,11 @@
 const express = require('express');
 const app = express.Router();
 const con = require("./db");
-const { axios } = require('axios');
 const dat = con.dat;
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
-
 const fs = require('fs')
-
 var http = require('http');
 
 const ews_data = "./service/ews_data.txt";
@@ -97,7 +94,6 @@ let createJson = () => {
                         province,
                         dept,
                         soil1,
-                        wl_txt,
                         name_e,
                         tambon_e,
                         amphoe_e,
@@ -113,14 +109,13 @@ let createJson = () => {
                         ${i.temp},
                         ${i.rain},
                         ${i.rain12h},
-                        ${i.wl},
+                        ${i.wl > 0 ? i.wl : 0},
                         ${i.status},
                         '${i.tambon}',
                         '${i.amphoe}',
                         '${i.province}',
                         '${i.dept}',
-                        '${i.soil1}',
-                        '${i.wl_txt}',
+                        ${Number(i.soil1) >= 0 ? Number(i.soil1) : 0},
                         '${i.name_e}',
                         '${i.tambon_e}',
                         '${i.amphoe_e}',
@@ -128,7 +123,7 @@ let createJson = () => {
                         '${i.dept_e}'
                     )`
             // console.log(sql);
-            dat.query(sql);
+            dat.query(sql)
             return "success"
         })
 
@@ -149,6 +144,21 @@ let createJson = () => {
 // promis.then(() => {
 //     createJson()
 // });
+
+setInterval(() => {
+    let currentDate = new Date();
+    let hh = currentDate.getHours();
+    let mm = currentDate.getMinutes();
+    let ss = currentDate.getSeconds();
+    let t = `${hh}:${mm}:${ss}`;
+    // console.log(hh, mm, ss);
+    if (t == "8:25:0" || t == "11:25:0" || t == "14:25:0" || t == "17:25:0" || t == "20:25:0" || t == "23:25:0" || t == "2:25:0" || t == "5:25:0") {
+        promis.then(() => {
+            createJson()
+        });
+    }
+
+}, 1000);
 
 
 module.exports = app;
