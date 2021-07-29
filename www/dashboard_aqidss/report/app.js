@@ -574,6 +574,7 @@ let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param, std) =>
     });
 }
 
+
 map.on("click", async (e) => {
     var pnt = map.latLngToContainerPoint(e.latlng);
     var size = map.getSize();
@@ -587,39 +588,34 @@ map.on("click", async (e) => {
     so2chk ? getFeatureInfo(so2Lyr, lyrLen, pnt, size, bbox, "so2chart", "SO2 (ppb)", 106) : null;
     no2chk ? getFeatureInfo(no2Lyr, lyrLen, pnt, size, bbox, "no2chart", "NO2 (ppb)", 200) : null;
 
-    // let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-    //     "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-    //     "&QUERY_LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-    //     "&LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-    //     "&Feature_count=3" +
-    //     "&INFO_FORMAT=application/json" +
-    //     "&X=" + pnt.x +
-    //     "&Y=" + pnt.y +
-    //     "&SRS=EPSG:4326" +
-    //     "&WIDTH=" + size.x +
-    //     "&HEIGHT=" + size.y +
-    //     "&BBOX=" + bbox;
+    // console.log(e.latlng);
+    await axios.post(url + "/eec-api/get-landuse-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#landuse").html(`การใช้ประโยชน์: <span class="badge bg-warning" style="font-size:14px;">${r.data.data[0].lu_des_th}</span> จำนวน: <span class="badge bg-warning" style="font-size:14px;">${(r.data.data[0].area / 1600).toFixed(2)} </span> ไร่`)
+            $("#landuse").show();
+        } else {
+            $("#landuse").html("");
+            $("#landuse").hide();
+        }
+    })
 
-    // await axios.get(urlฺBound).then(r => {
-    //     // console.log(r.data.features.length);
-    //     $("#announce").hide()
-    //     $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-    //         lon: ${(e.latlng.lng).toFixed(2)}`);
-
-    //     if (r.data.features.length > 0) {
-    //         $("#hloc").html(`${r.data.features[0].properties.tam_nam_t} 
-    //             ${r.data.features[0].properties.amphoe_t}
-    //             ${r.data.features[0].properties.prov_nam_t}`);
-    //         $("#landuse").html(`การใช้ประโยชน์ <span class="badge bg-success">${r.data.features[1].properties.lu_des_th}</span>`)
-    //     } else {
-    //         $("#hloc").html("");
-    //         $("#landuse").html("");
-    //     }
-    // });
+    await axios.post(url + "/eec-api/get-tam-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#hloc").html(`${r.data.data[0].tam_nam_t} 
+                        ${r.data.data[0].amphoe_t}
+                        ${r.data.data[0].prov_nam_t}`);
+            $("#hloc").show();
+        } else {
+            $("#hloc").html("");
+            $("#hloc").hide();
+        }
+    })
 
     $("#announce").hide()
-    $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-            lon: ${(e.latlng.lng).toFixed(2)}`);
+    $("#latlon").html(`พิกัด ${(e.latlng.lat).toFixed(2)}, ${(e.latlng.lng).toFixed(2)} &nbsp;`);
+    $("#latlon").show();
 });
 
 $("#announce").html(`เลือกชั้นข้อมูลคุณภาพอากาศแล้วคลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลคุณภาพอากาศย้อนหลัง 14 วัน`)
