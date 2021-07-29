@@ -144,6 +144,7 @@ $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#wbodyLegend").attr("src", eecUrl + "eec:a__14_w2_eec");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
+$("#wtrlLegend").attr("src", "./marker-meteo/gas-station.png");
 $("#gwLegend").attr("src", "./img/gw.png");
 $("#radarLegend").attr("src", "./img/radar.png");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
@@ -248,6 +249,69 @@ let getDetail = (e) => {
     sessionStorage.setItem('orgid', e);
     location.href = "./../detail/index.html";
 }
+
+
+let loadWtrl = async () => {
+    let iconblue = L.icon({
+        iconUrl: './marker/gas-station.png',
+        iconSize: [40, 45],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let sta = [
+        {
+            staname: "station_01",
+            latlon: [12.8661616, 100.9989804]
+        }, {
+            staname: "station_02",
+            latlon: [12.848099999999983, 100.95313000000002]
+        }, {
+            staname: "station_03",
+            latlon: [12.846510200000028, 100.9376361]
+        }, {
+            staname: "station_04",
+            latlon: [12.694406999999996, 101.44470699999997]
+        }, {
+            staname: "station_05",
+            latlon: [12.703484000000008, 101.468717]
+        }, {
+            staname: "station_06",
+            latlon: [12.70139960000001, 101.49543049999]
+        }, {
+            staname: "station_07",
+            latlon: [12.985111299999994, 101.6776677]
+        }, {
+            staname: "station_08",
+            latlon: [12.909515899999995, 101.71460159999998]
+        }, {
+            staname: "station_09",
+            latlon: [12.836749900000017, 101.73254899999998]
+        }]
+
+    sta.map(async (i) => {
+        let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
+        resSt01.then(r => {
+            let d = r.data.data[0];
+            let marker = L.marker(i.latlon, {
+                icon: iconblue,
+                name: 'lyr',
+                // data: dat
+            });
+
+            marker.addTo(map)
+            marker.bindPopup(`ชื่อสถานี : ${i.staname} <br>
+                        ระดับน้ำ : ${Number(d.deep).toFixed(1)} mm.<br>
+                        ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
+                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>`
+            )
+
+        })
+    })
+
+}
+
+
 
 let responseWeather = axios.get(url + '/eec-api/get-weather-3hr-all');
 let loadMeteo = async () => {
@@ -542,6 +606,11 @@ $("input[type=checkbox]").change(async () => {
         if (i == "gwater") {
             loadGw();
         }
+
+        if (i == "wtrl") {
+            loadWtrl();
+        }
+
 
         if (i == "radar") {
             initialize(apiData, optionKind);
