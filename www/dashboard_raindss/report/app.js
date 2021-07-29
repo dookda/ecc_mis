@@ -735,3 +735,38 @@ map.on("click", async (e) => {
 });
 
 $("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
+
+axios.post('http://www.ridtele.com/Station/Station/Index_Graph', { id: 1, stn_id: 72 }).then(r => {
+    console.log(r);
+})
+
+// fetch("http://www.ridtele.com/Station/Index_Graph", {
+//     "headers": {
+//         "accept": "*/*",
+//         "accept-language": "en-US,en;q=0.9,th-TH;q=0.8,th;q=0.7",
+//         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+//         "x-requested-with": "XMLHttpRequest"
+//     },
+//     "referrer": "http://www.ridtele.com/Station?id=72",
+//     "referrerPolicy": "strict-origin-when-cross-origin",
+//     "body": "id=1&stn_id=72",
+//     "method": "POST",
+//     "mode": "cors",
+//     "credentials": "include"
+// }).then(response => response.json())
+//     .then(data => console.log(data));
+
+// fetch("http://www.ridtele.com/Station/Index_Graph", {
+//     "headers": {
+//         "accept": "*/*",
+//         "accept-language": "en-US,en;q=0.9,th-TH;q=0.8,th;q=0.7",
+//         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+//         "x-requested-with": "XMLHttpRequest",
+//         "cookie": ".AspNetCore.Session=CfDJ8FNiuszfZiVAqb5WvHS7A2zwr%2BnQ1V6z1R3J35rmW3KnyN1E93Nq5M626DJwZ10UeBrTgqdD5wLSY%2FSwLZH98SOh8vJ60QU8V8LGtEGE2aOMl6DnZYlBPfvFG7sJeOz4mk%2BiU2QnQypXxZvfQpi%2FzBrw3JJsJuLdHwLLczVPSnqB"
+//     },
+//     "referrer": "http://www.ridtele.com/Station?id=72",
+//     "referrerPolicy": "strict-origin-when-cross-origin",
+//     "body": "id=1&stn_id=72",
+//     "method": "POST",
+//     "mode": "cors"
+// });

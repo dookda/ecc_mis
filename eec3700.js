@@ -103,3 +103,6 @@ app.use(familyforest);
 
 const waterlevel = require('./service/waterlevel');
 app.use(waterlevel);
+
+const ews = require('./service/ews');
+app.use(ews);
