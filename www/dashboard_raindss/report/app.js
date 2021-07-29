@@ -560,7 +560,7 @@ $("input[name='basemap']").change(async (r) => {
     let basemap = $("input[name='basemap']:checked").val();
     base[`${basemap}`].addTo(map);
 })
-$("#hchart").html(`<div style="text-align: center;">คลิ๊กลงบนแผนที่เพื่อดูปริมาณน้ำฝนแต่ละสัปดาห์</div>`)
+
 let hchart = (dat) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("hchart", am4charts.XYChart);
@@ -617,7 +617,6 @@ let hchart = (dat) => {
     chart.cursor = new am4charts.XYCursor();
 }
 
-$("#weeknow").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`);
 map.on("click", async (e) => {
     var pnt = map.latLngToContainerPoint(e.latlng);
     var size = map.getSize()
@@ -634,6 +633,7 @@ map.on("click", async (e) => {
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
         "&BBOX=" + bbox;
+
     await axios.get(urlWeek).then(r => {
         let dat = [];
         let wk = 1;
@@ -647,35 +647,6 @@ map.on("click", async (e) => {
         })
         hchart(dat)
     })
-
-    let urlฺBound = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
-        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-        "&LAYERS=eec:a__03_tambon_eec,eec:a__46_lu_eec_61" +
-        "&Feature_count=3" +
-        "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
-        "&SRS=EPSG:4326" +
-        "&WIDTH=" + size.x +
-        "&HEIGHT=" + size.y +
-        "&BBOX=" + bbox;
-
-    await axios.get(urlฺBound).then(r => {
-        // console.log(r.data.features.length);
-        $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-            lon: ${(e.latlng.lng).toFixed(2)}`);
-
-        if (r.data.features.length > 0) {
-            $("#hloc").html(`${r.data.features[0].properties.tam_nam_t} 
-                ${r.data.features[0].properties.amphoe_t}
-                ${r.data.features[0].properties.prov_nam_t}`);
-            $("#landuse").html(`การใช้ประโยชน์ <span class="badge bg-success">${r.data.features[1].properties.lu_des_th}</span>`)
-        } else {
-            $("#hloc").html("");
-            $("#landuse").html("");
-        }
-    });
 
     let urlฺAnual = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -691,18 +662,14 @@ map.on("click", async (e) => {
         "&BBOX=" + bbox;
     // console.log(urlฺAnual);
     await axios.get(urlฺAnual).then(r => {
-        console.log(r);
+        // console.log(r);
         if (r.data.features.length > 0) {
-            console.log(r.data.features[0].properties.GRAY_INDEX);
-            // $("#anual").html(`ผลรวมน้ำฝนตั้งแต่สัปดาห์แรก: <span class="badge bg-warning "> ${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} มม. </span>`);
-            // $("#current").html(`น้ำฝนสัปดาห์นี้: <span class="badge bg-warning ">${(r.data.features[1].properties.GRAY_INDEX).toFixed(2)} มม.</span>`);
-            document.getElementById("ranual").innerHTML = `ผลรวมน้ำฝนตั้งแต่สัปดาห์แรก: <span class="badge bg-warning "> ${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} มม. </span>`
+            document.getElementById("ranual").innerHTML = `ผลรวมน้ำฝนตั้งแต่สัปดาห์แรก: <span class="badge bg-info" style="font-size:14px;"> ${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} มม. </span>`
         } else {
             // $("#anual").html("");
             document.getElementById("ranual").innerHTML = ""
             // $("#current").html("");
         }
-
     });
 
     let urlฺWeeknow = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
@@ -720,7 +687,7 @@ map.on("click", async (e) => {
     // console.log(urlฺWeeknow);
     await axios.get(urlฺWeeknow).then(r => {
         if (r.data.features.length > 0) {
-            document.getElementById("rcurrent").innerHTML = `น้ำฝนสัปดาห์นี้: <span class="badge bg-warning ">${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} มม.</span>`;
+            document.getElementById("rcurrent").innerHTML = `น้ำฝนสัปดาห์นี้: <span class="badge bg-info" style="font-size:14px;">${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} มม.</span>`;
         } else {
             // $("#anual").html("");
             // $("#rcurrent").html("");
@@ -728,45 +695,36 @@ map.on("click", async (e) => {
         }
 
     })
-    $("#announce").hide()
+
+    await axios.post(url + "/eec-api/get-landuse-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#landuse").html(`การใช้ประโยชน์: <span class="badge bg-warning" style="font-size:14px;">${r.data.data[0].lu_des_th}</span> จำนวน: <span class="badge bg-warning" style="font-size:14px;">${(r.data.data[0].area / 1600).toFixed(2)} </span> ไร่`)
+            $("#landuse").show();
+        } else {
+            $("#landuse").html("");
+            $("#landuse").hide();
+        }
+    })
+
+    await axios.post(url + "/eec-api/get-tam-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
+        // console.log(r.data.data);
+        if (r.data.data.length > 0) {
+            $("#hloc").html(`${r.data.data[0].tam_nam_t} 
+                        ${r.data.data[0].amphoe_t}
+                        ${r.data.data[0].prov_nam_t}`);
+            $("#hloc").show();
+        } else {
+            $("#hloc").html("");
+            $("#hloc").hide();
+        }
+    })
+
+    $("#announce").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`)
+    // $("#weeknow").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`);
     console.log(e);
-    $("#latlon").html(`ตำแหน่ง lat: ${(e.latlng.lat).toFixed(2)} 
-            lon: ${(e.latlng.lng).toFixed(2)}`);
+    $("#latlon").html(`พิกัด ${(e.latlng.lat).toFixed(2)}, ${(e.latlng.lng).toFixed(2)} &nbsp;`);
+    // $("#latlon").show();
 });
 
 $("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
-
-axios.post('http://www.ridtele.com/Station/Station/Index_Graph', { id: 1, stn_id: 72 }).then(r => {
-    console.log(r);
-})
-
-// fetch("http://www.ridtele.com/Station/Index_Graph", {
-//     "headers": {
-//         "accept": "*/*",
-//         "accept-language": "en-US,en;q=0.9,th-TH;q=0.8,th;q=0.7",
-//         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-//         "x-requested-with": "XMLHttpRequest"
-//     },
-//     "referrer": "http://www.ridtele.com/Station?id=72",
-//     "referrerPolicy": "strict-origin-when-cross-origin",
-//     "body": "id=1&stn_id=72",
-//     "method": "POST",
-//     "mode": "cors",
-//     "credentials": "include"
-// }).then(response => response.json())
-//     .then(data => console.log(data));
-
-// fetch("http://www.ridtele.com/Station/Index_Graph", {
-//     "headers": {
-//         "accept": "*/*",
-//         "accept-language": "en-US,en;q=0.9,th-TH;q=0.8,th;q=0.7",
-//         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-//         "x-requested-with": "XMLHttpRequest",
-//         "cookie": ".AspNetCore.Session=CfDJ8FNiuszfZiVAqb5WvHS7A2zwr%2BnQ1V6z1R3J35rmW3KnyN1E93Nq5M626DJwZ10UeBrTgqdD5wLSY%2FSwLZH98SOh8vJ60QU8V8LGtEGE2aOMl6DnZYlBPfvFG7sJeOz4mk%2BiU2QnQypXxZvfQpi%2FzBrw3JJsJuLdHwLLczVPSnqB"
-//     },
-//     "referrer": "http://www.ridtele.com/Station?id=72",
-//     "referrerPolicy": "strict-origin-when-cross-origin",
-//     "body": "id=1&stn_id=72",
-//     "method": "POST",
-//     "mode": "cors"
-// });

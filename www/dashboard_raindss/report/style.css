@@ -19,8 +19,12 @@
   height: 640px;
 }
 
+#hchart{
+  height: 180px;
+}
+
 .hchart{
-  height: 160px;
+  height: 260px;
 }
 
 .scroll{
@@ -34,7 +38,7 @@
 }
 
 .scroll-label{
-  height:150px;
+  height:260px;
   overflow-y: scroll;
 }
 
