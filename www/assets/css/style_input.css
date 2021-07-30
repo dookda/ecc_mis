@@ -2,7 +2,7 @@ body{
   background: #f6f6f8;
 }
 section{
-  position: fixed;
+  position: relative;
 }
 .Soft-blue{
   --bg-color: #8adcfe;;
@@ -141,10 +141,11 @@ section{
   }
   .row-content{
     flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
+    flex-wrap: wrap;
+    align-items: center;
   }
   .card-d{
+    width: 100%;
     margin-left: 10%;
   }
   .card-b{
@@ -153,10 +154,15 @@ section{
   #manual{
     margin-left: 10%;
   }
+  /* #g01{
+    display: none;
+  } */
+
+}
+@media (width:812px) {
   #g01{
     display: none;
   }
-
 }
 @media (max-width:500px) {
   section{
@@ -197,6 +203,7 @@ section{
     position: relative;
   }
 }
+  
 .card {
   --card-width: auto;
   width: 212px;

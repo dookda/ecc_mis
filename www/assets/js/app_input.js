@@ -43,12 +43,16 @@ $('#tabmenu').mouseleave(function () {
     $("#cardbioB").hide()
     $("#cardotherB").hide()
 })
+
 var type = $('#typeuser').val();
+// console.log(type)
 if (type == "user") {
     //โมดูลปริมาณน้ำ
     $('#cardwc2').css("pointer-events", "none");
     //โมดูลคุณภาพน้ำ
-    $('#cardqc').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+    $('#cardqc').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3"," margin-top":"10px" });
+    //โมดูลชีวภาพ 
+    $('#cardbio1').css("pointer-events", "none");
     //โมดูลอื่นๆ
     $('#cardother1').css("pointer-events", "none");
 
@@ -57,7 +61,10 @@ if (type == "user") {
     $('#cardwc1').css("pointer-events", "none");
     //โมดูลคุณภาพน้ำ
     //โมดูลชีวภาพ 
-    $('#cardbio').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+    // $('#cardbio').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
+    $('#cardbio2').css("pointer-events", "none");
+    $('#cardbio3').css("pointer-events", "none");
+    $('#cardbio4').css("pointer-events", "none");
     //โมดูลอื่นๆ 
     $('#cardother2').css("pointer-events", "none");
 } else if (type == null) {

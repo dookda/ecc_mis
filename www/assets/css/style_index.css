@@ -4,11 +4,12 @@ h1{
   text-shadow:  4px 5px 5px #E8E8ED, 6px 6px 36px rgba(0, 0, 0, 0.5)  
 }
 .row-content{
+  
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: center;
   align-content: center;
 }
 section{
@@ -57,7 +58,7 @@ section{
 .canvas_copy_details:hover button span{
     text-shadow:  4px 4px 6px #2b2b2b, 6px 6px 36px rgba(0, 0, 0, 0.5)
 }
-  
+
 @media (max-width: 765px) {
   #hero{
     background-image: url(assets/img/BG2.jpg);
@@ -70,18 +71,27 @@ section{
     position: relative;
     margin-top: -65px;
     flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+  
   }
   .row-content{
-    margin-top: -50px;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: center;
-    align-items: center;
+    width: 100%;
+    /* border: 3px solid green; */
+    padding: 10px;
+  }
+  .col-sm{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
   }
   .card-home{
+    /* margin-left: 5%; */
       height: auto;
-      margin-bottom: 20px;
       z-index: 1000;
   }
   #oneplogo {
@@ -106,15 +116,16 @@ section{
     align-items: center;
   }
   .row-content{
-    margin-top: -20px;
-    width: 100%;
+    /* margin-top: -20px; */
+    width: fit-content;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-content: center;}
  .card-home{
-      margin-bottom: 20px;
+   margin-left: 5%;
+      margin-bottom: 10%;
   }
   #oneplogo {
     margin-top: 20px;

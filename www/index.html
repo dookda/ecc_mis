@@ -42,10 +42,12 @@
         <nav class="nav-menu d-none d-lg-block" id="navbar">
           <ul>
             <li class="active"><a href="./index.html">หน้าหลัก</a></li>
-            <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
             <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+            <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+            <li><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
             <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
             <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+            <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
             <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
             <li id="usr1"><a href="./../../form_register/profile/index.html"><i
                   class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
@@ -62,7 +64,7 @@
 
   <main id="main">
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center" style="background-image: url(assets/img/BG2.jpg);background-position: center;
+    <section id="hero" class="d-flex align-items-center" style="background-image: url(assets/img/BG2.jpg); background-position: center;
     background-repeat: no-repeat; background-size: cover;">
 
       <div class="container d-flex flex-column align-items-center" data-aos="zoom-in" data-aos-delay="100" id="blur">
@@ -73,52 +75,76 @@
         <h1><b>ระบบสารสนเทศเพื่อการจัดการสิ่งแวดล้อม</b></h1>
         <br>
         <div class="row-content">
-          <div class="card-home">
-            <img src="./assets/img/a01.png" style="width: 90px; height: auto; margin-bottom: 15px;" id="a01">
-            <h6>ระบบนำเข้าข้อมูล<br>สิ่งแวดล้อม</h6>
-            <a class="canvas_copy_details nth-child" href="./input_eec.html"><button><span
-                  class="text">คลิก</span>&nbsp;
-                <div class="icon-container">
-                  <div class="icon icon--left">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+          <div class="col-sm">
+            <div class="card-home">
+              <img src="./assets/img/a02.png" style="width: 120px; height: auto;" id="a02">
+              <h6>ระบบรายงานสถานการณ์<br>สิ่งแวดล้อม</h6>
+              <a class="canvas_copy_details nth-child" href="./dashboard_eec.html"><button><span
+                    class="text">คลิก</span>&nbsp;
+                  <div class="icon-container">
+                    <div class="icon icon--left">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
+                    <div class="icon icon--right">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
                   </div>
-                  <div class="icon icon--right">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
-                  </div>
-                </div>
-              </button></a>
+                </button></a>
+            </div>
           </div>
-          <div class="card-home">
-            <img src="./assets/img/a02.png" style="width: 120px; height: auto; margin-bottom: 10px" id="a02">
-            <h6>ระบบรายงานสถานการณ์<br>สิ่งแวดล้อม</h6>
-            <a class="canvas_copy_details nth-child" href="./dashboard_eec.html"><button><span
-                  class="text">คลิก</span>&nbsp;
-                <div class="icon-container">
-                  <div class="icon icon--left">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+          <div class="col-sm">
+            <div class="card-home">
+              <img src="./assets/img/a01.png" style="width: 90px; height: auto; margin-bottom: 20px; margin-top: 15px;"
+                id="a01">
+              <h6>ระบบนำเข้าข้อมูล<br>สิ่งแวดล้อม</h6>
+              <a class="canvas_copy_details nth-child" href="./input_eec.html"><button><span
+                    class="text">คลิก</span>&nbsp;
+                  <div class="icon-container">
+                    <div class="icon icon--left">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
+                    <div class="icon icon--right">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
                   </div>
-                  <div class="icon icon--right">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
-                  </div>
-                </div>
-              </button></a>
+                </button></a>
+            </div>
           </div>
-          <div class="card-home">
-            <img src="./assets/img/a03.png" style="width: 100px; height: auto;  margin-bottom: 10px" id="a03">
-            <h6>ระบบติดตามแผน<br>สิ่งแวดล้อม</h6>
-            <a class="canvas_copy_details nth-child"
-              href="https://eec-onep.soc.cmu.ac.th/envi_plan/login/index.html"><button><span
-                  class="text">คลิก</span>&nbsp;
-                <div class="icon-container">
-                  <div class="icon icon--left">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+          <div class="col-sm">
+            <div class="card-home">
+              <img src="./assets/img/a04.png" style="width: 120px; height: auto;" id="a04">
+              <h6>ระบบสนับสนุน<br>การตัดสินใจ</h6>
+              <a class="canvas_copy_details nth-child" href="./system_decide.html"><button><span
+                    class="text">คลิก</span>&nbsp;
+                  <div class="icon-container">
+                    <div class="icon icon--left">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
+                    <div class="icon icon--right">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
                   </div>
-                  <div class="icon icon--right">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                </button></a>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card-home">
+              <img src="./assets/img/a03.png" style="width: 100px; height: auto;  margin-bottom: 10px" id="a03">
+              <h6>ระบบติดตามแผน<br>สิ่งแวดล้อม</h6>
+              <a class="canvas_copy_details nth-child"
+                href="https://eec-onep.soc.cmu.ac.th/envi_plan/login/index.html"><button><span
+                    class="text">คลิก</span>&nbsp;
+                  <div class="icon-container">
+                    <div class="icon icon--left">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
+                    <div class="icon icon--right">
+                      <img src="https://img.icons8.com/ios-filled/50/000000/right.png" />
+                    </div>
                   </div>
-                </div>
-              </button>
-            </a>
+                </button>
+              </a>
+            </div>
           </div>
         </div>
         <br>
@@ -177,10 +203,12 @@
   $("#usr2").hide()
 
   if (urname) {
-    $("#usr1").show()
-    $("#usr2").show()
+    $("#usr1").show();
+    $("#usr2").show();
+    $("#login").hide();
     $("#usrname").text(urname);
   }
+
 </script>
 
 </html>

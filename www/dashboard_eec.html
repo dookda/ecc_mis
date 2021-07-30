@@ -38,25 +38,28 @@
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
-            <nav class="nav-menu d-none d-lg-block" id="navbar">
+            <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li><a href="./index.html">หน้าหลัก</a></li>
-                    <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li class="active"><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-
+                    <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
+                    <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
+                    <li id="usr1"><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
+                    <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
 
-                    <!-- <li><a href="./../../form_register/profile/index.html"><i
-                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
-                        </a></li>-->
-                    <!-- <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li>  -->
                 </ul>
             </nav>
-            <div class="header-social-links" style="margin-top: auto;">
+            <div class="header-social-links">
                 <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png"
+                        class="img-circle" style="width:35px"></a> -->
             </div>
         </div>
 
@@ -127,8 +130,7 @@
                                 <div class="card-b" id="cardqcB" style="display: none;">
                                     <div class="text"><span>โมดูลคุณภาพน้ำ</span></div>
                                     <div class="card-c">
-                                        <div class="card pale-blue" id="cardqc1"
-                                            onclick="window.location.href='./form_water_surface/report_admin/index.html'">
+                                        <div class="card pale-blue" id="cardqc1">
                                             <!-- <div class="overlay"></div> -->
                                             <div class="circle">
                                                 <img src="./assets/img/01-1.png" width="72px" height="auto"
@@ -136,16 +138,14 @@
                                             </div>
                                             <p><b>น้ำผิวดิน</b></p>
                                         </div>
-                                        <div class="card Light-yellow" id="cardqc2"
-                                            onclick="window.location.href='./form_water_qua/report_admin/index.html'">
+                                        <div class="card Light-yellow" id="cardqc2">
                                             <!-- <div class="overlay"></div> -->
                                             <div class="circle">
                                                 <img src="./assets/img/02.png" width="95px" height="95px">
                                             </div>
                                             <p><b>น้ำทิ้ง/น้ำเสีย</b></p>
                                         </div>
-                                        <div class="card pale-blue" id="cardqc3"
-                                            onclick="window.location.href='./form_seawater_qua/report_admin/index.html'">
+                                        <div class="card pale-blue" id="cardqc3">
                                             <!-- <div class="overlay"></div> -->
                                             <div class="circle">
                                                 <img src="./assets/img/03.png" width="68px" height="auto">
@@ -181,7 +181,7 @@
                         </div>
                         <div class="col-sm">
                             <div class='card-d' id="cardbio">
-                                <div href="#" class="card Soft-blue" id="cardbioA" style="opacity: 1;">
+                                <div class="card Soft-blue" id="cardbioA" style="opacity: 1;">
                                     <!-- <div class="overlay"></div> -->
                                     <div class="circle" style="filter: none;">
                                         <img src=" ./assets/img/green.png" width="80px" height="auto">
@@ -191,8 +191,7 @@
                                 <div class="card-b" id="cardbioB" style="display: none;">
                                     <div class="text"><span style="color: #2ea798;">โมดูลทรัพยากรชีวภาพ</span></div>
                                     <div class="card-c">
-                                        <div class="card lime-green" id="cardbio1"
-                                            onclick="window.location.href='./form_green/report_admin/index.html'">
+                                        <div class="card lime-green" id="cardbio1">
                                             <!-- <div class="overlay" style="width: 80px; height: 80px; top: 40px;">
                                                 </div> -->
                                             <div class="circle">
@@ -203,8 +202,7 @@
                                                 <b>พื้นที่สีเขียว<br>สาธารณะ</b>
                                             </p>
                                         </div>
-                                        <div class="card lime-green" id="cardbio2"
-                                            onclick="window.location.href='/form_biodiversity/report_admin/index.html'">
+                                        <div class="card lime-green" id="cardbio2">
                                             <!-- <div class="overlay" style="width: 80px; height: 80px; top: 40px;">
                                             </div> -->
                                             <div class="circle">
@@ -213,8 +211,7 @@
                                             <p style="margin-top: 11px;"><b>ความหลากหลาย<br>ทางชีวภาพ</b>
                                             </p>
                                         </div>
-                                        <div class="card lime-green" id="cardbio3"
-                                            onclick="window.location.href='./form_familyforest/report_admin/index.html'">
+                                        <div class="card lime-green" id="cardbio3">
                                             <!-- <div class="overlay"></div> -->
                                             <div class="circle">
                                                 <img src="./assets/img/06.png" width="85px" height="auto">
@@ -238,7 +235,7 @@
                     <div class="row-content">
                         <div class="col-sm">
                             <div class='card-d' id="cardother">
-                                <div href="#" class="card Soft-blue" id="cardotherA" style="opacity: 1;">
+                                <div class="card Soft-blue" id="cardotherA" style="opacity: 1;">
                                     <!-- <div class="overlay"></div> -->
                                     <div class="circle" style="filter: none;">
                                         <img src=" ./assets/img/more.png" width="70px" height="auto">
@@ -250,16 +247,14 @@
                                         <span>โมดูลอื่นๆ</span>
                                     </div>
                                     <div class="card-c">
-                                        <div href="#" class="card Light-yellow" id="cardother1"
-                                            onclick="window.location.href='./form_garbage/report_admin/index.html'">
+                                        <div class="card Light-yellow" id="cardother1">
                                             <!-- <div class="overlay"></div> -->
                                             <div class="circle">
                                                 <img src="./assets/img/09.png" width="78px" height="auto">
                                             </div>
                                             <p><b>ขยะ</b></p>
                                         </div>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <div class="card soft-violet" id="cardother2"
-                                            onclick="window.location.href='./form_notice/list/index.html'">
+                                        <div class="card soft-violet" id="cardother2">
                                             <!-- <div class="overlay" id="problem"></div> -->
                                             <div class="circle">
                                                 <img src=" ./assets/img/10.png" width="65px" height="auto">
@@ -325,6 +320,7 @@
     <!-- Template Main JS File -->
     <script src="./assets/js/main.js"></script>
     <script src="./assets/js/app_dashboard.js"></script>
+
 </body>
 
 </html>
