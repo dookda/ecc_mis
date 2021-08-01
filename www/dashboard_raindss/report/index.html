@@ -203,7 +203,7 @@
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="ecobound"
-                                                id="ecobound" checked>
+                                                id="ecobound">
                                             <label class="form-check-label">
                                                 ขอบเขตภูมินิเวศ
                                             </label>
@@ -275,22 +275,44 @@
                         </div>
                         <div class="col-sm-9">
                             <h3>ระบบสนับสนุนการตัดสินใจด้านน้ำผิวดิน</h3>
-
-                            <div class="card">
-                                <div class="card-body hchart scroll-label">
-
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <span id="announce"></span><br>
-                                            <span class="f12" id="latlon"></span>&nbsp;
-                                            <span class="f12" id="hloc"></span><br>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label for="">เลือกฝนรายสัปดาห์</label>
+                                            <select class="form-control" id="week_rain">
+                                                <option value="">ไม่เลือก</option>
+                                            </select>
                                         </div>
-                                        <div class="col-sm-7">
-                                            <span class="f12" id="rcurrent"></span> &nbsp;
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label for="">เลือกฝนพยากรณ์</label>
+                                            <select class="form-control" id="forecast_rain">
+                                                <option value="">ไม่เลือก</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <span class="f12" id="rcurrent"></span><br>
                                             <span class="f12" id="ranual"></span><br>
                                             <span class="f12" id="landuse"></span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+
+                            <div class="card">
+                                <div class="card-body hchart scroll-label">
+                                    <span id="announce"></span><br>
+                                    <span class="f12" id="latlon"></span>&nbsp;
+                                    <span class="f12" id="hloc"></span><br>
                                     <div class="hchart" id="hchart"></div>
                                 </div>
                             </div>

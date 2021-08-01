@@ -1,5 +1,6 @@
 
 const url = "https://eec-onep.online:3700";
+const geourl = "https://eec-onep.online:8443/geoserver/eec/wms?";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -186,7 +187,7 @@ let lyr = {
 }
 
 pro.addTo(map);
-ecobound.addTo(map);
+// ecobound.addTo(map);
 
 const getWeekNumber = (d) => {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -196,34 +197,92 @@ const getWeekNumber = (d) => {
     return [d.getUTCFullYear(), weekNo];
 }
 
+let getDateText = (a) => {
+    let d = new Date();
+    d.setDate(d.getDate() + a);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    let year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('-');
+}
+
 var yweek = getWeekNumber(new Date());
 
-for (let i = 1; i <= yweek[1]; i++) {
-    // add layer chkbox
-    let chk = i == yweek[1] ? "checked" : null;
-    $("#rain").append(
-        `<div class="form-check">
-            <input class="form-check-input" type="checkbox" value="zrain_w${i}"
-                id="zrain_w${i}" ${chk}>
-                <label class="form-check-label">
-                    ปริมาณน้ำฝนสัปดาห์ที่ ${i}
-                </label>
-                <br>
-            <img id="zrainW${i}Legend">
-        </div>`
-    )
-    // add legend
-    $("#zrainW" + i + "Legend").attr("src", `${eecUrl}eec:rain_w${i}.tif`);
-    // add layer
-    lyr[`zrain_w${i}`] = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-        layers: `eec:rain_w${i}.tif`,
-        name: "lyr",
+for (let i = 1; i <= 7; i++) {
+    let d = getDateText(i);
+    $("#forecast_rain").append(`<option value="forecast_d${i}" >ฝนวันที่ ${d}</option>`);
+    lyr[`forecast_d${i}`] = L.tileLayer.wms(geourl, {
+        layers: `eec:tmd_nextday${i}.tif`,
+        name: "forecastLyr",
         format: "image/png",
         transparent: true,
+        opacity: 0.7,
         zIndex: 2
-    })
-    i == yweek[1] ? lyr[`zrain_w${i}`].addTo(map) : null;
+    });
 }
+
+$("#forecast_rain").on("change", async (e) => {
+    await map.eachLayer(i => {
+        if (i.options.name == "forecastLyr") {
+            map.removeLayer(i)
+        }
+    })
+    e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
+})
+
+for (let i = 1; i <= yweek[1]; i++) {
+    // let d = getDateText(i);
+    $("#week_rain").append(`<option value="rain_w${i}" >ฝนสัปดาห์ที่ ${i}</option>`);
+    lyr[`rain_w${i}`] = L.tileLayer.wms(geourl, {
+        layers: `eec:rain_w${i}.tif`,
+        name: "rainweekLyr",
+        format: "image/png",
+        transparent: true,
+        opacity: 0.7,
+        zIndex: 2
+    });
+}
+
+$("#week_rain").on("change", async (e) => {
+    await map.eachLayer(i => {
+        if (i.options.name == "rainweekLyr") {
+            map.removeLayer(i)
+        }
+    })
+    console.log(e.target.value);
+    e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
+})
+
+
+// for (let i = 1; i <= yweek[1]; i++) {
+//     let chk = i == yweek[1] ? "checked" : null;
+//     $("#rain").append(
+//         `<div class="form-check">
+//             <input class="form-check-input" type="checkbox" value="zrain_w${i}"
+//                 id="zrain_w${i}" ${chk}>
+//                 <label class="form-check-label">
+//                     ปริมาณน้ำฝนสัปดาห์ที่ ${i}
+//                 </label>
+//                 <br>
+//             <img id="zrainW${i}Legend">
+//         </div>`
+//     )
+
+//     $("#zrainW" + i + "Legend").attr("src", `${eecUrl}eec:rain_w${i}.tif`);
+
+//     lyr[`zrain_w${i}`] = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+//         layers: `eec:rain_w${i}.tif`,
+//         name: "lyr",
+//         format: "image/png",
+//         transparent: true,
+//         zIndex: 2
+//     })
+//     i == yweek[1] ? lyr[`zrain_w${i}`].addTo(map) : null;
+// }
 
 let rainLyr = 'rain_w1.tif';
 let lyrLen;
@@ -796,4 +855,4 @@ map.on("click", async (e) => {
     // $("#latlon").show();
 });
 
-$("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
+$("#announce").html(`คลิกลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
