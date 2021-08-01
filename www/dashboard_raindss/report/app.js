@@ -211,7 +211,7 @@ let getDateText = (a) => {
 }
 
 var yweek = getWeekNumber(new Date());
-var dforecast = 7;
+var dforecast = 14;
 var dtLabel = [];
 for (let i = 1; i <= dforecast; i++) {
     let d = getDateText(i);
@@ -710,6 +710,9 @@ let hchart = (dat, div, unit) => {
     categoryAxis.endLocation = 0.5;
     categoryAxis.title.text = unit;
     categoryAxis.title.fontSize = 12;
+    categoryAxis.renderer.labels.template.rotation = -90;
+    categoryAxis.renderer.labels.template.fontSize = 12;
+
 
     // Create value axis
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
