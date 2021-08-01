@@ -211,8 +211,8 @@ let getDateText = (a) => {
 }
 
 var yweek = getWeekNumber(new Date());
-
-for (let i = 1; i <= 7; i++) {
+var dforecast = 7;
+for (let i = 1; i <= dforecast; i++) {
     let d = getDateText(i);
     $("#forecast_rain").append(`<option value="forecast_d${i}" >ฝนวันที่ ${d}</option>`);
     lyr[`forecast_d${i}`] = L.tileLayer.wms(geourl, {
@@ -224,13 +224,15 @@ for (let i = 1; i <= 7; i++) {
         zIndex: 2
     });
 }
-
+let forecastChk = false;
 $("#forecast_rain").on("change", async (e) => {
     await map.eachLayer(i => {
         if (i.options.name == "forecastLyr") {
             map.removeLayer(i)
         }
     })
+    !e.target.value ? forecastChk = false : forecastChk = true;
+    !e.target.value ? $("#chart-f").hide() : null;
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 })
 
@@ -247,13 +249,15 @@ for (let i = 1; i <= yweek[1]; i++) {
     });
 }
 
+let weekrainChk = false;
 $("#week_rain").on("change", async (e) => {
     await map.eachLayer(i => {
         if (i.options.name == "rainweekLyr") {
             map.removeLayer(i)
         }
-    })
-    console.log(e.target.value);
+    });
+    !e.target.value ? weekrainChk = false : weekrainChk = true;
+    !e.target.value ? $("#chart-w").hide() : null;
     e.target.value ? lyr[`${e.target.value}`].addTo(map) : null;
 })
 
@@ -284,11 +288,20 @@ $("#week_rain").on("change", async (e) => {
 //     i == yweek[1] ? lyr[`zrain_w${i}`].addTo(map) : null;
 // }
 
+
+
 let rainLyr = 'rain_w1.tif';
 let lyrLen;
 for (let i = 2; i <= yweek[1]; i++) {
     rainLyr += `,rain_w${i}.tif`;
     lyrLen = i;
+}
+
+let rainforecastLyr = 'tmd_nextday1.tif';
+let rainforecastLen;
+for (let i = 2; i <= dforecast; i++) {
+    rainforecastLyr += `,tmd_nextday${i}.tif`;
+    rainforecastLen = i;
 }
 
 let base = {
@@ -308,7 +321,6 @@ let getDetail = (e) => {
     sessionStorage.setItem('orgid', e);
     location.href = "./../detail/index.html";
 }
-
 
 let loadWtrl = async () => {
     let iconblue = L.icon({
@@ -369,8 +381,6 @@ let loadWtrl = async () => {
     })
 
 }
-
-
 
 let responseWeather = axios.get(url + '/eec-api/get-weather-3hr-all');
 let loadMeteo = async () => {
@@ -471,14 +481,11 @@ let loadMeteo = async () => {
 }
 
 const responseGwater = axios.get(url + "/gwater-api/getdata");
-// const api_3 = axios.get("https://eec-onep.online:3700/api/rankWater/");
 
 let onEachFeatureGw = (feature, layer) => {
-    // console.log(lyr.properties);
     axios.post(url + "/gwater-api/sensordetail", { station_id: feature.properties.station_id }).then(async (r) => {
         let txt = "";
         await r.data.data.map(i => {
-            // console.log(i);
             txt += `<br> <b>ความลึก ${i.depth} เมตร</b> <br>
                 ข้อมูลล่าสุด ${i.wl_data_date}<br>
                 - ระดับน้ำ: ${i.wl} เมตร<br>
@@ -499,9 +506,7 @@ let onEachFeatureGw = (feature, layer) => {
 
 let loadGw = async () => {
     let x = await responseGwater;
-    // console.log(x);
     x.data.data.map(async (i) => {
-        // console.log(i);
         var geojsonMarkerOptions = {
             radius: 6,
             fillColor: "#b51ac9",
@@ -641,7 +646,6 @@ function showFrame(nextPosition) {
 
 $("input[type=checkbox]").change(async () => {
     await map.eachLayer(i => {
-        // console.log(i);
         if (i.options.name == "lyr") {
             map.removeLayer(i)
         }
@@ -651,7 +655,6 @@ $("input[type=checkbox]").change(async () => {
     await $('input[type=checkbox]:checked').each(function () {
         chk.push($(this).val());
     });
-    // console.log(chk);
     chk.map(i => {
 
         if (lyr[`${i}`]) {
@@ -679,7 +682,6 @@ $("input[type=checkbox]").change(async () => {
 
 $("input[name='basemap']").change(async (r) => {
     await map.eachLayer(i => {
-        // console.log(i);
         if (i.options.name == "base") {
             map.removeLayer(i)
         }
@@ -689,9 +691,9 @@ $("input[name='basemap']").change(async (r) => {
     base[`${basemap}`].addTo(map);
 })
 
-let hchart = (dat) => {
+let hchart = (dat, div) => {
     am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("hchart", am4charts.XYChart);
+    var chart = am4core.create(div, am4charts.XYChart);
     chart.paddingRight = 20;
 
     // Add data
@@ -745,10 +747,7 @@ let hchart = (dat) => {
     chart.cursor = new am4charts.XYCursor();
 }
 
-map.on("click", async (e) => {
-    var pnt = map.latLngToContainerPoint(e.latlng);
-    var size = map.getSize()
-    var bbox = map.getBounds().toBBoxString()
+let showRainweek = async (pnt, size, bbox) => {
     let urlWeek = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
         "&QUERY_LAYERS=" + rainLyr +
@@ -766,15 +765,65 @@ map.on("click", async (e) => {
         let dat = [];
         let wk = 1;
         r.data.features.map(i => {
-            // console.log(i.properties.GRAY_INDEX);
             dat.push({
                 "week": wk,
                 "value": i.properties.GRAY_INDEX
             })
             wk++;
-        })
-        hchart(dat)
-    })
+        });
+        hchart(dat, "hchart");
+    });
+}
+
+let showrainForecast = async (pnt, size, bbox) => {
+    let urlWeek = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
+        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
+        "&QUERY_LAYERS=" + rainforecastLyr +
+        "&LAYERS=" + rainforecastLyr +
+        "&Feature_count=" + rainforecastLen +
+        "&INFO_FORMAT=application/json" +
+        "&X=" + pnt.x +
+        "&Y=" + pnt.y +
+        "&SRS=EPSG:4326" +
+        "&WIDTH=" + size.x +
+        "&HEIGHT=" + size.y +
+        "&BBOX=" + bbox;
+
+    await axios.get(urlWeek).then(r => {
+        let dat = [];
+        let wk = 1;
+        r.data.features.map(i => {
+            dat.push({
+                "week": wk,
+                "value": i.properties.GRAY_INDEX
+            })
+            wk++;
+        });
+        hchart(dat, "forecastchart");
+    });
+}
+$("#chart-w").hide();
+$("#chart-f").hide();
+map.on("click", async (e) => {
+    var pnt = map.latLngToContainerPoint(e.latlng);
+    var size = map.getSize();
+    var bbox = map.getBounds().toBBoxString();
+    console.log(weekrainChk, forecastChk);
+    if (weekrainChk) {
+        // $("#chart-w").append(``);
+        $("#chart-w").show();
+        showRainweek(pnt, size, bbox);
+    } else {
+        $("#chart-w").hide();
+    }
+
+    if (forecastChk) {
+        // $("#chart-f").append(``);
+        $("#chart-f").show();
+        showrainForecast(pnt, size, bbox);
+    } else {
+        $("#chart-f").hide();
+    }
 
     let urlฺAnual = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -850,7 +899,7 @@ map.on("click", async (e) => {
 
     $("#announce").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`)
     // $("#weeknow").html(`สัปดาห์ปัจจุบัน: ${yweek[1]}`);
-    console.log(e);
+    // console.log(e);
     $("#latlon").html(`พิกัด ${(e.latlng.lat).toFixed(2)}, ${(e.latlng.lng).toFixed(2)} &nbsp;`);
     // $("#latlon").show();
 });
