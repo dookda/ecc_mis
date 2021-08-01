@@ -212,8 +212,10 @@ let getDateText = (a) => {
 
 var yweek = getWeekNumber(new Date());
 var dforecast = 7;
+var dtLabel = [];
 for (let i = 1; i <= dforecast; i++) {
     let d = getDateText(i);
+    dtLabel.push(d);
     $("#forecast_rain").append(`<option value="forecast_d${i}" >ฝนวันที่ ${d}</option>`);
     lyr[`forecast_d${i}`] = L.tileLayer.wms(geourl, {
         layers: `eec:tmd_nextday${i}.tif`,
@@ -691,7 +693,7 @@ $("input[name='basemap']").change(async (r) => {
     base[`${basemap}`].addTo(map);
 })
 
-let hchart = (dat, div) => {
+let hchart = (dat, div, unit) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
     chart.paddingRight = 20;
@@ -706,7 +708,7 @@ let hchart = (dat, div) => {
     categoryAxis.renderer.grid.template.location = 0.5;
     categoryAxis.startLocation = 0.5;
     categoryAxis.endLocation = 0.5;
-    categoryAxis.title.text = "สัปดาห์ที่";
+    categoryAxis.title.text = unit;
     categoryAxis.title.fontSize = 12;
 
     // Create value axis
@@ -771,7 +773,7 @@ let showRainweek = async (pnt, size, bbox) => {
             })
             wk++;
         });
-        hchart(dat, "hchart");
+        hchart(dat, "hchart", "สัปดาห์ที่");
     });
 }
 
@@ -789,17 +791,21 @@ let showrainForecast = async (pnt, size, bbox) => {
         "&HEIGHT=" + size.y +
         "&BBOX=" + bbox;
 
+
+
     await axios.get(urlWeek).then(r => {
         let dat = [];
         let wk = 1;
-        r.data.features.map(i => {
+        r.data.features.map(async (i, j) => {
+            // console.log(i);
+            console.log(dtLabel[j - 1]);
             dat.push({
-                "week": wk,
+                "week": dtLabel[j - 1],
                 "value": i.properties.GRAY_INDEX
             })
             wk++;
         });
-        hchart(dat, "forecastchart");
+        hchart(dat, "forecastchart", "วันที่");
     });
 }
 $("#chart-w").hide();
