@@ -32,6 +32,11 @@
   overflow-y: scroll;
 }
 
+.scroll-rainlegend{
+  height:190px;
+  overflow-y: scroll;
+}
+
 .scroll-base{
   height:120px;
   overflow-y: scroll;

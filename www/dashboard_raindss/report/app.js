@@ -151,7 +151,7 @@ $("#radarLegend").attr("src", "./img/radar.png");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 $("#rainanualLegend").attr("src", eecUrl + "eec:rain_anual.tif");
 $("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
-
+$("#zrainWkLegend").attr("src", `${eecUrl}eec:rain_w1.tif`);
 
 function onLocationFound(e) {
     // latLng = e.latlng;
@@ -211,7 +211,7 @@ let getDateText = (a) => {
 }
 
 var yweek = getWeekNumber(new Date());
-console.log(yweek);
+// console.log(yweek);
 var dforecast = 14;
 var dtLabel = [];
 for (let i = 1; i <= dforecast; i++) {
