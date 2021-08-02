@@ -211,6 +211,7 @@ let getDateText = (a) => {
 }
 
 var yweek = getWeekNumber(new Date());
+console.log(yweek);
 var dforecast = 14;
 var dtLabel = [];
 for (let i = 1; i <= dforecast; i++) {
@@ -378,10 +379,8 @@ let loadWtrl = async () => {
                         ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
                         อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>`
             )
-
         })
     })
-
 }
 
 let responseWeather = axios.get(url + '/eec-api/get-weather-3hr-all');
@@ -769,6 +768,7 @@ let showRainweek = async (pnt, size, bbox) => {
     await axios.get(urlWeek).then(r => {
         let dat = [];
         let wk = 1;
+        // console.log(r.data.features);
         r.data.features.map(i => {
             dat.push({
                 "week": wk,
@@ -801,7 +801,7 @@ let showrainForecast = async (pnt, size, bbox) => {
         let wk = 1;
         r.data.features.map(async (i, j) => {
             // console.log(i);
-            console.log(dtLabel[j - 1]);
+            // console.log(dtLabel[j - 1]);
             dat.push({
                 "week": dtLabel[j - 1],
                 "value": i.properties.GRAY_INDEX
@@ -817,7 +817,7 @@ map.on("click", async (e) => {
     var pnt = map.latLngToContainerPoint(e.latlng);
     var size = map.getSize();
     var bbox = map.getBounds().toBBoxString();
-    console.log(weekrainChk, forecastChk);
+    // console.log(weekrainChk, forecastChk);
     if (weekrainChk) {
         // $("#chart-w").append(``);
         $("#chart-w").show();
