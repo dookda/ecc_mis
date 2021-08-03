@@ -291,8 +291,6 @@ $("#week_rain").on("change", async (e) => {
 //     i == yweek[1] ? lyr[`zrain_w${i}`].addTo(map) : null;
 // }
 
-
-
 let rainLyr = 'rain_w1.tif';
 let lyrLen;
 for (let i = 2; i <= yweek[1]; i++) {
