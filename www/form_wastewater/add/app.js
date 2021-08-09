@@ -10,8 +10,8 @@ if (eecauth !== "admin" && eecauth !== "office") {
 
 let marker;
 
-// const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
 
 let latlng = {
     lat: 13.305567,
@@ -38,25 +38,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -67,9 +67,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    // "ขอบเขตตำบล": tam.addTo(map),
-    // "ขอบเขตอำเภอ": amp.addTo(map),
-    // "ขอบเขตจังหวัด": pro.addTo(map)
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -104,10 +104,9 @@ map.on('click', (e) => {
 });
 
 $("#prov").on("change", () => {
-    let prov = document.getElementById("prov").value;
-    axios.post(url + "/waste-api/selectbypro", { prov: prov }).then(r => {
-        // console.log(r);
-        $("#insti").empty()
+    let p = document.getElementById("prov").value;
+    axios.post(url + "/waste-api/selectbypro", { prov: p }).then(r => {
+        $("#insti").empty();
         r.data.data.map(i => {
             $("#insti").append(`<option value="${i.insti}">${i.insti}</option>`)
         })
@@ -115,6 +114,7 @@ $("#prov").on("change", () => {
 })
 
 let quant;
+
 let sum = () => {
     quant = 0;
     let a = $('#no_house').val() * 500;
