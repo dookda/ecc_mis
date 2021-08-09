@@ -149,8 +149,7 @@ let sendData = () => {
         }
     }
 
-    console.log(obj);
-
+    // console.log(obj);
     axios.post(url + "/waterlevel-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
