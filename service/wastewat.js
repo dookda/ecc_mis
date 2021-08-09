@@ -102,4 +102,14 @@ app.post("/waste-api/delete", (req, res) => {
     })
 })
 
+app.post("/waste-api/selectbypro", (req, res) => {
+    const { prov } = req.body;
+    const sql = `SELECT distinct insti, prov FROM wastewat WHERE prov='${prov}'`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 module.exports = app;

@@ -67,9 +67,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+    // "ขอบเขตตำบล": tam.addTo(map),
+    // "ขอบเขตอำเภอ": amp.addTo(map),
+    // "ขอบเขตจังหวัด": pro.addTo(map)
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -103,8 +103,18 @@ map.on('click', (e) => {
 
 });
 
-let quant;
+$("#prov").on("change", () => {
+    let prov = document.getElementById("prov").value;
+    axios.post(url + "/waste-api/selectbypro", { prov: prov }).then(r => {
+        // console.log(r);
+        $("#insti").empty()
+        r.data.data.map(i => {
+            $("#insti").append(`<option value="${i.insti}">${i.insti}</option>`)
+        })
+    })
+})
 
+let quant;
 let sum = () => {
     quant = 0;
     let a = $('#no_house').val() * 500;
