@@ -74,7 +74,7 @@ let loadData = () => {
         tb: "watquality_bf"
     }
     axios.post(url + "/wq-api/getone", obj).then(r => {
-        // console.log(r.data.data[0]);
+        console.log(r.data.data[0]);
         $('#wq_turb').val(r.data.data[0].af_wq_turb)
         $('#wq_cond').val(r.data.data[0].af_wq_cond)
         $('#wq_sal').val(r.data.data[0].af_wq_sal)
