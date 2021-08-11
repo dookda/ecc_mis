@@ -1,177 +1,3 @@
-body {
-  font-family: "Kanit", sans-serif;
-}
-
-h{
-  font-family: "Kanit", sans-serif;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-}
-html,
-body {
-  background-color:#f6f6f8;
-  -webkit-font-smoothing: antialiased;
-}
-
-#map {
-  height: 60vh;
-  width: 100%;
-  border-radius: 10px;
-}
-
-#dataType{
-  /* height: 55vh; */
-  width: 100%;
-}
-
-#chart{
-  height: 52vh;
-  width: 100%;
-}
-
-#chart1,#chart2{
-  height: 20vh;
-  width: 100%;
-}
-
-#chart7,#chart8,#chart9,#chart10,#chart11,#chart12,#chart13,#chart14,#chart15,#chart16,#chart17,#chart18,#chart19{
-  height: 35vh;
-  width: 100%;
-}
-#chart21,#chart22,#chart23,#chart24,#chart25,#chart26,#chart27,#chart28,#chart29,#chart30,#chart31,#chart32 {
-  height: 35vh;
-  width: 100%;
-}
-
-.card-stats .card-body {
-  padding: 15px 15px 0;
-}
-
-.card .card-body {
-  padding: 15px 15px 10px;
-}
-
-.c-body {
-  padding-top: 0rem;
-  padding-right: 1.25rem;
-  padding-bottom: 1.25rem;
-  padding-left: 1.25rem;
-}
-
-.card {
-  border-radius: 12px;
-  box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
-  background-color: #fff;
-  color: #252422;
-  margin-bottom: 20px;
-  position: relative;
-  border: 0 none;
-  transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
-}
-
-.card-header {
-  /* padding: 0.75rem 1.25rem; */
-  padding-top: 0.75rem;
-  padding-right: 1.25rem;
-  padding-bottom: 0rem;
-  padding-left: 1.25rem;
-  margin-bottom: 0;
-  background-color: #fff !important;
-  border-bottom: 0px solid  #fff !important;
-}
-
-.center{
-  text-align: center;
-}
-
-.mb1 {
-  margin-bottom: 1em;
-}
-
-.mb2 {
-  margin-bottom: 2em;
-}
-
-.ver{
-  font-size: 10px;
-}
-
-td.highlight {
-  background-color: whitesmoke !important;
-}
-
-.chartHist{
-  width: 100%;
-  height: 250px;
-}
-
-.bg-gray{
-  background-color: #f6f6f6;
-}
-
-#f{
-  font-family: "Kanit", sans-serif;
-  font-size: 24px;
-}
-
-#profile {
-  width: 50px;
-  border-radius: 5%;
-}
-
-.ch3{
-  font-size: 32px;
-  font-weight: 500;
-  line-height: 1
-}
-.container {
-  position: relative;
-  max-width: 2500px; /* Maximum width */
-  margin: 0 auto; /* Center it */
-}
-
-.container .content {
-  position: relative; /* Position the background text */
-  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
-  color: #f1f1f1; /* Grey text */
-  width: 100%; /* Full width */
-  padding: 5px; /* Some padding */
-}
-.test {
-  position: relative;
-  /* display:inline-block;  */
-  width: 100%;
-  }
-
-img {
-  width: 100%;
-  max-width:100%;
-}
-h1 {
-  background-color: rgb(65, 132, 153);
-  color: #f1f1f1; /* Grey text */
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right:0; 
-  width:100%;
-  height: auto;
-}
-.responsive {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-}
-
-
-/* .dataTables_filter, .dataTables_info { 
-  display: none; 
-} */
-
-
 /**
 * Template Name: Kelly - v2.1.1
 * Template URL: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/
@@ -210,6 +36,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@media (max-width: 500px) {
+  #main {
+        font-size: 16px;
+  }
+}
+
+
 h{
   font-family: "Kanit", sans-serif;
 }
@@ -225,9 +58,24 @@ body {
 }
 
 #map {
-  height: 72vh;
+  height: 70vh;
   width: 100%;
   /* border-radius: 10px; */
+}
+
+#gwchart{
+  height: 60vh;
+  width: 100%;
+}
+
+.mwqichart{
+  height: 35vh;
+  width: 100%;
+}
+
+.gbchart{
+  height: 50vh;
+  width: 100%;
 }
 
 .chart{
@@ -237,6 +85,17 @@ body {
   border-radius: 15px;
 }
 
+.wqchart{
+  height: 45vh;
+}
+
+.cchart{
+  height: 45vh;
+}
+
+.compareChart{
+  height: 350px;
+}
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -628,6 +487,11 @@ body {
     padding-top: 58px;
   }
 }
+@media (max-width: 500px) {
+  #hero .container {
+    padding-top: 16px;
+  }
+}
 
 #hero h1 {
   margin: 0;
@@ -673,12 +537,13 @@ body {
 @media (max-width: 992px) {
   #hero:before {
     content: "";
-    background: rgba(255, 255, 255, 0.8);
+    /* background: rgba(255, 255, 255, 0.8); */
     position: absolute;
     bottom: 0;
     top: 0;
     left: 0;
     right: 0;
+    backdrop-filter: blur(1px);
   }
   #hero h1 {
     font-size: 28px;
@@ -693,9 +558,9 @@ body {
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
-section {
+/* section {
   padding: 60px 0;
-}
+} */
 
 .section-bg {
   background-color: #e7f8f6;
@@ -782,6 +647,13 @@ section {
     justify-content: flex-end;
   }
 }
+
+@media (min-width: 769px) {
+  .cta .cta-btn-container {
+    font-size: 16px;
+  }
+}
+
 
 /*--------------------------------------------------------------
 # About
@@ -1509,12 +1381,11 @@ section {
   bottom: 0;
   width: 100%;
   background: #e5e6e5;
-  padding: 10px 0;
+  padding: 15px 0;
   color: #222222;
   font-size: 14px;
   text-align: center;
-   
-  }
+}
 
 
 #footer .credits {
@@ -1525,7 +1396,6 @@ section {
 #footer .credits a {
   color: #34b7a7;
 }
-
 
 .card-stats .card-body {
   padding: 15px 15px 0;
@@ -1603,5 +1473,3 @@ td.highlight {
   font-weight: 500;
   line-height: 1
 }
-
-  

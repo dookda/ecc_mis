@@ -30,10 +30,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css">
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css">
-    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
-        charset="utf-8"></script>
+
 
     <!-- amchart -->
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
@@ -65,8 +62,9 @@
     <!-- Template Main CSS File -->
     <!-- <link href="style.css" rel="stylesheet"> -->
     <!-- end Theme bootstrap -->
-    <link rel="stylesheet" href="./../assets/css/style.css" />
-    <link rel="stylesheet" href="./style.css" />
+
+    <link href="./../assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style_gw.css">
 
 </head>
 
@@ -78,17 +76,19 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li class="active"><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
-                    <!-- <li><a href="./../../form_register/profile/index.html"><i
+                    <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+                    <li id="usr1"><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
-                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li> -->
+                    <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -206,6 +206,10 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
+            <p style="text-align: center;">กรุณาเลือกตำแหน่งพื้นที่ที่ท่านสนใจ
+                เพื่อเรียกดูข้อมลและแสดงตำแหน่งบ่อบาดาลในพื้นที่ลงบนแผนที่/ตาราง</p>
             <!-- select(จังหวัด-อำเภอ-ตำบล) -->
             <div class="card-deck p-3 mb-1">
                 <div class="card card-stats">
@@ -238,13 +242,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- แสดงแผนที่ -->
-            <div class="card-deck p-3">
-                <div class="card card-stats">
-                    <div class="card-body p-1" id="map">
-                        <div></div>
+                    <div class="card card-stats">
+                        <div class="card-body p-1">
+                            <div id="map"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -252,38 +253,40 @@
             <!-- หัวข้อ -->
             <div class="container-fluid mt-1 mb-1 center">
                 <br>
-                <h6 style="font-weight: bold">เรียกดูบ่อสังเกตการณ์น้ำบาดาล ตามประเภทข้อมูล</h6>
+                <h6 style="font-weight: bold">เรียกดูค่าพารามิเตอร์ของบ่อสังเกตการณ์</h6>
+                <p>เพื่อเรียกดูข้อมูลบ่อสังเกตการณ์ตามประเภทและแสดงผลข้อมูลลงบนกราฟ</p> <br>
             </div>
 
-            <!-- //Show GW near me ***************** ฝากใส่เพิ่มค่ะ -->
-            <div class="container">
-                <div class="card-deck p-3">
+            <!-- //Show GW near me  -->
+            <div class="container-sec">
+                <div class="card-sec">
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="getshow('showDepth')">
-                            <i class="las las la-swimming-pool p-2" aria-hidden="true"></i>ความลึก</button>
-                    </div>
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showDepth')">
+                            <i class="las las la-swimming-pool p-2" aria-hidden="true"
+                                style="font-size: 20px;"></i>ความลึก</button>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="getshow('showWl')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showWl')">
                             <i class="las la-water p-2" aria-hidden="true"></i>ระดับน้ำ</button>
-                    </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showEc('ec')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="showEc('ec')">
                             <i class="las la-chart-line p-2" aria-hidden="true"></i>ค่าการนำไฟฟ้า</button>
-                    </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="showPh('ph')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="showPh('ph')" id="butph">
                             <i class="las la-tachometer-alt p-2" aria-hidden="true"></i>ค่าความเป็นกรด-ด่าง</button>
-                    </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="getshow('showTemp')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showTemp')">
                             <i class="las la-temperature-high p-2" aria-hidden="true"></i>ค่าอุณหภูมิ</button>
-                    </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="getshow('showTds')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showTds')">
                             <i class="las la-star-half-alt p-2" aria-hidden="true"></i>ค่าความขุ่น</button>
-                    </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info flex-fill" onclick="getshow('showSal')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showSal')">
                             <i class="las la-biohazard p-2" aria-hidden="true"></i>ค่าความเค็ม</button>
                     </div>
 
@@ -292,26 +295,7 @@
 
             <!-- แสดงข้อมูลตารางแต่ละสถานี -->
             <div class="container-fluid mt-3 mb-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                <table id="tab" class="table table-striped table-bordered dt-responsive nowrap"
-                                    style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>รหัสบ่อ</th>
-                                            <th>สถานีตรวจวัด</th>
-                                            <th>ตำบล</th>
-                                            <th>อำเภอ</th>
-                                            <th>จังหวัด</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="row" style="align-items: stretch;">
                     <!-- แสดงข้อมูลกราฟทุกสถานี -->
                     <div class="col-sm">
                         <div class="card card-stats">
@@ -338,6 +322,35 @@
                                 <div id="chart"></div>
                             </div>
                         </div>
+                        <div class="container">
+                            <div class="row" style="align-items: baseline; font-size: 14px;">
+                                <h6 style="font-weight: bold;  font-size: 14px;">หมายเหตุ:</h6>&nbsp;
+                                <p>คลิกปุ่มค่าพารามิเตอร์ด้านบนที่สนใจ เพื่อเรียกดูข้อมูลและแสดงผลลงบนกราฟ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card card-stats">
+                            <div class="card-body ">
+                                <table id="tab" class="table table-striped table-bordered dt-responsive nowrap"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>รหัสบ่อ</th>
+                                            <th>สถานีตรวจวัด</th>
+                                            <th>ตำบล</th>
+                                            <th>อำเภอ</th>
+                                            <th>จังหวัด</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <!--  <div class="row"
+                            style="justify-content: flex-end; align-items: baseline; margin-right: 4px; margin-top: -2px;font-size: 14px;">
+                            <h6 style="font-weight: bold;">แหล่งข้อมูล:</h6>&nbsp;
+                            <P>แหล่งข้อมูล: กรมทรัพยากรน้ำบาดาล ปี2563</P>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -355,7 +368,11 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row" style="align-items: baseline; margin-left: 10px; font-size: 14px;">
+                        <h6 style="font-weight: bold; font-size: 14px;">หมายเหตุ:</h6>&nbsp;
+                        <p>คลิกชื่อสถานีตรวจวัดด้านบนในตารางที่สนใจ เพื่อเรียกดูข้อมูลและแสดงผลลงบนแผนที่/กราฟ
+                        </p>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="row">
@@ -415,7 +432,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="row" style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
+                                <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
+                                <P>กรมทรัพยากรน้ำบาดาล ปี2563</P>
+                                <br>
+                            </div>
+                            <div class="row" style="margin-left: 1%;">
+                                อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                                    href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a></div>
                         </div>
                     </div>
                 </div>
@@ -428,6 +452,12 @@
                             <P>ข้อมูลคุณภาพน้ำบาดาลของบ่อสังเกตการณ์ย้อนหลัง ตั้งแต่ปี 2553-2563</P>
                             <h3><span id="sta_name2"></span></h3>
                         </div>
+
+                    </div>
+                    <div class="row" style="align-items: baseline; margin-left: 10px;">
+                        <h6 style="font-weight: bold;">หมายเหตุ:</h6>&nbsp;
+                        <p>กรุณาคลิก!! ชื่อสถานีตรวจวัดด้านบนในตารางที่สนใจ เพื่อเรียกดูข้อมูลและแสดงผลลงบนแผนที่/กราฟ
+                        </p>
                     </div>
                     <div class="card card-stats text-center">
                         <div class="card-body ">
@@ -438,7 +468,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ค่าความเป็นกรด-ด่าง</h6>
+                                    <h6>ค่าความเป็นกรด-ด่าง (สีแดงเป็นค่าที่เกิน 9.2)</h6>
                                     <div class="chartHist p-0" id="chart7"></div>
                                 </div>
                             </div>
@@ -492,7 +522,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>เหล็ก</h6>
+                                    <h6>เหล็ก (สีแดงเป็นค่าที่เกิน 1 ppm)</h6>
                                     <div class="chartHist p-0" id="chart13"></div>
                                 </div>
                             </div>
@@ -500,7 +530,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>แมงกานีส</h6>
+                                    <h6>แมงกานีส (สีแดงเป็นค่าที่เกิน 1 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart14"></div>
                                 </div>
                             </div>
@@ -510,7 +540,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ซัลเฟต</h6>
+                                    <h6>ซัลเฟต (สีแดงเป็นค่าที่เกิน 250 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart15"></div>
                                 </div>
                             </div>
@@ -518,7 +548,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>คลอไรด์</h6>
+                                    <h6>คลอไรด์ (สีแดงเป็นค่าที่เกิน 600 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart16"></div>
                                 </div>
                             </div>
@@ -528,7 +558,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ฟลูออไรด์</h6>
+                                    <h6>ฟลูออไรด์ (สีแดงเป็นค่าที่เกิน 1.5 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart17"></div>
                                 </div>
                             </div>
@@ -536,7 +566,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ไนเตรต</h6>
+                                    <h6>ไนเตรต (สีแดงเป็นค่าที่เกิน 45 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart18"></div>
                                 </div>
                             </div>
@@ -546,12 +576,14 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ปริมาณสารทั้งหมดที่ละลายได้</h6>
+                                    <h6>ปริมาณสารทั้งหมดที่ละลายได้ (สีแดงเป็นค่าที่เกิน 1500 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart19"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                        href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a>
                 </div>
                 <div class="container-fluid mt-3 mb-6">
                     <div class="card card-stats text-center">
@@ -564,7 +596,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ทองแดง</h6>
+                                    <h6>ทองแดง (สีแดงเป็นค่าที่เกิน 1.5 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart21"></div>
                                 </div>
                             </div>
@@ -572,7 +604,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>สังกะสี</h6>
+                                    <h6>สังกะสี (สีแดงเป็นค่าที่เกิน 15 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart22"></div>
                                 </div>
                             </div>
@@ -582,7 +614,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>สารหนู</h6>
+                                    <h6>สารหนู (สีแดงเป็นค่าที่เกิน 0.05 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart23"></div>
                                 </div>
                             </div>
@@ -590,7 +622,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ตะกั่ว</h6>
+                                    <h6>ตะกั่ว (สีแดงเป็นค่าที่เกิน 0.05 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart24"></div>
                                 </div>
                             </div>
@@ -600,7 +632,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>แคดเมียม</h6>
+                                    <h6>แคดเมียม (สีแดงเป็นค่าที่เกิน 0.05 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart25"></div>
                                 </div>
                             </div>
@@ -608,7 +640,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>โครเมียม</h6>
+                                    <h6>โครเมียม (สีแดงเป็นค่าที่เกิน 0.05 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart26"></div>
                                 </div>
                             </div>
@@ -618,7 +650,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ปรอท</h6>
+                                    <h6>ปรอท (สีแดงเป็นค่าที่เกิน 0.002 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart27"></div>
                                 </div>
                             </div>
@@ -626,7 +658,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>เซเลเนียม</h6>
+                                    <h6>เซเลเนียม (สีแดงเป็นค่าที่เกิน 0.01 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart28"></div>
                                 </div>
                             </div>
@@ -636,7 +668,7 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>นิกเกิล</h6>
+                                    <h6>นิกเกิล (สีแดงเป็นค่าที่เกิน 0.1 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart29"></div>
                                 </div>
                             </div>
@@ -662,14 +694,24 @@
                         <div class="col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-body center">
-                                    <h6>ไซยาไนด์</h6>
+                                    <h6>ไซยาไนด์ (สีแดงเป็นค่าที่เกิน 0.005 mg/l)</h6>
                                     <div class="chartHist p-0" id="chart32"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row" style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
+                        <h6 style="font-weight: bold;">ที่มาของแหล่งข้อมูล:</h6>&nbsp;
+                        <P>กรมทรัพยากรน้ำบาดาล ปี2563</P>
+                        <br>
+                    </div>
+                    <div class="row" style="margin-left: 1%;">
+                        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                            href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a></div>
                 </div>
             </div>
+            <br>
+            <br>
         </section>
     </main>
     <div class="container-fluid mt-3 mb-6">
@@ -716,6 +758,10 @@
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 
 <script src="./script.js"></script>
 

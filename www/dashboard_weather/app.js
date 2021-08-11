@@ -2,6 +2,14 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 
+if (urname) {
+  $("#nav").append(`<li><a href="./../../form_register/profile/index.html"><i
+      class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>
+    </a></li>
+    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+    ออกจากระบบ</a></li>`);
+}
+
 // $("#usrname").text(urname);
 // urid ? null : location.href = "./../../form_register/login/index.html";
 

@@ -1,7 +1,20 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-// $("#usrname").text(urname);
+$("#usrname").text(urname);
+// urid ? null : location.href = "./../../form_register/login/index.html";
+$("#usr1").hide()
+$("#usr2").hide()
+
+if (urname !== null) {
+    $("#usr1").show();
+    $("#usr2").show();
+    $("#login").hide();
+    $("#usrname").text(urname);
+}
+// if (eecauth !== "admin" && eecauth !== "office") {
+//     location.href = "./../../form_register/login/index.html";
+// }
 // urid ? null : location.href = "./../../form_register/login/index.html";
 
 // const url = "http://localhost:3000/"
@@ -9,7 +22,7 @@ const url = "https://eec-onep.online:3700";
 
 let map = L.map('map', {
     center: [13.156242, 101.339052],
-    zoom: 10,
+    zoom: 9,
     // layers: [CartoDB_Positron, marker]
 })
 
@@ -24,40 +37,56 @@ var ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}", {
     subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    maxZoom: 18,
+    minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    maxZoom: 14,
+    minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-
 
 var baseMaps = {
     "Mapbox": CartoDB_Positron.addTo(map),
     "Google Hybrid": ghyb
 }
 const overlayMaps = {
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map),
     "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+    "ขอบเขตตำบล": tam.addTo(map),
 };
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
     collapsed: true
 }).addTo(map);
+
+var legend = L.control({ position: "bottomright" });
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>สัญลักษณ์</h4>";
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+    div.innerHTML += '<i style="background: #FD7231; border-radius: 50%; border-style: solid; border-width: 1.5px;"></i><span>บ่อสังเกตการณ์</span><br>';
+    return div;
+};
+legend.addTo(map);
 
 function onLocationFound(e) {
     var radius = e.accuracy;
@@ -90,13 +119,16 @@ lc.start();
 $("#pro").on("change", function () {
     getPro(this.value)
     zoomExtent("pro", this.value)
+    seclectdata("pro", this.value);
 });
 $("#amp").on("change", function () {
     getAmp(this.value)
     zoomExtent("amp", this.value)
+    seclectdata("amp", this.value);
 });
 $("#tam").on("change", function () {
     zoomExtent("tam", this.value)
+    seclectdata("tam", this.value);
 });
 // const url = "https://eec-onep.online:3700";
 let zoomExtent = (lyr, code) => {
@@ -137,6 +169,7 @@ let rmLyr = () => {
     })
 }
 
+
 function zoomTo(elat, lng) {
     // console.log(elat, elng)
     map.setView(new L.LatLng(lat, lng), 12);
@@ -154,10 +187,10 @@ const geojsonMarkerOptions = {
     fillOpacity: 0.5,
 }
 
-const api_1 = "https://eec-onep.online:3700/api/get-water-near/"
-const api_2 = "https://eec-onep.online:3700/api/underWater/"
-const api_3 = "https://eec-onep.online:3700/api/rankWater/"
-const api_4 = "https://eec-onep.online:3700/form_gw/getintro"
+const api_1 = url + "/api/get-water-near/";
+const api_2 = url + "/api/underWater/";
+const api_3 = url + "/api/rankWater/";
+const api_4 = url + "/form_gw/getintro";
 let nearData = async (r) => {
     let location = {
         lat: r.latlng.lat,
@@ -518,7 +551,7 @@ barChart = async (data, unit, title, header) => {
     am4core.options.suppressWarnings = true;
 
     var chart = am4core.create("chart", am4charts.XYChart);
-    chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
+    chart.numberFormatter.numberFormat = "#,###.#' " + unit + "'";
     chart.data = await data;
 
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
@@ -582,13 +615,14 @@ barChart = async (data, unit, title, header) => {
         return { data: data };
     });
 }
-
+let dataurl
 $(document).ready(function getdata() {
     axios.get(api_4).then((r) => {
         var data = r.data.data
         Marker(data)
         Table()
     })
+    dataurl = url + "/form_gw/getintro";
 })
 
 $(document).ready(function showWl_frist() {
@@ -606,80 +640,106 @@ $(document).ready(function showWl_frist() {
         $("#unit").html('ระดับน้ำ (เมตร)');
     })
 })
+let seclectdata = (type, code) => {
+    if (type == "pro" && code !== "eec") {
+        dataurl = url + '/form_gw/getintro/pro/' + code;
+        // console.log(dataurl);
+        table.ajax.url(dataurl).load();
 
+    } else if (type == "pro" && code == 'eec') {
+        dataurl = url + "/form_gw/getintro";
+        // console.log(dataurl);
+        table.ajax.url(dataurl).load();
+
+    }
+    else if (type == "amp") {
+        dataurl = url + '/form_gw/getintro/amp/' + code
+        // console.log(dataurl);
+        table.ajax.url(dataurl).load();
+
+    } else if (type == "tam") {
+        dataurl = url + '/form_gw/getintro/tam/' + code
+        // console.log(dataurl);
+        table.ajax.url(dataurl).load();
+    } else {
+        dataurl = url + "/form_gw/getintro";
+    }
+}
 function Marker(data) {
     var markers = L.markerClusterGroup();
     for (let i = 0; i < data.length; i++) {
-        var marker = L.circleMarker([data[i].lat, data[i].lng]
-            , {
-                radius: 8,
-                fillColor: "#ff7800",
-                color: "#000",
-                weight: 1,
-                opacity: 0.5,
-                fillOpacity: 0.8,
-                data: data
-            }
-            , {
-                statname: data[i].staname
+        if (data[i].lat !== null && data[i].lng !== null) {
+            var marker = L.circleMarker([data[i].lat, data[i].lng]
+                , {
+                    radius: 8,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 0.5,
+                    fillOpacity: 0.8,
+                    data: data
+                }
+                , {
+                    statname: data[i].staname
+                })
+            // marker.addTo(map);
+            marker.bindPopup(`<h6><b>รหัสบ่อ :</b> ${data[i].staid}</h6><h6><b>บ่อสังเกตการณ์ :</b> ${data[i].staname} </h6><h6><b>ที่ตั้ง :</b> ต.${data[i].tambon} อ.${data[i].amphoe} จ.${data[i].prov}</h6>`).openPopup();
+            // 
+            markers.addLayer(marker);
+            marker.on("click", g => {
+                let sta_id = data[i].staid
+                axios.get('https://eec-onep.online:3700/api/underWater/' + sta_id).then((r) => {
+                    let res = r.data.data[0]
+                    // console.log(res)
+                    $("#av-depth").text(r.data.data[0].depth)
+                    $("#av-wl").text(r.data.data[0].wl);
+                    $("#av-ec").text(r.data.data[0].ec);
+                    $("#av-ph").text(r.data.data[0].ph);
+                    $("#av-temp").text(r.data.data[0].temp);
+                    $("#av-tds").text(r.data.data[0].tds);
+                    $("#av-sal").text(r.data.data[0].sal);
+
+                    let Wl = [{
+                        "date": r.data.data[0].wl_date,
+                        "value": r.data.data[0].wl
+                    }];
+                    let Ec = [{
+                        "date": r.data.data[0].ec_date,
+                        "value": r.data.data[0].ec
+                    }];
+                    let Ph = [{
+                        "date": r.data.data[0].ph_date,
+                        "value": r.data.data[0].ph
+                    }];
+                    let Temp = [{
+                        "date": r.data.data[0].temp_date,
+                        "value": r.data.data[0].temp
+                    }];
+                    let Tds = [{
+                        "date": r.data.data[0].tds_date,
+                        "value": r.data.data[0].tds
+                    }];
+                    let Sal = [{
+                        "date": r.data.data[0].sal_date,
+                        "value": r.data.data[0].sal
+                    }];
+
+                    chartTemplate(Wl, "chart1");
+                    chartTemplate(Ec, "chart2");
+                    chartTemplate(Ph, "chart3");
+                    chartTemplate(Temp, "chart4");
+                    chartTemplate(Tds, "chart5");
+                    chartTemplate(Sal, "chart6");
+
+                })
+                var staname_t = 'sta_name'
+                staname_t = data[i].station_name + "\nตำบล" + data[i].tambon + "\nอำเภอ" + data[i].amphoe + "\nจังหวัด" + data[i].province
+                document.getElementById('sta_name').innerHTML = staname_t;
+
+                $("#timeline").hide()
+                $("#realtime").show()
             })
-        // marker.addTo(map);
-        marker.bindPopup(`<h6><b>รหัสบ่อ :</b> ${data[i].staid}</h6><h6><b>บ่อสังเกตการณ์ :</b> ${data[i].staname} </h6><h6><b>ที่ตั้ง :</b> ต.${data[i].tambon} อ.${data[i].amphoe} จ.${data[i].prov}</h6>`).openPopup();
-        // 
-        markers.addLayer(marker);
-        marker.on("click", g => {
-            let sta_id = data[i].staid
-            axios.get('https://eec-onep.online:3700/api/underWater/' + sta_id).then((r) => {
-                let res = r.data.data[0]
-                // console.log(res)
-                $("#av-depth").text(r.data.data[0].depth)
-                $("#av-wl").text(r.data.data[0].wl);
-                $("#av-ec").text(r.data.data[0].ec);
-                $("#av-ph").text(r.data.data[0].ph);
-                $("#av-temp").text(r.data.data[0].temp);
-                $("#av-tds").text(r.data.data[0].tds);
-                $("#av-sal").text(r.data.data[0].sal);
-
-                let Wl = [{
-                    "date": r.data.data[0].wl_date,
-                    "value": r.data.data[0].wl
-                }];
-                let Ec = [{
-                    "date": r.data.data[0].ec_date,
-                    "value": r.data.data[0].ec
-                }];
-                let Ph = [{
-                    "date": r.data.data[0].ph_date,
-                    "value": r.data.data[0].ph
-                }];
-                let Temp = [{
-                    "date": r.data.data[0].temp_date,
-                    "value": r.data.data[0].temp
-                }];
-                let Tds = [{
-                    "date": r.data.data[0].tds_date,
-                    "value": r.data.data[0].tds
-                }];
-                let Sal = [{
-                    "date": r.data.data[0].sal_date,
-                    "value": r.data.data[0].sal
-                }];
-
-                chartTemplate(Wl, "chart1");
-                chartTemplate(Ec, "chart2");
-                chartTemplate(Ph, "chart3");
-                chartTemplate(Temp, "chart4");
-                chartTemplate(Tds, "chart5");
-                chartTemplate(Sal, "chart6");
-
-            })
-            var staname_t = 'sta_name'
-            staname_t = data[i].station_name + "\nตำบล" + data[i].tambon + "\nอำเภอ" + data[i].amphoe + "\nจังหวัด" + data[i].province
-            document.getElementById('sta_name').innerHTML = staname_t;
-
-            $("#timeline").hide()
-            $("#realtime").show()
-        })
+        }
     }
     map.addLayer(markers);
     // var overlays = {
@@ -687,6 +747,7 @@ function Marker(data) {
     // };
     lyrControl.addOverlay(markers, "บ่อสังเกตการณ์")
 }
+let table
 function Table() {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -707,15 +768,15 @@ function Table() {
             }
         }
     });
-    let table = $('#tab').DataTable({
+    table = $('#tab').DataTable({
         language: {
             processing: true,
         },
         // data: data,
         ajax: {
             type: "get",
-            url: api_4,
-            data: { userid: "" },
+            url: dataurl,
+            data: { userid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -827,32 +888,32 @@ let getData_Tab = async (r) => {
                 datasen1_cn.push({ "date": i.gwdate, "value": Number(i.cn) });
             })
             //กลุ่ม1
-            showChart_1S(datasen1_ph, "chart7", "ph", "", 8.5, 9.2);
+            showChart_1S(datasen1_ph, "chart7", "ph", "", 5, 9.2);
             showChart_1S(datasen1_ec, "chart8", "EC", "µs/cm", 9999, 9999);
             showChart_1S(datasen1_cal, "chart9", "Calcium", "mg/l", 9999, 9999);
             showChart_1S(datasen1_magne, "chart10", "Magnesium", "mg/l", 9999, 9999)
             showChart_1S(datasen1_sodium, "chart11", " Sodium", "mg/l", 9999, 9999)
             showChart_1S(datasen1_pota, "chart12", "Potassium", "mg/l", 9999, 9999)
             showChart_1S(datasen1_fe, "chart13", "Iron", "mg/l", 0.5, 1)
-            showChart_1S(datasen1_mnn, "chart14", "Manganese", "mg/l", 0.3, 0.5)
+            showChart_1S(datasen1_mnn, "chart14", "Manganese", "mg/l", 0.5, 1)
             showChart_1S(datasen1_so4, "chart15", "Sulfate", "mg/l", 200, 250)
             showChart_1S(datasen1_cl, "chart16", "Chloride", "mg/l", 200, 600)
             showChart_1S(datasen1_fluor, "chart17", "Fluoride", "mg/l", 1, 1.5)
-            showChart_1S(datasen1_no3, "chart18", "Nitrates", "mg/l", 45, 45)
+            showChart_1S(datasen1_no3, "chart18", "Nitrates", "mg/l", 5, 45)
             showChart_1S(datasen1_ts, "chart19", "Total Dissolved Solids", "mg/l", 750, 1500)
             // กลุ่ม 2
-            showChart_1S(datasen1_cu, "chart21", "Dissolved Copper", "mg/l", 1, 1);
-            showChart_1S(datasen1_zn, "chart22", "Dissolved Zinc", "mg/l", 1, 1);
+            showChart_1S(datasen1_cu, "chart21", "Dissolved Copper", "mg/l", 0.1, 1.5);
+            showChart_1S(datasen1_zn, "chart22", "Dissolved Zinc", "mg/l", 1, 15);
             showChart_1S(datasen1_ars, "chart23", "Dissolved Arsenic", "mg/l", 1, 1);
-            showChart_1S(datasen1_pb, "chart24", "Dissolved Lead", "mg/l", 1, 1);
-            showChart_1S(datasen1_cd, "chart25", "Cadmium", "mg/l", 1, 1);
-            showChart_1S(datasen1_cm, "chart26", "Chromium", "mg/l", 1, 1);
-            showChart_1S(datasen1_hg, "chart27", "Dissolved Mercury", "µg/l", 1, 1);
-            showChart_1S(datasen1_se, "chart28", "Dissolved Selenium", "mg/l", 1, 1);
+            showChart_1S(datasen1_pb, "chart24", "Dissolved Lead", "mg/l", 0.01, 0.05);
+            showChart_1S(datasen1_cd, "chart25", "Cadmium", "mg/l", 0.001, 0.05);
+            showChart_1S(datasen1_cm, "chart26", "Chromium", "mg/l", 0.01, 0.05);
+            showChart_1S(datasen1_hg, "chart27", "Dissolved Mercury", "µg/l", 0.001, 0.002);
+            showChart_1S(datasen1_se, "chart28", "Dissolved Selenium", "mg/l", 0.001, 0.01);
             showChart_1S(datasen1_nc, "chart29", "Dissolved Nickel", "mg/l", 1, 1);
             showChart_1S(datasen1_sv, "chart30", "Dissolved Silver", "mg/l", 1, 1);
             showChart_1S(datasen1_br, "chart31", "Dissolved Barium", "mg/l", 1, 1);
-            showChart_1S(datasen1_cn, "chart32", "Dissolved Cyanide", "mg/l", 1, 1);
+            showChart_1S(datasen1_cn, "chart32", "Dissolved Cyanide", "mg/l", 0.001, 0.005);
 
         }
         else if (sen.length > 1) {
@@ -971,32 +1032,33 @@ let getData_Tab = async (r) => {
                 datasen2_br.push({ "date": i.gwdate, "value": Number(i.br) });
                 datasen2_cn.push({ "date": i.gwdate, "value": Number(i.cn) });
             })
-            showChart_2S(datasen1_ph, datasen2_ph, "chart7", "ph", "", 8.5, 9.2);
+            //กลุ่ม1
+            showChart_2S(datasen1_ph, datasen2_ph, "chart7", "ph", "", 5, 9.2);
             showChart_2S(datasen1_ec, datasen2_ec, "chart8", "EC", "µs/cm", 9999, 9999);
             showChart_2S(datasen1_cal, datasen2_cal, "chart9", "Calcium", "mg/l", 9999, 9999);
             showChart_2S(datasen1_magne, datasen2_magne, "chart10", "Magnesium", "mg/l", 9999, 9999)
             showChart_2S(datasen1_sodium, datasen2_sodium, "chart11", " Sodium", "mg/l", 9999, 9999)
             showChart_2S(datasen1_pota, datasen2_pota, "chart12", "Potassium", "mg/l", 9999, 9999)
             showChart_2S(datasen1_fe, datasen2_fe, "chart13", "Iron", "mg/l", 0.5, 1)
-            showChart_2S(datasen1_mnn, datasen2_mnn, "chart14", "Manganese", "mg/l", 0.3, 0.5)
+            showChart_2S(datasen1_mnn, datasen2_mnn, "chart14", "Manganese", "mg/l", 0.5, 1)
             showChart_2S(datasen1_so4, datasen2_so4, "chart15", "Sulfate", "mg/l", 200, 250)
             showChart_2S(datasen1_cl, datasen2_cl, "chart16", "Chloride", "mg/l", 200, 600)
             showChart_2S(datasen1_fluor, datasen2_fluor, "chart17", "Fluoride", "mg/l", 1, 1.5)
-            showChart_2S(datasen1_no3, datasen2_no3, "chart18", "Nitrates", "mg/l", 45, 45)
+            showChart_2S(datasen1_no3, datasen2_no3, "chart18", "Nitrates", "mg/l", 5, 45)
             showChart_2S(datasen1_ts, datasen2_ts, "chart19", "Total Dissolved Solids", "mg/l", 750, 1500)
-            // console.log(datasen1, datasen2)
-            showChart_2S(datasen1_cu, datasen2_cu, "chart21", "Dissolved Copper", "mg/l", 1, 1);
-            showChart_2S(datasen1_zn, datasen2_zn, "chart22", "Dissolved Zinc", "mg/l", 1, 1);
+            // กลุ่ม 2
+            showChart_2S(datasen1_cu, datasen2_cu, "chart21", "Dissolved Copper", "mg/l", 0.1, 1.5);
+            showChart_2S(datasen1_zn, datasen2_zn, "chart22", "Dissolved Zinc", "mg/l", 1, 15);
             showChart_2S(datasen1_ars, datasen2_ars, "chart23", "Dissolved Arsenic", "mg/l", 1, 1);
-            showChart_2S(datasen1_pb, datasen2_pb, "chart24", "Dissolved Lead", "mg/l", 1, 1);
-            showChart_2S(datasen1_cd, datasen2_cd, "chart25", "Cadmium", "mg/l", 1, 1);
-            showChart_2S(datasen1_cm, datasen2_cm, "chart26", "Chromium", "mg/l", 1, 1);
-            showChart_2S(datasen1_hg, datasen2_hg, "chart27", "Dissolved Mercury", "µg/l", 1, 1);
-            showChart_2S(datasen1_se, datasen2_se, "chart28", "Dissolved Selenium", "mg/l", 1, 1);
+            showChart_2S(datasen1_pb, datasen2_pb, "chart24", "Dissolved Lead", "mg/l", 0.01, 0.05);
+            showChart_2S(datasen1_cd, datasen2_cd, "chart25", "Cadmium", "mg/l", 0.001, 0.05);
+            showChart_2S(datasen1_cm, datasen2_cm, "chart26", "Chromium", "mg/l", 0.01, 0.05);
+            showChart_2S(datasen1_hg, datasen2_hg, "chart27", "Dissolved Mercury", "µg/l", 0.001, 0.002);
+            showChart_2S(datasen1_se, datasen2_se, "chart28", "Dissolved Selenium", "mg/l", 0.001, 0.01);
             showChart_2S(datasen1_nc, datasen2_nc, "chart29", "Dissolved Nickel", "mg/l", 1, 1);
             showChart_2S(datasen1_sv, datasen2_sv, "chart30", "Dissolved Silver", "mg/l", 1, 1);
             showChart_2S(datasen1_br, datasen2_br, "chart31", "Dissolved Barium", "mg/l", 1, 1);
-            showChart_2S(datasen1_cn, datasen2_cn, "chart32", "Dissolved Cyanide", "mg/l", 1, 1);
+            showChart_2S(datasen1_cn, datasen2_cn, "chart32", "Dissolved Cyanide", "mg/l", 0.001, 0.005);
         }
     })
     // console.log(sta_id)
@@ -1012,7 +1074,7 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
     // am4core.options.deferredDelay = 0;
 
     var chart = am4core.create(div, am4charts.XYChart);
-    chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
+    chart.numberFormatter.numberFormat = "#,###.#' " + unit + "'";
 
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -1117,7 +1179,7 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
     am4core.options.suppressWarnings = true;
 
     var chart = am4core.create(div, am4charts.XYChart);
-    chart.numberFormatter.numberFormat = "#.#' " + unit + "'";
+    chart.numberFormatter.numberFormat = "#.####' " + unit + "'";
 
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());

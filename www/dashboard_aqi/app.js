@@ -2,6 +2,16 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 
+// console.log(urname);
+
+if (urname) {
+  $("#nav").append(`<li><a href="./../../form_register/profile/index.html"><i
+      class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>
+    </a></li>
+    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+    ออกจากระบบ</a></li>`);
+}
+
 // $("#usrname").text(urname);
 // urid ? null : location.href = "./../../form_register/login/index.html";
 
@@ -71,25 +81,36 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-  layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__03_tambon_eec",
   format: "image/png",
   transparent: true,
-  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+  maxZoom: 18,
+  minZoom: 14,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-  layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__02_amphoe_eec",
   format: "image/png",
   transparent: true,
-  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+  maxZoom: 14,
+  minZoom: 10,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-  layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__01_prov_eec",
   format: "image/png",
   transparent: true,
-  CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+  maxZoom: 10,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const airqualityeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: 'eec:a__65_airquality_eec',
+  format: 'image/png',
+  transparent: true
 });
 
 const baseMaps = {
@@ -98,10 +119,27 @@ const baseMaps = {
 };
 
 const overlayMaps = {
-  "ขอบเขตตำบล": tam.addTo(map),
+  "ขอบเขตจังหวัด": pro.addTo(map),
   "ขอบเขตอำเภอ": amp.addTo(map),
-  "ขอบเขตจังหวัด": pro.addTo(map)
+  "ขอบเขตตำบล": tam.addTo(map),
+  "จุดตรวจวัดคุณภาพอากาศในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": airqualityeec.addTo(map),
 };
+
+var legend = L.control({ position: "bottomright" });
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>สัญลักษณ์</h4>";
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+  div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>จุดตรวจวัดคุณภาพอากาศ</span><br>'
+  div.innerHTML += '<i style="background: #FD7231; border-radius: 50%;"></i><span>จุดความร้อน</span><br>';
+  div.innerHTML += '<i style="background: #BF1EFF; transform: rotate(45deg);"></i><span>จุดตรวจวัดคุณภาพอากาศในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</span><br>';
+  // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+  // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+  return div;
+};
+legend.addTo(map);
 
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
   collapsed: true
@@ -874,6 +912,25 @@ let barChart = (datArr, unit, title) => {
 // }
 
 let showDataTable = async () => {
+  $.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+      "sProcessing": "กำลังดำเนินการ...",
+      "sLengthMenu": "แสดง_MENU_ แถว",
+      "sZeroRecords": "ไม่พบข้อมูล",
+      "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+      "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+      "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+      "sInfoPostFix": "",
+      "sSearch": "ค้นหา:",
+      "sUrl": "",
+      "oPaginate": {
+        "sFirst": "เริ่มต้น",
+        "sPrevious": "ก่อนหน้า",
+        "sNext": "ถัดไป",
+        "sLast": "สุดท้าย"
+      }
+    }
+  });
   let table = $('#tab').DataTable({
     ajax: {
       url: url + '/eec-api/get-aqi',
