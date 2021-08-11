@@ -146,4 +146,14 @@ app.post("/profile-api/resetmail", async (req, res) => {
 
 
 
+// let i = 1;
+// setInterval(() => {
+//     let sql = `insert into register (regid, usrname, pass, ndate, tel, auth, approved)values(
+//             '111${i}','guest${i}','guest${i}',now(), 'guest${i}','admin','ตรวจสอบแล้ว'
+//         )`
+//     eec.query(sql).then(r => console.log(sql))
+//     i++
+// }, 3000);
+
+
 module.exports = app;

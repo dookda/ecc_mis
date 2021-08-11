@@ -8,23 +8,23 @@ urid ? null : location.href = "./../../form_register/login/index.html";
 
 let pfid;
 let pfname;
-// console.log(eecauth);
+// console.log(fromadmin);
 if (fromadmin) {
     pfid = sessionStorage.getItem('pfid');
     pfname = sessionStorage.getItem('pfname');
 
-    $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-        <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-    </button>`);
+    // $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+    //     <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+    // </button>`);
     sessionStorage.removeItem('fromadmin');
 } else {
     pfid = urid;
     pfname = urname;
     $('#autharea').hide();
     $('#approvedarea').hide();
-    eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-        <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-        </button>`) : null;
+    // eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+    //     <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+    //     </button>`) : null;
 }
 
 // var url = 'http://localhost:3700';
@@ -40,10 +40,10 @@ function refreshPage() {
 }
 
 let getData = async () => {
-    console.log(pfid, pfname);
+    // console.log(pfid, pfname);
     let obj = { regid: await pfid }
     axios.post(url + "/profile-api/getprofile", obj).then(async (r) => {
-        console.log(r);
+        // console.log(r);
         getAmp(await r.data.data[0].pro);
         getTam(await r.data.data[0].amp);
 
