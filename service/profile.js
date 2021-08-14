@@ -145,8 +145,7 @@ app.post("/profile-api/resetmail", async (req, res) => {
 })
 
 
-
-// let i = 71;
+// let i = 101;
 // setInterval(() => {
 //     let sql = `insert into register (regid, usrname, pass, ndate, tel, auth, approved)values(
 //             '111${i}','guest${i}','guest${i}',now(), 'guest${i}','admin','ตรวจสอบแล้ว'

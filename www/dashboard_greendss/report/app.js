@@ -177,7 +177,8 @@ map.on('pm:create', e => {
 
     tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
 
-    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2)}</li>`);
+
+    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)}</li>`);
 
     e.layer.on('pm:edit', function (x) {
         e.layer.options.name2 = "da";
