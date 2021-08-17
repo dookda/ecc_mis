@@ -17,10 +17,7 @@ let map = L.map('map', {
     zoom: 9
 });
 
-$(document).ready(() => {
-    loadMap();
-    
-});
+
 
 
 let marker, gps, dataurl;
@@ -28,70 +25,72 @@ let marker, gps, dataurl;
 // const url = 'http://localhost:3700';
 const url = "https://eec-onep.online:3700";
 
-function loadMap() {
-    var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1
-    });
 
-    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
 
-    const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-        layers: "eec:a__03_tambon_eec",
-        format: "image/png",
-        transparent: true,
-        maxZoom: 18,
-        minZoom: 14,
-        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
 
-    const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-        layers: "eec:a__02_amphoe_eec",
-        format: "image/png",
-        transparent: true,
-        maxZoom: 14,
-        minZoom: 10,
-        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    maxZoom: 18,
+    minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 
-    const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-        layers: "eec:a__01_prov_eec",
-        format: "image/png",
-        transparent: true,
-        maxZoom: 10,
-        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
-    var baseMap = {
-        "Mapbox": mapbox.addTo(map),
-        "google Hybrid": ghyb
-    }
-    var overlayMap = {
-        "ขอบเขตจังหวัด": pro.addTo(map),
-        "ขอบเขตอำเภอ": amp.addTo(map),
-        "ขอบเขตตำบล": tam.addTo(map),
-    }
-    L.control.layers(baseMap, overlayMap).addTo(map);
-    var legend = L.control({ position: "bottomright" });
-    legend.onAdd = function (map) {
-        var div = L.DomUtil.create("div", "legend");
-        div.innerHTML += "<h4>สัญลักษณ์</h4>";
-        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-        return div;
-    };
-    legend.addTo(map);
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    maxZoom: 14,
+    minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+let fc = L.featureGroup();
+var baseMap = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
 }
+var overlayMap = {
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตตำบล": tam.addTo(map),
+    "แปลงป่าครอบครัว": fc.addTo(map)
+}
+L.control.layers(baseMap, overlayMap).addTo(map);
+var legend = L.control({ position: "bottomright" });
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>สัญลักษณ์</h4>";
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+    div.innerHTML += '<i style="background: #feff17; border-color: #28a745; border-style: dotted; border-width: 2.5px;"></i><span>ป่าครอบครัว</span><br>';
+    return div;
+};
+legend.addTo(map);
 
-let fc = L.featureGroup().addTo(map);
 
 let datArr = [];
 
@@ -100,33 +99,72 @@ var day = ("0" + now.getDate()).slice(-2);
 var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
-    // console.log(r.data.data)
-    r.data.data.map(i => {
-        if (i.geom) {
-            let dat = {
-                "type": "Feature",
-                "geometry": JSON.parse(i.geom),
-                "properties": {
-                    "name": i.ffid
-                }
+// axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
+//     r.data.data.map(i => {
+//         if (i.geom) {
+
+//             let dat = {
+//                 "type": "Feature",
+//                 "geometry": JSON.parse(i.geom),
+//                 "properties": {
+//                     "name": i.ffid
+//                 }
+//             }
+
+//             let json = L.geoJSON(dat, {
+//                 style: {
+//                     fillColor: "yellow",
+//                     weight: 2,
+//                     opacity: 1,
+//                     color: 'green',
+//                     dashArray: '3',
+//                     fillOpacity: 0.7
+//                 }
+//             });
+//             json.bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.fname}</h6><h6><b>ประเภท :</b> ${i.flandtype}</h6>`).addTo(fc);// $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
+//         }
+//     })
+//     map.fitBounds(fc.getBounds());
+// });
+
+// fc.on("click", (e) => {
+// console.log(e.layer.toGeoJSON());
+// });
+
+let showParcel = (data) => {
+    map.eachLayer(i => {
+        i.options.name == "ff" ? map.removeLayer(i) : null;
+    });
+
+    data.map(i => {
+        console.log(i);
+        let a = L.geoJSON(JSON.parse(i.geom), {
+            name: "ff",
+            style: {
+                fillColor: "yellow",
+                weight: 2,
+                opacity: 1,
+                color: 'green',
+                dashArray: '3',
+                fillOpacity: 0.7
+            },
+            onEachFeature: (feature, layer) => {
+
+                let popupContent = `<span style="font-family: 'Kanit'"><b>ประเภทและชนิดของป่าครอบครัว</b> 
+                <br>ประเภท: ${i.ftype} 
+                <br>ชื่อชนิด: ${i.fplant}<span>`;
+                layer.bindPopup(popupContent);
             }
-
-            let json = L.geoJSON(dat);
-            json
-            .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.fname}</h6><h6><b>ประเภท :</b> ${i.flandtype}</h6>`)
-            .addTo(fc);
-            // $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
-        }
-        // console.log(i);
+        });
+        a.addTo(fc)
     })
-    map.fitBounds(fc.getBounds());
-    // console.log(fc);
-});
+}
 
-fc.on("click", (e) => {
-    console.log(e.layer.toGeoJSON());
-});
+
+let zoomBound = (d) => {
+    let b = L.geoJSON(JSON.parse(d))
+    map.fitBounds(b.getBounds());
+}
 
 let getData = async (data) => {
     let eat = 0;
@@ -160,8 +198,9 @@ let getData = async (data) => {
             val: econ
         }
     ];
-    console.log(dataArr);
+    // console.log(dataArr);
     showChart(dataArr);
+    showParcel(data);
 }
 
 let showChart = (dataArr) => {
@@ -241,7 +280,9 @@ $(document).ready(function () {
             }, {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                    return `
+                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${JSON.stringify(row.geom)})'>ซูมแปลงป่าครอบครัว</button>
+                    <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 // width: "15%"
             }
@@ -259,6 +300,7 @@ $(document).ready(function () {
         let data = table.rows({ search: 'applied' }).data();
         getData(data);
         // getMarker(data)
+        // console.log(data)
     });
 })
 
