@@ -8,18 +8,20 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
-$(document).ready(() => {
-    loadMap();
-});
-
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.196768,
+    lng: 101.364720
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 9
 });
+
+$(document).ready(() => {
+    loadMap();
+    
+});
+
 
 let marker, gps, dataurl;
 
@@ -42,19 +44,51 @@ function loadMap() {
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true
+    const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__03_tambon_eec",
+        format: "image/png",
+        transparent: true,
+        maxZoom: 18,
+        minZoom: 14,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
+
+    const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__02_amphoe_eec",
+        format: "image/png",
+        transparent: true,
+        maxZoom: 14,
+        minZoom: 10,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
+
+    const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__01_prov_eec",
+        format: "image/png",
+        transparent: true,
+        maxZoom: 10,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
     var baseMap = {
         "Mapbox": mapbox.addTo(map),
         "google Hybrid": ghyb
     }
     var overlayMap = {
-        "ขอบเขตจังหวัด": pro
+        "ขอบเขตจังหวัด": pro.addTo(map),
+        "ขอบเขตอำเภอ": amp.addTo(map),
+        "ขอบเขตตำบล": tam.addTo(map),
     }
     L.control.layers(baseMap, overlayMap).addTo(map);
+    var legend = L.control({ position: "bottomright" });
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h4>สัญลักษณ์</h4>";
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        return div;
+    };
+    legend.addTo(map);
 }
 
 let fc = L.featureGroup().addTo(map);
@@ -67,6 +101,7 @@ var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
 axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
+    // console.log(r.data.data)
     r.data.data.map(i => {
         if (i.geom) {
             let dat = {
@@ -78,7 +113,9 @@ axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
             }
 
             let json = L.geoJSON(dat);
-            json.addTo(fc);
+            json
+            .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.fname}</h6><h6><b>ประเภท :</b> ${i.flandtype}</h6>`)
+            .addTo(fc);
             // $("#listItem").append(`<a class="list-group-item list-group-item-action" onclick="getParcel(${i.ffid})">${i.ffid}</a>`);
         }
         // console.log(i);
@@ -97,7 +134,7 @@ let getData = async (data) => {
     let herb = 0;
     let econ = 0;
     await data.map(i => {
-        console.log(i);
+        // console.log(i);
         eat += Number(i.eat);
         use += Number(i.use);
         econ += Number(i.econ);
@@ -144,65 +181,86 @@ let showChart = (dataArr) => {
     series.hiddenState.properties.endAngle = -90;
     chart.legend = new am4charts.Legend();
 }
-
-let table = $('#myTable').DataTable({
-    ajax: {
-        type: "POST",
-        url: url + '/ff-api/getalldaily',
-        data: { usrid: urid },
-        dataSrc: 'data'
-    },
-    columns: [
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${meta.row + 1}`
+$(document).ready(function () {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
             }
-        },
-        { data: 'fplant' },
-        // { data: 'ftype' },
-        { data: 'date' },
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.eat} ${row.eat_unit} `
-            }
-        }, {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.herb} ${row.herb_unit}`
-            }
-        }, {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.use} ${row.use_unit}`
-            }
-        }, {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.econ}  ${row.econ_unit}`
-            }
-        }, {
-            data: null,
-            render: function (data, type, row, meta) {
-                return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-            },
-            // width: "15%"
         }
-    ],
-    searching: true,
-    scrollX: true,
-    dom: 'Bfrtip',
-    buttons: [
-        'excel', 'print'
-    ],
-    // order: [2, 'asc'],
-});
+    });
+    let table = $('#myTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/ff-api/getalldaily',
+            data: { usrid: urid },
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
+            { data: 'fplant' },
+            // { data: 'ftype' },
+            { data: 'date' },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.eat} ${row.eat_unit} `
+                }
+            }, {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.herb} ${row.herb_unit}`
+                }
+            }, {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.use} ${row.use_unit}`
+                }
+            }, {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.econ}  ${row.econ_unit}`
+                }
+            }, {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "15%"
+            }
+        ],
+        searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
+        // order: [2, 'asc'],
+    });
 
-table.on('search.dt', function () {
-    let data = table.rows({ search: 'applied' }).data();
-    getData(data);
-});
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data();
+        getData(data);
+        // getMarker(data)
+    });
+})
 
 let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id);
@@ -233,3 +291,24 @@ let deleteValue = () => {
     })
 }
 
+// let getMarker = (d) => {
+//     map.eachLayer(i => {
+//         i.options.name == "marker" ? map.removeLayer(i) : null;
+//     });
+//     console.log(d)
+//     d.map(i => {
+//         if (i.geom) {
+//             let dat = {
+//                 "type": "Feature",
+//                 "geometry": JSON.parse(i.geom),
+//                 "properties": {
+//                     "name": i.ffid
+//                 }
+//             }
+
+//             let json = L.geoJSON(dat);
+//             json
+//             // .bindPopup(`<h6><b>ชื่อพืช :</b> ${i.typeag}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+//             .addTo(map);}
+//     })
+// }

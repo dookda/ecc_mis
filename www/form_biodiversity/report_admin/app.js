@@ -43,27 +43,46 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    maxZoom: 18,
+    minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    maxZoom: 14,
+    minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-
+// const specieseec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+//     layers: 'eec:a__66_species_eec',
+//     format: 'image/png',
+//     transparent: true
+// });
+// const naturaleec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+//     layers: 'eec:a__71_natural_eec',
+//     format: 'image/png',
+//     transparent: true
+// });
+// const wetlandeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+//     layers: 'eec:a__80_wetland_eec',
+//     format: 'image/png',
+//     transparent: true
+// });
 let lyrs = L.featureGroup().addTo(map)
 
 var baseMap = {
@@ -71,13 +90,35 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 
+let specieseec = L.featureGroup();
+let naturaleec = L.featureGroup();
+let wetlandeec = L.featureGroup();
+
 var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตจังหวัด": pro.addTo(map),
     "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+    "ขอบเขตตำบล": tam.addTo(map),
+    "ชนิดพันธุ์สำคัญ หายาก และชีวภาพที่มีความสำคัญในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": specieseec.addTo(map),
+    "ตำแหน่งแหล่งธรรมชาติในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": naturaleec.addTo(map),
+    "พื้นที่ชุ่มน้ำ": wetlandeec.addTo(map),
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
+
+var legend = L.control({ position: "bottomleft" });
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>สัญลักษณ์</h4>";
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+    div.innerHTML += '<img src="./../../marker/forest2.png" width="10px"><span>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</span><br>';
+    div.innerHTML += '<img src="./../../marker/mountains.png" width="10px"><span>ตำแหน่งแหล่งธรรมชาติ</span><br>';
+    div.innerHTML += '<img src="./../../marker/grass.png" width="10px"></i><span>พื้นที่ชุ่มน้ำ</span><br>';
+    div.innerHTML += '<img src="./Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+    return div;
+};
+legend.addTo(map);
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
@@ -106,6 +147,25 @@ let deleteValue = () => {
 
 
 let loadTable = () => {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
     let dtable = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
@@ -340,7 +400,109 @@ let pieChart = (div, val) => {
     chart.legend = new am4charts.Legend();
 }
 
+let wfs = "https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputFormat=application%2Fjson"
 
+
+// div.innerHTML += '<img src="./../../marker/forest2.png" width="10px"><span>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</span><br>';
+// div.innerHTML += '<img src="./../../marker/mountains.png" width="10px"><span>ตำแหน่งแหล่งธรรมชาติ</span><br>';
+// div.innerHTML += '<img src="./../../marker/grass.png" width="10px"></i><span>พื้นที่ชุ่มน้ำ</span><br>';
+
+let getSpecies = () => {
+    axios.get(wfs + "&typeName=eec%3Aa__66_species_eec").then(r => {
+        let fs = r.data;
+
+        var icon = L.icon({
+            iconUrl: './../../marker/forest2.png',
+            iconSize: [32, 37],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+        });
+
+        let a = L.geoJSON(fs, {
+
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, { icon: icon });
+            },
+            onEachFeature: (feature, layer) => {
+                if (feature.properties) {
+                    let popupContent = `<span style="font-family: 'Kanit'"><b>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</b><br> ชนิด: ${feature.properties.typ}<br>  
+                    สถานะ: ${feature.properties.status}<br>  
+                    สถานที่:  ${feature.properties.location}</span>`;
+                    layer.bindPopup(popupContent);
+                }
+            }
+        }).addTo(map);
+        a.addTo(specieseec)
+    })
+}
+
+getSpecies()
+
+let getNatural = () => {
+    axios.get(wfs + "&typeName=eec%3Aa__71_natural_eec").then(r => {
+        let fs = r.data;
+
+        var icon = L.icon({
+            iconUrl: './../../marker/mountains.png',
+            iconSize: [32, 37],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+        });
+
+        let a = L.geoJSON(fs, {
+
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, { icon: icon });
+            },
+            onEachFeature: (feature, layer) => {
+                if (feature.properties) {
+                    let popupContent = `<span style="font-family: 'Kanit'"><b>ตำแหน่งแหล่งธรรมชาติ</b><br> 
+                    ประเภท: ${feature.properties.name}<br>  
+                    คำอธิบาย: ${feature.properties.type}<br>  
+                    สถานที่:  ${feature.properties.location}</span>`;
+                    layer.bindPopup(popupContent);
+                }
+            }
+        })
+        a.addTo(naturaleec);
+    })
+}
+
+getNatural()
+
+
+let getWetland = () => {
+    axios.get(wfs + "&typeName=eec%3Aa__80_wetland_eec").then(r => {
+        let fs = r.data;
+
+        var icon = L.icon({
+            iconUrl: './../../marker/grass.png',
+            iconSize: [32, 37],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+        });
+
+        let a = L.geoJSON(fs, {
+
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, { icon: icon });
+            },
+            onEachFeature: (feature, layer) => {
+                if (feature.properties) {
+                    let popupContent = `<span style="font-family: 'Kanit'"><b>พื้นที่ชุ่มน้ำ</b><br> 
+                    ประเภท: ${feature.properties.type}<br>  
+                    ชื่อ: ${feature.properties.name}<br>  
+                    สถานที่:  ${feature.properties.prov}</span>`;
+                    layer.bindPopup(popupContent);
+                }
+            }
+        })
+        a.addTo(wetlandeec);
+
+    })
+}
+
+getWetland()
 
 
 

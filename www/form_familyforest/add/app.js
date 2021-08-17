@@ -14,13 +14,14 @@ $(document).ready(() => {
 });
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.196768,
+    lng: 101.364720
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 9
 });
+
 let marker, gps;
 // const url = 'http://localhost:3700';
 const url = "https://eec-onep.online:3700";
@@ -44,20 +45,34 @@ function loadMap() {
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         lyrname: "bmap"
     });
-
-    var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
+    const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__03_tambon_eec",
+        format: "image/png",
         transparent: true,
-        lyrname: "bmap"
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
 
+    const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__02_amphoe_eec",
+        format: "image/png",
+        transparent: true,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
+
+    const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__01_prov_eec",
+        format: "image/png",
+        transparent: true,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
     var baseMap = {
-        "แผนที่ถนน": mapbox,
-        "แผนที่ภาพจากดาวเทียม": ghyb.addTo(map)
+        "Mapbox": mapbox.addTo(map),
+        "google Hybrid": ghyb
     }
     var overlayMap = {
-        "ขอบเขตจังหวัด": pro
+        "ขอบเขตจังหวัด": pro.addTo(map),
+        "ขอบเขตอำเภอ": amp,
+        "ขอบเขตตำบล": tam,
     }
     L.control.layers(baseMap, overlayMap).addTo(map);
 }

@@ -8,17 +8,15 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
-$(document).ready(() => {
-    loadMap();
-});
+
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.196768,
+    lng: 101.364720
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 9
 });
 
 let marker, gps, dataurl;
@@ -42,22 +40,41 @@ function loadMap() {
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true
+    const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__03_tambon_eec",
+        format: "image/png",
+        transparent: true,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
+
+    const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__02_amphoe_eec",
+        format: "image/png",
+        transparent: true,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    });
+
+    const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+        layers: "eec:a__01_prov_eec",
+        format: "image/png",
+        transparent: true,
+        // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
     var baseMap = {
         "Mapbox": mapbox.addTo(map),
         "google Hybrid": ghyb
     }
     var overlayMap = {
-        "ขอบเขตจังหวัด": pro
+        "ขอบเขตจังหวัด": pro.addTo(map),
+        "ขอบเขตอำเภอ": amp,
+        "ขอบเขตตำบล": tam,
     }
     L.control.layers(baseMap, overlayMap).addTo(map);
 }
-
-let fc = L.featureGroup().addTo(map);
+$(document).ready(() => {
+    loadMap();
+});
+let fc = L.featureGroup();
 
 let datArr = [];
 
@@ -140,66 +157,86 @@ axios.post(url + "/ff-api/getpacellist", { usrid: urid }).then(r => {
 fc.on("click", (e) => {
     console.log(e.layer.toGeoJSON());
 });
-
-let table = $('#myTable').DataTable({
-    ajax: {
-        type: "POST",
-        url: url + '/ff-api/getdaily',
-        data: { usrid: urid },
-        dataSrc: 'data'
-    },
-    columns: [
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${meta.row + 1}`
+$(document).ready(function () {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
             }
-        },
-        { data: 'ffid' },
-        { data: 'fplant' },
-        { data: 'ftype' },
-        { data: 'date' },
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.eat} ${row.eat_unit} `
-            }
-        },
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.herb} ${row.herb_unit}`
-            }
-        },
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.use} ${row.use_unit}`
-            }
-        },
-        {
-            data: '',
-            render: (data, type, row, meta) => {
-                return `${row.econ}  ${row.econ_unit}`
-            }
-        },
-        {
-            data: null,
-            render: function (data, type, row, meta) {
-                return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-            },
-            // width: "15%"
         }
-    ],
-    searching: true,
-    scrollX: true,
-    dom: 'Bfrtip',
-    buttons: [
-        'excel', 'print'
-    ],
-    // order: [2, 'asc'],
-});
+    });
 
+    let table = $('#myTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/ff-api/getdaily',
+            data: { usrid: urid },
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
+            { data: 'ffid' },
+            { data: 'fplant' },
+            { data: 'ftype' },
+            { data: 'date' },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.eat} ${row.eat_unit} `
+                }
+            },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.herb} ${row.herb_unit}`
+                }
+            },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.use} ${row.use_unit}`
+                }
+            },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${row.econ}  ${row.econ_unit}`
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "15%"
+            }
+        ],
+        searching: true,
+        scrollX: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
+        // order: [2, 'asc'],
+    });
+})
 let sendData = () => {
     let obj = {
         data: {
