@@ -137,7 +137,7 @@ let showParcel = (data) => {
     });
 
     data.map(i => {
-        console.log(i);
+        // console.log(i);
         let a = L.geoJSON(JSON.parse(i.geom), {
             name: "ff",
             style: {
@@ -281,7 +281,7 @@ $(document).ready(function () {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `
-                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${JSON.stringify(row.geom)})'>ซูมแปลงป่าครอบครัว</button>
+                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${JSON.stringify(row.geom)})'><i class="bi bi-zoom-in"></i>ซูม</button>
                     <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 // width: "15%"
