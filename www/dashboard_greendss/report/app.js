@@ -78,6 +78,13 @@ const green = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?",
     transparent: true,
     zIndex: 1
 });
+const green2 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__52_gsus_muni",
+    name: "lyr",
+    format: "image/png",
+    transparent: true,
+    zIndex: 1
+});
 
 const muni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__04_municiple",
@@ -137,6 +144,7 @@ let eecUrl = "https://eec-onep.online:8443/geoserver/wms?REQUEST=GetLegendGraphi
 // let rtiUrl = "https://rti2dss.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=";
 
 $("#greenLegend").attr("src", eecUrl + "eec:a__52_gr_park");
+$("#greenLegend2").attr("src", eecUrl + "eec:a__52_gsus_muni");
 $("#luLegend").attr("src", eecUrl + "eec:a__46_lu_eec_61");
 $("#munLegend").attr("src", eecUrl + "eec:a__04_municiple");
 $("#proLegend").attr("src", eecUrl + "eec:a__01_prov_eec");
@@ -177,9 +185,8 @@ map.on('pm:create', e => {
 
     tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
 
-
-    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)}</li>`);
-
+    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} </li>`);
+    // $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} (${(tmpGreen).toFixed(2)})</li>`);
     e.layer.on('pm:edit', function (x) {
         e.layer.options.name2 = "da";
         console.log('edit', x)
@@ -213,6 +220,7 @@ let stopEdit = () => {
     });
 }
 
+
 function onLocationFound(e) {
     // latLng = e.latlng;
     // nearData(e)
@@ -239,6 +247,7 @@ let lyr = {
     pro: pro,
     vill: vill,
     green: green,
+    green2: green2,
     lu: lu,
     muni: muni,
     pcontrol: pcontrol,
@@ -438,7 +447,7 @@ $("input[name='basemap']").change(async (r) => {
     base[`${basemap}`].addTo(map);
 })
 
-$("#hchart").html(`<div style="text-align: center;">คลิ๊กลงบนแผนที่เพื่อดูอุณหภูมิแต่ละสัปดาห์</div>`)
+$("#hchart").html(`<div style="text-align: center;">คลิกลงบนแผนที่เพื่อดูอุณหภูมิแต่ละสัปดาห์</div>`)
 let hchart = (dat) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("hchart", am4charts.XYChart);
@@ -537,6 +546,27 @@ let getFeatureInfo = async (e) => {
         hchart(dat)
     })
 
+    let urlฺTemp3Hour = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
+        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
+        "&QUERY_LAYERS=eec:temp_3hour.tif" +
+        "&LAYERS=eec:temp_3hour.tif" +
+        "&Feature_count=1" +
+        "&INFO_FORMAT=application/json" +
+        "&X=" + pnt.x +
+        "&Y=" + pnt.y +
+        "&SRS=EPSG:4326" +
+        "&WIDTH=" + size.x +
+        "&HEIGHT=" + size.y +
+        "&BBOX=" + bbox;
+
+    await axios.get(urlฺTemp3Hour).then(r => {
+        if (r.data.features.length > 0) {
+            document.getElementById("temp3hour").innerHTML = `อุณหภูมิเฉลี่ยปัจจุบัน: <span class="badge bg-warning" style="font-size:14px;"> ${(r.data.features[0].properties.GRAY_INDEX).toFixed(2)} °C </span>`
+        } else {
+            document.getElementById("temp3hour").innerHTML = ""
+        }
+    });
+
     // console.log(e.latlng);
     await axios.post(url + "/eec-api/get-landuse-info", { lat: e.latlng.lat, lon: e.latlng.lng }).then(r => {
         // console.log(r.data.data);
@@ -573,7 +603,7 @@ let selectAction = (e) => {
 
 map.on("click", (e) => selectAction(e));
 
-$("#announce").html(`คลิ๊กลงบนแผนที่เพื่อแสดงข้อมูลอุณหภูมิรายสัปดาห์`)
+$("#announce").html(`คลิกลงบนแผนที่เพื่อแสดงข้อมูลอุณหภูมิรายสัปดาห์`)
 
 var legend = L.control({ position: "bottomleft" });
 
@@ -609,3 +639,22 @@ function hideLegend() {
 }
 
 hideLegend()
+$("#cardgreen2").hide()
+$("#green2").on("click", function () {
+    var a = document.getElementById("green2").checked
+    if (a == true) {
+        $("#cardgreen2").show()
+    } else {
+        $("#cardgreen2").hide()
+    }
+    console.log(a);
+})
+$("#green").on("click", function () {
+    var a = document.getElementById("green").checked
+    if (a == true) {
+        $("#cardgreen").show()
+    } else {
+        $("#cardgreen").hide()
+    }
+    console.log(a);
+})

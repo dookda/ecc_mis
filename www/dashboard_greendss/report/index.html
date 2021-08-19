@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./../../assets/css/style.css">
     <link href="./style.css" rel="stylesheet">
+    <link href="./circle.css" rel="stylesheet">
 
 </head>
 
@@ -53,9 +54,9 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
@@ -84,13 +85,27 @@
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
             <div class="container-fluid">
-                <div class="mt-3" data-aos="fade-up" id="main">
+                <div class="section-title">
+                    <br>
+                    <br>
+                    <h2>ระบบสนับสนุนการตัดสินใจด้านอุณหภูมิกับพื้นที่สีเขียว</h2>
+                    <p>
+                        ระบบสนับสนุนการตัดสินใจ-อุณหภูมิกับพื้นที่สีเขียว
+                        เป็นระบบสนับสนุนการตัดสินใจที่รวบรวมชั้นข้อมูลเชิงพื้นที่ที่มีความเกี่ยวข้องกับทรัพยากรชีวภาพ
+                        เพื่อให้ผู้ใช้สามารถเรียกดูข้อมูล
+                        <br>สัดส่วนของพื้นที่สีเขียว อุณหภูมิอากาศแต่ละสัปดาห์
+                        รวมถึงแบบจำลองการลดลงของอุณหภูมิที่สัมพันธ์กับการเพิ่มขึ้นของพื้นที่สีเขียวในพื้นที่
 
+                    </p>
+                </div>
+                <div class="mt-3" data-aos="fade-up" id="main">
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="card">
                                 <div class="card-body layer">
                                     <label><b>ชั้นข้อมูล</b></label>
+                                    <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
+                                    <hr>
                                     <div class="scroll">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
@@ -156,17 +171,29 @@
                                             <br>
                                             <img id="villLegend">
                                         </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="green" id="green"
-                                                checked>
-                                            <label class="form-check-label">
-                                                พื้นที่สีเขียว
-                                            </label>
-                                            <br>
-                                            <img id="greenLegend">
+                                        <hr>
+                                        <div class="group-form">
+                                            <label><b>พื้นที่สีเขียว</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="green" id="green"
+                                                    checked>
+                                                <label class="form-check-label">
+                                                    พื้นที่สีเขียวสาธารณะ
+                                                </label>
+                                                <br>
+                                                <img id="greenLegend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="green2"
+                                                    id="green2">
+                                                <label class="form-check-label">
+                                                    พื้นที่สีเขียวยั่งยืนในเขตเมืองและชุมชน
+                                                </label>
+                                                <br>
+                                                <img id="greenLegend2">
+                                            </div>
                                         </div>
-
+                                        <hr>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="lu" id="lu">
                                             <label class="form-check-label">
@@ -201,25 +228,25 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="esri">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน Esri
+                                                แผนที่ถนน ESRI
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="grod">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน Google maps
+                                                แผนที่ถนน Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="ghyb">
                                             <label class="form-check-label" for="">
-                                                แผนที่ผสม Google maps
+                                                แผนที่ผสม Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="gter">
                                             <label class="form-check-label" for="">
-                                                แผนที่ภูมิประเทศ Google maps
+                                                แผนที่ภูมิประเทศ Google Maps
                                             </label>
                                         </div>
                                     </div>
@@ -227,7 +254,283 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <h3>ระบบสนับสนุนการตัดสินใจด้านอุณหภูมิกับพื้นที่สีเขียว</h3>
+                            <!-- <h3>ระบบสนับสนุนการตัดสินใจด้านอุณหภูมิกับพื้นที่สีเขียว</h3> -->
+                            <div class="card" id="cardgreen">
+                                <div class="card-body">
+                                    <label>อัตราส่วนพื้นที่สีเขียวสาธารณะต่อประชากร
+                                        (ตารางเมตร/คน)<br>
+                                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ชลบุรี</h6>
+                                                <br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex; ">
+                                                        <div class="c100 p52 big green">
+                                                            <span>52%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวสาธารณะ</label><br>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">3,863,197</span>&nbsp;ตร.ม.
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-people-fill "
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>จำนวนประชากร<br>ปี 2564</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">1,566,885</span>&nbsp;คน
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ระยอง</h6><br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex; ">
+                                                        <div class="c100 p27 big green">
+                                                            <span>27%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row" style="display: flex; margin-bottom: 5px;">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวสาธารณะ</label><br>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">956,749</span>&nbsp;ตร.ม.
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-people-fill "
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>จำนวนประชากร<br>ปี 2564</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">741,524</span>&nbsp;คน
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ฉะเชิงเทรา
+                                                </h6><br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex; ">
+                                                        <div class="c100 p21 big green">
+                                                            <span>21%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row" style="display: flex; margin-bottom: 5px;">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวสาธารณะ</label><br>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">736,683</span>&nbsp;ตร.ม.
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-people-fill "
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>จำนวนประชากร<br>ปี 2564</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">720,718</span>&nbsp;คน
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div style="text-align: left; margin-left: 1%;">
+                                        ที่มา: สำนักงานนโนบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม (2562)</div>
+                                </div>
+                            </div>
+                            <div class="card" id="cardgreen2">
+                                <div class="card-body">
+                                    <label>อัตราสัดส่วนพื้นที่สีเขียวยั่งยืนในเขตเมืองและชุมชน<br>
+                                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ชลบุรี</h6>
+                                                <br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex; ">
+                                                        <div class="c100 p50 big orange">
+                                                            <span>50%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row" style="display: flex; margin-bottom: 5px;">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวยั่งยืน</label><br>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">142,428</span>&nbsp;&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-house-fill"
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่เขตเมือง</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">1,175,592</span>&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ระยอง</h6><br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex; ">
+                                                        <div class="c100 p34 big orange">
+                                                            <span>34%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row" style="display: flex; margin-bottom: 5px;">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวยั่งยืน</label>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">51,884</span>&nbsp;&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-house-fill"
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่เขตเมือง</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">637,982</span>&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="card-body">
+                                                <h6
+                                                    style="display: flex; justify-content: center; font-size: 20px; font-weight: bold;">
+                                                    จ.ฉะเชิงเทรา
+                                                </h6><br>
+                                                <div class="card-stat">
+                                                    <div style="justify-content: center; display: flex;">
+                                                        <div class="c100 p16 big orange">
+                                                            <span>16%</span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-stat-s">
+                                                        <div class="row" style="display: flex; margin-bottom: 5px;">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-tree" style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่สีเขียวยั่งยืน</label><br>
+                                                                <span class="badge badge-success"
+                                                                    style="font-size: 28px;">12,602</span>&nbsp;&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-4" style="text-align: center;">
+                                                                <i class="bi bi-house-fill"
+                                                                    style="font-size: 48px;"></i>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <label>ขนาดพื้นที่เขตเมือง</label><br>
+                                                                <span class="badge badge-primary"
+                                                                    style="font-size: 28px;">323,430</span>&nbsp;ไร่
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div style="text-align: left; margin-left: 1%;">
+                                        ที่มา: สำนักงานนโนบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม (2562)</div>
+                                </div>
+
+                            </div>
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="card">
@@ -244,14 +547,17 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="card">
-                                        <div class="card-body hchart"">
-                                           <span id=" announce"></span>
+                                        <div class="card-body hchart">
+                                            <span id=" announce"></span>
                                             <span id="latlon"></span>
                                             <span id="hloc"></span><br>
-                                            <span id="landuse"></span><br>
+                                            <span id="temp3hour"></span>&nbsp;<span id="landuse"></span><br>
+
+
 
                                             <span id="remark" style="font-size: 12px;"></span>
                                             <div id="hchart"></div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -267,6 +573,7 @@
                                     <ul id="arealist"></ul>
                                 </div>
                             </div>
+
                             <div class="card">
                                 <div id="map"></div>
                             </div>
@@ -275,7 +582,7 @@
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
                 <div class="container-fluid mb-6">
-                    <p> <span class="ver">ปรับปรุง 14/03/2021</span></p>
+                    <p> <span class="ver">ปรับปรุง 18/08/2021</span></p>
                 </div>
             </div>
         </section><!-- End Services Section -->

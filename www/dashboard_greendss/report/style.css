@@ -16,12 +16,12 @@
 }
 
 #map{
-    height: 440px;
+    height: 350px;
     border-radius: 0.8rem;
 }
 
 .layer{
-  height: 640px;
+  height: 1260px;
 }
 
 .hchart{
@@ -32,7 +32,7 @@
 }
 
 .scroll{
-  height:400px;
+  height:930px;
   overflow-y: scroll;
 }
 
@@ -155,6 +155,34 @@
 .legend i.icon {
   background-size: 18px;
   background-color: rgba(255, 255, 255, 0.8);
+}
+.card-stat{
+  flex-direction: row; 
+  display: flex; 
+  align-items: center;
+}
+.card-stat-s{
+display: flex; 
+flex-direction: column; 
+justify-content: space-between;
+}
+.card-stat-s label{
+  font-size: 16px;
+}
+@media (max-width:765px) {
+  .card-stat{
+    flex-direction: column; 
+  display: flex; 
+  align-items: center;
+  }
+  .card-stat-s{
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: nowrap; 
+    align-items: stretch;
+    justify-content: center;
+  }
+
 }
 
  

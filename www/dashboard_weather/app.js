@@ -81,11 +81,11 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
 const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: "eec:a__03_tambon_eec",
+  layers: "eec:__03_tambon_eec",
   format: "image/png",
   transparent: true,
-  maxZoom: 18,
-  minZoom: 14,
+  // maxZoom: 18,
+  // minZoom: 14,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -93,8 +93,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__02_amphoe_eec",
   format: "image/png",
   transparent: true,
-  maxZoom: 14,
-  minZoom: 10,
+  // maxZoom: 14,
+  // minZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -102,7 +102,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__01_prov_eec",
   format: "image/png",
   transparent: true,
-  maxZoom: 10,
+  // maxZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -113,8 +113,8 @@ const baseMaps = {
 
 const overlayMaps = {
   "ขอบเขตจังหวัด": pro.addTo(map),
-  "ขอบเขตอำเภอ": amp.addTo(map),
-  "ขอบเขตตำบล": tam.addTo(map),
+  "ขอบเขตอำเภอ": amp,
+  "ขอบเขตตำบล": tam,
 };
 
 var legend = L.control({ position: "bottomright" });
@@ -216,7 +216,7 @@ let rmLyr = () => {
 
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-weather-near', { geom: e.latlng });
-  // console.log(res.data);
+  console.log(res.data);
   $("#d").text(res.data.data[0].date_);
   $("#t").text(res.data.data[0].time_);
   $("#sta_th").text(res.data.data[0].sta_th);
@@ -285,6 +285,9 @@ let showTable = async () => {
         data: null,
         "render": function (data, type, row) { return Number(data.rain24hr).toFixed(1) }
       }
+    ],
+    columnDefs: [
+      { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
     ],
     select: true,
     pageLength: 8,
