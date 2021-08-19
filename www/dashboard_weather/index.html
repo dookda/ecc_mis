@@ -188,88 +188,10 @@
                                 </div>
                             </div>
                             <div id="map"></div>
-                            <div class="row" style="padding-top: 10px;">
 
-                                <div class="col-sm-6">
-                                    <table class="table table-body">
-                                        <tbody>
-                                            <tr>
-                                                <td
-                                                    style="background: rgb(169, 209, 252); color: rgb(0, 0, 0); font-size: 12px;">
-                                                    <strong> &gt;0-10</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(156, 238, 178); color: rgb(0, 0, 0); font-size: 12px;">
-                                                    <strong>&gt;10-20</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(102, 200, 3); color: rgb(0, 0, 0); font-size: 12px;">
-                                                    <strong>&gt;20-35</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(246, 211, 0); color: rgb(0, 0, 0); font-size: 12px;">
-                                                    <strong>&gt;35-50</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(254, 138, 4); color: rgb(0, 0, 0); font-size: 12px;">
-                                                    <strong>&gt;50-70</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(202, 101, 4); color: rgb(255, 255, 255); font-size: 12px;">
-                                                    <strong>&gt;70-90</strong>
-                                                </td>
-                                                <td
-                                                    style="background: rgb(238, 20, 31); color: rgb(255, 255, 255); font-size: 12px;">
-                                                    <strong>&gt;90</strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="1"
-                                                    style="border: 1px solid rgb(224, 224, 224); font-size: 12px;">
-                                                    <strong>ฝนตกเล็กน้อย</strong>
-                                                </td>
-                                                <td colspan="2"
-                                                    style="border: 1px solid rgb(224, 224, 224); font-size: 12px;">
-                                                    <strong>ฝนตกปานกลาง</strong>
-                                                </td>
-                                                <td colspan="3"
-                                                    style="border: 1px solid rgb(224, 224, 224); font-size: 12px;">
-                                                    <strong>ฝนตกหนัก</strong>
-                                                </td>
-                                                <td colspan="3"
-                                                    style="border: 1px solid rgb(224, 224, 224); font-size: 12px;">
-                                                    <strong>ฝนตกหนักมาก</strong>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                                <div class="col-sm-6">
-                                    <table class="table table-body">
-                                        <tbody>
-                                            <tr>
-                                                <td style="background: rgb(219, 128, 43); color: rgb(0, 0, 0);">
-                                                    <strong>&lt;=10<br>น้ำน้อยวิกฤต</strong>
-                                                </td>
-                                                <td style="background: rgb(255, 192, 0); color: rgb(0, 0, 0);">
-                                                    <strong>&gt;10-30<br>น้ำน้อย</strong>
-                                                </td>
-                                                <td style="background: rgb(0, 176, 80); color: rgb(255, 255, 255);">
-                                                    <strong>&gt;30-70<br>น้ำปกติ</strong>
-                                                </td>
-                                                <td style="background: rgb(0, 60, 250); color: rgb(255, 255, 255);">
-                                                    <strong>&gt;70-100<br>น้ำมาก</strong>
-                                                </td>
-                                                <td style="background: rgb(255, 0, 0); color: rgb(255, 255, 255);">
-                                                    <strong>&gt;100<br>น้ำล้นตลิ่ง</strong>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                            </div>
+                            <div id="legend"></div>
                         </div>
                     </div>
                 </div>
@@ -283,7 +205,10 @@
                 </div>
                 <div class="card-deck p-3">
                     <div class="card card-stats">
-
+                        <button class="btn btn-info flex-fill" onclick="showWtrl()">
+                            <i class="las la-cloud-rain p-2" aria-hidden="true"></i>ปริมาณน้ำท่า</button>
+                    </div>
+                    <div class="card card-stats">
                         <button class="btn btn-info flex-fill" onclick="showRain()">
                             <i class="las la-cloud-rain p-2" aria-hidden="true"></i>ปริมาณน้ำฝน</button>
                     </div>

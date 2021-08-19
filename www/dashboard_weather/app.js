@@ -312,58 +312,67 @@ let showTable = async () => {
 }
 
 let showWtrl = async () => {
+  rmLyr()
   let x = await wtrlUrl;
+  $('#legend').empty()
+  $('#legend').append(`<img src="./mk-runoff/เกณฑ์น้ำท่า(สีขาว).png" width="100%">`)
 
   x.data.data.map(i => {
+    let icon = {
+      // iconUrl: './marker/location-pin-blue.svg',
+      iconSize: [40, 43],
+      iconAnchor: [12, 37],
+      popupAnchor: [5, -30]
+    };
     let marker
     if (i.station.tele_station_lat > 0 && i.station.tele_station_long > 0) {
       if (Number(i.waterlevel_msl) <= 10) {
-        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
-          color: '#2890e8',
-          fillColor: 'rgb(169, 209, 252)',
-          fillOpacity: 0.9,
-          radius: 6
-        })
+        icon.iconUrl = "./mk-runoff/1.png"
+        marker = L.marker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          icon: L.icon(icon),
+          name: 'marker',
+          id: i.sta_id
+        });
       } else if (Number(i.waterlevel_msl) <= 30) {
-        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
-          color: '#015718',
-          fillColor: 'rgb(156, 238, 178)',
-          fillOpacity: 0.9,
-          radius: 6
-        })
+        icon.iconUrl = "./mk-runoff/2.png"
+        marker = L.marker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          icon: L.icon(icon),
+          name: 'marker',
+          id: i.sta_id
+        });
       } else if (Number(i.waterlevel_msl) <= 70) {
-        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
-          color: '#015718',
-          fillColor: 'rgb(102, 200, 3)',
-          fillOpacity: 0.9,
-          radius: 6
-        })
-
+        icon.iconUrl = "./mk-runoff/3.png"
+        marker = L.marker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          icon: L.icon(icon),
+          name: 'marker',
+          id: i.sta_id
+        });
       } else if (Number(i.waterlevel_msl) <= 100) {
-        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
-          color: '#943b00',
-          fillColor: 'rgb(246, 211, 0)',
-          fillOpacity: 0.9,
-          radius: 6
-        })
+        icon.iconUrl = "./mk-runoff/4.png"
+        marker = L.marker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          icon: L.icon(icon),
+          name: 'marker',
+          id: i.sta_id
+        });
       } else {
-        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
-          color: 'rgb(238, 20, 31)',
-          fillColor: 'rgb(238, 20, 31)',
-          fillOpacity: 0.9,
-          radius: 6
-        })
+        icon.iconUrl = "./mk-runoff/5.png"
+        marker = L.marker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          icon: L.icon(icon),
+          name: 'marker',
+          id: i.sta_id
+        });
       }
       marker.addTo(map)
-      marker.bindPopup(`รหัส : ${i.sta_num}<br> 
-        ชื่อสถานี : ${i.station.tele_station_name.th} <br> 
-        ระดับน้ำผิวดิน : ${Number(i.waterlevel_msl).toFixed(1)} m.`
+      marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">ชื่อสถานี : ${i.station.tele_station_name.th} <br> 
+        ระดับน้ำผิวดิน : ${Number(i.waterlevel_msl).toFixed(1)} m.</span>`
       )
     }
   })
 }
 
 let showRain = async () => {
+  $('#legend').empty()
+  $('#legend').append(`<img src="./mk-rain/1.png" width="100%">`)
   $("#variable").text('Rainfall')
   rmLyr()
   let d = await response;
@@ -390,106 +399,76 @@ let showRain = async () => {
       windspeed: i.windspeed
     }
 
+    let icon = {
+      // iconUrl: './marker/location-pin-blue.svg',
+      iconSize: [40, 43],
+      iconAnchor: [12, 37],
+      popupAnchor: [5, -30]
+    };
+
     let marker
     if (Number(i.rainfall) <= 10) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#2890e8',
-        fillColor: 'rgb(169, 209, 252)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: iconblue,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/8.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 20) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#015718',
-        fillColor: 'rgb(156, 238, 178)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: icongreen,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/9.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 35) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#015718',
-        fillColor: 'rgb(102, 200, 3)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: icongreen,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/10.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 50) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#943b00',
-        fillColor: 'rgb(246, 211, 0)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: iconyellow,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/11.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 70) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#943b00',
-        fillColor: 'rgb(254, 138, 4)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: iconorange,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/12.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else if (Number(i.rainfall) <= 90) {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: '#943b00',
-        fillColor: 'rgb(202, 101, 4)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: iconorange,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/13.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     } else {
-      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
-        color: 'rgb(238, 20, 31)',
-        fillColor: 'rgb(238, 20, 31)',
-        fillOpacity: 0.9,
-        radius: 6
-      })
-      // marker = L.marker([Number(i.lat), Number(i.lon)], {
-      //   icon: iconred,
-      //   name: 'marker',
-      //   id: i.sta_id,
-      //   data: dat
-      // });
+      icon.iconUrl = "./mk-rain/14.png"
+      marker = L.marker([Number(i.lat), Number(i.lon)], {
+        icon: L.icon(icon),
+        name: 'marker',
+        id: i.sta_id,
+        data: dat
+      });
     }
     marker.addTo(map)
-    marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+    marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ปริมาณน้ำฝนปัจจุบัน : ${Number(i.rainfall).toFixed(1)} mm.<br> 
-      ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.`
+      ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.</span>`
     )
     // marker.on('click', (e) => {
     //   console.log(e.target.options.data);
@@ -505,6 +484,7 @@ let showRain = async () => {
 }
 
 let showPressure = async () => {
+  $('#legend').empty()
   $("#variable").text('MeanSeaLevelPressure')
   rmLyr()
   let d = await response;
@@ -570,11 +550,11 @@ let showPressure = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+    marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
       ความกดอากาศที่ระดับน้ำทะเล : ${Number(i.msl_pressure).toFixed(1)} hPa<br> 
       ความกดอากาศที่สถานี : ${Number(i.sta_pressure).toFixed(1)} hPa
-      `
+      </span>`
     )
     marker.on('click', (e) => {
       $("#sta_th").text(e.target.options.data.sta_th);
@@ -589,6 +569,7 @@ let showPressure = async () => {
 }
 
 let showTemp = async () => {
+  $('#legend').empty()
   $("#variable").text('Temperature')
   rmLyr()
   let d = await response;
@@ -652,9 +633,9 @@ let showTemp = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+    marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      อุณหภูมิ : ${Number(i.air_temp).toFixed(1)}`
+      อุณหภูมิ : ${Number(i.air_temp).toFixed(1)}</span>`
     )
     marker.on('click', (e) => {
       $("#sta_th").text(e.target.options.data.sta_th);
@@ -669,6 +650,7 @@ let showTemp = async () => {
 }
 
 let showRh = async () => {
+  $('#legend').empty()
   $("#variable").text('RelativeHumidity')
   rmLyr()
   let d = await response;
@@ -731,9 +713,9 @@ let showRh = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+    marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ความชื้นสัมพัทธ์ : ${Number(i.rh).toFixed(1)}`
+      ความชื้นสัมพัทธ์ : ${Number(i.rh).toFixed(1)}</span>`
     )
     marker.on('click', (e) => {
       $("#sta_th").text(e.target.options.data.sta_th);
@@ -748,6 +730,7 @@ let showRh = async () => {
 }
 
 let showWind = async () => {
+  $('#legend').empty()
   $("#variable").text('WindSpeed')
   rmLyr()
   let d = await response;
@@ -812,9 +795,9 @@ let showWind = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+    marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">รหัส : ${i.sta_num}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ความเร็วลม : ${Number(i.windspeed).toFixed(1)}`
+      ความเร็วลม : ${Number(i.windspeed).toFixed(1)}</span>`
     )
     marker.on('click', (e) => {
       $("#sta_th").text(e.target.options.data.sta_th);
@@ -1082,6 +1065,6 @@ showRain()
 showTable();
 showChart({ sta_num: "48478" })
 // getWeatherHist();
-showWtrl()
+// showWtrl()
 
 
