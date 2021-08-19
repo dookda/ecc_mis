@@ -205,6 +205,7 @@ let getAmp = (ampcode) => {
 
 let response = axios.get(url + '/eec-api/get-weather-3hr');
 let responseAll = axios.get(url + '/eec-api/get-weather-3hr-all');
+let wtrlUrl = axios.get("http://api2.thaiwater.net:9200/api/v1/thaiwater30/provinces/waterlevel")
 
 let rmLyr = () => {
   map.eachLayer(lyr => {
@@ -216,16 +217,16 @@ let rmLyr = () => {
 
 let nearData = async (e) => {
   let res = await axios.post(url + '/eec-api/get-weather-near', { geom: e.latlng });
-  console.log(res.data);
+  // console.log(res.data);
   $("#d").text(res.data.data[0].date_);
   $("#t").text(res.data.data[0].time_);
   $("#sta_th").text(res.data.data[0].sta_th);
-  $("#rainfall24").text(res.data.data[0].rain24hr);
-  $("#rainfall").text(res.data.data[0].rainfall);
-  $("#air_temp").text(res.data.data[0].air_temp);
-  $("#rh").text(res.data.data[0].rh);
-  $("#msl_pressure").text(res.data.data[0].msl_pressure);
-  $("#windspeed").text(res.data.data[0].windspeed);
+  $("#rainfall24").text(Number(res.data.data[0].rain24hr).toFixed(2));
+  $("#rainfall").text(Number(res.data.data[0].rainfall).toFixed(2));
+  $("#air_temp").text(Number(res.data.data[0].air_temp).toFixed(2));
+  $("#rh").text(Number(res.data.data[0].rh).toFixed(2));
+  $("#msl_pressure").text(Number(res.data.data[0].msl_pressure).toFixed(2));
+  $("#windspeed").text(Number(res.data.data[0].windspeed).toFixed(2));
 
 }
 
@@ -310,6 +311,58 @@ let showTable = async () => {
   });
 }
 
+let showWtrl = async () => {
+  let x = await wtrlUrl;
+
+  x.data.data.map(i => {
+    let marker
+    if (i.station.tele_station_lat > 0 && i.station.tele_station_long > 0) {
+      if (Number(i.waterlevel_msl) <= 10) {
+        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          color: '#2890e8',
+          fillColor: 'rgb(169, 209, 252)',
+          fillOpacity: 0.9,
+          radius: 6
+        })
+      } else if (Number(i.waterlevel_msl) <= 30) {
+        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          color: '#015718',
+          fillColor: 'rgb(156, 238, 178)',
+          fillOpacity: 0.9,
+          radius: 6
+        })
+      } else if (Number(i.waterlevel_msl) <= 70) {
+        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          color: '#015718',
+          fillColor: 'rgb(102, 200, 3)',
+          fillOpacity: 0.9,
+          radius: 6
+        })
+
+      } else if (Number(i.waterlevel_msl) <= 100) {
+        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          color: '#943b00',
+          fillColor: 'rgb(246, 211, 0)',
+          fillOpacity: 0.9,
+          radius: 6
+        })
+      } else {
+        marker = L.circleMarker([Number(i.station.tele_station_lat), Number(i.station.tele_station_long)], {
+          color: 'rgb(238, 20, 31)',
+          fillColor: 'rgb(238, 20, 31)',
+          fillOpacity: 0.9,
+          radius: 6
+        })
+      }
+      marker.addTo(map)
+      marker.bindPopup(`รหัส : ${i.sta_num}<br> 
+        ชื่อสถานี : ${i.station.tele_station_name.th} <br> 
+        ระดับน้ำผิวดิน : ${Number(i.waterlevel_msl).toFixed(1)} m.`
+      )
+    }
+  })
+}
+
 let showRain = async () => {
   $("#variable").text('Rainfall')
   rmLyr()
@@ -336,42 +389,101 @@ let showRain = async () => {
       msl_pressure: i.msl_pressure,
       windspeed: i.windspeed
     }
+
     let marker
-    if (Number(i.rainfall) <= 25) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], {
-        icon: iconblue,
-        name: 'marker',
-        id: i.sta_id,
-        data: dat
-      });
+    if (Number(i.rainfall) <= 10) {
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#2890e8',
+        fillColor: 'rgb(169, 209, 252)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: iconblue,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
+    } else if (Number(i.rainfall) <= 20) {
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#015718',
+        fillColor: 'rgb(156, 238, 178)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: icongreen,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
+    } else if (Number(i.rainfall) <= 35) {
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#015718',
+        fillColor: 'rgb(102, 200, 3)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: icongreen,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
     } else if (Number(i.rainfall) <= 50) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], {
-        icon: icongreen,
-        name: 'marker',
-        id: i.sta_id,
-        data: dat
-      });
-    } else if (Number(i.rainfall) <= 100) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], {
-        icon: iconyellow,
-        name: 'marker',
-        id: i.sta_id,
-        data: dat
-      });
-    } else if (Number(i.rainfall) <= 200) {
-      marker = L.marker([Number(i.lat), Number(i.lon)], {
-        icon: iconorange,
-        name: 'marker',
-        id: i.sta_id,
-        data: dat
-      });
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#943b00',
+        fillColor: 'rgb(246, 211, 0)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: iconyellow,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
+    } else if (Number(i.rainfall) <= 70) {
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#943b00',
+        fillColor: 'rgb(254, 138, 4)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: iconorange,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
+    } else if (Number(i.rainfall) <= 90) {
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: '#943b00',
+        fillColor: 'rgb(202, 101, 4)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: iconorange,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
     } else {
-      marker = L.marker([Number(i.lat), Number(i.lon)], {
-        icon: iconred,
-        name: 'marker',
-        id: i.sta_id,
-        data: dat
-      });
+      marker = L.circleMarker([Number(i.lat), Number(i.lon)], {
+        color: 'rgb(238, 20, 31)',
+        fillColor: 'rgb(238, 20, 31)',
+        fillOpacity: 0.9,
+        radius: 6
+      })
+      // marker = L.marker([Number(i.lat), Number(i.lon)], {
+      //   icon: iconred,
+      //   name: 'marker',
+      //   id: i.sta_id,
+      //   data: dat
+      // });
     }
     marker.addTo(map)
     marker.bindPopup(`รหัส : ${i.sta_num}<br> 
@@ -379,15 +491,16 @@ let showRain = async () => {
       ปริมาณน้ำฝนปัจจุบัน : ${Number(i.rainfall).toFixed(1)} mm.<br> 
       ปริมาณน้ำฝน 24 ชม. : ${Number(i.rain24hr).toFixed(1)} mm.`
     )
-    marker.on('click', (e) => {
-      $("#sta_th").text(e.target.options.data.sta_th);
-      $("#rainfall24").text(e.target.options.data.rain24hr);
-      $("#rainfall").text(e.target.options.data.rainfall);
-      $("#air_temp").text(e.target.options.data.air_temp);
-      $("#rh").text(e.target.options.data.rh);
-      $("#msl_pressure").text(e.target.options.data.msl_pressure);
-      $("#windspeed").text(e.target.options.data.windspeed);
-    })
+    // marker.on('click', (e) => {
+    //   console.log(e.target.options.data);
+    //   $("#sta_th").text(e.target.options.data.sta_th);
+    //   $("#rainfall24").text(e.target.options.data.rain24hr);
+    //   $("#rainfall").text(e.target.options.data.rainfall);
+    //   $("#air_temp").text(e.target.options.data.air_temp);
+    //   $("#rh").text(e.target.options.data.rh);
+    //   $("#msl_pressure").text(e.target.options.data.msl_pressure);
+    //   $("#windspeed").text(e.target.options.data.windspeed);
+    // })
   })
 }
 
@@ -964,9 +1077,11 @@ let chartTemplate = (arrData, div) => {
 }
 
 // init aqi
-showTemp();
+// showTemp();
+showRain()
 showTable();
 showChart({ sta_num: "48478" })
 // getWeatherHist();
+showWtrl()
 
 
