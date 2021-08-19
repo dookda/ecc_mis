@@ -196,9 +196,9 @@ map.on('pm:create', async e => {
 
     let aqiUrl = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
-        "&QUERY_LAYERS=eec:ndvi_mosaic_202101.tif" +
-        "&LAYERS=eec:ndvi_mosaic_202101.tif" +
-        "&Feature_count=1" +
+        "&QUERY_LAYERS=eec:ndvi_mosaic_202101.tif,eec:temp_3hour.tif" +
+        "&LAYERS=eec:ndvi_mosaic_202101.tif,eec:temp_3hour.tif" +
+        "&Feature_count=2" +
         "&INFO_FORMAT=application/json" +
         "&X=" + pnt.x +
         "&Y=" + pnt.y +
@@ -210,18 +210,19 @@ map.on('pm:create', async e => {
     axios.get(aqiUrl).then(r => {
         console.log(r.data.features);
 
-        tmpGreen = ((area / 1600) * (-9.575 * 0.000001)) - (r.data.features[0].properties.GRAY_INDEX * 3.507) + 28.148
-        // tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
-
-        $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ 
-        อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} 
-        ค่า tempจริง: ${(tmpGreen).toFixed(2)} 
-        ndvi: ${r.data.features[0].properties.GRAY_INDEX}</li>`);
-
+        if (r.data.features.length > 0 && r.data.features[0].properties) {
+            tmpGreen = ((area / 1600) * (-9.575 * 0.000001)) - (r.data.features[0].properties.GRAY_INDEX * 3.507) + 28.148;
+            if (tmpGreen < 18) {
+                $("#arealist").append(`<li>ไม่มีข้อมูล</li>`);
+            } else {
+                $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ 
+                    อุณหภูมิที่คำนวณได้: <span class="badge badge-warning">${(tmpGreen).toFixed(2)}</span>°C อุณภูมิปัจจุบัน:<span class="badge badge-warning">${(r.data.features[1].properties.GRAY_INDEX).toFixed(2)}</span>°C
+                    ผลต่าง <span class="badge badge-warning">${(r.data.features[1].properties.GRAY_INDEX - tmpGreen).toFixed(2)}</span>°C </li>`);
+            }
+        } else {
+            $("#arealist").append(`<li>ไม่มีข้อมูล</li>`);
+        }
     })
-
-
-
 
     // $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} (${(tmpGreen).toFixed(2)})</li>`);
     e.layer.on('pm:edit', function (x) {
@@ -256,7 +257,6 @@ let stopEdit = () => {
         }
     });
 }
-
 
 function onLocationFound(e) {
     // latLng = e.latlng;
