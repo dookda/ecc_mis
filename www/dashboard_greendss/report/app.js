@@ -177,15 +177,52 @@ map.pm.addControls({
 map.pm.toggleControls()
 
 let geom;
-map.on('pm:create', e => {
+map.on('pm:create', async e => {
     e.layer.options.name = "da";
     geom = e.layer.toGeoJSON();
+
+    // console.log(geom);
+
     var polygon = turf.polygon(geom.geometry.coordinates);
     var area = turf.area(polygon);
 
-    tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
+    var centroid = turf.centroid(polygon);
 
-    $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} </li>`);
+    // console.log(centroid.geometry.coordinates);
+
+    var pnt = map.latLngToContainerPoint({ lat: centroid.geometry.coordinates[1], lng: centroid.geometry.coordinates[0] });
+    var size = map.getSize();
+    var bbox = map.getBounds().toBBoxString();
+
+    let aqiUrl = "https://eec-onep.online:8443/geoserver/wms?SERVICE=WMS" +
+        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
+        "&QUERY_LAYERS=eec:ndvi_mosaic_202101.tif" +
+        "&LAYERS=eec:ndvi_mosaic_202101.tif" +
+        "&Feature_count=1" +
+        "&INFO_FORMAT=application/json" +
+        "&X=" + pnt.x +
+        "&Y=" + pnt.y +
+        "&SRS=EPSG:4326" +
+        "&WIDTH=" + size.x +
+        "&HEIGHT=" + size.y +
+        "&BBOX=" + bbox;
+
+    axios.get(aqiUrl).then(r => {
+        console.log(r.data.features);
+
+        tmpGreen = ((area / 1600) * (-9.575 * 0.000001)) - (r.data.features[0].properties.GRAY_INDEX * 3.507) + 28.148
+        // tmpGreen = ((area * (-9.575 * 0.000001)) - ((3.507 * 0.345)) + 28.148);
+
+        $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ 
+        อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} 
+        ค่า tempจริง: ${(tmpGreen).toFixed(2)} 
+        ndvi: ${r.data.features[0].properties.GRAY_INDEX}</li>`);
+
+    })
+
+
+
+
     // $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} (${(tmpGreen).toFixed(2)})</li>`);
     e.layer.on('pm:edit', function (x) {
         e.layer.options.name2 = "da";
@@ -647,7 +684,7 @@ $("#green2").on("click", function () {
     } else {
         $("#cardgreen2").hide()
     }
-    console.log(a);
+    // console.log(a);
 })
 $("#green").on("click", function () {
     var a = document.getElementById("green").checked
@@ -656,5 +693,5 @@ $("#green").on("click", function () {
     } else {
         $("#cardgreen").hide()
     }
-    console.log(a);
+    // console.log(a);
 })
