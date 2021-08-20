@@ -203,6 +203,8 @@ app.get("/eec-api/get-weather-3hr-all", (req, res) => {
     })
 })
 
+
+
 app.post("/eec-api/get-weather-hist", (req, res) => {
     const { sta_num } = req.body;
     const sql = `
@@ -226,6 +228,24 @@ app.post("/eec-api/get-weather-near", (req, res) => {
     ORDER BY dist ASC
     LIMIT 1
     `
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.get("/eec-api/get-wtrl", (req, res) => {
+    const sql = `SELECT a.tele_station_name,
+            a.waterlevel_datetime,
+            a.waterlevel_msl,
+            a.tele_station_lat,
+            a.tele_station_long 
+        FROM  wtrl_hii_hr a
+        JOIN  (SELECT tele_station_name, max(waterlevel_datetime) as maxdt
+            FROM wtrl_hii_hr GROUP BY tele_station_name) as b
+        ON b.tele_station_name=a.tele_station_name 
+            and b.maxdt=a.waterlevel_datetime`;
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
