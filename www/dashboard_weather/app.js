@@ -21,7 +21,10 @@ let map = L.map("map", {
   center: latlng,
   zoom: 8
 });
-
+var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
+$(document).ready(() => {
+  layermark(L53, 53)
+})
 // const url = 'http://localhost:3700';
 // const url = "http://rti2dss.com:3700";
 const url = "https://eec-onep.online:3700";
@@ -105,6 +108,13 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   // maxZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
+const w2 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__14_w2_eec",
+  format: "image/png",
+  transparent: true,
+  // maxZoom: 10,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 
 const baseMaps = {
   "Mapbox": mapbox.addTo(map),
@@ -115,19 +125,40 @@ const overlayMaps = {
   "ขอบเขตจังหวัด": pro.addTo(map),
   "ขอบเขตอำเภอ": amp,
   "ขอบเขตตำบล": tam,
+  "แหล่งน้ำ": w2,
 };
 
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function (map) {
-  var div = L.DomUtil.create("div", "legend");
-  div.innerHTML += "<h4>สัญลักษณ์</h4>";
-  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-  div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-  div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>สถานีตรวจวัดสภาพอากาศ</span><br>'
-  return div;
-};
-legend.addTo(map);
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+    <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+  </button><br>`;
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+    div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>สถานีตรวจวัดสภาพอากาศ</span><br>'
+    div.innerHTML += '<i style="background: #65d4fb; border-radius: 1%;"></i><span>แหล่งน้ำ</span><br>'
+    div.innerHTML += '<img src="./marker/radar.png"  height="30px"></i><span>เรดาห์น้ำฝน</span><br>'
+    div.innerHTML += '<i style="background: #7acdf3; border-radius: 1%;"></i><span>อ่างเก็บน้ำ</span><br>'
+    return div;
+  };
+  legend.addTo(map);
+}
+function hideLegend() {
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend')
+    div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+      <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+      <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+  </button>`;
+    return div;
+  };
+  legend.addTo(map);
+}
+
+hideLegend()
 
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
   collapsed: true
@@ -318,7 +349,7 @@ let showWtrl = async () => {
   $('#legend').append(`<img src="./mk-runoff/เกณฑ์น้ำท่า(สีขาว).png" width="100%">`)
 
   x.data.data.map(i => {
-    // console.log(i);
+    console.log(i);
     let icon = {
       // iconUrl: './marker/location-pin-blue.svg',
       iconSize: [40, 43],
@@ -363,9 +394,13 @@ let showWtrl = async () => {
           id: i.sta_id
         });
       }
+      let dt = new Date(i.waterlevel_datetime);
+      let day = dt.getDate();
+      let mm = dt.getMonth();
+      let year = dt.getFullYear();
       marker.addTo(map)
       marker.bindPopup(`<span style="font-family: 'Kanit'; font-size:14px">ชื่อสถานี : ${i.tele_station_name} <br> 
-        ระดับน้ำผิวดิน : ${Number(i.waterlevel_msl).toFixed(1)} m.</span>`
+        ระดับน้ำผิวดิน : ${Number(i.waterlevel_msl).toFixed(1)} m. <br> วันที่ : ${day}/${mm}/${year} </span>`
       )
     }
   })
@@ -408,7 +443,7 @@ let showRain = async () => {
     };
 
     let marker
-    if (Number(i.rainfall) <= 10) {
+    if (Number(i.rain24hr) <= 10) {
       icon.iconUrl = "./mk-rain/8.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -416,7 +451,7 @@ let showRain = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.rainfall) <= 20) {
+    } else if (Number(i.rain24hr) <= 20) {
       icon.iconUrl = "./mk-rain/9.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -424,7 +459,7 @@ let showRain = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.rainfall) <= 35) {
+    } else if (Number(i.rain24hr) <= 35) {
       icon.iconUrl = "./mk-rain/10.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -432,7 +467,7 @@ let showRain = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.rainfall) <= 50) {
+    } else if (Number(i.rain24hr) <= 50) {
       icon.iconUrl = "./mk-rain/11.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -440,7 +475,7 @@ let showRain = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.rainfall) <= 70) {
+    } else if (Number(i.rain24hr) <= 70) {
       icon.iconUrl = "./mk-rain/12.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -448,7 +483,7 @@ let showRain = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.rainfall) <= 90) {
+    } else if (Number(i.rain24hr) <= 90) {
       icon.iconUrl = "./mk-rain/13.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -621,7 +656,7 @@ let showTemp = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.air_temp) <= 22.9) {
+    } else if (Number(i.air_temp) <= 23) {
       icon.iconUrl = "./mk-rain/10.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -629,7 +664,7 @@ let showTemp = async () => {
         id: i.sta_id,
         data: dat
       });
-    } else if (Number(i.air_temp) <= 35.0) {
+    } else if (Number(i.air_temp) <= 34.9) {
       icon.iconUrl = "./mk-rain/11.png"
       marker = L.marker([Number(i.lat), Number(i.lon)], {
         icon: L.icon(icon),
@@ -1089,4 +1124,138 @@ showChart({ sta_num: "48478" })
 // getWeatherHist();
 // showWtrl()
 
+var apiData = {};
+var mapFrames = [];
+var lastPastFramePosition = -1;
+var radarLayers = [];
 
+var optionKind = 'radar'; // can be 'radar' or 'satellite'
+
+var optionTileSize = 256; // can be 256 or 512.
+var optionColorScheme = 2; // from 0 to 8. Check the https://rainviewer.com/api/color-schemes.html for additional information
+var optionSmoothData = 1; // 0 - not smooth, 1 - smooth
+var optionSnowColors = 1; // 0 - do not show snow colors, 1 - show snow colors
+
+var animationPosition = 0;
+var animationTimer = false;
+
+var apiRequest = new XMLHttpRequest();
+apiRequest.open("GET", "https://api.rainviewer.com/public/weather-maps.json", true);
+apiRequest.onload = function (e) {
+  // store the API response for re-use purposes in memory
+  apiData = JSON.parse(apiRequest.response);
+  initialize(apiData, optionKind);
+};
+apiRequest.send();
+
+function initialize(api, kind) {
+  // remove all already added tiled layers
+  for (var i in radarLayers) {
+    map.removeLayer(radarLayers[i]);
+  }
+  mapFrames = [];
+  radarLayers = [];
+  animationPosition = 0;
+
+  if (!api) {
+    return;
+  }
+  if (kind == 'satellite' && api.satellite && api.satellite.infrared) {
+    mapFrames = api.satellite.infrared;
+
+    lastPastFramePosition = api.satellite.infrared.length - 1;
+    showFrame(lastPastFramePosition);
+  }
+  else if (api.radar && api.radar.past) {
+    mapFrames = api.radar.past;
+    if (api.radar.nowcast) {
+      mapFrames = mapFrames.concat(api.radar.nowcast);
+    }
+    lastPastFramePosition = api.radar.past.length - 1;
+    showFrame(lastPastFramePosition);
+  }
+}
+
+function addLayer(frame) {
+  // radar = radarLayers[frame.path])
+  if (!radarLayers[frame.path]) {
+    var colorScheme = optionKind == 'satellite' ? 0 : optionColorScheme;
+    var smooth = optionKind == 'satellite' ? 0 : optionSmoothData;
+    var snow = optionKind == 'satellite' ? 0 : optionSnowColors;
+
+    radarLayers[frame.path] = new L.TileLayer(apiData.host + frame.path + '/' + optionTileSize + '/{z}/{x}/{y}/' + colorScheme + '/' + smooth + '_' + snow + '.png', {
+      tileSize: 256,
+      opacity: 0.001,
+      zIndex: frame.time,
+      name: "lyr"
+    });
+  }
+
+  if (!map.hasLayer(radarLayers[frame.path])) {
+    map.addLayer(radarLayers[frame.path]);
+  }
+  lyrControl.addOverlay(radarLayers[frame.path], "เรดาห์น้ำฝน")
+}
+
+function changeRadarPosition(position, preloadOnly) {
+  while (position >= mapFrames.length) {
+    position -= mapFrames.length;
+  }
+  while (position < 0) {
+    position += mapFrames.length;
+  }
+
+  var currentFrame = mapFrames[animationPosition];
+  var nextFrame = mapFrames[position];
+
+  addLayer(nextFrame);
+
+  if (preloadOnly) {
+    return;
+  }
+
+  animationPosition = position;
+
+  if (radarLayers[currentFrame.path]) {
+    radarLayers[currentFrame.path].setOpacity(0);
+  }
+  radarLayers[nextFrame.path].setOpacity(100);
+}
+
+function showFrame(nextPosition) {
+  var preloadingDirection = nextPosition - animationPosition > 0 ? 1 : -1;
+
+  changeRadarPosition(nextPosition);
+  // changeRadarPosition(nextPosition + preloadingDirection, true);
+}
+
+var m53, ms53
+let layermark = (Url, Nlayer) => {
+  if (Nlayer == 53) {
+    axios.get(Url).then((r) => {
+      var d = r.data.features
+      // console.log(r.data.features);
+      ms53 = L.layerGroup()
+      d.map(i => {
+        if (i.geometry) {
+          let json = i.geometry;
+          m53 = L.geoJson(json, {
+            style: {
+              fillcolor: "#7acdf3",
+              color: "#7acdf3",
+              weight: 0.2,
+              opacity: 1,
+              fillOpacity: 1,
+            },
+            name: "53",
+          })
+            .bindPopup(`<h6><b>ชื่อแหล่งน้ำ :</b> ${i.properties.name}</h6>`)
+          //        .addTo(map)
+        }
+        ms53.addLayer(m53);
+      })
+      // ms53.addTo(map)
+      lyrControl.addOverlay(ms53, "อ่างเก็บน้ำ")
+    });
+  }
+}
