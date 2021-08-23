@@ -8,13 +8,15 @@ if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
 
+var L61 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__61_sea_eec&maxFeatures=50&outputFormat=application%2Fjson'
 $(document).ready(() => {
     loadTable()
+    layermark(L61, 61)
 
 });
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 
 let latlng = {
@@ -24,7 +26,7 @@ let latlng = {
 
 let map = L.map('map', {
     center: latlng,
-    zoom: 9
+    zoom: 10
 });
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -42,26 +44,86 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
+
+// const seaeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+//     layers: 'eec:a__61_sea_eec',
+//     format: 'image/png',
+//     transparent: true,
+// });
+const mangrovelu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__39_mangrovelu',
+    format: 'image/png',
+    transparent: true,
+});
+const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__81_pollution_group',
+    format: 'image/png',
+    transparent: true,
+});
+
+
+const coastalradar = L.tileLayer.wms("https://ocean.gistda.or.th/geoserver/coastalradar/wms?", {
+    layers: "coastalradar:recent_gulf,coastalradar:v_recent_gul5",
+    name: "lyr",
+    format: "image/png",
+    transparent: true
+});
+
+
+const coastalmon59 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline_2559.map", {
+    layers: "shoreline_2559",
+    name: "lyr",
+    format: "image/png",
+    crs: L.CRS.EPSG3857,
+    transparent: true
+});
+const coastalmon60 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2560.map", {
+    layers: "shoreline2560",
+    name: "lyr",
+    format: "image/png",
+    crs: L.CRS.EPSG3857,
+    transparent: true
+});
+const coastalmon61 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2561_erosion_geo_status_erosion.map", {
+    layers: "shoreline2561_erosion_geo_status_erosion",
+    name: "lyr",
+    format: "image/png",
+    crs: L.CRS.EPSG3857,
+    transparent: true
+});
+const coastalmon62 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fstatuscoast2562.map", {
+    layers: "statuscoast2562",
+    name: "lyr",
+    format: "image/png",
+    crs: L.CRS.EPSG3857,
+    transparent: true
+});
+
 
 let lyrs = L.featureGroup().addTo(map)
 
@@ -70,15 +132,97 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 
-var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+const overlayMap = {
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+    "แหล่งกำเนิดมลพิษ": pollution,
+    "การใช้ประโยชน์ที่ดินป่าชายเลน": mangrovelu,
+    "ข้อมูลความเร็วและทิศทางกระแสน้ำจากระบบเรดาร์ชายฝั่ง บริเวณอ่าวไทยตอนบนและภาคตะวันออก (ที่มา: gistda)": coastalradar,
+    "สถานการณ์การกัดเซาะชายฝั่ง ปี 2559": coastalmon59,
+    "สถานการณ์การกัดเซาะชายฝั่ง ปี 2560": coastalmon60,
+    "สถานการณ์การกัดเซาะชายฝั่ง ปี 2561": coastalmon61,
+    "สถานการณ์การกัดเซาะชายฝั่ง ปี 2562": coastalmon62
+    // "จุดวัดคุณภาพน้ำทะเล": seaeec.addTo(map),
 }
+// L.control.layers(baseMap, overlayMap).addTo(map);
+const lyrControl = L.control.layers(baseMap, overlayMap, {
+    collapsed: true
+}).addTo(map);
 
-L.control.layers(baseMap, overlayMap).addTo(map);
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #2febc9; border-radius: 50%;"></i><span>จุดวัดคุณภาพน้ำทะเล</span><br>';
+        div.innerHTML += '<img src="./Marker/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        div.innerHTML += `<button class="btn btn-sm" onClick="Luop()" id="LUOP">
+        <span class="kanit">การใช้ประโยชน์ที่ดินป่าชายเลน</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+      </button>`
+        div.innerHTML += `<div id='LU'></div>`
+        div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
+        <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+      </button>`
+        div.innerHTML += `<div id='PU'></div>`
 
-
+        return div;
+    };
+    legend.addTo(map);
+}
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+hideLegend()
+function Luop() {
+    $('#LUOP').hide()
+    $('#LU').html(`<button class="btn btn-sm" onClick="Luclose()" id="LUCLOSE">
+    <span class="kanit">การใช้ประโยชน์ที่ดินป่าชายเลน</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+    <i style="background: #000004; border-radius: 1%;"></i><span>ไม่มีข้อมูล</span><br>
+    <i style="background: #231151; border-radius: 1%;"></i><span>ท่าเทียบเรือ</span><br>
+    <i style="background: #5e177f; border-radius: 1%;"></i><span>นากุ้ง</span><br>
+    <i style="background: #982c80; border-radius: 1%;"></i><span>นาเกลือ</span><br>
+    <i style="background: #d3426e; border-radius: 1%;"></i><span>ป่าชายเลน</span><br>
+    <i style="background: #f8765c; border-radius: 1%;"></i><span>พื้นที่ทิ้งร้าง</span><br>
+    <i style="background: #febb80; border-radius: 1%;"></i><span>เมืองและสิ่งก่อสร้าง</span><br>
+    <i style="background: #fcfdbf; border-radius: 1%;"></i><span>เลนงอก</span><br></div>`)
+}
+function Luclose() {
+    $('#LUOP').show()
+    $('#LU').html('')
+}
+function Puop() {
+    $('#PUOP').hide()
+    $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
+    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+    <i style="background: #ff3769; border-radius: 1%;"></i><span>ตัวเมืองและย่านการค้า</span><br>
+    <i style="background: #379eff; border-radius: 1%;"></i><span>ท่าเรือ</span><br>
+    <i style="background: #ad71db; border-radius: 1%;"></i><span>นิคมอุตสาหกรรม</span><br>
+    <i style="background: #ffadec; border-radius: 1%;"></i><span>รีสอร์ท โรงแรม เกสต์เฮ้าส์</span><br>
+    <i style="background: #861790; border-radius: 1%;"></i><span>โรงงานอุตสาหกรรม</span><br>
+    <i style="background: #ffe435; border-radius: 1%;"></i><span>โรงเรือนเลี้ยงสัตว์</pan><br>
+    <i style="background: #7ae3ff; border-radius: 1%;"></i><span>สถานที่เพาะเลี้ยงสัตว์น้ำ</span><br>
+    <i style="background: #000988; border-radius: 1%;"></i><span>สถานที่ราชการและสถาบันต่าง ๆ</span><br>
+    <i style="background: #f9b310; border-radius: 1%;"></i><span>สถานีบริการน้ำมัน</span><br>
+    <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`)
+}
+function Puclose() {
+    $('#PUOP').show()
+    $('#PU').html('')
+}
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
     // console.log("ok");
@@ -126,6 +270,25 @@ function getChart(sq_id) {
 }
 
 let loadTable = () => {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
     let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
@@ -168,6 +331,9 @@ let loadTable = () => {
                 }
             }
         ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+        ],
         searching: true,
         scrollX: true,
         dom: 'Bfrtip',
@@ -182,19 +348,28 @@ let loadTable = () => {
     });
 }
 
+var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-
+    // console.log(d)
+    mg = L.layerGroup();
     d.map(i => {
         if (i.geojson) {
             let json = JSON.parse(i.geojson);
-            L.geoJson(json, {
+            // console.log(json)
+            mk = L.geoJson(json, {
                 name: "marker"
-            }).addTo(map)
+            })
+                .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+            // .addTo(map) 
+            mg.addLayer(mk);
         }
+
     });
+    mg.addTo(map)
+    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
 }
 
 let getDetail = (e) => {
@@ -323,13 +498,38 @@ $("#prov").change(function () {
     getDataByPro(this.value);
 })
 
+var m61, ms61
+let layermark = (Url, Nlayer) => {
+    var MIcon1 = L.icon({
+        iconUrl: './Marker/Mark1.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
 
+    if (Nlayer == 61) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms61 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m61 = L.circleMarker([i.geometry.coordinates[1], i.geometry.coordinates[0]], {
+                        radius: 8,
+                        fillColor: "#2febc9",
+                        color: "#232323",
+                        weight: 0.2,
+                        opacity: 1,
+                        fillOpacity: 1,
+                    })
+                        .bindPopup(`<h6><b>สถานี :</b> ${i.properties.station_n}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6> <h6><b>ค่าที่ตรวจวัดได้ :</b> ${i.properties.value}</h6>`)
+                    // .addTo(map);
+                }
+                ms61.addLayer(m61);
+            })
+            ms61.addTo(map)
+            lyrControl.addOverlay(ms61, "จุดวัดคุณภาพน้ำทะเล")
+        });
+    }
 
-
-
-
-
-
-
-
-
+}
