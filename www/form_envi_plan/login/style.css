@@ -1,6 +1,7 @@
 body {
     font-family: "Kanit", sans-serif !important;
     color: #444444;
+    font-size: 16px !important;
 }
   
 h1, h2, h3, h4, h5, h6 {
@@ -11,4 +12,8 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     position: relative;
     /* border-bottom: 1px solid #b2b2b2; */
+}
+
+.orange{
+    background-color: #efb301 !important;
 }

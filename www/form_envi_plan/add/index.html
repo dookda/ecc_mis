@@ -45,10 +45,13 @@
     <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <!-- Template Main CSS File -->
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 
     <link rel="stylesheet" href="./../assets/css/style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -99,7 +102,7 @@
                     <form id="fieldForm">
                         <div class="form-group">
                             <div class="form-group">
-                                <h6>ลำดับ</h6>
+                                <h6>ลำดับ<span style="color: firebrick;">*</span></h6>
                                 <input type="number" step="any" class="form-control" id="prj_order" required>
                             </div>
                             <h6>ประเภทของแผนงานโครงการ</h6>
@@ -116,7 +119,7 @@
                         </div>
 
                         <div class="form-group">
-                            <h6>หมวดหมู่</h6>
+                            <h6>หมวดหมู่<span style="color: firebrick;">*</span></h6>
                             <select class="form-control" id="prj_group">
                                 <option value="โครงการเร่งด่วน (Flagship)">โครงการเร่งด่วน (Flagship)</option>
                                 <option value="การจัดการกากของเสียภาคอุตสาหกรรม">การจัดการกากของเสียภาคอุตสาหกรรม
@@ -148,7 +151,7 @@
                         </div>
 
                         <div class="form-group">
-                            <h6>มาตรการ</h6>
+                            <h6>มาตรการ<span style="color: firebrick;">*</span></h6>
                             <select class="form-control" id="prj_measure">
                                 <option value=""></option>
                                 <option value="มาตรการ 1.1">มาตรการ 1.1 บำบัด กำจัดของเสีย และควบคุมมลพิษจากแหล่งกำเนิด
@@ -181,17 +184,17 @@
                         </div>
 
                         <div class="form-group">
-                            <h6>แนวทางการปฎิบัติ</h6>
+                            <h6>แนวทางการปฎิบัติ<span style="color: firebrick;">*</span></h6>
                             <ul id="list_measure"></ul>
                         </div>
 
                         <div class="form-group">
-                            <h6>ชื่อโครงการ</h6>
+                            <h6>ชื่อโครงการ<span style="color: firebrick;">*</span></h6>
                             <input type="text" class="form-control" id="prj_name" required>
                         </div>
 
                         <div class="form-group">
-                            <h6>วัตถุประสงค์โครงการ</h6>
+                            <h6>วัตถุประสงค์โครงการ<span style="color: firebrick;">*</span></h6>
                             <textarea type="text" class="form-control" id="prj_obj"></textarea>
                         </div>
 
@@ -212,7 +215,20 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <h6>ระยะเวลาดำเนินการ (ระบุปี พ.ศ.)</h6>
-                                    <input type="text" class="form-control" id="prj_time">
+                                    <!-- <input type="text" class="form-control" id="prj_time"> -->
+
+                                    <select class="form-control" id="prj_time">
+                                        <option value="2561">2561</option>
+                                        <option value="2562">2562</option>
+                                        <option value="2563">2563</option>
+                                        <option value="2564">2564</option>
+                                        <option value="2566">2565</option>
+                                        <option value="2566">2566</option>
+                                        <option value="2567">2567</option>
+                                        <option value="2568">2568</option>
+                                        <option value="2569">2569</option>
+                                        <option value="2570">2570</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm">
@@ -508,13 +524,13 @@
                         <div class="row">
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <h6>ชื่อ-สกุล</h6>
+                                    <h6>ชื่อ-สกุล<span style="color: firebrick;">*</span></h6>
                                     <input type="text" class="form-control" id="coor_name" required>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <h6>ตำแหน่ง</h6>
+                                    <h6>ตำแหน่ง<span style="color: firebrick;">*</span></h6>
                                     <input type="text" class="form-control" id="coor_pos">
                                 </div>
                             </div>
@@ -533,6 +549,8 @@
                                 </div>
                             </div>
                         </div>
+                        <span style="color: firebrick;">*</span>จำเป็นต้องกรอก
+                        <hr>
                         <div class="mt-1">
                             <button type="submit" class="btn btn-info" id="button">
                                 <span id='n'>&nbsp;บันทึก</span>
@@ -541,9 +559,8 @@
                                 <span>&nbsp;กลับไปหน้าหลัก</span>
                             </button>
                         </div>
+                    </form>
                 </div>
-
-                </form>
             </div>
 
             <div class="modal fade" id="modal" role="dialog">
@@ -560,7 +577,7 @@
             </div>
             <p></p>
             <p></p>
-            <hr>
+
 
         </section>
     </main>

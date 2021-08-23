@@ -457,40 +457,40 @@ let barChart = (datarr, chartdiv, unit) => {
     chart.data = datarr
 }
 
-let loadTable2 = () => {
-    let table = $('#mTable').DataTable({
-        ajax: {
-            type: "POST",
-            url: url + '/projmon-api/getnonprojdata',
-            data: { org: org, typ: typ },
-            dataSrc: 'data'
-        },
-        columns: [
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    // console.log(row);
-                    return `${meta.row + 1}`
-                }
-            },
-            { data: 'prj_cate' },
-            { data: 'prj_measure' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `
-                       <a type="button" class="btn btn-margin btn-info" href="./../edit_nonprj/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
-                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'nonprj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "11%"
-            }
-        ],
-        searching: true,
-        scrollX: false,
-        // order: [2, 'asc'],
-    });
-}
-loadTable2()
+// let loadTable2 = () => {
+//     let table = $('#mTable').DataTable({
+//         ajax: {
+//             type: "POST",
+//             url: url + '/projmon-api/getnonprojdata',
+//             data: { org: org, typ: typ },
+//             dataSrc: 'data'
+//         },
+//         columns: [
+//             {
+//                 data: '',
+//                 render: (data, type, row, meta) => {
+//                     // console.log(row);
+//                     return `${meta.row + 1}`
+//                 }
+//             },
+//             { data: 'prj_cate' },
+//             { data: 'prj_measure' },
+//             {
+//                 data: null,
+//                 render: function (data, type, row, meta) {
+//                     return `
+//                        <a type="button" class="btn btn-margin btn-info" href="./../edit_nonprj/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
+//                        <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'nonprj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+//                 },
+//                 // width: "11%"
+//             }
+//         ],
+//         searching: true,
+//         scrollX: false,
+//         // order: [2, 'asc'],
+//     });
+// }
+// loadTable2()
 
 
 
