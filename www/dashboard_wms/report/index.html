@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>แผนที่</title>
+    <title>ระบบสนับสนุนการตัดสินใจ-ภาพรวม</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -52,8 +52,9 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
@@ -79,139 +80,849 @@
 
     <main id="main">
 
+
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
+
+        </section>
+        <!-- ======= Services Section ======= -->
+
+        <section id="services" class="services">
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <br>
+                    <br>
+
+
+                    <h2>ระบบสนับสนุนการตัดสินใจแบบภาพรวม</h2>
+                    <p>
+                        ระบบสนับสนุนการตัดสินใจ-ภาพรวม เป็นระบบสนับสนุนการตัดสินใจที่รวบรวมชั้นข้อมูลเชิงพื้นที่จำนวน
+                        113 ชั้นข้อมูล เพื่อให้ผู้ใช้สามารถเรียกดูชั้นข้อมูลเชิงพื้นที่ที่สนใจ
+                        <br>ในระบบนี้มีชั้นข้อมูล 5 หมวดข้อมูล ประกอบด้วย ขอบเขตการปกครอง แหล่งน้ำ มลพิษ ภัยธรรมชาติ
+                        และการใช้ประโยชน์ที่ดิน
+
+                    </p>
+                </div>
+
+            </div>
             <div class="container-fluid">
                 <div class="mt-3" data-aos="fade-up" id="main">
 
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="card">
                                 <div class="card-body layer">
                                     <label><b>ชั้นข้อมูล</b></label>
+                                    <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
+                                    <hr>
                                     <div class="scroll">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="lu" id="lu">
-                                            <label class="form-check-label">
-                                                การใช้ประโยชน์ที่ดิน
-                                            </label>
-                                            <br>
-                                            <img id="luLegend">
+                                        <div class="group-check">
+                                            <label><b>ขอบเขตการปกครอง</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pro"
+                                                    id="lyr_prov" checked>
+                                                <label class="form-check-label">
+                                                    ขอบเขตจังหวัด
+                                                </label>
+                                                <br>
+                                                <img id="proLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="amp"
+                                                    id="lyr_amp">
+                                                <label class="form-check-label">
+                                                    ขอบเขตอำเภอ
+                                                </label>
+                                                <br>
+                                                <img id="ampLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="tam"
+                                                    id="lyr_tam">
+                                                <label class="form-check-label">
+                                                    ขอบเขตตำบล
+                                                </label>
+                                                <br>
+                                                <img id="tamLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="muni" id="muni">
+                                                <label class="form-check-label">
+                                                    ขอบเขตเทศบาล
+                                                </label>
+                                                <br>
+                                                <img id="munLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="vill" id="vill">
+                                                <label class="form-check-label">
+                                                    หมู่บ้าน
+                                                </label>
+                                                <br>
+                                                <img id="villLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="maintran"
+                                                    id="maintran">
+                                                <label class="form-check-label">
+                                                    เส้นทางคมนาคมสายหลัก
+                                                </label>
+                                                <br>
+                                                <img id="maintranLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="tran" id="tran">
+                                                <label class="form-check-label">
+                                                    เส้นทางคมนาคม
+                                                </label>
+                                                <br>
+                                                <img id="tranLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="highway"
+                                                    id="highway">
+                                                <label class="form-check-label">
+                                                    เส้นทางหลวงแผ่นดิน
+                                                </label>
+                                                <br>
+                                                <img id="highwayLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="train"
+                                                    id="train">
+                                                <label class="form-check-label">
+                                                    เส้นทางรถไฟ
+                                                </label>
+                                                <br>
+                                                <img id="trainLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="munilandmark"
+                                                    id="munilandmark">
+                                                <label class="form-check-label">
+                                                    สถานที่สำคัญในเขตเทศบาล
+                                                </label>
+                                                <br>
+                                                <img id="munilandmarkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landmark"
+                                                    id="landmark">
+                                                <label class="form-check-label">
+                                                    สถานที่สำคัญ
+                                                </label>
+                                                <br>
+                                                <img id="landmarkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="artsource"
+                                                    id="artsource">
+                                                <label class="form-check-label">
+                                                    แหล่งศิลปกรรม
+                                                </label>
+                                                <br>
+                                                <img id="artsourceLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="countour"
+                                                    id="countour">
+                                                <label class="form-check-label">
+                                                    เส้นชั้นความสูง
+                                                </label>
+                                                <br>
+                                                <img id="countourLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>แหล่งน้ำ</b></label>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterpath"
+                                                    id="waterpath">
+                                                <label class="form-check-label">
+                                                    เส้นทางน้ำ
+                                                </label>
+                                                <br>
+                                                <img id="waterpathLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wbody"
+                                                    id="wbody">
+                                                <label class="form-check-label">
+                                                    แหล่งน้ำ
+                                                </label>
+                                                <br>
+                                                <img id="wbodyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="basinquality"
+                                                    id="basinquality">
+                                                <label class="form-check-label">
+                                                    ชั้นคุณภาพลุ่มน้ำ
+                                                </label>
+                                                <br>
+                                                <img id="basinqualityLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mainbasin"
+                                                    id="mainbasin">
+                                                <label class="form-check-label">
+                                                    ลุ่มน้ำหลัก
+                                                </label>
+                                                <br>
+                                                <img id="mainbasinLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="subbasin"
+                                                    id="subbasin">
+                                                <label class="form-check-label">
+                                                    ลุ่มน้ำย่อย
+                                                </label>
+                                                <br>
+                                                <img id="subbasinLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hydrogeology"
+                                                    id="hydrogeology">
+                                                <label class="form-check-label">
+                                                    อุทกธรณีวิทยา
+                                                </label>
+                                                <br>
+                                                <img id="hydrogeologyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="radar" id="radar"
+                                                    checked>
+                                                <label class="form-check-label">
+                                                    เรดาห์น้ำฝน
+                                                </label>
+                                                <br>
+                                                <img id="radarLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="meteo"
+                                                    id="meteo">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                                </label>
+                                                <br>
+                                                <img id="meteoLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterlevel_sa"
+                                                    id="waterlevel_sa">
+                                                <label class="form-check-label">
+                                                    สถานีตรวจวัดระดับน้ำ(สถานีอุทกวิทยา)
+                                                </label>
+                                                <br>
+                                                <img id="waterlevel_saLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wsup_pipe"
+                                                    id="wsup_pipe">
+                                                <label class="form-check-label">
+                                                    ท่อส่งน้ำการประปา
+                                                </label>
+                                                <br>
+                                                <img id="wsup_pipeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wdiv_pipe"
+                                                    id="wdiv_pipe">
+                                                <label class="form-check-label">
+                                                    ท่อผันน้ำกรมชลประทาน
+                                                </label>
+                                                <br>
+                                                <img id="wdiv_pipeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="locarid9"
+                                                    id="locarid9">
+                                                <label class="form-check-label">
+                                                    สำนักงานชลประทานที่ 9
+                                                </label>
+                                                <br>
+                                                <img id="locarid9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="dambpk"
+                                                    id="dambpk">
+                                                <label class="form-check-label">
+                                                    เขื่อนทดน้ำบางปะกง
+                                                </label>
+                                                <br>
+                                                <img id="dambpkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mainriver9"
+                                                    id="mainriver9">
+                                                <label class="form-check-label">
+                                                    แม่น้ำสายหลักสปช.9
+                                                </label>
+                                                <br>
+                                                <img id="mainriver9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pjarea_rid9"
+                                                    id="pjarea_rid9">
+                                                <label class="form-check-label">
+                                                    พื้นที่โครงการสปช.9
+                                                </label>
+                                                <br>
+                                                <img id="pjarea_rid9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pjloca_rid9"
+                                                    id="pjloca_rid9">
+                                                <label class="form-check-label">
+                                                    ที่ตั้งโครงการสปช.9
+                                                </label>
+                                                <br>
+                                                <img id="pjloca_rid9Legend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>มลพิษ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="soundpoint"
+                                                    id="soundpoint">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดเสียง
+                                                </label>
+                                                <br>
+                                                <img id="soundpointLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pollu"
+                                                    id="pollu">
+                                                <label class="form-check-label">
+                                                    แหล่งกำเนิดมลพิษ
+                                                </label>
+                                                <br>
+                                                <img id="polluLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ProtecPollu"
+                                                    id="ProtecPollu">
+                                                <label class="form-check-label">
+                                                    เขตพื้นที่คุ้มครองและเขตควบคุมมลพิษ
+                                                </label>
+                                                <br>
+                                                <img id="ProtecPolluLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="aqi" id="aqi">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดคุณภาพอากาศ (กรมควบคุมมลพิษ)
+                                                </label>
+                                                <br>
+                                                <img id="aqiLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hotspot"
+                                                    id="hotspot">
+                                                <label class="form-check-label">
+                                                    จุดความร้อน
+                                                </label>
+                                                <br>
+                                                <img id="hpLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="gwater"
+                                                    id="gwater">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดคุณภาพน้ำบาดาล
+                                                </label>
+                                                <br>
+                                                <img id="gwLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterstation"
+                                                    id="waterstation">
+                                                <label class="form-check-label">
+                                                    สถานีตรวจวัดคุณภาพน้ำอัตโนมัติ
+                                                </label>
+                                                <br>
+                                                <img id="waterstationLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wastewater"
+                                                    id="wastewater">
+                                                <label class="form-check-label">
+                                                    บ่อบำบัดน้ำเสีย
+                                                </label>
+                                                <br>
+                                                <img id="wastewaterLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="garbage"
+                                                    id="garbage">
+                                                <label class="form-check-label">
+                                                    บ่อขยะ
+                                                </label>
+                                                <br>
+                                                <img id="garbageLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>ภัยธรรมชาติ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="flood"
+                                                    id="flood">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยน้ำท่วม
+                                                </label>
+                                                <br>
+                                                <img id="floodLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="earthquake"
+                                                    id="earthquake">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงแผ่นดินไหว
+                                                </label>
+                                                <br>
+                                                <img id="earthquakeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landslide"
+                                                    id="landslide">
+                                                <label class="form-check-label">
+                                                    ตำแหน่งพื้นที่เสี่ยงดินถล่ม
+                                                </label>
+                                                <br>
+                                                <img id="landslideLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hole" id="hole">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยหลุมยุบ
+                                                </label>
+                                                <br>
+                                                <img id="holeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="drought"
+                                                    id="drought">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยแล้ง
+                                                </label>
+                                                <br>
+                                                <img id="droughtLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>การใช้ประโยชน์ที่ดิน</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="grpark"
+                                                    id="grpark">
+                                                <label class="form-check-label">
+                                                    พื้นที่สีเขียวสาธารณะ
+                                                </label>
+                                                <br>
+                                                <img id="grparkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="f_reserved"
+                                                    id="f_reserved">
+                                                <label class="form-check-label">
+                                                    ป่าสงวนแห่งชาติ
+                                                </label>
+                                                <br>
+                                                <img id="f_reservedLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="nationalpark"
+                                                    id="nationalpark">
+                                                <label class="form-check-label">
+                                                    อุทยานแห่งชาติ
+                                                </label>
+                                                <br>
+                                                <img id="nationalparkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="park" id="park">
+                                                <label class="form-check-label">
+                                                    วนอุทยาน
+                                                </label>
+                                                <br>
+                                                <img id="parkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wildlife"
+                                                    id="wildlife">
+                                                <label class="form-check-label">
+                                                    เขตรักษาพันธุ์สัตว์ป่า
+                                                </label>
+                                                <br>
+                                                <img id="wildlifeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="non_hunting"
+                                                    id="non_hunting">
+                                                <label class="form-check-label">
+                                                    เขตห้ามล่าสัตว์ป่า
+                                                </label>
+                                                <br>
+                                                <img id="non_huntingLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="f_type63"
+                                                    id="f_type63">
+                                                <label class="form-check-label">
+                                                    ประเภทป่าไม้ปีพ.ศ.2563
+                                                </label>
+                                                <br>
+                                                <img id="f_type63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="afforesta"
+                                                    id="afforesta">
+                                                <label class="form-check-label">
+                                                    พื้นที่ปลูกป่า
+                                                </label>
+                                                <br>
+                                                <img id="afforestaLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="alroarea"
+                                                    id="alroarea">
+                                                <label class="form-check-label">
+                                                    พื้นที่สปก.
+                                                </label>
+                                                <br>
+                                                <img id="alroareaLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="commu_forest"
+                                                    id="commu_forest">
+                                                <label class="form-check-label">
+                                                    ป่าชุมชน
+                                                </label>
+                                                <br>
+                                                <img id="commu_forestLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geology"
+                                                    id="grology">
+                                                <label class="form-check-label">
+                                                    ธรณีวิทยา
+                                                </label>
+                                                <br>
+                                                <img id="geologyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mineral"
+                                                    id="mineral">
+                                                <label class="form-check-label">
+                                                    ทรัพยากรแร่
+                                                </label>
+                                                <br>
+                                                <img id="mineralLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geoconser"
+                                                    id="geoconser">
+                                                <label class="form-check-label">
+                                                    แหล่งอนุรักษ์ทางธรณีวิทยา
+                                                </label>
+                                                <br>
+                                                <img id="geoconserLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="minerdev"
+                                                    id="minerdev">
+                                                <label class="form-check-label">
+                                                    พื้นที่จำแนกเขตพัฒนาทรัพยากรแร่
+                                                </label>
+                                                <br>
+                                                <img id="minerdevLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geominer"
+                                                    id="geominer">
+                                                <label class="form-check-label">
+                                                    ข้อมูลธรณีและแหล่งทรัพยากรแร่
+                                                </label>
+                                                <br>
+                                                <img id="geominerLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oremine"
+                                                    id="oremine">
+                                                <label class="form-check-label">
+                                                    ประทานบัตร
+                                                </label>
+                                                <br>
+                                                <img id="oremineLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="soil" id="soil">
+                                                <label class="form-check-label">
+                                                    แผนที่ดิน
+                                                </label>
+                                                <br>
+                                                <img id="soilLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu56" id="lu56">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2556
+                                                </label>
+                                                <br>
+                                                <img id="lu56Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu59" id="lu59">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2559
+                                                </label>
+                                                <br>
+                                                <img id="lu59Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu61" id="lu61">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561
+                                                </label>
+                                                <br>
+                                                <img id="lu61Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lucbi63"
+                                                    id="lucbi63">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินพื้นที่จังหวัดชลบุรี ปีพ.ศ.2563
+                                                </label>
+                                                <br>
+                                                <img id="lucbi63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="luryg63"
+                                                    id="luryg63">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินพื้นที่จังหวัดระยอง ปีพ.ศ.2563
+                                                </label>
+                                                <br>
+                                                <img id="luryg63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landscape"
+                                                    id="landscape">
+                                                <label class="form-check-label">
+                                                    ภูมินิเวศ
+                                                </label>
+                                                <br>
+                                                <img id="landscapeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="a9" id="a9">
+                                                <label class="form-check-label">
+                                                    พื้นที่เกษตรกรรมประเภทเพาะเลี้ยงสัตว์น้ำ
+                                                </label>
+                                                <br>
+                                                <img id="a9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mang_forest"
+                                                    id="mang_forest">
+                                                <label class="form-check-label">
+                                                    เขตป่าชายเลนตามมติคณะรัฐมนตรี
+                                                </label>
+                                                <br>
+                                                <img id="mang_forestLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="MangLU"
+                                                    id="MangLU">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินในป่าชายเลน
+                                                </label>
+                                                <br>
+                                                <img id="MangLULegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Coastal"
+                                                    id="Coastal">
+                                                <label class="form-check-label">
+                                                    เขตที่ดินชายฝั่งทะเล
+                                                </label>
+                                                <br>
+                                                <img id="CoastalLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ancient"
+                                                    id="ancient">
+                                                <label class="form-check-label">
+                                                    โบราณสถาน
+                                                </label>
+                                                <br>
+                                                <img id="ancientLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldcommu"
+                                                    id="oldcommu">
+                                                <label class="form-check-label">
+                                                    ย่านชุมชนเก่า
+                                                </label>
+                                                <br>
+                                                <img id="oldcommuLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldtown_cco"
+                                                    id="oldtown_cco">
+                                                <label class="form-check-label">
+                                                    เขตเมืองเก่า จังหวัดฉะเชิงเทรา
+                                                </label>
+                                                <br>
+                                                <img id="oldtown_ccoLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldtown_ryg"
+                                                    id="oldtown_ryg">
+                                                <label class="form-check-label">
+                                                    เขตเมืองเก่า จังหวัดระยอง
+                                                </label>
+                                                <br>
+                                                <img id="oldtown_rygLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>ข้อมูลตรวจวัดกระแสน้ำ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalradar"
+                                                    id="coastalradar">
+                                                <label class="form-check-label">
+                                                    ข้อมูลความเร็วและทิศทางกระแสน้ำจากระบบเรดาร์ชายฝั่ง
+                                                    บริเวณอ่าวไทยตอนบนและภาคตะวันออก (ที่มา: gistda)
+                                                </label>
+                                                <br>
+                                                <img id="coastalradarLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon59"
+                                                    id="coastalmon59">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2559
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon59Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon60"
+                                                    id="coastalmon60">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2560
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon60Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon61"
+                                                    id="coastalmon61">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2561
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon61Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon62"
+                                                    id="coastalmon62">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2562
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon62Legend">
+                                            </div>
                                         </div>
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="muni" id="muni">
-                                            <label class="form-check-label">
-                                                ขอบเขตเทศบาล
-                                            </label>
-                                            <br>
-                                            <img id="munLegend">
-                                        </div>
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="pro" id="lyr_prov"
-                                                checked>
-                                            <label class="form-check-label">
-                                                ขอบเขตจังหวัด
-                                            </label>
-                                            <br>
-                                            <img id="proLegend">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="amp" id="lyr_amp">
-                                            <label class="form-check-label">
-                                                ขอบเขตอำเภอ
-                                            </label>
-                                            <br>
-                                            <img id="ampLegend">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="tam" id="lyr_tam">
-                                            <label class="form-check-label">
-                                                ขอบเขตตำบล
-                                            </label>
-                                            <br>
-                                            <img id="tamLegend">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="pcontrol"
-                                                id="pcontrol">
-                                            <label class="form-check-label">
-                                                เขตควบคุมมลพิษ
-                                            </label>
-                                            <br>
-                                            <img id="controlLegend">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="wbody" id="wbody">
-                                            <label class="form-check-label">
-                                                แหล่งน้ำ
-                                            </label>
-                                            <br>
-                                            <img id="wbodyLegend">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="aqi" id="aqi">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดคุณภาพอากาศ (กรมควบคุมมลพิษ)
-                                            </label>
-                                            <br>
-                                            <img id="aqiLegend" width="30px">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="meteo" id="meteo">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
-                                            </label>
-                                            <br>
-                                            <img id="meteoLegend" width="30px">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="hotspot"
-                                                id="hotspot">
-                                            <label class="form-check-label">
-                                                จุดความร้อน
-                                            </label>
-                                            <br>
-                                            <img id="hpLegend" width="30px">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="gwater" id="gwater">
-                                            <label class="form-check-label">
-                                                จุดตรวจวัดคุณภาพน้ำบาดาล
-                                            </label>
-                                            <br>
-                                            <img id="gwLegend" width="30px">
-                                        </div>
-
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="radar" id="radar"
-                                                checked>
-                                            <label class="form-check-label">
-                                                เรดาห์น้ำฝน
-                                            </label>
-                                            <br>
-                                            <img id="radarLegend" width="30px">
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="vill" id="vill">
-                                            <label class="form-check-label">
-                                                หมู่บ้าน
-                                            </label>
-                                            <br>
-                                            <img id="villLegend">
-                                        </div>
                                     </div>
+
+
+
+
+
+
+
 
                                     <hr>
                                     <label for=""><b>แผนที่ฐาน</b></label>
@@ -220,38 +931,38 @@
                                             <input class="form-check-input" type="radio" name="basemap" value="mapbox"
                                                 checked>
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน mapbox
+                                                แผนที่ถนน Mapbox
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="esri">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน esri
+                                                แผนที่ถนน ESRI
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="grod">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน google maps
+                                                แผนที่ถนน Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="ghyb">
                                             <label class="form-check-label" for="">
-                                                แผนที่ผสม google maps
+                                                แผนที่ผสม Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="gter">
                                             <label class="form-check-label" for="">
-                                                แผนที่ภูมิประเทศ google maps
+                                                แผนที่ภูมิประเทศ Google Maps
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <div class="card">
                                 <div id="map"></div>
                             </div>
@@ -260,7 +971,7 @@
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
                 <div class="container-fluid mb-6">
-                    <p> <span class="ver">ปรับปรุง 14/03/2021</span></p>
+                    <p> <span class="ver">ปรับปรุง 18/08/2021</span></p>
                 </div>
             </div>
         </section><!-- End Services Section -->
@@ -333,7 +1044,7 @@
 
 
     <!-- <script src="./../marker.js"></script> -->
-    <script src="app.js"></script>
+    <script src="./app.js"></script>
 
 </body>
 

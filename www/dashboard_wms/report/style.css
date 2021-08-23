@@ -7,12 +7,12 @@
 }
 
 #map{
-    height: 680px;
+    height: 700px;
     border-radius: 0.8rem;
 }
 
 .layer{
-  height: 680px;
+  height: 700px;
 }
 
 .scroll{
@@ -21,7 +21,7 @@
 }
 
 .scroll-base{
-  height:150px;
+  height:120px;
   overflow-y: scroll;
 }
 
