@@ -248,11 +248,11 @@ let getPrj_cate = async (x) => {
 }
 
 let getBudget = async (x) => {
-    let a = "งบประมาณประจำปี 2561";
-    let b = "งบประมาณประจำปี 2562";
-    let c = "งบประมาณประจำปี 2563";
-    let d = "งบประมาณประจำปี 2564";
-    let e = "งบประมาณประจำปี 2565";
+    let a = "งบประมาณปี 2561";
+    let b = "งบประมาณปี 2562";
+    let c = "งบประมาณปี 2563";
+    let d = "งบประมาณปี 2564";
+    let e = "งบประมาณปี 2565";
     let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map(i => {
@@ -281,7 +281,7 @@ let getBudget = async (x) => {
         val: ev
     }]
 
-    console.log(dat);
+    // console.log(dat);
     barChart(dat, "chart2", "ล้านบาท")
 }
 
