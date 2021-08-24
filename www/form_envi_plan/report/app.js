@@ -256,19 +256,14 @@ let getBudget = async (x) => {
     let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map(i => {
-
-        if (i.budg_61) {
-            av += Number(i.budg_61)
-        } else if (i.budg_62) {
-            bv += Number(i.budg_62)
-        } else if (i.budg_63) {
-            cv += Number(i.budg_63)
-        } else if (i.budg_64) {
-            dv += Number(i.budg_64)
-        } else if (i.budg_65) {
-            ev += Number(i.budg_65)
-        }
+        // console.log(i);
+        av += Number(i.budg_61)
+        bv += Number(i.budg_62)
+        cv += Number(i.budg_63)
+        dv += Number(i.budg_64)
+        ev += Number(i.budg_65)
     })
+
     let dat = [{
         cat: a,
         val: av
@@ -286,7 +281,7 @@ let getBudget = async (x) => {
         val: ev
     }]
 
-    // console.log(dat);
+    console.log(dat);
     barChart(dat, "chart2", "ล้านบาท")
 }
 
@@ -316,16 +311,19 @@ let getProc_stat = async (x) => {
         cat: c,
         val: cv
     }]
-    barChart(dat, "chart3", "จำนวนโครงการ")
+    ratioChart(dat, "chart3", "จำนวนโครงการ")
 }
 
 let getOpert_stat = async (x) => {
     let a = "อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด"
     let b = "อยู่ระหว่างตั้งของบประมาณ"
     let c = "อยู่ระหว่างดำเนินการ/ก่อสร้าง"
-    let d = "ยังไม่ได้ดำเนินการ"
-    let e = "ดำเนินการเรียบร้อยแล้ว"
-    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
+    let d = "อยู่ระหว่างจัดซื้อจัดจ้าง"
+    let e = "ยังไม่ได้ดำเนินการ"
+    let f = "ดำเนินการแล้วเสร็จ"
+    let g = "ไม่ได้ดำเนินการ"
+    let h = "ยกเลิกโครงการ"
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0, fv = 0, gv = 0, hv = 0;
 
     await x.map((i, k) => {
         // console.log(i);
@@ -339,6 +337,12 @@ let getOpert_stat = async (x) => {
             dv++
         } else if (i.opert_stat == e) {
             ev++
+        } else if (i.opert_stat == f) {
+            fv++
+        } else if (i.opert_stat == g) {
+            gv++
+        } else if (i.opert_stat == h) {
+            hv++
         }
         $("#projtotal").text(k + 1)
     })
@@ -357,6 +361,15 @@ let getOpert_stat = async (x) => {
     }, {
         cat: e,
         val: ev
+    }, {
+        cat: f,
+        val: fv
+    }, {
+        cat: g,
+        val: gv
+    }, {
+        cat: h,
+        val: hv
     }]
     // barChart(dat, "chart4", "จำนวนโครงการ");
     ratioChart(dat, "chart5", "จำนวนโครงการ");
