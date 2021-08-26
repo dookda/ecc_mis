@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
     <!-- <link rel="stylesheet" href="./../theme/assets/css/paper-dashboard.min.css"> -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
     <link rel="stylesheet"
@@ -74,7 +75,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- .nav-menu -->
             <nav class="nav-menu d-none d-lg-block">
-                <ul>
+                <ul id="nav">
                     <li><a href="./../index.html">หน้าหลัก</a></li>
                     <li class="active"><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
@@ -83,12 +84,12 @@
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
-                    <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+                    <!-- <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
                     <li id="usr1"><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
                     <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li>
+                            ออกจากระบบ</a></li> -->
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -108,7 +109,10 @@
             <div class="section-title">
                 <h2>ระบบรายงานสถานการณ์คุณภาพน้ำบาดาล</h2>
                 <p>
-                    ระบบรายงานสถานการณ์คุณภาพน้ำบาดาลในพื้นที่โครงการพัฒนาระเบียงเศรษฐกิจพิเศษภาคตะวันออก
+                    ระบบรายงานสถานการณ์คุณภาพน้ำบาดาล เป็นระบบที่รวบรวมและแสดงผลข้อมูลสถานการณ์น้ำบาดาล
+                    ทั้งเชิงคุณภาพและปริมาณ
+                    <br>จากบ่อบาดาลสังเกตการณ์ที่มีการตรวจวัดแบบอัตโนมัติจากกรมทรัพยากรน้ำบาดาล
+                    ในเขตพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                 </p>
             </div>
             <p></p>
@@ -130,8 +134,8 @@
                         <div class="col-xs-4 ml-1">
                             <br>
                             <h2 style="font-weight: bold">ข้อมูลคุณภาพของบ่อบาดาล ณ ตำแหน่งผู้ใช้งาน</h2>
-                            ข้อมูลบ่อบาดาล วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span
-                                id="sta_th"></span>
+                            ข้อมูลบ่อบาดาล สถานี<span id="sta_th"></span><br>
+                            <!-- วันที่ <span id="d"></span> เวลา <span id="t"></span>  -->
                             (จากกรมทรัพยากรน้ำบาดาล)<br />
                         </div>
                     </div>
@@ -219,7 +223,7 @@
                                 <div class="form-group">
                                     <label for="sel1">จังหวัด:</label>
                                     <select class="form-control" id="pro">
-                                        <option value="eec">eec</option>
+                                        <option value="eec">ทุกจังหวัด</option>
                                         <option value="20">ชลบุรี</option>
                                         <option value="21">ระยอง</option>
                                         <option value="24">ฉะเชิงเทรา</option>
@@ -242,10 +246,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card card-stats">
-                        <div class="card-body p-1">
-                            <div id="map"></div>
-                        </div>
+                    <div class="card-body p2">
+                        <div id="map" style="z-index: 0;"></div>
                     </div>
                 </div>
             </div>
@@ -332,6 +334,7 @@
                     <div class="col-sm">
                         <div class="card card-stats">
                             <div class="card-body ">
+                                <label for="">ดาวน์โหลดข้อมูล</label>
                                 <table id="tab" class="table table-striped table-bordered dt-responsive nowrap"
                                     style="width:100%">
                                     <thead>
@@ -757,6 +760,14 @@
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>

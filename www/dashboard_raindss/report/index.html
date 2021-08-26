@@ -50,11 +50,11 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- .nav-menu -->
             <nav class="nav-menu d-none d-lg-block">
-                <ul>
+                <ul id="nav">
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li class="active"><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
 
@@ -83,6 +83,21 @@
         <!-- ======= Services Section ======= -->
         <section id="services" class="services">
             <div class="container-fluid">
+
+                <div class="section-title">
+                    <br>
+                    <br>
+                    <h2>ระบบสนับสนุนการตัดสินใจด้านน้ำผิวดิน</h2>
+                    <p>
+                        ระบบสนับสนุนการตัดสินใจ-น้ำผิวดิน
+                        เป็นระบบสนับสนุนการตัดสินใจที่รวบรวมชั้นข้อมูลเชิงพื้นที่ที่มีความเกี่ยวข้องกับทรัพยากรน้ำ
+                        เพื่อให้ผู้ใช้สามารถเรียกดูข้อมูลสถานการณ์น้ำ
+                        ทั้งในส่วนปริมาณ และคุณภาพเลือกดูข้อมูลปริมาณน้ำฝนย้อนหลังแต่ละสัปดาห์
+                        และผลการคาดการณ์ปริมาณฝนเพื่อใช้ประกอบการตัดสินใจร่วมกับชั้นข้อมูลอื่นๆ ได้
+
+                    </p>
+                </div>
+
                 <div class="mt-3" data-aos="fade-up" id="main">
 
                     <div class="row">
@@ -253,25 +268,25 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="esri">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน Esri
+                                                แผนที่ถนน ESRI
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="grod">
                                             <label class="form-check-label" for="">
-                                                แผนที่ถนน Google maps
+                                                แผนที่ถนน Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="ghyb">
                                             <label class="form-check-label" for="">
-                                                แผนที่ผสม Google maps
+                                                แผนที่ผสม Google Maps
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="basemap" value="gter">
                                             <label class="form-check-label" for="">
-                                                แผนที่ภูมิประเทศ Google maps
+                                                แผนที่ภูมิประเทศ Google Maps
                                             </label>
                                         </div>
                                     </div>
@@ -279,7 +294,7 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <h3>ระบบสนับสนุนการตัดสินใจด้านน้ำผิวดิน</h3>
+                            <!-- <h3>ระบบสนับสนุนการตัดสินใจด้านน้ำผิวดิน</h3> -->
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="card">
@@ -294,7 +309,7 @@
                                 <div class="col-sm-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <label for="">พยากรณ์ฝน 14 วันข้างหน้า</label>
+                                            <label for="">เลือกฝนพยากรณ์</label>
                                             <select class="form-control" id="forecast_rain">
                                                 <option value="">ไม่เลือก</option>
                                             </select>

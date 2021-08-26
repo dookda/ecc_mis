@@ -21,15 +21,15 @@
 }
 
 .layer{
-  height: 640px;
+  height: 740px;
 }
 
 .legend{
-  height: 240px;
+  height: 440px;
 }
 
 .scroll-legend{
-  height:180px;
+  height:380px;
   overflow-y: scroll;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .hchart{
-  height: 160px;
+  height: 300px;
 }
 
 .scroll{
@@ -53,7 +53,7 @@
 }
 
 .scroll-label{
-  height:150px;
+  height:120px;
   overflow-y: scroll;
 }
 
@@ -132,5 +132,13 @@
     .sidebar {padding-top: 15px;}
     .sidebar a {font-size: 18px;}
   }
-
- 
+.content-stat{
+  display: flex; flex-direction: row; justify-content: stretch;
+}
+ .card-stat{
+  height: max-content;width: 100%; background-color: #f6f6f8;
+ }
+ .b-stat {justify-content: space-around; flex-direction: column; display: flex; align-items: center;}
+ @media (max-width: 1365px) {
+  .b-stat {justify-content: space-around; flex-direction: column; display: flex; align-items: center;}
+ }

@@ -8,6 +8,10 @@ if (urname) {
     </a></li>
     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
     ออกจากระบบ</a></li>`);
+} else {
+  $("#nav").append(`
+    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+    เข้าสู่ระบบ</a></li>`);
 }
 
 // $("#usrname").text(urname);
@@ -115,7 +119,20 @@ const w2 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   // maxZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-
+const w13 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__13_water_path",
+  format: "image/png",
+  transparent: true,
+  // maxZoom: 10,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+const w53 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:a__53_main_riv_3p",
+  format: "image/png",
+  transparent: true,
+  // maxZoom: 10,
+  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 const baseMaps = {
   "Mapbox": mapbox.addTo(map),
   "Google Hybrid": ghyb
@@ -126,6 +143,9 @@ const overlayMaps = {
   "ขอบเขตอำเภอ": amp,
   "ขอบเขตตำบล": tam,
   "แหล่งน้ำ": w2,
+  "แม่น้ำสายหลัก": w53,
+  "แม่น้ำสายรอง": w13,
+
 };
 
 var legend = L.control({ position: "bottomleft" });
@@ -140,6 +160,8 @@ function showLegend() {
     div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
     div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>สถานีตรวจวัดสภาพอากาศ</span><br>'
     div.innerHTML += '<i style="background: #65d4fb; border-radius: 1%;"></i><span>แหล่งน้ำ</span><br>'
+    div.innerHTML += '<img src="./marker/WW.png"  height="30px"></i><span>แม่น้ำสายหลัก</span><br>'
+    div.innerHTML += '<img src="./marker/Wmain.png"  height="30px"></i><span>แม่น้ำสายรอง</span><br>'
     div.innerHTML += '<img src="./marker/radar.png"  height="30px"></i><span>เรดาห์น้ำฝน</span><br>'
     div.innerHTML += '<i style="background: #7acdf3; border-radius: 1%;"></i><span>อ่างเก็บน้ำ</span><br>'
     return div;
@@ -321,6 +343,11 @@ let showTable = async () => {
     columnDefs: [
       { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
     ],
+    dom: 'Bfrtip',
+    buttons: [
+      'excel', 'print'
+    ],
+    searching: true,
     select: true,
     pageLength: 8,
     responsive: {
@@ -349,7 +376,7 @@ let showWtrl = async () => {
   $('#legend').append(`<img src="./mk_legend/เกณฑ์น้ำท่า.png" width="100%">`)
 
   x.data.data.map(i => {
-    console.log(i);
+    // console.log(i);
     let icon = {
       // iconUrl: './marker/location-pin-blue.svg',
       iconSize: [40, 42],
@@ -903,6 +930,17 @@ rainChart = async (data) => {
   chart.cursor = new am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
   chart.cursor.lineY.disabled = true;
+  chart.exporting.menu = new am4core.ExportMenu();
+  chart.exporting.adapter.add("data", function (data, target) {
+    var data = [];
+    chart.series.each(function (series) {
+      for (var i = 0; i < series.data.length; i++) {
+        series.data[i].name = series.name;
+        data.push(series.data[i]);
+      }
+    });
+    return { data: data };
+  });
 }
 
 barChart = async (data, unit, title) => {
@@ -932,6 +970,18 @@ barChart = async (data, unit, title) => {
   chart.cursor = new am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
   chart.cursor.lineY.disabled = true;
+
+  chart.exporting.menu = new am4core.ExportMenu();
+  chart.exporting.adapter.add("data", function (data, target) {
+    var data = [];
+    chart.series.each(function (series) {
+      for (var i = 0; i < series.data.length; i++) {
+        series.data[i].name = series.name;
+        data.push(series.data[i]);
+      }
+    });
+    return { data: data };
+  });
 }
 
 lollipopChart = async (data, unit) => {
@@ -974,6 +1024,17 @@ lollipopChart = async (data, unit) => {
   var bullet = series.bullets.create(am4charts.CircleBullet);
 
   chart.cursor = new am4charts.XYCursor();
+  chart.exporting.menu = new am4core.ExportMenu();
+  chart.exporting.adapter.add("data", function (data, target) {
+    var data = [];
+    chart.series.each(function (series) {
+      for (var i = 0; i < series.data.length; i++) {
+        series.data[i].name = series.name;
+        data.push(series.data[i]);
+      }
+    });
+    return { data: data };
+  });
 }
 
 pressureChart = async (data) => {
@@ -1010,6 +1071,17 @@ pressureChart = async (data) => {
   chart.cursor = new am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
   chart.cursor.lineY.disabled = true;
+  chart.exporting.menu = new am4core.ExportMenu();
+  chart.exporting.adapter.add("data", function (data, target) {
+    var data = [];
+    chart.series.each(function (series) {
+      for (var i = 0; i < series.data.length; i++) {
+        series.data[i].name = series.name;
+        data.push(series.data[i]);
+      }
+    });
+    return { data: data };
+  });
 }
 
 let showChart = async (e) => {
@@ -1113,8 +1185,23 @@ let chartTemplate = (arrData, div) => {
   chart.scrollbarX.series.push(series);
   chart.scrollbarX.parent = chart.bottomAxesContainer;
 
+  chart.exporting.menu = new am4core.ExportMenu();
+  chart.exporting.menu.align = "left";
+  chart.exporting.menu.verticalAlign = "top";
+  chart.exporting.adapter.add("data", function (data, target) {
+    var data = [];
+    chart.series.each(function (series) {
+      for (var i = 0; i < series.data.length; i++) {
+        series.data[i].name = series.name;
+        data.push(series.data[i]);
+      }
+    });
+    return { data: data };
+  });
+
   dateAxis.start = 0.59;
   dateAxis.keepSelection = true;
+
 }
 
 // init aqi

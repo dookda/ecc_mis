@@ -45,7 +45,10 @@
   background-color: #1F2838 !important;
   border-color: #494F57 !important;
 }
-
+.kanit{
+  font-family: "Kanit",sans-serif !important;
+  font-size: 14px !important; 
+}
   /*Legend specific*/
   .legend {
     padding: 6px 8px;
@@ -53,7 +56,7 @@
     background: white;
     background: rgba(255, 255, 255, 0.8);
     /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
-    /*border-radius: 5px;*/
+    border-radius: 5px;
     line-height: 24px;
     color: #555;
   }

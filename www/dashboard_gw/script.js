@@ -1,17 +1,19 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-// urid ? null : location.href = "./../../form_register/login/index.html";
-$("#usr1").hide()
-$("#usr2").hide()
 
-if (urname !== null) {
-    $("#usr1").show();
-    $("#usr2").show();
-    $("#login").hide();
-    $("#usrname").text(urname);
+if (urname) {
+    $("#nav").append(`<li><a href="./../../form_register/profile/index.html"><i
+        class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>
+      </a></li>
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      ออกจากระบบ</a></li>`);
+} else {
+    $("#nav").append(`
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      เข้าสู่ระบบ</a></li>`);
 }
+
 // if (eecauth !== "admin" && eecauth !== "office") {
 //     location.href = "./../../form_register/login/index.html";
 // }
@@ -29,7 +31,7 @@ let map = L.map('map', {
 var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
-    maxZoom: 19
+    // maxZoom: 19
 })
 
 var ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}", {
@@ -41,8 +43,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 18,
-    minZoom: 14,
+    // maxZoom: 18,
+    // minZoom: 14,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -50,8 +52,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 14,
-    minZoom: 10,
+    // maxZoom: 14,
+    // minZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -59,9 +61,17 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 10,
+    // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
+const LU61 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__46_lu_eec_61:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
 
 var baseMaps = {
     "Mapbox": CartoDB_Positron.addTo(map),
@@ -69,24 +79,61 @@ var baseMaps = {
 }
 const overlayMaps = {
     "ขอบเขตจังหวัด": pro.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+    "การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561": LU61,
 };
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
     collapsed: true
 }).addTo(map);
 
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>สัญลักษณ์</h4>";
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-    div.innerHTML += '<i style="background: #FD7231; border-radius: 50%; border-style: solid; border-width: 1.5px;"></i><span>บ่อสังเกตการณ์</span><br>';
-    return div;
-};
-legend.addTo(map);
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #FD7231; border-radius: 50%; border-style: solid; border-width: 1.5px;"></i><span>บ่อสังเกตการณ์</span><br>';
+        div.innerHTML += `<button class="btn btn-sm" onClick="Luop()" id="LUOP">
+    <span class="kanit">การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+  </button>`
+        div.innerHTML += `<div id='LU'></div>`
+        return div;
+    };
+    legend.addTo(map);
+}
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
+
+function Luop() {
+    $('#LUOP').hide()
+    $('#LU').html(`<button class="btn btn-sm" onClick="Luclose()" id="LUCLOSE">
+    <span class="kanit">การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+    <i style="background: #ffedb1; border-radius: 1%;"></i><span>เกษตรกรรม</span><br>
+    <i style="background: #2ea200; border-radius: 1%;"></i><span>ป่าไม้</span><br>
+    <i style="background: #ff7f00; border-radius: 1%;"></i><span>พื้นที่เบ็ดเตล็ด</span><br>
+    <i style="background: #ff5d6d; border-radius: 1%;"></i><span>พื้นที่เมือง</span><br>
+    <i style="background: #0560c1; border-radius: 1%;"></i><span>แหล่งน้ำ</span><br></div>`)
+}
+function Luclose() {
+    $('#LUOP').show()
+    $('#LU').html('')
+}
 
 function onLocationFound(e) {
     var radius = e.accuracy;
@@ -199,7 +246,7 @@ let nearData = async (r) => {
     let res = await axios.get(api_1 + location.lat + '/' + location.lng)
     let sta_id = res.data.data[0].station_id
     let res2 = await axios.get(api_2 + sta_id)
-    // console.log(sta_id)
+    // console.log(res.data.data)
     $("#av-depth").text(res2.data.data[0].depth)
     $("#av-wl").text(res2.data.data[0].wl);
     $("#av-ec").text(res2.data.data[0].ec);
@@ -211,6 +258,7 @@ let nearData = async (r) => {
     var staname_t = 'sta_name'
     staname_t = res.data.data[0].station_name + "\nตำบล" + res.data.data[0].tambon + "\nอำเภอ" + res.data.data[0].amphoe + "\nจังหวัด" + res.data.data[0].province
     document.getElementById('sta_name').innerHTML = staname_t;
+    document.getElementById('sta_th').innerHTML = res.data.data[0].station_name + "\nต." + res.data.data[0].tambon + "\nอ." + res.data.data[0].amphoe + "\nจ." + res.data.data[0].province;
 
     let Wl = [];
     let Ec = [];
@@ -666,6 +714,7 @@ let seclectdata = (type, code) => {
     }
 }
 function Marker(data) {
+
     var markers = L.markerClusterGroup();
     for (let i = 0; i < data.length; i++) {
         if (data[i].lat !== null && data[i].lng !== null) {
@@ -733,7 +782,8 @@ function Marker(data) {
 
                 })
                 var staname_t = 'sta_name'
-                staname_t = data[i].station_name + "\nตำบล" + data[i].tambon + "\nอำเภอ" + data[i].amphoe + "\nจังหวัด" + data[i].province
+                // console.log(data[i])
+                staname_t = data[i].staname + "\nตำบล" + data[i].tambon + "\nอำเภอ" + data[i].amphoe + "\nจังหวัด" + data[i].prov
                 document.getElementById('sta_name').innerHTML = staname_t;
 
                 $("#timeline").hide()
@@ -786,8 +836,14 @@ function Table() {
             { data: 'amphoe' },
             { data: 'prov' },
         ],
-
+        columnDefs: [
+            { className: 'text-center', targets: [0, 2, 3, 4] },
+        ],
         select: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
+        ],
         pageLength: 8,
         responsive: {
             details: false
@@ -1148,6 +1204,8 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
 
     chart.cursor = new am4charts.XYCursor();
     chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
         chart.series.each(function (series) {
@@ -1251,6 +1309,8 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
 
     chart.cursor = new am4charts.XYCursor();
     chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
         chart.series.each(function (series) {
@@ -1325,6 +1385,8 @@ let showChart_3S = (arrDataS1, arrDataS2, arrDataS3, div, title, unit) => {
     chart.legend = new am4charts.Legend();
     chart.cursor = new am4charts.XYCursor();
     chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
         chart.series.each(function (series) {

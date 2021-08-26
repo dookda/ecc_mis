@@ -1,3 +1,18 @@
+let urid = sessionStorage.getItem('eecid');
+let urname = sessionStorage.getItem('eecname');
+let eecauth = sessionStorage.getItem('eecauth');
+
+if (urname) {
+    $("#nav").append(`<li><a href="./../../form_register/profile/index.html"><i
+        class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>
+      </a></li>
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      ออกจากระบบ</a></li>`);
+} else {
+    $("#nav").append(`
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      เข้าสู่ระบบ</a></li>`);
+}
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -1255,5 +1270,154 @@ $("#radarLegend").attr("src", "./img/radar.png");
 
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 
+let chartpop = (data) => {
+    $("#chartdiv").removeAttr("style").css({ "width": "800px", "height": "400px" })
+    am4core.useTheme(am4themes_animated);
 
+    var chart = am4core.create('chartdiv', am4charts.XYChart)
+    chart.colors.step = 2;
+
+    chart.legend = new am4charts.Legend()
+    chart.legend.position = 'top'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 95
+
+    var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+    xAxis.dataFields.category = 'category'
+    xAxis.renderer.cellStartLocation = 0.1
+    xAxis.renderer.cellEndLocation = 0.9
+    xAxis.renderer.grid.template.location = 0;
+
+    var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    yAxis.min = 0;
+
+    function createSeries(value, name) {
+        var series = chart.series.push(new am4charts.ColumnSeries())
+        series.dataFields.valueY = value
+        series.dataFields.categoryX = 'category'
+        series.name = name
+
+        series.events.on("hidden", arrangeColumns);
+        series.events.on("shown", arrangeColumns);
+
+        var bullet = series.bullets.push(new am4charts.LabelBullet())
+        bullet.interactionsEnabled = false
+        bullet.dy = 30;
+        bullet.label.text = '{valueY}'
+        bullet.label.fill = am4core.color('#ffffff')
+
+        return series;
+    }
+    chart.data = data
+    // [
+    //     {
+    //         category: 'Place #1',
+    //         first: 400000,
+    //         second: 550000,
+    //         third: 60000
+    //     },
+    //     {
+    //         category: 'Place #2',
+    //         first: 30000,
+    //         second: 78000,
+    //         third: 69000
+    //     },
+    //     {
+    //         category: 'Place #3',
+    //         first: 27000,
+    //         second: 40000,
+    //         third: 4500
+    //     },
+    //     {
+    //         category: 'Place #4',
+    //         first: 5000,
+    //         second: 3300,
+    //         third: 2200
+    //     }
+    // ]
+
+    createSeries('first', 'The First');
+    createSeries('second', 'The Second');
+    createSeries('third', 'The Third');
+
+    function arrangeColumns() {
+
+        var series = chart.series.getIndex(0);
+
+        var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+        if (series.dataItems.length > 1) {
+            var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+            var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+            var delta = ((x1 - x0) / chart.series.length) * w;
+            if (am4core.isNumber(delta)) {
+                var middle = chart.series.length / 2;
+
+                var newIndex = 0;
+                chart.series.each(function (series) {
+                    if (!series.isHidden && !series.isHiding) {
+                        series.dummyData = newIndex;
+                        newIndex++;
+                    }
+                    else {
+                        series.dummyData = chart.series.indexOf(series);
+                    }
+                })
+                var visibleCount = newIndex;
+                var newMiddle = visibleCount / 2;
+
+                chart.series.each(function (series) {
+                    var trueIndex = chart.series.indexOf(series);
+                    var newIndex = series.dummyData;
+
+                    var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                    series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                    series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                })
+            }
+        }
+    }
+}
+var data = []
+axios.get(url + "/thpopulation/get/province/40").then(async (r) => {
+    console.log(r.data.data)
+    var a = r.data.data
+    data.push(
+        {
+
+            "category": '2554',
+            "first": a[0].y2554,
+            "second": a[1].y2554,
+            "third": a[2].y2554,
+        }, {
+        "category": '2555',
+        "first": Number(a[0].y2555),
+        "second": Number(a[1].y2555),
+        "third": Number(a[2].y2555),
+    }, {
+        "category": '2556',
+        "first": Number(a[0].y2556),
+        "second": Number(a[1].y2556),
+        "third": Number(a[2].y2556),
+    }, {
+        "category": '2557',
+        "first": Number(a[0].y2557),
+        "second": Number(a[1].y2557),
+        "third": Number(a[2].y2557),
+    }, {
+        "category": '2558',
+        "first": Number(a[0].y2558),
+        "second": Number(a[1].y2558),
+        "third": Number(a[2].y2558),
+    }, {
+        "category": '2559',
+        "first": Number(a[0].y2559),
+        "second": Number(a[1].y2559),
+        "third": Number(a[2].y2559),
+    }
+    )
+
+    console.log(data)
+    chartpop(data)
+})
 

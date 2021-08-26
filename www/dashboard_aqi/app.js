@@ -10,6 +10,10 @@ if (urname) {
     </a></li>
     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
     ออกจากระบบ</a></li>`);
+} else {
+  $("#nav").append(`
+    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+    เข้าสู่ระบบ</a></li>`);
 }
 
 // $("#usrname").text(urname);

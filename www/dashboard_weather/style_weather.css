@@ -3,11 +3,14 @@
     background-color: #1F2838 !important;
     border-color: #494F57 !important;
   }
-  
+  .kanit{
+    font-family: "Kanit",sans-serif !important;
+    font-size: 14px !important; 
+  }
   /*Legend specific*/
   .legend {
     padding: 6px 8px;
-    font: 14px Arial, Helvetica, sans-serif;
+    font: 13px Arial, Helvetica, sans-serif;
     background: white;
     background: rgba(255, 255, 255, 0.8);
     /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/

@@ -1,3 +1,18 @@
+let urid = sessionStorage.getItem('eecid');
+let urname = sessionStorage.getItem('eecname');
+let eecauth = sessionStorage.getItem('eecauth');
+
+if (urname) {
+    $("#nav").append(`<li><a href="./../../form_register/profile/index.html"><i
+        class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>
+      </a></li>
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      ออกจากระบบ</a></li>`);
+} else {
+    $("#nav").append(`
+      <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+      เข้าสู่ระบบ</a></li>`);
+}
 
 const url = "https://eec-onep.online:3700";
 const geourl = "https://eec-onep.online:8443/geoserver/eec/wms?";
@@ -290,6 +305,8 @@ $("#week_rain").on("change", async (e) => {
 //     })
 //     i == yweek[1] ? lyr[`zrain_w${i}`].addTo(map) : null;
 // }
+
+
 
 let rainLyr = 'rain_w1.tif';
 let lyrLen;
