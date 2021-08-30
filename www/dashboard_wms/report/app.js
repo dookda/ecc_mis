@@ -33,6 +33,7 @@ $('#btnAccept').click(() => {
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
+const eecGeoserver = "https://eec-onep.online:8443/geoserver";
 
 let latlng = {
     lat: 13.205567,
@@ -79,490 +80,559 @@ const gter = L.tileLayer('https://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const lu61 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const lu61 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__46_lu_eec_61",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true,
 });
 
-const muni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const muni = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__04_municiple",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true,
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true,
     maxZoom: 10
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true,
     maxZoom: 12
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
 });
 
-const wbody = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wbody = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__14_w2_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const vill = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const vill = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__05_village",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 // cherry
-const maintran = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const maintran = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__49_maintran",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const tran = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tran = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__49_tran",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const highway = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const highway = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__49_highway",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const train = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const train = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__37_train",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const munilandmark = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const munilandmark = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__50_muni_lm_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const landmark = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const landmark = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__38_landmark",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const artsource = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const artsource = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__36_artsource",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const countour = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const countour = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__11_countour",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const waterpath = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const waterpath = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__13_water_path",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const basinquality = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const basinquality = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__16_basinquality",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const mainbasin = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const mainbasin = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__12_main_basin_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const subbasin = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const subbasin = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__12_sub_basin",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const hydrogeology = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const hydrogeology = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__18_hydrogeology",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const waterlevel_sa = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const waterlevel_sa = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__15_waterlevel_sa",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const wsup_pipe = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wsup_pipe = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_wsup_pipe_wa_3p",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const wdiv_pipe = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wdiv_pipe = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_wdiv_pipe_3p",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const locarid9 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const locarid9 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_loca_rid9",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const dambpk = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const dambpk = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_dam_bpk",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const mainriver9 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const mainriver9 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_main_riv_3p",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const pjarea_rid9 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pjarea_rid9 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_pj_area_rid9_3p",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const pjloca_rid9 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pjloca_rid9 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__53_pj_loca_rid9_3p",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const soundpoint = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const soundpoint = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__08_soundpoint",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const waterstation = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const waterstation = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__10_water_station",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const wastewater = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wastewater = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__57_wastewater",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const garbage = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const garbage = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__55_garbage",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const flood = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const flood = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__41_flood",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const earthquake = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const earthquake = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__42_earthquake",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const landslide = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const landslide = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__43_landslide",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const hole = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const hole = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__44_hole",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const drought = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const drought = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__45_drought",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const grpark = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const grpark = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__52_gr_park",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const f_reserved = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const f_reserved = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__26_f_reserved_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const nationalpark = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const nationalpark = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__28_nationalparkboi",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const park = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const park = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__29_park_dnp",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const wildlife = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wildlife = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__30_wildlife_boi",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const non_hunting = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const non_hunting = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__31_non_huntingboi",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const f_type63 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const f_type63 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__27_f_type63_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const afforesta = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const afforesta = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__33_afforestation",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const alroarea = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const alroarea = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__35_alroarea",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const commu_forest = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const commu_forest = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__56_commu_forest",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const geology = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const geology = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__19_geology",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const mineral = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const mineral = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__40_mineral",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const geoconser = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const geoconser = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__22_geologi_conser",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const minerdev = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const minerdev = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__20_mineral_develop",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const geominer = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const geominer = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__20_geology_miner",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const oremine = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const oremine = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__21_ore mine",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const soil = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const soil = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__25_soil_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const mang_forest = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const mang_forest = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__51_mang_forest_cabinet",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const lu56 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const lu56 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__46_lu_eec_56",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const lu59 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const lu59 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__46_lu_eec_59",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const lucbi63 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const lucbi63 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__47_lu_cbi_2563",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const luryg63 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const luryg63 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__47_lu_ryg_2563",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const a9 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const a9 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__48_a9_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const MangLU = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const MangLU = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__39_mangrovelu",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const Coastal = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const Coastal = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__34_coastal",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const ProtecPollu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const ProtecPollu = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__67_protec_pollu_cb_area_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const ancient = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const ancient = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__72_ancient_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const oldcommu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const oldcommu = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__73_old_community_eec_point",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const oldtown_cco = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const oldtown_cco = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__74_oldtown_cco",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const oldtown_ryg = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const oldtown_ryg = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__75_oldtown_ryg",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const pollu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pollu = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__81_pollution_eec",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
 
-const landscape = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const landscape = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     layers: "eec:a__82_landscape",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     transparent: true
 });
@@ -570,6 +640,7 @@ const landscape = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wm
 const coastalradar = L.tileLayer.wms("https://ocean.gistda.or.th/geoserver/coastalradar/wms?", {
     layers: "coastalradar:recent_gulf,coastalradar:v_recent_gul5",
     name: "lyr",
+    // iswms: "wms",
     format: "image/png",
     transparent: true
 });
@@ -578,6 +649,7 @@ const coastalradar = L.tileLayer.wms("https://ocean.gistda.or.th/geoserver/coast
 const coastalmon59 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline_2559.map", {
     layers: "shoreline_2559",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     crs: L.CRS.EPSG3857,
     transparent: true
@@ -585,6 +657,7 @@ const coastalmon59 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
 const coastalmon60 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2560.map", {
     layers: "shoreline2560",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     crs: L.CRS.EPSG3857,
     transparent: true
@@ -592,6 +665,7 @@ const coastalmon60 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
 const coastalmon61 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2561_erosion_geo_status_erosion.map", {
     layers: "shoreline2561_erosion_geo_status_erosion",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     crs: L.CRS.EPSG3857,
     transparent: true
@@ -599,6 +673,7 @@ const coastalmon61 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
 const coastalmon62 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fstatuscoast2562.map", {
     layers: "statuscoast2562",
     name: "lyr",
+    iswms: "wms",
     format: "image/png",
     crs: L.CRS.EPSG3857,
     transparent: true
@@ -625,7 +700,7 @@ function onLocationFound(e) {
 
 map.on("locationfound", onLocationFound);
 // map.on("locationerror", onLocationError);
-map.locate({ setView: true, maxZoom: 19 });
+// map.locate({ setView: true, maxZoom: 19 });
 
 var lc = L.control.locate({
     position: 'topleft',
@@ -637,13 +712,14 @@ var lc = L.control.locate({
     }
 }).addTo(map);
 
-lc.start();
+// lc.start();
+
 
 // cherry
 let lyr = {
     tam: tam,
     amp: amp,
-    pro: pro.addTo(map),
+    pro: pro,
     vill: vill,
     lu61: lu61,
     muni: muni,
@@ -1158,7 +1234,7 @@ $("input[type=checkbox]").change(async () => {
     });
 
     chk.map(i => {
-        // console.log(i);
+        console.log(i);
         if (lyr[`${i}`]) {
             lyr[`${i}`].addTo(map);
         }
@@ -1182,6 +1258,8 @@ $("input[type=checkbox]").change(async () => {
             initialize(apiData, optionKind);
         }
     })
+
+    getLayer()
 
 })
 
@@ -1778,3 +1856,52 @@ function charthistory(data, catename, nunit, c1, c2) {
 
     createSeries("value", catename, nunit, c1, c2);
 }
+
+// set default layer
+let wmsLyr = [];
+let getLayer = () => {
+    wmsLyr = [];
+    map.eachLayer(i => {
+        if (i.options.iswms) {
+            wmsLyr.push(i.options.layers)
+            // console.log(i);
+        }
+    })
+    // console.log(x);
+}
+
+map.on("click", async (e) => {
+    var pnt = map.latLngToContainerPoint(e.latlng);
+    var size = map.getSize();
+    var bbox = map.getBounds().toBBoxString();
+
+    // console.log(wmsLyr, wmsLyr.length);
+
+    let lyrInfoUrl = eecGeoserver + "/wms?SERVICE=WMS" +
+        "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
+        "&QUERY_LAYERS=" + wmsLyr +
+        "&LAYERS=" + wmsLyr +
+        "&Feature_count=" + wmsLyr.length +
+        "&INFO_FORMAT=application/json" +
+        "&X=" + pnt.x +
+        "&Y=" + pnt.y +
+        "&SRS=EPSG:4326" +
+        "&WIDTH=" + size.x +
+        "&HEIGHT=" + size.y +
+        "&BBOX=" + bbox;
+
+    await axios.get(lyrInfoUrl).then(r => {
+        if (r.data.features) {
+            console.log(r);
+            r.data.features.map(i => {
+                console.log(i.properties);
+
+
+            })
+            $("#infoModal").modal("show")
+        }
+    })
+})
+
+pro.addTo(map)
+getLayer()
