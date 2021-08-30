@@ -1894,25 +1894,29 @@ map.on("click", async (e) => {
         if (r.data.features) {
             $("#accordion").empty();
             console.log(r.data.features);
-            r.data.features.map(i => {
-                // console.log(i.properties);
-                $("#accordion").append(`<div class="card">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
-                            aria-expanded="true" aria-controls="collapseOne">
-                            ${i.id}
-                        </button>
-                    </h5>
-                </div>
+            r.data.features.map((i, k) => {
+                console.log(i, k);
 
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                    data-parent="#accordion">
-                    <div class="card-body">
-                        ${i.properties.prov_nam_t}
+                $("#a" + k).empty();
+
+                $("#accordion").append(`<div class="card" >
+                    <div class="card-header" id="heading${k}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${k}"
+                                aria-expanded="true" aria-controls="collapse${k}">
+                                ${i.id}
+                            </button>
+                        </h5>
                     </div>
-                </div>
-            </div>`)
+                    <div id="collapse${k}" class="collapse show" aria-labelledby="heading${k}" data-parent="#accordion">
+                        <div class="card-body" id="a${k}">
+                        </div>
+                    </div>
+                </div>`)
+
+                for (const [key, value] of Object.entries(i.properties)) {
+                    $("#a" + k).append(`${key}: ${value} <br>`);
+                }
 
             })
             $("#infoModal").modal("show")
