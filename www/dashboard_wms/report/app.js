@@ -13,6 +13,23 @@ if (urname) {
       <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
       เข้าสู่ระบบ</a></li>`);
 }
+let Accept = sessionStorage.getItem('accept');
+if (Accept) {
+    $('.toast').toast('hide')
+}
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -1270,154 +1287,494 @@ $("#radarLegend").attr("src", "./img/radar.png");
 
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 
-let chartpop = (data) => {
-    $("#chartdiv").removeAttr("style").css({ "width": "800px", "height": "400px" })
-    am4core.useTheme(am4themes_animated);
+$("#cardpop").hide()
+$("#popcheck").click(function () {
 
-    var chart = am4core.create('chartdiv', am4charts.XYChart)
-    chart.colors.step = 2;
-
-    chart.legend = new am4charts.Legend()
-    chart.legend.position = 'top'
-    chart.legend.paddingBottom = 20
-    chart.legend.labels.template.maxWidth = 95
-
-    var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
-    xAxis.dataFields.category = 'category'
-    xAxis.renderer.cellStartLocation = 0.1
-    xAxis.renderer.cellEndLocation = 0.9
-    xAxis.renderer.grid.template.location = 0;
-
-    var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    yAxis.min = 0;
-
-    function createSeries(value, name) {
-        var series = chart.series.push(new am4charts.ColumnSeries())
-        series.dataFields.valueY = value
-        series.dataFields.categoryX = 'category'
-        series.name = name
-
-        series.events.on("hidden", arrangeColumns);
-        series.events.on("shown", arrangeColumns);
-
-        var bullet = series.bullets.push(new am4charts.LabelBullet())
-        bullet.interactionsEnabled = false
-        bullet.dy = 30;
-        bullet.label.text = '{valueY}'
-        bullet.label.fill = am4core.color('#ffffff')
-
-        return series;
+    axios.get(url + `/thpopulation/get/pcode`).then(async (r) => {
+        var d = r.data.data;
+        d.map(i => {
+            $('#pro').append(`<option value="${i.p_code}">${i.p_name}</option>`)
+        })
+    })
+    if (this.checked) {
+        $("#cardpop").fadeIn("slow").show();
+        var a = $('#year').val();
+        var b = $('#pro').val();
+        var c = $("#gramen").attr('class')
+        var d = $("#grawomen").attr('class')
+        btnpro = 'year'
+        presentpop(a, b, c, d)
+    } else {
+        $("#cardpop").slideUp("slow")
     }
-    chart.data = data
-    // [
-    //     {
-    //         category: 'Place #1',
-    //         first: 400000,
-    //         second: 550000,
-    //         third: 60000
-    //     },
-    //     {
-    //         category: 'Place #2',
-    //         first: 30000,
-    //         second: 78000,
-    //         third: 69000
-    //     },
-    //     {
-    //         category: 'Place #3',
-    //         first: 27000,
-    //         second: 40000,
-    //         third: 4500
-    //     },
-    //     {
-    //         category: 'Place #4',
-    //         first: 5000,
-    //         second: 3300,
-    //         third: 2200
-    //     }
-    // ]
 
-    createSeries('first', 'The First');
-    createSeries('second', 'The Second');
-    createSeries('third', 'The Third');
+});
 
-    function arrangeColumns() {
-
-        var series = chart.series.getIndex(0);
-
-        var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
-        if (series.dataItems.length > 1) {
-            var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
-            var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
-            var delta = ((x1 - x0) / chart.series.length) * w;
-            if (am4core.isNumber(delta)) {
-                var middle = chart.series.length / 2;
-
-                var newIndex = 0;
-                chart.series.each(function (series) {
-                    if (!series.isHidden && !series.isHiding) {
-                        series.dummyData = newIndex;
-                        newIndex++;
-                    }
-                    else {
-                        series.dummyData = chart.series.indexOf(series);
-                    }
-                })
-                var visibleCount = newIndex;
-                var newMiddle = visibleCount / 2;
-
-                chart.series.each(function (series) {
-                    var trueIndex = chart.series.indexOf(series);
-                    var newIndex = series.dummyData;
-
-                    var dx = (newIndex - trueIndex + middle - newMiddle) * delta
-
-                    series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-                    series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-                })
+var btnpro
+$('#pro').on("change", function () {
+    var a = $('#year').val();
+    var b = $('#pro').val();
+    var c = $("#gramen").attr('class')
+    var d = $("#grawomen").attr('class')
+    var e = $("#typepop").val();
+    var f = $("#item").val();
+    // console.log(btnpro)
+    if (f == "pop_sum") {
+        if (btnpro == 'year') {
+            presentpop(a, b, c, d)
+        }
+        else if (btnpro == 'history') {
+            if (e == "แยกตามรายปี") {
+                sumpop(b)
+            } else if (e == "แยกตามเพศ") {
+                MWPop(b)
             }
         }
+    } else if (f == "pop_den") {
+        denpop(b)
+    } else if (f == "num_home") {
+        homepop(b)
     }
-}
-var data = []
-axios.get(url + "/thpopulation/get/province/40").then(async (r) => {
-    console.log(r.data.data)
-    var a = r.data.data
-    data.push(
-        {
+})
+$("#item").on("change", function () {
+    var code = $("#item").val()
+    if (code == "pop_sum") {
+        var a = $('#year').val();
+        var b = $('#pro').val();
+        var c = $("#gramen").attr('class')
+        var d = $("#grawomen").attr('class')
+        var e = $("#typepop").val();
+        if (btnpro == 'year') {
+            presentpop(a, b, c, d)
+        }
+        else if (btnpro == 'history') {
+            if (e == "แยกตามรายปี") {
+                sumpop(b)
+            } else if (e == "แยกตามเพศ") {
+                MWPop(b)
+            }
+        }
+        $("#poppresent").fadeIn("slow").show()
+        $('#poppast').hide()
 
-            "category": '2554',
-            "first": a[0].y2554,
-            "second": a[1].y2554,
-            "third": a[2].y2554,
-        }, {
-        "category": '2555',
-        "first": Number(a[0].y2555),
-        "second": Number(a[1].y2555),
-        "third": Number(a[2].y2555),
-    }, {
-        "category": '2556',
-        "first": Number(a[0].y2556),
-        "second": Number(a[1].y2556),
-        "third": Number(a[2].y2556),
-    }, {
-        "category": '2557',
-        "first": Number(a[0].y2557),
-        "second": Number(a[1].y2557),
-        "third": Number(a[2].y2557),
-    }, {
-        "category": '2558',
-        "first": Number(a[0].y2558),
-        "second": Number(a[1].y2558),
-        "third": Number(a[2].y2558),
-    }, {
-        "category": '2559',
-        "first": Number(a[0].y2559),
-        "second": Number(a[1].y2559),
-        "third": Number(a[2].y2559),
+        $('#years').show()
+        $('#btnhistory').show()
     }
-    )
+    else if (code == "pop_den") {
+        var a = $('#pro').val();
+        denpop(a)
+        $('#types').hide()
+        $('#years').hide()
+        $('#btnyear').hide()
+        $('#btnhistory').hide()
 
-    console.log(data)
-    chartpop(data)
+        $("#poppresent").hide()
+        $('#poppast').show()
+
+    } else if (code == "num_home") {
+        var a = $('#pro').val();
+        homepop(a)
+        $('#types').hide()
+        $('#years').hide()
+        $('#btnyear').hide()
+        $('#btnhistory').hide()
+
+        $("#poppresent").hide()
+        $('#poppast').show()
+
+    }
+})
+$("#year").on("change", function () {
+    var a = $('#year').val();
+    var b = $('#pro').val();
+    var c = $("#gramen").attr('class')
+    var d = $("#grawomen").attr('class')
+    presentpop(a, b, c, d)
+})
+$("#typepop").on("change", function () {
+    var a = $('#pro').val();
+    var e = $("#typepop").val();
+    if (e == "แยกตามรายปี") {
+        sumpop(a)
+    } else if (e == "แยกตามเพศ") {
+        MWPop(a)
+    }
 })
 
+
+function presentpop(year, pcode, Mclass, Wclass) {
+    var a = year
+    var b = pcode
+    $('#Vyear1').html(a)
+    $('#Vyear2').html(a)
+    axios.get(url + `/thpopulation/get/year/${a}/${b}`).then(async (r) => {
+        var d = r.data.data;
+        // console.log(d)
+        var men = d[0].yvalue;
+        var women = d[1].yvalue;
+        var all = d[5].yvalue;
+
+        $('#getprov').html(`${d[5].p_name}`)
+        $('#mennum').html(` ${d[0].yvalue.toLocaleString()} คน`)
+        $('#womennum').html(` ${d[1].yvalue.toLocaleString()} คน`)
+        $('#popall').html(`${d[5].yvalue.toLocaleString()}`)
+
+        $('#areanum').html(`${d[2].yvalue.toLocaleString()}`)
+        $('#dennum').html(`${d[3].yvalue.toFixed(2)}`)
+        $('#homenum').html(`${d[4].yvalue.toLocaleString()}`)
+
+        var pmen = (men / all) * 100
+        var pwomen = (women / all) * 100
+        $('#pmen').html(`${pmen.toFixed(0)}%`)
+        $('#pwomen').html(`${pwomen.toFixed(0)}%`)
+        $("#gramen").removeClass(`${Mclass}`).addClass(`c100 p${pmen.toFixed(0)} big men`)
+        $("#grawomen").removeClass(`${Wclass}`).addClass(`c100 p${pwomen.toFixed(0)} big women`)
+    })
+}
+
+$('#types').hide()
+$('#btnyear').hide()
+$('#poppast').hide()
+
+let pophistory = () => {
+    $('#types').show()
+    $('#years').hide()
+    $('#btnyear').show()
+    $('#btnhistory').hide()
+
+    btnpro = 'history'
+    var a = $('#pro').val();
+    var e = $("#typepop").val();
+    if (e == "แยกตามรายปี") {
+        sumpop(a)
+    } else if (e == "แยกตามเพศ") {
+        MWPop(a)
+    }
+    $('#poppresent').hide()
+    $('#poppast').show()
+}
+
+let popyears = () => {
+    $('#types').hide()
+    $('#years').show()
+
+    $('#btnyear').hide()
+    $('#btnhistory').show()
+
+    btnpro = 'year'
+    $('#poppast').hide()
+    $('#poppresent').fadeIn("slow").show()
+
+    var a = $('#year').val();
+    var b = $('#pro').val();
+    var c = $("#gramen").attr('class')
+    var d = $("#grawomen").attr('class')
+    presentpop(a, b, c, d)
+}
+
+let MWPop = (pcode) => {
+    var a = pcode
+    var b = $('#typepop').val()
+    var dat = [];
+    axios.get(url + `/thpopulation/get/province/${a}`).then(async (r) => {
+        var d = r.data.data
+        if (a == "TH") {
+            $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 ทั้งประเทศ ประเภท${b}`)
+        } else {
+            $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name} ประเภท${b}`)
+        }
+        dat.push({
+            "year": '2554',
+            "men": d[0].y2554,
+            "women": d[1].y2554,
+        }, {
+            "year": 2555,
+            "men": Number(d[0].y2555),
+            "women": Number(d[1].y2555),
+        }, {
+            "year": 2556,
+            "men": Number(d[0].y2556),
+            "women": Number(d[1].y2556),
+        }, {
+            "year": 2557,
+            "men": Number(d[0].y2557),
+            "women": Number(d[1].y2557),
+        }, {
+            "year": 2558,
+            "men": Number(d[0].y2558),
+            "women": Number(d[1].y2558),
+        }, {
+            "year": 2559,
+            "men": Number(d[0].y2559),
+            "women": Number(d[1].y2559),
+        }, {
+            "year": 2560,
+            "men": Number(d[0].y2560),
+            "women": Number(d[1].y2560),
+        }, {
+            "year": 2561,
+            "men": Number(d[0].y2561),
+            "women": Number(d[1].y2561),
+        }, {
+            "year": 2562,
+            "men": Number(d[0].y2562),
+            "women": Number(d[1].y2562),
+        }, {
+            "year": 2563,
+            "men": Number(d[0].y2563),
+            "women": Number(d[1].y2563),
+        })
+        popMW(dat)
+    })
+}
+function popMW(data) {
+    $("#chartdiv").removeAttr("style").css({ "width": "1200px", "height": "800px" })
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+    chart.legend = new am4charts.Legend();
+    chart.numberFormatter.numberFormat = "#,###,###,###.##";
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "year";
+    categoryAxis.numberFormatter.numberFormat = "#";
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.cellStartLocation = 0.1;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+
+    var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.opposite = true;
+
+    // Create series
+    function createSeries(field, name, color1, color2) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueX = field;
+        series.dataFields.categoryY = "year";
+        series.name = name;
+        series.columns.template.tooltipText = "{name}: [bold]{valueX.formatNumber('###,###,###')} คน[/]";
+        series.columns.template.height = am4core.percent(100);
+        series.sequencedInterpolation = true;
+        series.stroke = am4core.color(color2);
+        series.tooltip.getFillFromObject = false;
+        series.tooltip.background.fill = am4core.color(color2);
+        series.columns.template.stroke = am4core.color(color1);
+        series.columns.template.fill = am4core.color(color1);
+
+        var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+        valueLabel.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
+        valueLabel.label.horizontalCenter = "left";
+        valueLabel.label.dx = 10;
+        valueLabel.label.hideOversized = false;
+        valueLabel.label.truncate = false;
+
+        var categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+        categoryLabel.label.text = "{name}";
+        categoryLabel.label.horizontalCenter = "right";
+        categoryLabel.label.dx = -10;
+        categoryLabel.label.fill = am4core.color("#fff");
+        categoryLabel.label.hideOversized = false;
+        categoryLabel.label.truncate = false;
+
+    }
+
+    createSeries("men", "เพศชาย", "#a9d7f6", "#3DB2FF");
+    createSeries("women", "เพศหญิง", "#f96d6d", "#FF2442");
+}
+let sumpop = (pcode) => {
+    var a = pcode
+    var b = $('#typepop').val()
+    var dat = [];
+    axios.get(url + `/thpopulation/get/province/${a}`).then(async (r) => {
+        var d = r.data.data
+        if (a == "TH") {
+            $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 ทั้งประเทศ ประเภท${b}`)
+        } else {
+            $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name} ประเภท${b}`)
+        }
+        dat.push({
+            "year": '2554',
+            "value": Number(d[5].y2554),
+        }, {
+            "year": 2555,
+            "value": Number(d[5].y2555),
+        }, {
+            "year": 2556,
+            "value": Number(d[5].y2556),
+        }, {
+            "year": 2557,
+            "value": Number(d[5].y2557),
+        }, {
+            "year": 2558,
+            "value": Number(d[5].y2558),
+        }, {
+            "year": 2559,
+            "value": Number(d[5].y2559),
+        }, {
+            "year": 2560,
+            "value": Number(d[5].y2560),
+        }, {
+            "year": 2561,
+            "value": Number(d[5].y2561),
+        }, {
+            "year": 2562,
+            "value": Number(d[5].y2562),
+        }, {
+            "year": 2563,
+            "value": Number(d[5].y2563),
+        })
+        charthistory(dat, "จำนวนประชากร", "คน", "#A2DBFA", "#39A2DB")
+    })
+
+}
+let denpop = (pcode) => {
+    var a = pcode;
+    var dat = [];
+    axios.get(url + `/thpopulation/get/province/${a}`).then(async (r) => {
+        var d = r.data.data
+        if (a == "TH") {
+            $('#hiprov').html(`ข้อมูลความหนาแน่นของประชากรย้อนหลังตั้งแต่ปี 2554-2563 ${d[0].p_name}`)
+        } else {
+            $('#hiprov').html(`ข้อมูลความหนาแน่นของประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name}`)
+        }
+        dat.push({
+            "year": '2554',
+            "value": Number(d[3].y2554),
+        }, {
+            "year": 2555,
+            "value": Number(d[3].y2555),
+        }, {
+            "year": 2556,
+            "value": Number(d[3].y2556),
+        }, {
+            "year": 2557,
+            "value": Number(d[3].y2557),
+        }, {
+            "year": 2558,
+            "value": Number(d[3].y2558),
+        }, {
+            "year": 2559,
+            "value": Number(d[3].y2559),
+        }, {
+            "year": 2560,
+            "value": Number(d[3].y2560),
+        }, {
+            "year": 2561,
+            "value": Number(d[3].y2561),
+        }, {
+            "year": 2562,
+            "value": Number(d[3].y2562),
+        }, {
+            "year": 2563,
+            "value": Number(d[3].y2563),
+        })
+        charthistory(dat, "ความหนาแน่น", "คนต่อตร.กม.", "#B8B5FF", "#7868E6")
+    })
+}
+let homepop = (pcode) => {
+    var a = pcode;
+    var dat = [];
+    axios.get(url + `/thpopulation/get/province/${a}`).then(async (r) => {
+        var d = r.data.data
+        if (a == "TH") {
+            $('#hiprov').html(`ข้อมูลจำนวนครัวเรือนย้อนหลังตั้งแต่ปี 2554-2563 ${d[0].p_name}`)
+        } else {
+            $('#hiprov').html(`ข้อมูลจำนวนครัวเรือนย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name}`)
+        }
+        dat.push({
+            "year": '2554',
+            "value": Number(d[4].y2554),
+        }, {
+            "year": 2555,
+            "value": Number(d[4].y2555),
+        }, {
+            "year": 2556,
+            "value": Number(d[4].y2556),
+        }, {
+            "year": 2557,
+            "value": Number(d[4].y2557),
+        }, {
+            "year": 2558,
+            "value": Number(d[4].y2558),
+        }, {
+            "year": 2559,
+            "value": Number(d[4].y2559),
+        }, {
+            "year": 2560,
+            "value": Number(d[4].y2560),
+        }, {
+            "year": 2561,
+            "value": Number(d[4].y2561),
+        }, {
+            "year": 2562,
+            "value": Number(d[4].y2562),
+        }, {
+            "year": 2563,
+            "value": Number(d[4].y2563),
+        })
+        charthistory(dat, "จำนวนครัวเรือน", "ครัวเรือน", "#94EBCD", "#6DDCCF")
+    })
+}
+function charthistory(data, catename, nunit, c1, c2) {
+    $("#chartdiv").removeAttr("style").css({ "width": "1200px", "height": "520px" })
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+    chart.legend = new am4charts.Legend();
+    chart.numberFormatter.numberFormat = "#,###,###,###.##";
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "year";
+    categoryAxis.numberFormatter.numberFormat = "#";
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.cellStartLocation = 0.1;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+
+    var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.opposite = true;
+
+    // Create series
+    function createSeries(field, name, unit, color1, color2) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueX = field;
+        series.dataFields.categoryY = "year";
+        series.name = name;
+        series.columns.template.tooltipText = `ปี {categoryY} : [bold]{valueX.formatNumber('###,###,###.##')} ${unit}[/]`;
+        series.columns.template.height = am4core.percent(100);
+        series.sequencedInterpolation = true;
+        series.stroke = am4core.color(color2);
+        series.tooltip.getFillFromObject = false;
+        series.tooltip.background.fill = am4core.color(color2);
+        series.columns.template.stroke = am4core.color(color1);
+        series.columns.template.fill = am4core.color(color1);
+
+        var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+        valueLabel.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
+        valueLabel.label.horizontalCenter = "left";
+        valueLabel.label.dx = 10;
+        valueLabel.label.hideOversized = false;
+        valueLabel.label.truncate = false;
+
+        var categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+        categoryLabel.label.text = "{name}";
+        categoryLabel.label.horizontalCenter = "right";
+        categoryLabel.label.dx = -10;
+        categoryLabel.label.fill = am4core.color("#fff");
+        categoryLabel.label.hideOversized = false;
+        categoryLabel.label.truncate = false;
+
+    }
+
+    createSeries("value", catename, nunit, c1, c2);
+}
