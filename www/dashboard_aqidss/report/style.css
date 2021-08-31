@@ -21,7 +21,7 @@
 }
 
 .layer{
-  height: 740px;
+  height: fit-content;
 }
 
 .legend{
@@ -142,3 +142,25 @@
  @media (max-width: 1365px) {
   .b-stat {justify-content: space-around; flex-direction: column; display: flex; align-items: center;}
  }
+ .cookie{
+  margin: auto;
+  width: max-content;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  
+}
+.dcookie{
+  display: flex;
+  flex-direction: row;
+  
+}
+@media (max-width:769px) {
+  .dcookie{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+}

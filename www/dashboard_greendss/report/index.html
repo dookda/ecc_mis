@@ -115,6 +115,14 @@
                                             <br>
                                             <img id="meteoLegend" width="30px">
                                         </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="aqi" id="staaqi">
+                                            <label class="form-check-label">
+                                                จุดตรวจวัดคุณภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                            </label>
+                                            <br>
+                                            <img id="aqiLegend" width="30px">
+                                        </div>
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="pro" id="lyr_prov"
@@ -170,6 +178,34 @@
                                             </label>
                                             <br>
                                             <img id="villLegend">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="maintran"
+                                                id="maintran">
+                                            <label class="form-check-label">
+                                                เส้นทางคมนาคมสายหลัก
+                                            </label>
+                                            <br>
+                                            <img id="maintranLegend">
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="tran" id="tran">
+                                            <label class="form-check-label">
+                                                เส้นทางคมนาคม
+                                            </label>
+                                            <br>
+                                            <img id="tranLegend">
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="highway"
+                                                id="highway">
+                                            <label class="form-check-label">
+                                                เส้นทางหลวงแผ่นดิน
+                                            </label>
+                                            <br>
+                                            <img id="highwayLegend">
                                         </div>
                                         <hr>
                                         <div class="group-form">
@@ -257,9 +293,11 @@
                             <!-- <h3>ระบบสนับสนุนการตัดสินใจด้านอุณหภูมิกับพื้นที่สีเขียว</h3> -->
                             <div class="card" id="cardgreen">
                                 <div class="card-body">
-                                    <label>อัตราส่วนพื้นที่สีเขียวสาธารณะต่อประชากร
-                                        (ตารางเมตร/คน)<br>
-                                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+                                    <div class="p-2">
+                                        <label>อัตราส่วนพื้นที่สีเขียวสาธารณะต่อประชากร
+                                            (ตารางเมตร/คน)<br>
+                                            ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-sm">
@@ -395,8 +433,10 @@
                             </div>
                             <div class="card" id="cardgreen2">
                                 <div class="card-body">
-                                    <label>อัตราสัดส่วนพื้นที่สีเขียวยั่งยืนในเขตเมืองและชุมชน<br>
-                                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+                                    <div class="p-2">
+                                        <label>อัตราสัดส่วนพื้นที่สีเขียวยั่งยืนในเขตเมืองและชุมชน<br>
+                                            ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</label>
+                                    </div>
                                     <div class="row">
                                         <div class="col-sm">
                                             <div class="card-body">
@@ -575,7 +615,10 @@
                             </div>
 
                             <div class="card">
-                                <div id="map"></div>
+                                <div class="card-body">
+                                    <div id="map"></div>
+                                    <img class="border-10" src="./img/aqi.png" width="100%" id="imgaqi">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -593,12 +636,37 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
+        <div class="fixed-bottom p-4">
+            <div class="toast cookie text-white text-left" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="mr-auto p-2 bd-highlight">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้<br>บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์<br>
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a>
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success" id="btnAccept">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
-
             <div class="copyright">
                 <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
                 สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
-
             </div>
         </div>
     </footer>

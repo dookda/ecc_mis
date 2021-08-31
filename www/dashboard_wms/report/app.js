@@ -1870,12 +1870,14 @@ let getLayer = () => {
     // console.log(x);
 }
 
-map.on("click", async (e) => {
-    var pnt = map.latLngToContainerPoint(e.latlng);
-    var size = map.getSize();
-    var bbox = map.getBounds().toBBoxString();
 
-    // console.log(wmsLyr, wmsLyr.length);
+
+
+map.on("click", async (e) => {
+    var pnt = await map.latLngToContainerPoint(e.latlng, map.getZoom());
+    var size = await map.getSize();
+    var bbox = await map.getBounds().toBBoxString();
+    console.log(pnt, size, bbox);
 
     let lyrInfoUrl = eecGeoserver + "/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -1883,8 +1885,8 @@ map.on("click", async (e) => {
         "&LAYERS=" + wmsLyr +
         "&Feature_count=" + wmsLyr.length +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -1895,7 +1897,7 @@ map.on("click", async (e) => {
             $("#accordion").empty();
             console.log(r.data.features);
             r.data.features.map((i, k) => {
-                console.log(i, k);
+                // console.log(i, k);
 
                 $("#a" + k).empty();
 

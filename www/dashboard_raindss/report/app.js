@@ -13,6 +13,23 @@ if (urname) {
       <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
       เข้าสู่ระบบ</a></li>`);
 }
+let Accept = sessionStorage.getItem('accept');
+if (Accept) {
+    $('.toast').toast('hide')
+}
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 const url = "https://eec-onep.online:3700";
 const geourl = "https://eec-onep.online:8443/geoserver/eec/wms?";
@@ -773,8 +790,8 @@ let showRainweek = async (pnt, size, bbox) => {
         "&LAYERS=" + rainLyr +
         "&Feature_count=" + lyrLen +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -802,8 +819,8 @@ let showrainForecast = async (pnt, size, bbox) => {
         "&LAYERS=" + rainforecastLyr +
         "&Feature_count=" + rainforecastLen +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -855,8 +872,8 @@ map.on("click", async (e) => {
         "&LAYERS=eec:rain_anual.tif" +
         "&Feature_count=3" +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -879,8 +896,8 @@ map.on("click", async (e) => {
         "&LAYERS=eec:rain_w" + yweek[1] + ".tif" +
         "&Feature_count=3" +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +

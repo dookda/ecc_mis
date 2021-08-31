@@ -13,6 +13,23 @@ if (urname) {
       <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
       เข้าสู่ระบบ</a></li>`);
 }
+let Accept = sessionStorage.getItem('accept');
+if (Accept) {
+    $('.toast').toast('hide')
+}
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -730,8 +747,8 @@ let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param, std, da
         "&LAYERS=" + aqiLyr +
         "&Feature_count=" + lyrLen +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +

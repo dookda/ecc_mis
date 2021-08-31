@@ -13,6 +13,23 @@ if (urname) {
       <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
       เข้าสู่ระบบ</a></li>`);
 }
+let Accept = sessionStorage.getItem('accept');
+if (Accept) {
+    $('.toast').toast('hide')
+}
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -151,6 +168,26 @@ const vill = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", 
     transparent: true,
     zIndex: 2
 });
+const maintran = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__49_maintran",
+    name: "lyr",
+    format: "image/png",
+    transparent: true
+});
+
+const tran = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__49_tran",
+    name: "lyr",
+    format: "image/png",
+    transparent: true
+});
+
+const highway = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__49_highway",
+    name: "lyr",
+    format: "image/png",
+    transparent: true
+});
 
 
 let lyrs = L.featureGroup().addTo(map)
@@ -167,9 +204,12 @@ $("#ampLegend").attr("src", eecUrl + "eec:a__02_amphoe_eec");
 $("#tamLegend").attr("src", eecUrl + "eec:a__03_tambon_eec");
 $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
+$("#aqiLegend").attr("src", "./marker/location-pin-blue.svg");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 $("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
-
+$("#maintranLegend").attr("src", eecUrl + "eec:a__49_maintran");
+$("#tranLegend").attr("src", eecUrl + "eec:a__49_tran");
+$("#highwayLegend").attr("src", eecUrl + "eec:a__49_highway");
 
 var toggle = true;
 $("#stopEditBtn").attr('disabled', true);
@@ -215,8 +255,8 @@ map.on('pm:create', async e => {
         "&LAYERS=eec:ndvi_mosaic_202101.tif,eec:temp_3hour.tif" +
         "&Feature_count=2" +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -303,7 +343,10 @@ let lyr = {
     lu: lu,
     muni: muni,
     pcontrol: pcontrol,
-    ecobound: ecobound
+    ecobound: ecobound,
+    maintran: maintran,
+    tran: tran,
+    highway: highway,
 }
 
 pro.addTo(map);
@@ -452,7 +495,114 @@ let loadMeteo = async () => {
         )
     })
 }
+// let markerAQI = L.featureGroup();
+let markerAQI = L.layerGroup();
+let loadAQI = async () => {
+    let response = axios.get(url + '/eec-api/get-aqi');
+    let responseAll = axios.get(url + '/eec-api/get-aqi-all');
 
+    let iconblue = L.icon({
+        iconUrl: './marker/location-pin-blue.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let icongreen = L.icon({
+        iconUrl: './marker/location-pin-green.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconyellow = L.icon({
+        iconUrl: './marker/location-pin-yellow.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconorange = L.icon({
+        iconUrl: './marker/location-pin-orange.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconred = L.icon({
+        iconUrl: './marker/location-pin-red.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let d = await response;
+    let datArr = [];
+    d.data.data.map(i => {
+        datArr.push({
+            "station": i.sta_th,
+            "data": Number(i.aqi)
+        })
+    })
+
+    let x = await responseAll;
+    x.data.data.map(i => {
+        let dat = {
+            sta_id: i.sta_id,
+            sta_th: i.sta_th,
+            area_th: i.area_th,
+            aqi: i.aqi,
+            co: i.co,
+            no2: i.no2,
+            o3: i.o3,
+            pm10: i.pm10,
+            pm25: i.pm25,
+            so2: i.so2
+        }
+        let marker
+        if (Number(i.aqi) <= 25) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconblue,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 50) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: icongreen,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 100) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconyellow,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 200) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconorange,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconred,
+                name: 'markerAQI',
+                data: dat
+            });
+
+        }
+        markerAQI.addLayer(marker)
+
+        marker.bindPopup(`รหัส : ${i.sta_id}<br> 
+      ชื่อสถานี : ${i.sta_th} <br> 
+        ค่า AQI : ${Number(i.aqi).toFixed(1)}`
+        )
+
+    })
+    // markerAQI.addTo(map)
+}
+loadAQI()
 
 $("#templist").on("change", async (e) => {
     await map.eachLayer(i => {
@@ -497,6 +647,17 @@ $("input[name='basemap']").change(async (r) => {
 
     let basemap = $("input[name='basemap']:checked").val();
     base[`${basemap}`].addTo(map);
+})
+$('#imgaqi').hide()
+$("#staaqi").click(function () {
+    if (this.checked) {
+        markerAQI.addTo(map)
+        $('#imgaqi').fadeIn()
+    } else {
+        map.removeLayer(markerAQI)
+        $('#imgaqi').fadeOut()
+    }
+
 })
 
 $("#hchart").html(`<div style="text-align: center;">คลิกลงบนแผนที่เพื่อดูอุณหภูมิแต่ละสัปดาห์</div>`)
@@ -577,8 +738,8 @@ let getFeatureInfo = async (e) => {
         "&LAYERS=" + tempLyr +
         "&Feature_count=" + lyrLen +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -604,8 +765,8 @@ let getFeatureInfo = async (e) => {
         "&LAYERS=eec:temp_3hour.tif" +
         "&Feature_count=1" +
         "&INFO_FORMAT=application/json" +
-        "&X=" + pnt.x +
-        "&Y=" + pnt.y +
+        "&X=" + Math.round(pnt.x) +
+        "&Y=" + Math.round(pnt.y) +
         "&SRS=EPSG:4326" +
         "&WIDTH=" + size.x +
         "&HEIGHT=" + size.y +
@@ -695,18 +856,18 @@ $("#cardgreen2").hide()
 $("#green2").on("click", function () {
     var a = document.getElementById("green2").checked
     if (a == true) {
-        $("#cardgreen2").show()
+        $("#cardgreen2").fadeIn("slow")
     } else {
-        $("#cardgreen2").hide()
+        $("#cardgreen2").slideUp("slow")
     }
     // console.log(a);
 })
 $("#green").on("click", function () {
     var a = document.getElementById("green").checked
     if (a == true) {
-        $("#cardgreen").show()
+        $("#cardgreen").fadeIn("slow")
     } else {
-        $("#cardgreen").hide()
+        $("#cardgreen").slideUp("slow")
     }
     // console.log(a);
 })

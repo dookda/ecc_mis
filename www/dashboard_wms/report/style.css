@@ -7,8 +7,8 @@
 }
 
 #map{
-    height: 700px;
-    border-radius: 0.8rem;
+    height: 600px;
+    /* border-radius: 0.8rem; */
 }
 
 .layer{
