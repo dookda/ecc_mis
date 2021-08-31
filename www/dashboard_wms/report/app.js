@@ -1870,14 +1870,21 @@ let getLayer = () => {
     // console.log(x);
 }
 
+let lyrName = {
+    a__01_prov_eec: "ขอบเขตจังหวัด"
+}
 
+let fieldInfo = {
+    prov_nam_t: "ชื่อจังหวัด",
+    prov_code: "รหัสจังหวัด"
+}
 
 
 map.on("click", async (e) => {
     var pnt = await map.latLngToContainerPoint(e.latlng, map.getZoom());
     var size = await map.getSize();
     var bbox = await map.getBounds().toBBoxString();
-    console.log(pnt, size, bbox);
+    // console.log(pnt, size, bbox);
 
     let lyrInfoUrl = eecGeoserver + "/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -1895,10 +1902,12 @@ map.on("click", async (e) => {
     await axios.get(lyrInfoUrl).then(r => {
         if (r.data.features) {
             $("#accordion").empty();
-            console.log(r.data.features);
+            // console.log(r.data.features);
             r.data.features.map((i, k) => {
                 // console.log(i, k);
 
+                let lname = i.id.split(".")
+                console.log(lname[0]);
                 $("#a" + k).empty();
 
                 $("#accordion").append(`<div class="card" >
@@ -1906,7 +1915,7 @@ map.on("click", async (e) => {
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${k}"
                                 aria-expanded="true" aria-controls="collapse${k}">
-                                ${i.id}
+                                ${lyrName[lname[0]]}
                             </button>
                         </h5>
                     </div>
@@ -1917,7 +1926,8 @@ map.on("click", async (e) => {
                 </div>`)
 
                 for (const [key, value] of Object.entries(i.properties)) {
-                    $("#a" + k).append(`${key}: ${value} <br>`);
+                    // console.log(fieldInfo[key]);
+                    fieldInfo[key] != undefined ? $("#a" + k).append(`${fieldInfo[key]}: ${value} <br>`) : null;
                 }
 
             })
