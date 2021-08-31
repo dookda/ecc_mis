@@ -1929,7 +1929,6 @@ map.on("click", async (e) => {
                     // console.log(fieldInfo[key]);
                     fieldInfo[key] != undefined ? $("#a" + k).append(`${fieldInfo[key]}: ${value} <br>`) : null;
                 }
-
             })
             $("#infoModal").modal("show")
         }

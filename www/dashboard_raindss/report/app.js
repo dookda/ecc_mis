@@ -406,13 +406,51 @@ let loadWtrl = async () => {
             });
 
             marker.addTo(map)
-            marker.bindPopup(`ชื่อสถานี : ${i.staname} <br>
+            marker.bindPopup(`<div style="font-family:'Kanit'"> 
+                        ชื่อสถานี : ${i.staname} <br>
                         ระดับน้ำ : ${Number(d.deep).toFixed(1)} mm.<br>
                         ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
-                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>`
+                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        </div>`
             )
         })
     })
+}
+
+let wtrlModal = (stname) => {
+    // console.log(stname);
+    let arrDept = [];
+    let arrTemp = [];
+    let arrHumi = [];
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get-by-day.php", { stname }).then(r => {
+        // console.log(r);
+        r.data.data.map(i => {
+            arrDept.push({
+                "date": i.dt,
+                "value": Math.round(i.dept)
+            });
+            arrTemp.push({
+                "date": i.dt,
+                "value": Math.round(i.temp)
+            });
+            arrHumi.push({
+                "date": i.dt,
+                "value": Math.round(i.humi)
+            });
+        })
+    })
+
+    setTimeout(() => {
+        // console.log(arrDept, arrTemp, arrHumi);
+        wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
+        wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
+        wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
+    }, 500)
+
+
+    $("#wtrlModal").modal("show");
+
 }
 
 let responseWeather = axios.get(url + '/eec-api/get-weather-3hr-all');
@@ -508,7 +546,7 @@ let loadMeteo = async () => {
                         ความชื้นสัมพัทธ์ : ${Number(i.rh).toFixed(1)} %.<br>
                         อุณหภูมิ : ${Number(i.air_temp).toFixed(1)} องศาเซลเซียส<br>
                         ความกดอากาศ : ${Number(i.msl_pressure).toFixed(1)} มิลลิบาร์<br>
-                        ความเร็วลม : ${Number(i.windspeed).toFixed(1)} กิโลเมตร/ชั่วโมง`
+                        ความเร็วลม : ${Number(i.windspeed).toFixed(1)} กิโลเมตร/ชั่วโมง<br>`
         )
     })
 }
@@ -723,6 +761,71 @@ $("input[name='basemap']").change(async (r) => {
     let basemap = $("input[name='basemap']:checked").val();
     base[`${basemap}`].addTo(map);
 })
+
+let wtrlChart = (arrData, div, unit) => {
+    am4core.useTheme(am4themes_animated);
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
+
+    // Add data
+    chart.data = arrData;
+
+    // Set input format for the dates
+    // chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.baseValue = 0;
+    valueAxis.title.text = unit;
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.tooltipText = "{value}";
+    // series.tensionX = 0.8;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 15;
+    series.stroke = am4core.color("#00b80f");
+
+    // Drop-shaped tooltips
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.strokeOpacity = 0;
+    series.tooltip.pointerOrientation = "vertical";
+    series.tooltip.label.minWidth = 40;
+    series.tooltip.label.minHeight = 40;
+    series.tooltip.label.textAlign = "middle";
+    series.tooltip.label.textValign = "middle";
+
+    // var range = valueAxis.createSeriesRange(series);
+    // range.value = index;
+    // range.endValue = -1000;
+    // range.contents.stroke = am4core.color("#ff0000");
+    // range.contents.fill = range.contents.stroke;
+
+    // Make bullets grow on hover
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    // Make a panning cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.behavior = "panXY";
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.snapToSeries = series;
+
+    // Create a horizontal scrollbar with previe and place it underneath the date axis
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    dateAxis.start = 0.59;
+    dateAxis.keepSelection = true;
+}
 
 let hchart = (dat, div, unit) => {
     am4core.useTheme(am4themes_animated);
