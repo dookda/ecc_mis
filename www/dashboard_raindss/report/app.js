@@ -446,7 +446,7 @@ let wtrlModal = (stname) => {
         wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
         wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
         wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
-    }, 500)
+    }, 300)
 
 
     $("#wtrlModal").modal("show");
