@@ -823,7 +823,7 @@ let wtrlChart = (arrData, div, unit) => {
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    dateAxis.start = 0.59;
+    dateAxis.start = 0.89;
     dateAxis.keepSelection = true;
 }
 
