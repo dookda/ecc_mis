@@ -73,7 +73,7 @@ let showChart = (param, unit, dat) => {
                     var series = this.series[0];
                     var last = "";
                     setInterval(async () => {
-                        axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: param, sort: "DESC", stname: "station_01", limit: 1 }).then((r) => {
+                        axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: param, sort: "DESC", limit: 1 }).then((r) => {
                             console.log(r);
 
                             let x = (new Date()).getTime();
@@ -154,7 +154,7 @@ let showChart = (param, unit, dat) => {
     })
 }
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "do", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
+axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "do", sort: "ASC", limit: 5 }).then(async (r) => {
     console.log(r);
     let data = [];
     let time = (new Date()).getTime();
@@ -167,7 +167,7 @@ axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "do", sor
     showChart("do", "mg/L", data)
 })
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ec", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
+axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ec", sort: "ASC", limit: 5 }).then(async (r) => {
     console.log(r);
     let data = [];
     let time = (new Date()).getTime();
@@ -180,7 +180,7 @@ axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ec", sor
     showChart("ec", "mS/cm", data)
 })
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ph", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
+axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ph", sort: "ASC", limit: 5 }).then(async (r) => {
     console.log(r);
     let data = [];
     let time = (new Date()).getTime();
@@ -191,18 +191,5 @@ axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ph", sor
         });
     })
     showChart("ph", "pH", data)
-})
-
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "tmp", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
-    console.log(r);
-    let data = [];
-    let time = (new Date()).getTime();
-    r.data.data.map((i, k) => {
-        data.push({
-            x: time + k * 1000,
-            y: Number(i.val)
-        });
-    })
-    showChart("tmp", "tmp", data)
 })
 
