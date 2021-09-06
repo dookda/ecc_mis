@@ -7,8 +7,8 @@
 }
 
 #map{
-    height: 600px;
-    /* border-radius: 0.8rem; */
+    height: 700px;
+    border-radius: 0.8rem;
 }
 
 .layer{
@@ -83,7 +83,10 @@
   height:400px;
   overflow-y: scroll;
 }
-
+.scroll-xl{
+  height:600px;
+  overflow-y: scroll;
+}
 .scroll-base{
   height:120px;
   overflow-y: scroll;
@@ -167,7 +170,7 @@
 
   .cookie{
     margin: auto;
-    width: max-content;
+    width: fit-content;
     max-width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
@@ -176,8 +179,13 @@
   .dcookie{
     display: flex;
     flex-direction: row;
-    
+    justify-content: center;
   }
+  .w-fit{
+    width: fit-content;
+    max-width: 100%;
+  }
+  
   @media (max-width:769px) {
     .dcookie{
       display: flex;
@@ -194,4 +202,44 @@
   text-decoration: none;
 }
 
+
+.wf{
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0px 0px 12px 12px;
+ }
+.card-list{
+  background-color: #E6E6E7;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+  margin-bottom: 10px;
+  margin-right: auto;
+  height: max-content;
+}
+.hl{
+  width: 250px;
+  /* background-color:#EBEBED; 
+  border-radius: 12px 12px 0px 0px; */
+}
+.bg_E0{
+  background-color:#CCCCCD; 
+  border-radius: 12px;
+}
+@media (max-width:768px) {
+  .wf{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0px 0px 12px 12px;
+   }
+  .card-list{
+    background-color: #E6E6E7;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+    margin-bottom: 10px;
+    margin-right: auto;
+    height: max-content;
+  }
+}
  

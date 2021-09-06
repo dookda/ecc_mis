@@ -14,7 +14,7 @@ if (urname) {
       เข้าสู่ระบบ</a></li>`);
 }
 let Accept = sessionStorage.getItem('accept');
-if (Accept) {
+if (Accept || eecauth) {
     $('.toast').toast('hide')
 }
 else {
@@ -502,7 +502,7 @@ const geominer = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
 });
 
 const oremine = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
-    layers: "eec:a__21_ore mine",
+    layers: "eec:a__21_oremine",
     name: "lyr",
     iswms: "wms",
     format: "image/png",
@@ -637,6 +637,38 @@ const landscape = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     transparent: true
 });
 
+const water_mnre = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__58_water_mnre",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+const water_onep = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__59_water_onep",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+const water_stand = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__60_water_stand_eec",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+const sea = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__61_sea_eec",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
 const coastalradar = L.tileLayer.wms("https://ocean.gistda.or.th/geoserver/coastalradar/wms?", {
     layers: "coastalradar:recent_gulf,coastalradar:v_recent_gul5",
     name: "lyr",
@@ -662,7 +694,19 @@ const coastalmon60 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
     crs: L.CRS.EPSG3857,
     transparent: true
 });
-const coastalmon61 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2561_erosion_geo_status_erosion.map", {
+
+let coastalmon61 = L.layerGroup();
+
+const coastalmon61n = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2561_erosion_geo_status_normal.map", {
+    layers: "shoreline2561_erosion_geo_status_normal",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    crs: L.CRS.EPSG3857,
+    transparent: true
+}).addTo(coastalmon61);
+
+const coastalmon61e = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fshoreline2561_erosion_geo_status_erosion.map", {
     layers: "shoreline2561_erosion_geo_status_erosion",
     name: "lyr",
     iswms: "wms",
@@ -670,6 +714,12 @@ const coastalmon61 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
     crs: L.CRS.EPSG3857,
     transparent: true
 });
+
+coastalmon61.options.name = "lyr";
+coastalmon61.options.iswms = "wms";
+coastalmon61e.addTo(coastalmon61)
+coastalmon61n.addTo(coastalmon61)
+
 const coastalmon62 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?MAP=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Fdmcr%2Fgroup1%2Fstatuscoast2562.map", {
     layers: "statuscoast2562",
     name: "lyr",
@@ -790,7 +840,11 @@ let lyr = {
     coastalmon59: coastalmon59,
     coastalmon60: coastalmon60,
     coastalmon61: coastalmon61,
-    coastalmon62: coastalmon62
+    coastalmon62: coastalmon62,
+    water_mnre: water_mnre,
+    water_onep: water_onep,
+    water_stand: water_stand,
+    sea: sea
 
 }
 
@@ -1234,7 +1288,7 @@ $("input[type=checkbox]").change(async () => {
     });
 
     chk.map(i => {
-        console.log(i);
+        // console.log(i);
         if (lyr[`${i}`]) {
             lyr[`${i}`].addTo(map);
         }
@@ -1332,7 +1386,7 @@ $("#mineralLegend").attr("src", eecUrl + "eec:a__40_mineral");
 $("#geoconserLegend").attr("src", eecUrl + "eec:a__22_geologi_conser");
 $("#minerdevLegend").attr("src", eecUrl + "eec:a__20_mineral_develop");
 $("#geominerLegend").attr("src", eecUrl + "eec:a__20_geology_miner");
-$("#oremineLegend").attr("src", eecUrl + "eec:a__21_ore mine");
+$("#oremineLegend").attr("src", eecUrl + "eec:a__21_oremine");
 $("#soilLegend").attr("src", eecUrl + "eec:a__25_soil_eec");
 $("#mang_forestLegend").attr("src", eecUrl + "eec:a__51_mang_forest_cabinet");
 $("#lu56Legend").attr("src", eecUrl + "eec:a__46_lu_eec_56");
@@ -1349,10 +1403,15 @@ $("#oldtown_ccoLegend").attr("src", eecUrl + "eec:a__74_oldtown_cco");
 $("#oldtown_rygLegend").attr("src", eecUrl + "eec:a__75_oldtown_ryg");
 $("#polluLegend").attr("src", eecUrl + "eec:a__81_pollution_eec");
 $("#landscapeLegend").attr("src", eecUrl + "eec:a__82_landscape");
+$("#water_mnreLegend").attr("src", eecUrl + "eec:a__58_water_mnre");
+$("#water_onepLegend").attr("src", eecUrl + "eec:a__59_water_onep");
+$("#water_standLegend").attr("src", eecUrl + "eec:a__60_water_stand_eec");
+$("#seaLegend").attr("src", eecUrl + "eec:a__61_sea_eec");
 
 $("#coastalmon59Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline_2559.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.4311615570908689&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline_2559");
 $("#coastalmon60Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2560.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.3282854129563051&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline2560");
-$("#coastalmon61Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2561_erosion_geo_status_erosion.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.6537560267000855&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline2561_erosion_geo_status_erosion")
+$("#coastalmon61Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2561_erosion_geo_status_erosion.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.6537560267000855&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline2561_erosion_geo_status_erosion");
+$("#coastalmon61Legend2").attr("src", "https://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2561_erosion_geo_status_normal.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.8580349742667355&SRS=EPSG:3857&SCALE=433344.01634946937&WIDTH=250&STYLE=&LAYER=shoreline2561_erosion_geo_status_normal")
 $("#coastalmon62Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/statuscoast2562.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.9216863191450226&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=statuscoast2562")
 
 $("#aqiLegend").attr("src", "./marker/location-pin-green.svg");
@@ -1870,13 +1929,194 @@ let getLayer = () => {
     // console.log(x);
 }
 
+
 let lyrName = {
-    a__01_prov_eec: "ขอบเขตจังหวัด"
+    a__01_prov_eec: "ขอบเขตจังหวัด",
+    a__02_amphoe_eec: "ขอบเขตอำเภอ",
+    a__03_tambon_eec: "ขอบเขตตำบล",
+    a__04_municiple: "ขอบเขตเทศบาล",
+    a__05_village: "หมู่บ้าน",
+    a__49_maintran: "เส้นทางคมนาคมสายหลัก",
+    a__49_tran: "เส้นทางคมนาคม",
+    a__49_highway: "ทางหลวงแผ่นดิน",
+    a__37_train: "ทางรถไฟ",
+    a__50_muni_lm_eec: "สถานที่สำคัญในเขตเทศบาล",
+    a__38_landmark: "สถานที่สำคัญ",
+    a__36_artsource: "แหล่งศิลปกรรม",
+    a__11_countour: "เส้นชั้นความสูง",
+    a__13_water_path: "เส้นทางน้ำ",
+    a__14_w2_eec: "แหล่งน้ำ",
+    a__16_basinquality: "ชั้นคุณภาพลุ่มน้ำ",
+    a__12_main_basin_eec: "ลุ่มน้ำหลัก",
+    a__12_sub_basin: "ลุ่มน้ำย่อย",
+    a__18_hydrogeology: "อุทกธรณีวิทยา",
+    a__15_waterlevel_sa: "สถานีตรวจวัดระดับน้ำ(สถานีอุทกวิทยา)",
+    a__58_water_mnre: "จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13",
+    a__59_water_onep: "จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ",
+    a__60_water_stand_eec: "จุดวัดคุณภาพน้ำผิวดิน",
+    a__61_sea_eec: "จุดวัดคุณภาพน้ำทะเล",
+    a__53_wsup_pipe_wa_3p: "ท่อส่งน้ำการประปา",
+    a__53_wdiv_pipe_3p: "ท่อผันน้ำ กรมชลประทาน",
+    a__53_loca_rid9: "สำนักชลประทานที่ 9",
+    a__53_dam_bpk: "เขื่อนทดน้ำบางปะกง",
+    a__53_main_riv_3p: "แม่น้ำสายหลักสชป.9",
+    a__53_pj_area_rid9_3p: "พื้นที่โครงการสชป.9",
+    a__53_pj_loca_rid9_3p: "ที่ตั้งโครงการ สชป9",
+    a__08_soundpoint: "จุดตรวจวัดเสียง",
+    a__81_pollution_eec: "แหล่งกำเนิดมลพิษ",
+    a__67_protec_pollu_cb_area_eec: "เขตพื้นที่คุ้มครองและเขตควบคุมมลพิษ",
+    a__10_water_station: "สถานีตรวจวัดคุณภาพน้ำอัตโนมัติ",
+    a__57_wastewater: "บ่อบำบัดน้ำเสีย",
+    a__55_garbage: "บ่อขยะ",
+    a__41_flood: "พื้นที่เสี่ยงภัยน้ำท่วม",
+    a__42_earthquake: "พื้นที่เสี่ยงภัยแผ่นดินไหว",
+    a__43_landslide: "ตำแหน่งพื้นที่เสี่ยงดินถล่ม",
+    a__44_hole: "พื้นที่เสี่ยงภัยหลุมยุบ",
+    a__45_drought: "พื้นที่เสี่ยงภัยแล้ง",
+    a__52_gr_park: "พื้นที่สีเขียวสาธาณะ",
+    a__26_f_reserved_eec: "ป่าสงวนแห่งชาติ",
+    a__28_nationalparkboi: "อุทยานแห่งชาติ",
+    a__29_park_dnp: "วนอุทยาน",
+    a__30_wildlife_boi: "เขตรักษาพันธุ์สัตว์ป่า",
+    a__31_non_huntingboi: "เขตห้ามล่าสัตว์ป่า",
+    a__27_f_type63_eec: "ประเภทป่าไม้ปีพ.ศ.2563",
+    a__33_afforestation: "พื้นที่ปลูกป่า",
+    a__35_alroarea: "พื้นที่สปก.",
+    a__56_commu_forest: "ป่าชุมชน",
+    a__19_geology: "ธรณีวิทยา",
+    a__40_mineral: "ทรัพยากรแร่",
+    a__22_geologi_conser: "แหล่งอนุรักษ์ทางธรณีวิทยา",
+    a__20_mineral_develop: 'พื้นที่จำแนกเขตพัฒนาทรัพยากรแร่',
+    a__20_geology_miner: "ข้อมูลธรณีและแหล่งทรัพยากรแร่",
+    a__21_oremine: 'ประทานบัตร',
+    a__25_soil_eec: 'แผนที่ดิน',
+    a__46_lu_eec_56: 'การใช้ประโยชน์ที่ดิน ปีพ.ศ.2556',
+    a__46_lu_eec_59: 'การใช้ประโยชน์ที่ดิน ปีพ.ศ.2559',
+    a__46_lu_eec_61: 'การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561',
+    a__47_lu_cbi_2563: 'การใช้ประโยชน์ที่ดินพื้นที่จังหวัดชลบุรี ปี 2563',
+    a__47_lu_ryg_2563: 'การใช้ประโยชน์ที่ดินพื้นที่จังหวัดระยอง ปี 2563',
+    a__82_landscape: 'ภูมินิเวศ',
+    a__48_a9_eec: 'พื้นที่เกษตรกรรมประเภทเพาะเลี้ยงสัตว์น้ำ',
+    a__51_mang_forest_cabinet: 'เขตป่าชายเลนตามมติคณะรัฐมนตรี',
+    a__39_mangrovelu: "การใช้ประโยชน์ที่ดินในป่าชายเลน",
+    a__34_coastal: "เขตที่ดินชายฝั่งทะเล",
+    a__72_ancient_eec: 'โบราณสถาน',
+    a__73_old_community_eec_point: 'ย่านชุมชนเก่า',
+    a__74_oldtown_cco: "เขตเมืองเก่า จังหวัดฉะเชิงเทรา",
+    a__75_oldtown_ryg: "เขตเมืองเก่า จังหวัดระยอง"
+
 }
 
 let fieldInfo = {
-    prov_nam_t: "ชื่อจังหวัด",
-    prov_code: "รหัสจังหวัด"
+    prov_nam_t: "จังหวัด",
+    amphoe_t: "อำเภอ",
+    tam_nam_t: "ตำบล",
+    name: "ชื่อ",
+    vill_name: "ชื่อหมู่บ้าน",
+    name_t: "ชื่อ",
+    culture_na: "ชื่อแหล่งศิลปกรรม",
+    type_nam_t: "ประเภท",
+    contour: "เส้นชั้นความสูง",
+    desc_t: "คำอธิบาย",
+    length: "ความยาว",
+    lu_code: "รหัสการใช้ประโยชน์ที่ดิน",
+    lu_des_th: "คำอธิบายการใช้ประโยชน์ที่ดิน",
+    wsc_class: "ชั้นคุณภาพลุ่มน้ำ",
+    mbasin: "รหัสลุ่มน้ำหลัก",
+    mbasin_t: "ชื่อลุ่มน้ำหลัก",
+    sbasin: "รหัสลุ่มน้ำย่อย",
+    sbasin_t: "ชื่อลุ่มน้ำย่อย",
+    hydrount: "ชั้นข้อมูลอุทกธรณี",
+    descript_t: "คำอธิบาย",
+    name_code: "รหัสสถานี",
+    type_gage: "ประเภทเครื่องตรวจวัด",
+    station: "รหัสสถานี",
+    name_river: "ชื่อแม่น้ำ",
+    wqi: "เกณฑ์การวัดน้ำ",
+    quality: "เกณฑ์มาตราฐาน",
+    station_n: "ชื่อสถานี",
+    station_id: "รหัสสถานี",
+    value: "เกณฑ์มาตราฐาน",
+    controller: "ผู้ดูแล",
+    project: "โครงการ",
+    projcode: "รหัสโครงการ",
+    pj_name: "โครงการ",
+    owner_name: "ผู้รับผิดชอบโครงการ",
+    sta_name_t: "ชื่อสถานีตรวจวัดเสียง",
+    type: "ประเภท",
+    ws_code: "รหัสสถานี",
+    ws_name: "ชื่อสถานี",
+    river: "แม่น้ำ",
+    status: "สถานะ",
+    agency: "หน่วยงานรับผิดชอบ",
+    descriptio: "คำอธิบาย",
+    system: "ชื่อบ่อบำบัด",
+    flood_desc: "คำอธิบาย",
+    intensity: "ระดับความรุนแรงของการเกิดแผ่นดินไหว",
+    hazard_t: "ลักษณะความรุนแรง",
+    vill_nam_t: "ชื่อหมู่บ้าน",
+    hazard: "ลักษณะพื้นที่เสี่ยง",
+    dry_class: "ประเภทพื้นที่เสี่ยงภัยแล้ง",
+    dry_desc: "คำอธิบาย",
+    gr_name: "ชื่อพื้นที่สีเขียวสาธารณะ",
+    sup_type: "ประเภทพื้นที่สีเขียว",
+    fr_name: "ชื่อ",
+    สจป: "สำนักงานจัดการทรัพยากรป่าไม้",
+    typt: 'ประเภทวนอุทยานภาษาไทย',
+    namt: 'ชื่อวนอุทยานภาษาไทย',
+    ftype_thai: 'ประเภทป่า',
+    loca_tam: "ตำบล",
+    loca_amp: "อำเภอ",
+    loca_prov: "จังหวัด",
+    alro_name: 'ชื่อพื้นที่สปก.',
+    alro_statu: 'สถานะพื้นที่สปก.',
+    fcg_name: 'ชื่อป่าชุมชน',
+    rai: 'ขนาดพื้นที่ (ไร่)',
+    ngan: 'ขนาดพื้นที่ (งาน)',
+    wha: 'ขนาดพื้นที่ (วา)',
+    rock_type_: 'ประเภทของหินภาษาไทย',
+    rock_type1: 'ประเภทของหินภาษาอังกฤษ',
+    formation_: 'หมวดหินภาษาไทย',
+    formation1: 'หมวดหินภาษาอังกฤษ',
+    period_t: 'ยุคทางธรณีวิทยาภาษาไทย',
+    period_e: 'ยุคทางธรณีวิทยาภาษาอังกฤษ',
+    symbol: 'สัญลักษณ์',
+    legend: 'คำอธิบายสัญลักษณ์',
+    m_name_t: 'ชื่อทรัพยากรแร่',
+    gen_geo: 'คำอธิบายลักษณะแหล่งแร่',
+    com_namt: 'ชนิดแร่',
+    min_cat: 'หมวดหมู่ทรัพยากรแร่',
+    min_gen: 'แหล่งแร่',
+    usage_t: 'ประโยชน์การใช้งาน',
+    pn_name_t: 'ชื่อแหล่งธรรมชาติทางธรณีวิทยา',
+    ge_type_id: 'รหัสประเภทแหล่งธรรมชาติทางธรณีวิทยา',
+    ge_type: 'ประเภทแหล่งธรรมชาติทางธรณีวิทยา',
+    comname_t: 'ชื่อแร่ทางการค้าภาษาไทย',
+    comname_e: 'ชื่อแร่ทางการค้าภาษาอังกฤษ',
+    com_symbol: 'สัญลักษณ์ชื่อแร่',
+    name_t_: "สถานที่พบ",
+    gen_geo: 'ข้อมูลธรณีวิทยาทั่วไป',
+    min_geo: 'ข้อมูลแร่',
+    min_gen: 'ข้อมูลแหล่งแร่',
+    m_name_t: 'ชื่อแร่ภาษาไทย',
+    m_name_e: 'ชื่อแร่ภาษาอังกฤษ',
+    createby: 'สร้างข้อมูลโดย',
+    reserve: 'ปริมาณแร่สำรองประทานบัตร',
+    mineral_ab: 'ชื่อแร่อักษรย่อ',
+    mineral_t: 'ชื่อแร่ภาษาไทย',
+    mineral_e: 'ชื่อแร่ภาษาอังกฤษ',
+    fertility: 'ความอุดมสมบูรณ์ของดิน',
+    texture_to: 'ลักษณะดิน',
+    soilserien: 'ชุดดินจัดตั้ง',
+    ph_top: 'ค่าความเป็นกรดด่าง',
+    des_th: 'คำอธิบายการใช้ประโยชน์ที่ดิน',
+    zonename30: 'ชื่อเขตป่าชายเลน',
+    zonename43: 'ชื่อเขตพื้นที่',
+    lu52_nam: 'การใช้ประโยชน์ที่ดินในป่าชายเลน',
+    ot_name: 'ชื่อเมืองเก่า',
+    zone_detai: 'รายละเอียดโซน',
+    name_: "ชื่อวนอุทยานภาษาอังกฤษ"
+
 }
 
 
@@ -1907,28 +2147,31 @@ map.on("click", async (e) => {
                 // console.log(i, k);
 
                 let lname = i.id.split(".")
-                console.log(lname[0]);
+                // console.log(lname[0]);
                 $("#a" + k).empty();
 
-                $("#accordion").append(`<div class="card" >
-                    <div class="card-header" id="heading${k}">
-                        <h5 class="mb-0">
+                $("#accordion").append(
+                    `<div class="d-flex flex-column card-list">
+                        <div id="heading${k}">
+                            <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${k}"
-                                aria-expanded="true" aria-controls="collapse${k}">
-                                ${lyrName[lname[0]]}
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapse${k}" class="collapse show" aria-labelledby="heading${k}" data-parent="#accordion">
-                        <div class="card-body" id="a${k}">
+                            aria-expanded="true" aria-controls="collapse${k}">
+                            ${lyrName[lname[0]]}
+                        </button>
+                            </h5>
+                            <div id="collapse${k}" class="collapse show wf" aria-labelledby="heading${k}" data-parent="#accordion">
+                                <div class="card-body p-2">
+                                    <ul id="a${k}"></ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>`)
+                    </div>`)
 
                 for (const [key, value] of Object.entries(i.properties)) {
                     // console.log(fieldInfo[key]);
-                    fieldInfo[key] != undefined ? $("#a" + k).append(`${fieldInfo[key]}: ${value} <br>`) : null;
+                    fieldInfo[key] != undefined ? $("#a" + k).append(`<li><span class="p-2">${fieldInfo[key]}: ${value} </span></li>`) : null;
                 }
+
             })
             $("#infoModal").modal("show")
         }

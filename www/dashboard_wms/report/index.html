@@ -347,6 +347,45 @@
                                             </div>
 
                                             <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_mnre"
+                                                    id="water_mnre">
+                                                <label class="form-check-label">
+                                                    จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13
+                                                </label>
+                                                <br>
+                                                <img id="water_mnreLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_onep"
+                                                    id="water_onep">
+                                                <label class="form-check-label">
+                                                    จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ
+                                                </label>
+                                                <br>
+                                                <img id="water_onepLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_stand"
+                                                    id="water_stand">
+                                                <label class="form-check-label">
+                                                    จุดวัดคุณภาพน้ำผิวดิน
+                                                </label>
+                                                <br>
+                                                <img id="water_standLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="sea" id="sea">
+                                                <label class="form-check-label">
+                                                    จุดวัดคุณภาพน้ำทะเล
+                                                </label>
+                                                <br>
+                                                <img id="seaLegend">
+                                            </div>
+
+                                            <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="wsup_pipe"
                                                     id="wsup_pipe">
                                                 <label class="form-check-label">
@@ -906,6 +945,7 @@
                                                     สถานการณ์การกัดเซาะชายฝั่ง ปี 2561
                                                 </label>
                                                 <br>
+                                                <img id="coastalmon61Legend2">
                                                 <img id="coastalmon61Legend">
                                             </div>
                                             <div class="form-check">
@@ -1097,15 +1137,15 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
-        <div class="fixed-bottom p-4">
-            <div class="toast cookie text-white text-left" role="alert" data-autohide="false">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
                 <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
-                    <div class="mr-auto p-2 bd-highlight">
+                    <div class="p-2 bd-highlight  text-justify">
                         <span style="font-size: 12px; font-stretch: condensed;">
                             เว็บไซต์นี้
                             มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
-                            หากท่านใช้<br>บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
-                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์<br>
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
                             <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
@@ -1113,11 +1153,14 @@
                             และ <a href="https://www.onep.go.th/cookie-policy/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">นโยบายคุกกี้
-                                (Cookie Policy)</a>
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
                         </span>
                     </div>
                     <div class="ml-auto p-2 bd-highlight">
-                        <button type="button" class="btn btn-success" id="btnAccept">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
                             ยอมรับและปิด
                         </button>
                     </div>
@@ -1133,13 +1176,19 @@
     </footer>
     <!-- End  Footer -->
 
-
-
     <div class="modal fade" id="infoModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <div class="modal-body">
-                    <div id="accordion">
+                <div class="modal-header d-flex align-items-center" style="background-color:#E5E6E5;">
+                    <i class="bi bi-ui-checks text-success  ml-3 mr-2" style="font-size: 26px;"></i>
+                    <h5 class="modal-title"><b>รายการข้อมูล</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background-color:#f6f6f8;">
+                    <div class="d-flex flex-row flex-wrap justify-content-start align-items-stretch scroll-xl"
+                        id="accordion">
 
                     </div>
                 </div>
@@ -1150,7 +1199,6 @@
             </div>
         </div>
     </div>
-
 
     <div id="preloader"></div>
 
