@@ -1408,6 +1408,8 @@ $("#water_onepLegend").attr("src", eecUrl + "eec:a__59_water_onep");
 $("#water_standLegend").attr("src", eecUrl + "eec:a__60_water_stand_eec");
 $("#seaLegend").attr("src", eecUrl + "eec:a__61_sea_eec");
 
+$("#coastalradarLegend").attr("src", gistdaUrl + "coastalradar:recent_gulf");
+
 $("#coastalmon59Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline_2559.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.4311615570908689&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline_2559");
 $("#coastalmon60Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2560.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.3282854129563051&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline2560");
 $("#coastalmon61Legend").attr("src", "http://marinegiscenter.dmcr.go.th/cgi-bin/mapserv.exe?FORMAT=image/png&MAP=/ms4w/apps/geomoose2/maps//dmcr/group1/shoreline2561_erosion_geo_status_erosion.map&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&_OLSALT=0.6537560267000855&SRS=EPSG:3857&SCALE=27734017.04636604&WIDTH=250&STYLE=&LAYER=shoreline2561_erosion_geo_status_erosion");
