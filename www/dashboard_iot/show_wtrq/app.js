@@ -62,7 +62,9 @@ L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 var chart;
 
-let showChart = (param, unit, dat) => {
+
+let showChart = (param, unit, dat, sta) => {
+    // console.log(param, unit, dat, sta);
     Highcharts.chart(param, {
         chart: {
             type: 'spline',
@@ -73,8 +75,8 @@ let showChart = (param, unit, dat) => {
                     var series = this.series[0];
                     var last = "";
                     setInterval(async () => {
-                        axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: param, sort: "DESC", stname: "station_01", limit: 1 }).then((r) => {
-                            console.log(r);
+                        axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: param, sort: "DESC", stname: sta, limit: 1 }).then((r) => {
+                            // console.log(r);
 
                             let x = (new Date()).getTime();
                             let y = Number(r.data.data[0].val);
@@ -154,55 +156,58 @@ let showChart = (param, unit, dat) => {
     })
 }
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "do", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
-    console.log(r);
-    let data = [];
-    let time = (new Date()).getTime();
-    r.data.data.map((i, k) => {
-        data.push({
-            x: time + k * 1000,
-            y: Number(i.val)
-        });
-    })
-    showChart("do", "mg/L", data)
-})
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ec", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
-    console.log(r);
-    let data = [];
-    let time = (new Date()).getTime();
-    r.data.data.map((i, k) => {
-        data.push({
-            x: time + k * 1000,
-            y: Number(i.val)
-        });
+$("#sta").on('change', function () {
+    console.log(this.value)
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "do", sort: "DESC", stname: this.value, limit: 5 }).then(async (r) => {
+        console.log(r);
+        let data = [];
+        let time = (new Date()).getTime();
+        r.data.data.map((i, k) => {
+            data.push({
+                x: time + k * 1000,
+                y: Number(i.val)
+            });
+        })
+        showChart("do", "mg/L", data, this.value)
     })
-    showChart("ec", "mS/cm", data)
-})
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ph", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
-    console.log(r);
-    let data = [];
-    let time = (new Date()).getTime();
-    r.data.data.map((i, k) => {
-        data.push({
-            x: time + k * 1000,
-            y: Number(i.val)
-        });
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ec", sort: "DESC", stname: this.value, limit: 5 }).then(async (r) => {
+        // console.log(r);
+        let data = [];
+        let time = (new Date()).getTime();
+        r.data.data.map((i, k) => {
+            data.push({
+                x: time + k * 1000,
+                y: Number(i.val)
+            });
+        })
+        showChart("ec", "mS/cm", data, this.value)
     })
-    showChart("ph", "pH", data)
-})
 
-axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "tmp", sort: "DESC", stname: "station_01", limit: 5 }).then(async (r) => {
-    console.log(r);
-    let data = [];
-    let time = (new Date()).getTime();
-    r.data.data.map((i, k) => {
-        data.push({
-            x: time + k * 1000,
-            y: Number(i.val)
-        });
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "ph", sort: "DESC", stname: this.value, limit: 5 }).then(async (r) => {
+        // console.log(r);
+        let data = [];
+        let time = (new Date()).getTime();
+        r.data.data.map((i, k) => {
+            data.push({
+                x: time + k * 1000,
+                y: Number(i.val)
+            });
+        })
+        showChart("ph", "pH", data, this.value)
     })
-    showChart("tmp", "tmp", data)
-})
 
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrq-api.php", { param: "tmp", sort: "DESC", stname: this.value, limit: 5 }).then(async (r) => {
+        // console.log(r);
+        let data = [];
+        let time = (new Date()).getTime();
+        r.data.data.map((i, k) => {
+            data.push({
+                x: time + k * 1000,
+                y: Number(i.val)
+            });
+        })
+        showChart("tmp", "tmp", data, this.value)
+    })
+})
