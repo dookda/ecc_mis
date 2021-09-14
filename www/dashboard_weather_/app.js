@@ -16,23 +16,6 @@ if (urname) {
 
 // $("#usrname").text(urname);
 // urid ? null : location.href = "./../../form_register/login/index.html";
-let Accept = sessionStorage.getItem('accept');
-if (Accept || eecauth) {
-  $('.toast').toast('hide')
-}
-else {
-  $('.toast').toast('show')
-}
-$('#btnDeny').click(() => {
-  // eraseCookie('allowCookies')
-  $('.toast').toast('hide')
-})
-let setAccept
-$('#btnAccept').click(() => {
-  // setCookie('allowCookies','1',7)
-  $('.toast').toast('hide')
-  setAccept = sessionStorage.setItem('accept', 'Yes');
-})
 
 let latlng = {
   lat: 13.305567,
@@ -104,9 +87,8 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   maxZoom: 20,
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
-
-const tamn = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: "eec:a__03_tambon_eec",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+  layers: "eec:__03_tambon_eec",
   format: "image/png",
   transparent: true,
   // maxZoom: 18,
@@ -159,7 +141,7 @@ const baseMaps = {
 const overlayMaps = {
   "ขอบเขตจังหวัด": pro.addTo(map),
   "ขอบเขตอำเภอ": amp,
-  "ขอบเขตตำบล": tamn,
+  "ขอบเขตตำบล": tam,
   "แหล่งน้ำ": w2,
   "แม่น้ำสายหลัก": w53,
   "แม่น้ำสายรอง": w13,
@@ -212,7 +194,7 @@ function onLocationFound(e) {
 }
 
 function onLocationError(e) {
-  // console.log(e.message);
+  console.log(e.message);
 }
 
 map.on("locationfound", onLocationFound);
@@ -1205,7 +1187,7 @@ let chartTemplate = (arrData, div) => {
 
   chart.exporting.menu = new am4core.ExportMenu();
   chart.exporting.menu.align = "left";
-  chart.exporting.menu.verticalAlign = "bottom";
+  chart.exporting.menu.verticalAlign = "top";
   chart.exporting.adapter.add("data", function (data, target) {
     var data = [];
     chart.series.each(function (series) {
