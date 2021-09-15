@@ -46,9 +46,9 @@ var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.
 $(document).ready(() => {
   layermark(L53, 53)
 })
-// const url = 'http://localhost:3700';
+const url = 'http://localhost:3700';
 // const url = "http://rti2dss.com:3700";
-const url = "https://eec-onep.online:3700";
+// const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -105,7 +105,7 @@ const ghyb = L.tileLayer("https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}",
   subdomains: ["mt0", "mt1", "mt2", "mt3"]
 });
 
-const tamn = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__03_tambon_eec",
   format: "image/png",
   transparent: true,
@@ -158,8 +158,8 @@ const baseMaps = {
 
 const overlayMaps = {
   "ขอบเขตจังหวัด": pro.addTo(map),
-  "ขอบเขตอำเภอ": amp,
-  "ขอบเขตตำบล": tamn,
+  "ขอบเขตอำเภอ": amp.addTo(map),
+  "ขอบเขตตำบล": tam.addTo(map),
   "แหล่งน้ำ": w2,
   "แม่น้ำสายหลัก": w53,
   "แม่น้ำสายรอง": w13,
@@ -244,13 +244,26 @@ $("#tam").on("change", function () {
 });
 
 let zoomExtent = (lyr, code) => {
-  axios.get(url + `/eec-api/get-extent/${lyr}/${code}`).then(r => {
+  map.eachLayer(lyr => {
+    if (lyr.options.name == 'bound') {
+      map.removeLayer(lyr)
+    }
+  })
+
+  axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
     let geom = JSON.parse(r.data.data[0].geom)
-    // console.log(geom);
-    map.fitBounds([
-      geom.coordinates[0][0],
-      geom.coordinates[0][2],
-    ]);
+    var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+    // console.log(polygon.toGeoJSON());
+    // showTable(polygon.toGeoJSON())
+
+    axios.post(url + "/eec-api/get-weather-3hr-param", { dat: r.data.data[0].geom }).then(x => {
+      console.log(x);
+    })
+
+    // var data = JSON.parse(myData);
+    // var myTable = $('#tab').DataTable().clear().rows.add(data).draw();
+
+    map.fitBounds(polygon.getBounds());
   })
 }
 
@@ -301,91 +314,95 @@ let nearData = async (e) => {
 
 }
 
-let showTable = async () => {
-  $.extend(true, $.fn.dataTable.defaults, {
-    "language": {
-      "sProcessing": "กำลังดำเนินการ...",
-      "sLengthMenu": "แสดง_MENU_ แถว",
-      "sZeroRecords": "ไม่พบข้อมูล",
-      "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
-      "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
-      "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
-      "sInfoPostFix": "",
-      "sSearch": "ค้นหา:",
-      "sUrl": "",
-      "oPaginate": {
-        "sFirst": "เริ่มต้น",
-        "sPrevious": "ก่อนหน้า",
-        "sNext": "ถัดไป",
-        "sLast": "สุดท้าย"
-      }
+// let showTable = async (json) => {
+$.extend(true, $.fn.dataTable.defaults, {
+  "language": {
+    "sProcessing": "กำลังดำเนินการ...",
+    "sLengthMenu": "แสดง_MENU_ แถว",
+    "sZeroRecords": "ไม่พบข้อมูล",
+    "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+    "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+    "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+    "sInfoPostFix": "",
+    "sSearch": "ค้นหา:",
+    "sUrl": "",
+    "oPaginate": {
+      "sFirst": "เริ่มต้น",
+      "sPrevious": "ก่อนหน้า",
+      "sNext": "ถัดไป",
+      "sLast": "สุดท้าย"
     }
-  });
-  // console.log("ok")
-  let table = $('#tab').DataTable({
-    ajax: {
-      url: url + '/eec-api/get-weather-3hr',
-      dataSrc: 'data'
-    },
-    columns: [
-      // { data: 'sta_num' },
-      { data: 'sta_th' }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.air_temp).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.dew).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.rh).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.land_vis).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.winddir).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.windspeed).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.rainfall).toFixed(1) }
-      }, {
-        data: null,
-        "render": function (data, type, row) { return Number(data.rain24hr).toFixed(1) }
-      }
-    ],
-    columnDefs: [
-      { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
-    ],
-    dom: 'Bfrtip',
-    buttons: [
-      'excel', 'print'
-    ],
-    searching: true,
-    select: true,
-    pageLength: 8,
-    responsive: {
-      details: false
+  }
+});
+// console.log("ok")
+let table = $('#tab').DataTable({
+  ajax: {
+    url: url + '/eec-api/get-weather-3hr',
+    // type: 'POST',
+    // data: json,
+    dataSrc: 'data'
+  },
+  columns: [
+    // { data: 'sta_num' },
+    { data: 'sta_th' }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.air_temp).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.dew).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.rh).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.land_vis).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.winddir).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.windspeed).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.rainfall).toFixed(1) }
+    }, {
+      data: null,
+      "render": function (data, type, row) { return Number(data.rain24hr).toFixed(1) }
     }
-  });
+  ],
+  columnDefs: [
+    { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+  ],
+  dom: 'Bfrtip',
+  buttons: [
+    'excel', 'print'
+  ],
+  searching: true,
+  select: true,
+  pageLength: 8,
+  responsive: {
+    details: false
+  }
+});
 
-  $('#tab tbody').on('click', 'tr', function () {
-    let data = table.row(this).data();
-    // console.log(data)
-    showChart(data)
-    // map.setView([Number(data.lon), Number(data.lat)], 10)
-    // L.popup({ offset: [0, -27] })
-    //   .setLatLng([Number(data.lat), Number(data.lon)])
-    //   .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
-    //   .openOn(map);
-    // map.panTo([Number(data.lat), Number(data.lon)])
-    // showChart(data)
-  });
-}
+
+
+$('#tab tbody').on('click', 'tr', function () {
+  let data = table.row(this).data();
+  // console.log(data)
+  showChart(data)
+  // map.setView([Number(data.lon), Number(data.lat)], 10)
+  // L.popup({ offset: [0, -27] })
+  //   .setLatLng([Number(data.lat), Number(data.lon)])
+  //   .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
+  //   .openOn(map);
+  // map.panTo([Number(data.lat), Number(data.lon)])
+  // showChart(data)
+});
+// }
 
 let showWtrl = async () => {
   rmLyr()
@@ -1225,7 +1242,7 @@ let chartTemplate = (arrData, div) => {
 // init aqi
 // showTemp();
 showRain()
-showTable();
+// showTable();
 showChart({ sta_num: "48478" })
 // getWeatherHist();
 // showWtrl()

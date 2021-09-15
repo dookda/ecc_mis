@@ -58,6 +58,39 @@ app.get("/eec-api/get-bound/:lyr/:val", (req, res) => {
     });
 })
 
+app.get("/eec-api/get-bound-flip/:lyr/:val", (req, res) => {
+    const lyr = req.params.lyr;
+    const val = req.params.val;
+    let sql;
+
+    if (lyr == "pro") {
+
+        if (val == "eec") {
+            sql = `SELECT ST_AsGeoJSON(ST_FlipCoordinates(ST_Transform(geom, 4326))) as geom
+                    FROM _00_bound_eec`;
+        } else {
+            sql = `SELECT ST_AsGeoJSON(ST_FlipCoordinates(ST_Transform(geom, 4326))) as geom
+                FROM _01_prov_eec
+                WHERE pv_idn = '${val}'`;
+        }
+    } else if (lyr == "amp") {
+        sql = `SELECT ST_AsGeoJSON(ST_FlipCoordinates(ST_Transform(geom, 4326))) as geom
+            FROM _02_amphoe_eec
+            WHERE ap_idn = '${val}'`;
+    } else if (lyr == "tam") {
+        sql = `SELECT ST_AsGeoJSON(ST_FlipCoordinates(ST_Transform(geom, 4326))) as geom
+            FROM _03_tambon_eec
+            WHERE tb_idn = '${val}'`;
+    }
+
+    geo.query(sql).then((r) => {
+        // console.log(r.rows);
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
 app.get("/eec-api/get-prov", (req, res) => {
     const sql = `SELECT prov_code, prov_namt, prov_name
         FROM eec_pro_4326`;
@@ -194,6 +227,17 @@ app.get("/eec-api/get-weather-3hr", (req, res) => {
     })
 })
 
+app.post("/eec-api/get-weather-3hr-param", (req, res) => {
+    const { dat } = req.body;
+    console.log(dat);
+    const sql = `SELECT * FROM v_tmd_weather_3hr_eec`;
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.get("/eec-api/get-weather-3hr-all", (req, res) => {
     const sql = `SELECT * FROM v_tmd_weather_3hr_all`;
     dat.query(sql).then(r => {
@@ -202,8 +246,6 @@ app.get("/eec-api/get-weather-3hr-all", (req, res) => {
         })
     })
 })
-
-
 
 app.post("/eec-api/get-weather-hist", (req, res) => {
     const { sta_num } = req.body;
