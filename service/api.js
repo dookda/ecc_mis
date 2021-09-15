@@ -227,10 +227,21 @@ app.get("/eec-api/get-weather-3hr", (req, res) => {
     })
 })
 
-app.post("/eec-api/get-weather-3hr-param", (req, res) => {
-    const { dat } = req.body;
-    console.log(dat);
-    const sql = `SELECT * FROM v_tmd_weather_3hr_eec`;
+app.post("/eec-api/get-weather-3hr-bytam", (req, res) => {
+    const { col, val } = req.body;
+    let sql
+    if (col == 'pro') {
+        if (val == "eec") {
+            sql = `SELECT * FROM v_tmd_weather_3hr_eec_by_tam`;
+        } else {
+            sql = `SELECT * FROM v_tmd_weather_3hr_eec_by_tam WHERE prov_code='${val}'`;
+        }
+    } else if (col == 'amp') {
+        sql = `SELECT * FROM v_tmd_weather_3hr_eec_by_tam WHERE amp_code='${val}'`;
+    } else {
+        sql = `SELECT * FROM v_tmd_weather_3hr_eec_by_tam WHERE tam_code='${val}'`;
+    }
+
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

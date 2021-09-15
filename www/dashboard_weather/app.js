@@ -253,15 +253,11 @@ let zoomExtent = (lyr, code) => {
   axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
     let geom = JSON.parse(r.data.data[0].geom)
     var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
-    // console.log(polygon.toGeoJSON());
-    // showTable(polygon.toGeoJSON())
 
-    axios.post(url + "/eec-api/get-weather-3hr-param", { dat: r.data.data[0].geom }).then(x => {
-      console.log(x);
-    })
+    console.log(lyr, code);
 
-    // var data = JSON.parse(myData);
-    // var myTable = $('#tab').DataTable().clear().rows.add(data).draw();
+    $("#tab").dataTable().fnDestroy();
+    showTable({ col: lyr, val: code });
 
     map.fitBounds(polygon.getBounds());
   })
@@ -314,95 +310,104 @@ let nearData = async (e) => {
 
 }
 
-// let showTable = async (json) => {
-$.extend(true, $.fn.dataTable.defaults, {
-  "language": {
-    "sProcessing": "กำลังดำเนินการ...",
-    "sLengthMenu": "แสดง_MENU_ แถว",
-    "sZeroRecords": "ไม่พบข้อมูล",
-    "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
-    "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
-    "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
-    "sInfoPostFix": "",
-    "sSearch": "ค้นหา:",
-    "sUrl": "",
-    "oPaginate": {
-      "sFirst": "เริ่มต้น",
-      "sPrevious": "ก่อนหน้า",
-      "sNext": "ถัดไป",
-      "sLast": "สุดท้าย"
+let resp = [];
+
+let showTable = async (json) => {
+  $.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+      "sProcessing": "กำลังดำเนินการ...",
+      "sLengthMenu": "แสดง_MENU_ แถว",
+      "sZeroRecords": "ไม่พบข้อมูล",
+      "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+      "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+      "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+      "sInfoPostFix": "",
+      "sSearch": "ค้นหา:",
+      "sUrl": "",
+      "oPaginate": {
+        "sFirst": "เริ่มต้น",
+        "sPrevious": "ก่อนหน้า",
+        "sNext": "ถัดไป",
+        "sLast": "สุดท้าย"
+      }
     }
-  }
-});
-// console.log("ok")
-let table = $('#tab').DataTable({
-  ajax: {
-    url: url + '/eec-api/get-weather-3hr',
-    // type: 'POST',
-    // data: json,
-    dataSrc: 'data'
-  },
-  columns: [
-    // { data: 'sta_num' },
-    { data: 'sta_th' }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.air_temp).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.dew).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.rh).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.land_vis).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.winddir).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.windspeed).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.rainfall).toFixed(1) }
-    }, {
-      data: null,
-      "render": function (data, type, row) { return Number(data.rain24hr).toFixed(1) }
+  });
+  // console.log("ok")
+  let table = $('#tab').DataTable({
+    ajax: {
+      url: url + '/eec-api/get-weather-3hr-bytam',
+      type: 'POST',
+      data: json,
+      dataSrc: 'data'
+    },
+    columns: [
+      // { data: 'sta_num' },
+      { data: 'sta_th' }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.air_temp).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.dew).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.rh).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.land_vis).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.winddir).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.windspeed).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.rainfall).toFixed(1) }
+      }, {
+        data: null,
+        "render": function (data, type, row) { return Number(data.rain24hr).toFixed(1) }
+      }
+    ],
+    columnDefs: [
+      { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+      'excel', 'print'
+    ],
+    searching: true,
+    select: true,
+    pageLength: 8,
+    responsive: {
+      details: false
     }
-  ],
-  columnDefs: [
-    { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
-  ],
-  dom: 'Bfrtip',
-  buttons: [
-    'excel', 'print'
-  ],
-  searching: true,
-  select: true,
-  pageLength: 8,
-  responsive: {
-    details: false
-  }
-});
+  });
+
+  table.on('search.dt', function () {
+    resp = table.rows({ search: 'applied' }).data();
+    // getData(data);
+    showRain()
+  });
+
+  $('#tab tbody').on('click', 'tr', function () {
+    let data = table.row(this).data();
+
+    showChart(data)
+
+    // map.setView([Number(data.lon), Number(data.lat)], 10)
+    // L.popup({ offset: [0, -27] })
+    //   .setLatLng([Number(data.lat), Number(data.lon)])
+    //   .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
+    //   .openOn(map);
+    // map.panTo([Number(data.lat), Number(data.lon)])
+    // showChart(data)
+  });
 
 
-
-$('#tab tbody').on('click', 'tr', function () {
-  let data = table.row(this).data();
-  // console.log(data)
-  showChart(data)
-  // map.setView([Number(data.lon), Number(data.lat)], 10)
-  // L.popup({ offset: [0, -27] })
-  //   .setLatLng([Number(data.lat), Number(data.lon)])
-  //   .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
-  //   .openOn(map);
-  // map.panTo([Number(data.lat), Number(data.lon)])
-  // showChart(data)
-});
-// }
+}
 
 let showWtrl = async () => {
   rmLyr()
@@ -473,10 +478,13 @@ let showRain = async () => {
   $('#legend').append(`<img src="./mk_legend/เกณฑ์น้ำฝน.png" width="100%">`)
   $("#variable").text('Rainfall')
   rmLyr()
-  let d = await response;
+
+  // console.log(resp);
+  // let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
-  d.data.data.map(i => {
+  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
+  resp.map(i => {
+    // console.log(i);
     datArr.push({
       "station": i.sta_th,
       "rainfall": i.rainfall,
@@ -585,10 +593,10 @@ let showPressure = async () => {
   $('#legend').empty()
   $("#variable").text('MeanSeaLevelPressure')
   rmLyr()
-  let d = await response;
+  // let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].datetime} เวลา ${d.data.data[0].time_} น.`)
-  d.data.data.map(i => {
+  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
+  resp.map(i => {
     datArr.push({
       "station": i.sta_th,
       "sta_pressure": i.sta_pressure,
@@ -671,10 +679,10 @@ let showTemp = async () => {
   $('#legend').append(`<img src="./mk_legend/เกณฑ์อุณหภูมิ.png" width="100%">`)
   $("#variable").text('Temperature')
   rmLyr()
-  let d = await response;
+  // let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
-  d.data.data.map(i => {
+  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
+  resp.map(i => {
     datArr.push({
       "category": i.sta_th,
       "value": Number(i.air_temp)
@@ -773,10 +781,10 @@ let showRh = async () => {
   $('#legend').empty()
   $("#variable").text('RelativeHumidity')
   rmLyr()
-  let d = await response;
+  // let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
-  d.data.data.map(i => {
+  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
+  resp.map(i => {
     datArr.push({
       "category": i.sta_th,
       "value": Number(i.rh)
@@ -853,10 +861,10 @@ let showWind = async () => {
   $('#legend').empty()
   $("#variable").text('WindSpeed')
   rmLyr()
-  let d = await response;
+  // let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
-  d.data.data.map(i => {
+  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
+  resp.map(i => {
     // console.log(i);
     datArr.push({
       "category": i.sta_th,
@@ -1120,6 +1128,7 @@ pressureChart = async (data) => {
 }
 
 let showChart = async (e) => {
+  console.log(e);
   let res = await axios.post(url + '/eec-api/get-weather-hist', { sta_num: e.sta_num });
 
   let rainfall = [];
@@ -1241,8 +1250,8 @@ let chartTemplate = (arrData, div) => {
 
 // init aqi
 // showTemp();
-showRain()
-// showTable();
+// showRain()
+showTable({ col: "pro", val: "eec" });
 showChart({ sta_num: "48478" })
 // getWeatherHist();
 // showWtrl()
