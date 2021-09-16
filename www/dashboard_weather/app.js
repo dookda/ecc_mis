@@ -342,6 +342,13 @@ let showTable = async (json) => {
     },
     columns: [
       // { data: 'sta_num' },
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return `
+            <a type="button" href="#report-section" class="btn btn-margin btn-success" ><i class="bi bi-clipboard-data"></i> ดูข้อมูลย้อนหลัง</a>`
+        },
+      },
       { data: 'sta_th' }, {
         data: null,
         "render": function (data, type, row) { return Number(data.msl_pressure).toFixed(1) }
@@ -396,17 +403,7 @@ let showTable = async (json) => {
     let data = table.row(this).data();
 
     showChart(data)
-
-    // map.setView([Number(data.lon), Number(data.lat)], 10)
-    // L.popup({ offset: [0, -27] })
-    //   .setLatLng([Number(data.lat), Number(data.lon)])
-    //   .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
-    //   .openOn(map);
-    // map.panTo([Number(data.lat), Number(data.lon)])
-    // showChart(data)
   });
-
-
 }
 
 let showWtrl = async () => {
