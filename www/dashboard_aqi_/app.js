@@ -15,23 +15,7 @@ if (urname) {
     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
     เข้าสู่ระบบ</a></li>`);
 }
-let Accept = sessionStorage.getItem('accept');
-if (Accept || eecauth) {
-  $('.toast').toast('hide')
-}
-else {
-  $('.toast').toast('show')
-}
-$('#btnDeny').click(() => {
-  // eraseCookie('allowCookies')
-  $('.toast').toast('hide')
-})
-let setAccept
-$('#btnAccept').click(() => {
-  // setCookie('allowCookies','1',7)
-  $('.toast').toast('hide')
-  setAccept = sessionStorage.setItem('accept', 'Yes');
-})
+
 // $("#usrname").text(urname);
 // urid ? null : location.href = "./../../form_register/login/index.html";
 
@@ -44,8 +28,8 @@ let map = L.map("map", {
   zoom: 8
 });
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -105,8 +89,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__03_tambon_eec",
   format: "image/png",
   transparent: true,
-  // maxZoom: 18,
-  // minZoom: 14,
+  maxZoom: 18,
+  minZoom: 14,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -114,8 +98,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__02_amphoe_eec",
   format: "image/png",
   transparent: true,
-  // maxZoom: 14,
-  // minZoom: 10,
+  maxZoom: 14,
+  minZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -123,7 +107,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
   layers: "eec:a__01_prov_eec",
   format: "image/png",
   transparent: true,
-  // maxZoom: 10,
+  maxZoom: 10,
   // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -132,11 +116,7 @@ const airqualityeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/ee
   format: 'image/png',
   transparent: true
 });
-const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: 'eec:a__81_pollution_group',
-  format: 'image/png',
-  transparent: true,
-});
+
 const baseMaps = {
   "Mapbox": mapbox.addTo(map),
   "Google Hybrid": ghyb
@@ -144,69 +124,27 @@ const baseMaps = {
 
 const overlayMaps = {
   "ขอบเขตจังหวัด": pro.addTo(map),
-  "ขอบเขตอำเภอ": amp,
-  "ขอบเขตตำบล": tam,
-  "แหล่งกำเนิดมลพิษ": pollution,
+  "ขอบเขตอำเภอ": amp.addTo(map),
+  "ขอบเขตตำบล": tam.addTo(map),
   "จุดตรวจวัดคุณภาพอากาศในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": airqualityeec.addTo(map),
 };
 
-var legend = L.control({ position: "bottomleft" });
-function showLegend() {
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
-    <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
-  </button><br>`;
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-    div.innerHTML += '<img src="./marker/radar.png"  height="30px"></i><span>เรดาห์น้ำฝน</span><br>'
-    div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
-    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
-  </button>`
-    div.innerHTML += `<div id='PU'></div>`
-    div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>จุดตรวจวัดคุณภาพอากาศ</span><br>'
-    div.innerHTML += '<i style="background: #FD7231; border-radius: 50%;"></i><span>จุดความร้อน</span><br>';
-    div.innerHTML += '<i style="background: #657aff; border-radius: 50%; border-color: #2436a7; border-style: solid;"></i><span>จุดตรวจวัดคุณภาพอากาศ<br>ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</span><br>';
-    // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
-    // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
-    return div;
-  };
-  legend.addTo(map);
-}
-function hideLegend() {
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend')
-    div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
-      <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
-      <i class="fa fa-angle-double-up" aria-hidden="true"></i>
-  </button>`;
-    return div;
-  };
-  legend.addTo(map);
-}
+var legend = L.control({ position: "bottomright" });
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>สัญลักษณ์</h4>";
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+  div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+  div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>จุดตรวจวัดคุณภาพอากาศ</span><br>'
+  div.innerHTML += '<i style="background: #FD7231; border-radius: 50%;"></i><span>จุดความร้อน</span><br>';
+  div.innerHTML += '<i style="background: #BF1EFF; transform: rotate(45deg);"></i><span>จุดตรวจวัดคุณภาพอากาศในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก</span><br>';
+  // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+  // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+  return div;
+};
+legend.addTo(map);
 
-hideLegend()
-
-function Puop() {
-  $('#PUOP').hide()
-  $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
-  <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
-  <i style="background: #ff3769; border-radius: 1%;"></i><span>ตัวเมืองและย่านการค้า</span><br>
-  <i style="background: #379eff; border-radius: 1%;"></i><span>ท่าเรือ</span><br>
-  <i style="background: #ad71db; border-radius: 1%;"></i><span>นิคมอุตสาหกรรม</span><br>
-  <i style="background: #ffadec; border-radius: 1%;"></i><span>รีสอร์ท โรงแรม เกสต์เฮ้าส์</span><br>
-  <i style="background: #861790; border-radius: 1%;"></i><span>โรงงานอุตสาหกรรม</span><br>
-  <i style="background: #ffe435; border-radius: 1%;"></i><span>โรงเรือนเลี้ยงสัตว์</pan><br>
-  <i style="background: #7ae3ff; border-radius: 1%;"></i><span>สถานที่เพาะเลี้ยงสัตว์น้ำ</span><br>
-  <i style="background: #000988; border-radius: 1%;"></i><span>สถานที่ราชการและสถาบันต่าง ๆ</span><br>
-  <i style="background: #f9b310; border-radius: 1%;"></i><span>สถานีบริการน้ำมัน</span><br>
-  <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`)
-}
-function Puclose() {
-  $('#PUOP').show()
-  $('#PU').html('')
-}
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
   collapsed: true
 }).addTo(map);
@@ -217,7 +155,7 @@ let onLocationFound = (e) => {
 }
 
 let onLocationError = (e) => {
-  // console.log(e.message);
+  console.log(e.message);
 }
 
 map.on("locationfound", onLocationFound);
@@ -250,34 +188,15 @@ $("#tam").on("change", function () {
 });
 
 let zoomExtent = (lyr, code) => {
-  map.eachLayer(lyr => {
-    if (lyr.options.name == 'bound') {
-      map.removeLayer(lyr)
-    }
-  })
-
-  axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+  axios.get(url + `/eec-api/get-extent/${lyr}/${code}`).then(r => {
     let geom = JSON.parse(r.data.data[0].geom)
-    var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
-
-    console.log(lyr, code);
-
-    $("#tab").dataTable().fnDestroy();
-    showDataTable({ col: lyr, val: code });
-
-    map.fitBounds(polygon.getBounds());
+    // console.log(geom);
+    map.fitBounds([
+      geom.coordinates[0][0],
+      geom.coordinates[0][2],
+    ]);
   })
 }
-
-// let zoomExtent = (lyr, code) => {
-//   axios.get(url + `/eec-api/get-extent/ ${lyr} /${code}`).then(r => {
-//     let geom = JSON.parse(r.data.data[0].geom)
-//     map.fitBounds([
-//       geom.coordinates[0][0],
-//       geom.coordinates[0][2],
-//     ]);
-//   })
-// }
 
 let getPro = (procode) => {
   axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
@@ -317,12 +236,12 @@ let onEachFeature = (feature, layer) => {
     const hr = Number(time.slice(0, 2));
     const mn = Number(time.slice(2, 4));
     layer.bindPopup(
-      '<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>' +
+      '<b>ตำแหน่งจุดความร้อน</b>' +
       '<br/>lat: ' + feature.properties.latitude +
       '<br/>lon: ' + feature.properties.longitude +
       // '<br/>satellite: ' + feature.properties.satellite +
       '<br/>วันที่: ' + feature.properties.acq_date +
-      '<br/>เวลา: ' + hr + ':' + mn + '</span>'
+      '<br/>เวลา: ' + hr + ':' + mn
     );
   }
 }
@@ -367,116 +286,12 @@ let nearData = async (e) => {
   $("#datetime").text(`วันที่ ${res.data.data[0].dt_} เวลา ${res.data.data[0].time_} น.`)
 }
 
-
-let resp = [];
-
-let showDataTable = async (json) => {
-  $.extend(true, $.fn.dataTable.defaults, {
-    "language": {
-      "sProcessing": "กำลังดำเนินการ...",
-      "sLengthMenu": "แสดง_MENU_ แถว",
-      "sZeroRecords": "ไม่พบข้อมูล",
-      "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
-      "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
-      "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
-      "sInfoPostFix": "",
-      "sSearch": "ค้นหา:",
-      "sUrl": "",
-      "oPaginate": {
-        "sFirst": "เริ่มต้น",
-        "sPrevious": "ก่อนหน้า",
-        "sNext": "ถัดไป",
-        "sLast": "สุดท้าย"
-      }
-    }
-  });
-  let table = $('#tab').DataTable({
-    ajax: {
-      url: url + '/eec-api/get-aqi-bytam',
-      type: 'POST',
-      data: json,
-      dataSrc: 'data'
-    },
-    columns: [
-      { data: 'sta_id' },
-      { data: 'sta_th' },
-      // { data: 'area_th' },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.pm25).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.pm10).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.o3).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.co).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.no2).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.so2).toFixed(1) }
-      },
-      {
-        data: null,
-        "render": function (data, type, row) { return Number(data.aqi).toFixed(1) }
-      }
-    ],
-    dom: 'Bfrtip',
-    buttons: [
-      'excel', 'print'
-    ],
-    select: true,
-    pageLength: 7,
-    responsive: {
-      details: true
-    }
-  });
-
-  table.on('search.dt', function () {
-    resp = table.rows({ search: 'applied' }).data();
-    // getData(data);
-    // console.log("resp");
-    mapAQI()
-  });
-
-  $('#tab tbody').on('click', 'tr', function () {
-    let data = table.row(this).data();
-    console.log(data);
-    showChart(data)
-  });
-
-  // $('#tab tbody').on('click', 'tr', function () {
-  //   let data = table.row(this).data();
-  //   console.log(data)
-  //   L.popup({ offset: [0, -27] })
-  //     .setLatLng([Number(data.lat), Number(data.lon)])
-  //     .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
-  //     .openOn(map);
-  //   map.panTo([Number(data.lat), Number(data.lon)])
-  //   showChart(data)
-  // });
-}
-
-
-
 let mapAQI = async () => {
-  $('#q1').hide();
-  $('#imgaqi').show();
   // $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  // $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.aqi)
@@ -532,9 +347,9 @@ let mapAQI = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit"> รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
     ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า AQI : ${Number(i.aqi).toFixed(1)}</span>`
+      ค่า AQI : ${Number(i.aqi).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -553,15 +368,13 @@ let mapAQI = async () => {
 }
 
 let mapPM25 = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('ฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน (PM2.5)')
 
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.pm25)
@@ -618,9 +431,9 @@ let mapPM25 = async () => {
     }
 
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit"> รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า PM2.5 : ${Number(i.pm25).toFixed(1)} </span>`
+      ค่า PM2.5 : ${Number(i.pm25).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -639,14 +452,12 @@ let mapPM25 = async () => {
 }
 
 let mapPM10 = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('ฝุ่นละอองขนาดไม่เกิน 10 ไมครอน (PM10)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.pm10)
@@ -702,9 +513,9 @@ let mapPM10 = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit"> รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า PM10 : ${Number(i.pm10).toFixed(1)}</span>`
+      ค่า PM10 : ${Number(i.pm10).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -723,14 +534,12 @@ let mapPM10 = async () => {
 }
 
 let mapO3 = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('ก๊าซโอโซน (O3)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.o3)
@@ -786,9 +595,9 @@ let mapO3 = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit">รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า O3 : ${Number(i.o3).toFixed(1)}</span>`
+      ค่า O3 : ${Number(i.o3).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -807,14 +616,12 @@ let mapO3 = async () => {
 }
 
 let mapCO = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('คาร์บอนมอนอกไซด์ (CO)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.co)
@@ -870,9 +677,9 @@ let mapCO = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit">รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า CO : ${Number(i.co).toFixed(1)}</span>`
+      ค่า CO : ${Number(i.co).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -891,14 +698,12 @@ let mapCO = async () => {
 }
 
 let mapNO2 = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('ก๊าซไนโตรเจนไดออกไซด์ (NO2)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.no2)
@@ -954,9 +759,9 @@ let mapNO2 = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit">รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br>  
-      ค่า NO2 : ${Number(i.no2).toFixed(1)}</span>`
+      ค่า NO2 : ${Number(i.no2).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -975,14 +780,12 @@ let mapNO2 = async () => {
 }
 
 let mapSO2 = async () => {
-  $('#imgaqi').hide();
-  $('#q1').show();
   $("#variable").text('ก๊าซซัลเฟอร์ไดออกไซด์ (SO2)')
   rmLyr()
-  // let d = await response;
+  let d = await response;
   let datArr = [];
-  $("#datetime").text(`วันที่ ${resp[0].date_} เวลา ${resp[0].time_} น.`)
-  resp.map(i => {
+  $("#datetime").text(`วันที่ ${d.data.data[0].date_} เวลา ${d.data.data[0].time_} น.`)
+  d.data.data.map(i => {
     datArr.push({
       "station": i.sta_th,
       "data": Number(i.so2)
@@ -1038,9 +841,9 @@ let mapSO2 = async () => {
       });
     }
     marker.addTo(map)
-    marker.bindPopup(`<span class="kanit">รหัส : ${i.sta_id}<br> 
+    marker.bindPopup(`รหัส : ${i.sta_id}<br> 
       ชื่อสถานี : ${i.sta_th} <br> 
-      ค่า SO2 : ${Number(i.so2).toFixed(1)}</span>`
+      ค่า SO2 : ${Number(i.so2).toFixed(1)}`
     )
     marker.on('click', (e) => {
       // console.log(e.target.options);
@@ -1103,17 +906,6 @@ let barChart = (datArr, unit, title) => {
   columnTemplate.strokeOpacity = 1;
 
   chart.cursor = new am4charts.XYCursor();
-  chart.exporting.menu = new am4core.ExportMenu();
-  chart.exporting.adapter.add("data", function (data, target) {
-    var data = [];
-    chart.series.each(function (series) {
-      for (var i = 0; i < series.data.length; i++) {
-        series.data[i].name = series.name;
-        data.push(series.data[i]);
-      }
-    });
-    return { data: data };
-  });
 }
 
 // let showHistoryChart = (id) => {
@@ -1122,6 +914,82 @@ let barChart = (datArr, unit, title) => {
 //   }).catch((err) => {
 //   });
 // }
+
+let showDataTable = async () => {
+  $.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+      "sProcessing": "กำลังดำเนินการ...",
+      "sLengthMenu": "แสดง_MENU_ แถว",
+      "sZeroRecords": "ไม่พบข้อมูล",
+      "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+      "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+      "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+      "sInfoPostFix": "",
+      "sSearch": "ค้นหา:",
+      "sUrl": "",
+      "oPaginate": {
+        "sFirst": "เริ่มต้น",
+        "sPrevious": "ก่อนหน้า",
+        "sNext": "ถัดไป",
+        "sLast": "สุดท้าย"
+      }
+    }
+  });
+  let table = $('#tab').DataTable({
+    ajax: {
+      url: url + '/eec-api/get-aqi',
+      dataSrc: 'data'
+    },
+    columns: [
+      { data: 'sta_id' },
+      { data: 'sta_th' },
+      // { data: 'area_th' },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.pm25).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.pm10).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.o3).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.co).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.no2).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.so2).toFixed(1) }
+      },
+      {
+        data: null,
+        "render": function (data, type, row) { return Number(data.aqi).toFixed(1) }
+      }
+    ],
+    select: true,
+    pageLength: 7,
+    responsive: {
+      details: true
+    }
+  });
+  $('#tab tbody').on('click', 'tr', function () {
+    let data = table.row(this).data();
+    console.log(data)
+    L.popup({ offset: [0, -27] })
+      .setLatLng([Number(data.lat), Number(data.lon)])
+      .setContent(`รหัส: ${data.sta_id} <br> ชื่อสถานี: ${data.sta_th}`)
+      .openOn(map);
+    map.panTo([Number(data.lat), Number(data.lon)])
+    showChart(data)
+  });
+}
 
 let showChart = async (e) => {
   $("#sta_name").text(`${e.sta_th} ${e.area_th}`)
@@ -1252,132 +1120,13 @@ let chartTemplate = (arrData, div, index) => {
 
   dateAxis.start = 0.59;
   dateAxis.keepSelection = true;
-
-  chart.exporting.menu = new am4core.ExportMenu();
-  chart.exporting.menu.align = "left";
-  chart.exporting.menu.verticalAlign = "bottom";
-  chart.exporting.adapter.add("data", function (data, target) {
-    var data = [];
-    chart.series.each(function (series) {
-      for (var i = 0; i < series.data.length; i++) {
-        series.data[i].name = series.name;
-        data.push(series.data[i]);
-      }
-    });
-    return { data: data };
-  });
 }
 
 // init aqi
-// mapAQI()
+mapAQI()
 loadHotspot()
 // getAvAQI()
-// showDataTable()
-showDataTable({ col: "pro", val: "eec" });
+showDataTable()
 showChart({ sta_id: '74t', sta_th: "ศูนย์ราชการจังหวัดระยอง", area_th: "ต.เนินพระ อ.เมือง, ระยอง" })
 
 
-var apiData = {};
-var mapFrames = [];
-var lastPastFramePosition = -1;
-var radarLayers = [];
-
-var optionKind = 'radar'; // can be 'radar' or 'satellite'
-
-var optionTileSize = 256; // can be 256 or 512.
-var optionColorScheme = 2; // from 0 to 8. Check the https://rainviewer.com/api/color-schemes.html for additional information
-var optionSmoothData = 1; // 0 - not smooth, 1 - smooth
-var optionSnowColors = 1; // 0 - do not show snow colors, 1 - show snow colors
-
-var animationPosition = 0;
-var animationTimer = false;
-
-var apiRequest = new XMLHttpRequest();
-apiRequest.open("GET", "https://api.rainviewer.com/public/weather-maps.json", true);
-apiRequest.onload = function (e) {
-  // store the API response for re-use purposes in memory
-  apiData = JSON.parse(apiRequest.response);
-  initialize(apiData, optionKind);
-};
-apiRequest.send();
-
-function initialize(api, kind) {
-  // remove all already added tiled layers
-  for (var i in radarLayers) {
-    map.removeLayer(radarLayers[i]);
-  }
-  mapFrames = [];
-  radarLayers = [];
-  animationPosition = 0;
-
-  if (!api) {
-    return;
-  }
-  if (kind == 'satellite' && api.satellite && api.satellite.infrared) {
-    mapFrames = api.satellite.infrared;
-
-    lastPastFramePosition = api.satellite.infrared.length - 1;
-    showFrame(lastPastFramePosition);
-  }
-  else if (api.radar && api.radar.past) {
-    mapFrames = api.radar.past;
-    if (api.radar.nowcast) {
-      mapFrames = mapFrames.concat(api.radar.nowcast);
-    }
-    lastPastFramePosition = api.radar.past.length - 1;
-    showFrame(lastPastFramePosition);
-  }
-}
-
-function addLayer(frame) {
-  // radar = radarLayers[frame.path])
-  if (!radarLayers[frame.path]) {
-    var colorScheme = optionKind == 'satellite' ? 0 : optionColorScheme;
-    var smooth = optionKind == 'satellite' ? 0 : optionSmoothData;
-    var snow = optionKind == 'satellite' ? 0 : optionSnowColors;
-
-    radarLayers[frame.path] = new L.TileLayer(apiData.host + frame.path + '/' + optionTileSize + '/{z}/{x}/{y}/' + colorScheme + '/' + smooth + '_' + snow + '.png', {
-      tileSize: 256,
-      opacity: 0.001,
-      zIndex: frame.time,
-      name: "lyr"
-    });
-  }
-
-  if (!map.hasLayer(radarLayers[frame.path])) {
-    map.addLayer(radarLayers[frame.path]);
-  }
-  lyrControl.addOverlay(radarLayers[frame.path], "เรดาห์น้ำฝน")
-}
-
-function changeRadarPosition(position, preloadOnly) {
-  while (position >= mapFrames.length) {
-    position -= mapFrames.length;
-  }
-  while (position < 0) {
-    position += mapFrames.length;
-  }
-
-  var currentFrame = mapFrames[animationPosition];
-  var nextFrame = mapFrames[position];
-
-  addLayer(nextFrame);
-
-  if (preloadOnly) {
-    return;
-  }
-
-  animationPosition = position;
-
-  if (radarLayers[currentFrame.path]) {
-    radarLayers[currentFrame.path].setOpacity(0);
-  }
-  radarLayers[nextFrame.path].setOpacity(100);
-}
-
-function showFrame(nextPosition) {
-  var preloadingDirection = nextPosition - animationPosition > 0 ? 1 : -1;
-
-  changeRadarPosition(nextPosition);
-  // changeRadarPosition(nextPosition + preloadingDirection, true);
-}

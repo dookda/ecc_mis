@@ -46,9 +46,9 @@ var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.
 $(document).ready(() => {
   layermark(L53, 53)
 })
-const url = 'http://localhost:3700';
+// const url = 'http://localhost:3700';
 // const url = "http://rti2dss.com:3700";
-// const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',

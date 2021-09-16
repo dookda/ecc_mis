@@ -132,6 +132,30 @@ app.get("/eec-api/get-aqi", (req, res) => {
     });
 })
 
+
+app.post("/eec-api/get-aqi-bytam", (req, res) => {
+    const { col, val } = req.body;
+    let sql
+    if (col == 'pro') {
+        if (val == "eec") {
+            sql = `SELECT * FROM v_pcd_aqi_eec_by_tam`;
+        } else {
+            sql = `SELECT * FROM v_pcd_aqi_eec_by_tam WHERE prov_code='${val}'`;
+        }
+    } else if (col == 'amp') {
+        sql = `SELECT * FROM v_pcd_aqi_eec_by_tam WHERE amp_code='${val}'`;
+    } else {
+        sql = `SELECT * FROM v_pcd_aqi_eec_by_tam WHERE tam_code='${val}'`;
+    }
+
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+
 app.get("/eec-api/get-aqi-all", (req, res) => {
     const sql = `SELECT * FROM v_pcd_aqi_all`;
     dat.query(sql).then((r) => {
