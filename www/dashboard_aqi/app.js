@@ -398,6 +398,10 @@ let showDataTable = async (json) => {
       dataSrc: 'data'
     },
     columns: [
+      {
+        data: null,
+        "render": function (data, type, row) { return `<a type="button" href="#report-section" class="btn btn-margin btn-success" ><i class="bi bi-clipboard-data"></i> ดูข้อมูลย้อนหลัง</a>` }
+      },
       { data: 'sta_id' },
       { data: 'sta_th' },
       // { data: 'area_th' },
@@ -450,7 +454,7 @@ let showDataTable = async (json) => {
 
   $('#tab tbody').on('click', 'tr', function () {
     let data = table.row(this).data();
-    console.log(data);
+    // console.log(data);
     showChart(data)
   });
 
@@ -465,7 +469,6 @@ let showDataTable = async (json) => {
   //   showChart(data)
   // });
 }
-
 
 
 let mapAQI = async () => {
