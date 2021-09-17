@@ -10,8 +10,6 @@ if (eecauth !== "admin" && eecauth !== "office") {
 
 var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
-
-
 $("#urbanlist").on("change", () => {
     let urname = document.getElementById('urbanlist').value;
     $("#myTable").dataTable().fnDestroy();
@@ -35,8 +33,8 @@ let map = L.map('map', {
 
 let marker;
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -302,7 +300,7 @@ let getChart = (w_id) => {
 
 getChart(129953.638292806);
 
-let loadTable = (urname) => {
+let loadTable = (muname) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -326,7 +324,7 @@ let loadTable = (urname) => {
         ajax: {
             type: "POST",
             url: url + '/waste-api/getdata',
-            data: urname,
+            data: muname,
             dataSrc: 'data'
         },
         columns: [
@@ -407,7 +405,6 @@ let getMarker = (d) => {
             // .addTo(map)
             mg.addLayer(mk);
         }
-
     });
     mg.addTo(map)
     lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
@@ -624,23 +621,22 @@ let compareWasteWater = (div, data) => {
 
 let callChart = () => {
     let build = document.getElementById("buildlist").value;
-    build == 'no_house' ? compareWasteWater("no_house", no_house) : null;
-    build == 'no_hotel' ? compareWasteWater("no_house", no_hotel) : null;
-    build == 'no_dorm' ? compareWasteWater("no_house", no_dorm) : null;
-    build == 'no_serv' ? compareWasteWater("no_house", no_serv) : null;
-    build == 'no_vhouse' ? compareWasteWater("no_house", no_vhouse) : null;
-    build == 'no_restur' ? compareWasteWater("no_house", no_restur) : null;
-    build == 'no_hospi' ? compareWasteWater("no_house", no_hospi) : null;
-    build == 'no_market' ? compareWasteWater("no_house", no_market) : null;
-    build == 'no_mall' ? compareWasteWater("no_house", no_mall) : null;
-    build == 'no_office' ? compareWasteWater("no_house", no_office) : null;
+    build == 'อาคารชุด/บ้านพัก' ? compareWasteWater("no_house", no_house) : null;
+    build == 'โรงแรม' ? compareWasteWater("no_house", no_hotel) : null;
+    build == 'หอพัก' ? compareWasteWater("no_house", no_dorm) : null;
+    build == 'สถานบริการ' ? compareWasteWater("no_house", no_serv) : null;
+    build == 'บ้านจัดสรร' ? compareWasteWater("no_house", no_vhouse) : null;
+    build == 'ภัตาคาร/ร้านอาหาร' ? compareWasteWater("no_house", no_restur) : null;
+    build == 'โรงพยาบาล' ? compareWasteWater("no_house", no_hospi) : null;
+    build == 'ตลาด' ? compareWasteWater("no_house", no_market) : null;
+    build == 'ห้างสรรพสินค้า' ? compareWasteWater("no_house", no_mall) : null;
+    build == 'สำนักงาน' ? compareWasteWater("no_house", no_office) : null;
+    document.getElementById("sourcename").innerHTML = build;
 }
-
 
 setTimeout(() => {
     callChart()
 }, 1500)
-
 
 var m62, ms62
 let layermark = (Url, Nlayer) => {

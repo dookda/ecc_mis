@@ -4,8 +4,15 @@ $("#tbdata").hide();
 $("#tbdata2").hide();
 
 var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
+
+$("#urbanlist").on("change", () => {
+    let urname = document.getElementById('urbanlist').value;
+    $("#myTable").dataTable().fnDestroy();
+    loadTable({ urname });
+})
+
 $(document).ready(() => {
-    loadTable()
+    loadTable({ urname: 'ทุกเทศบาล' });
     // loadMap()
     layermark(L62, 62)
 });
@@ -283,7 +290,7 @@ let getChart = (w_id) => {
 
 getChart(129953.638292806);
 
-let loadTable = () => {
+let loadTable = (muname) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -307,10 +314,20 @@ let loadTable = () => {
         ajax: {
             type: "POST",
             url: url + '/waste-api/getdata',
-            data: { userid: "sakda" },
+            data: muname,
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                       <button class="btn btn-margin btn-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -325,7 +342,6 @@ let loadTable = () => {
             {
                 data: 'date'
             },
-
             { data: 'no_house' },
             { data: 'no_hotel' },
             { data: 'no_dorm' },
@@ -342,21 +358,11 @@ let loadTable = () => {
             { data: 'no_govcent' },
             { data: 'no_clinic' },
             // { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
-                }
-            }
+
         ],
         columnDefs: [
             { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
         ],
-
         order: [2, 'dasc'],
         searching: true,
         scrollX: true,
@@ -367,9 +373,11 @@ let loadTable = () => {
     });
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
+        // console.log(data);
         getDatatable(data);
         getMarker(data)
     });
+
 }
 
 var mk, mg
@@ -492,17 +500,29 @@ let pieChart = (place, arr) => {
     });
 }
 
+let no_hospi = [];
+let no_hotel = [];
+let no_house = [];
+let no_market = [];
+let no_office = [];
+let no_restur = [];
+let no_mall = [];
+let no_vhouse = [];
+let no_dorm = [];
+let no_serv = [];
+
 let getDatatable = async (data) => {
-    let no_hospi = [];
-    let no_hotel = [];
-    let no_house = [];
-    let no_market = [];
-    let no_office = [];
-    let no_restur = [];
-    let no_mall = [];
-    let no_vhouse = [];
-    let no_dorm = [];
-    let no_serv = [];
+    // console.log('da');
+    no_hospi = [];
+    no_hotel = [];
+    no_house = [];
+    no_market = [];
+    no_office = [];
+    no_restur = [];
+    no_mall = [];
+    no_vhouse = [];
+    no_dorm = [];
+    no_serv = [];
 
     await data.map(i => {
         no_house.push({ "cat": i.insti, "val": i.no_house ? Number(i.no_house) * 500 : 0 });
@@ -516,17 +536,6 @@ let getDatatable = async (data) => {
         no_mall.push({ "cat": i.insti, "val": i.no_mall ? Number(i.no_mall) * 5 : 0 });
         no_office.push({ "cat": i.insti, "val": i.no_office ? Number(i.no_office) * 3 : 0 });
     })
-
-    compareWasteWater("no_house", no_house);
-    compareWasteWater("no_hotel", no_hotel);
-    compareWasteWater("no_dorm", no_dorm);
-    compareWasteWater("no_serv", no_serv);
-    compareWasteWater("no_vhouse", no_vhouse);
-    compareWasteWater("no_restur", no_restur);
-    compareWasteWater("no_hospi", no_hospi);
-    compareWasteWater("no_market", no_market);
-    compareWasteWater("no_mall", no_mall);
-    compareWasteWater("no_office", no_office);
 }
 
 let compareWasteWater = (div, data) => {
@@ -599,6 +608,27 @@ let compareWasteWater = (div, data) => {
 
     });
 }
+
+let callChart = () => {
+    let build = document.getElementById("buildlist").value;
+    build == 'อาคารชุด/บ้านพัก' ? compareWasteWater("no_house", no_house) : null;
+    build == 'โรงแรม' ? compareWasteWater("no_house", no_hotel) : null;
+    build == 'หอพัก' ? compareWasteWater("no_house", no_dorm) : null;
+    build == 'สถานบริการ' ? compareWasteWater("no_house", no_serv) : null;
+    build == 'บ้านจัดสรร' ? compareWasteWater("no_house", no_vhouse) : null;
+    build == 'ภัตาคาร/ร้านอาหาร' ? compareWasteWater("no_house", no_restur) : null;
+    build == 'โรงพยาบาล' ? compareWasteWater("no_house", no_hospi) : null;
+    build == 'ตลาด' ? compareWasteWater("no_house", no_market) : null;
+    build == 'ห้างสรรพสินค้า' ? compareWasteWater("no_house", no_mall) : null;
+    build == 'สำนักงาน' ? compareWasteWater("no_house", no_office) : null;
+    document.getElementById("sourcename").innerHTML = build;
+}
+
+
+setTimeout(() => {
+    callChart()
+}, 1500)
+
 var m62, ms62
 let layermark = (Url, Nlayer) => {
     var MIcon1 = L.icon({

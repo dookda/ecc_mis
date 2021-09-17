@@ -133,21 +133,21 @@
                     <div class="col-sm-6">
                         <label for="">เลือกประเภทอาคาร</label>
                         <select class="form-control" id="buildlist">
-                            <option value="no_house">อาคารชุด/บ้านพัก</option>
-                            <option value="no_hotel">โรงแรม</option>
-                            <option value="no_dorm">หอพัก</option>
-                            <option value="no_serv">สถานบริการ</option>
-                            <option value="no_vhouse">บ้านจัดสรร</option>
-                            <option value="no_hospi">โรงพยาบาล</option>
-                            <option value="no_restur">ภัตาคาร/ร้านอาหาร</option>
-                            <option value="no_market">ตลาด</option>
-                            <option value="no_mall">ห้างสรรพสินค้า</option>
-                            <option value="no_office">สำนักงาน</option>
+                            <option value="อาคารชุด/บ้านพัก">อาคารชุด/บ้านพัก</option>
+                            <option value="โรงแรม">โรงแรม</option>
+                            <option value="หอพัก">หอพัก</option>
+                            <option value="สถานบริการ">สถานบริการ</option>
+                            <option value="บ้านจัดสรร">บ้านจัดสรร</option>
+                            <option value="ภัตาคาร/ร้านอาหาร">ภัตาคาร/ร้านอาหาร</option>
+                            <option value="โรงพยาบาล">โรงพยาบาล</option>
+                            <option value="ตลาด">ตลาด</option>
+                            <option value="ห้างสรรพสินค้า">ห้างสรรพสินค้า</option>
+                            <option value="สำนักงาน">สำนักงาน</option>
                         </select>
                     </div>
 
                     <div class="col-sm mt-1">
-                        <button class="btn btn-success" onclick="callChart()"><i class="bi bi-search"></i>
+                        <button class="btn btn-success" onclick="callChart()"><i class="bi bi-clipboard-data"></i>
                             แสดงผลข้อมูลที่เลือก</button>
                     </div>
 
@@ -158,122 +158,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="section-title">
-                            <h5>ปริมาณน้ำเสียจากอาคารชุด/บ้านพัก</h5>
+                            <h5>ปริมาณน้ำเสียจาก<span id="sourcename"></span></h5>
                         </div>
                         <div class="compareChart" id="no_house"></div>
                     </div>
                 </div>
-
-                <!-- <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากอาคารชุด/บ้านพัก</h5>
-                                </div>
-                                <div class="compareChart" id="no_house"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากโรงแรม</h5>
-                                </div>
-                                <div class="compareChart" id="no_hotel"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากหอพัก</h5>
-                                </div>
-                                <div class="compareChart" id="no_dorm"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากสถานบริการ</h5>
-                                </div>
-                                <div class="compareChart" id="no_serv"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากบ้านจัดสรร</h5>
-                                </div>
-                                <div class="compareChart" id="no_vhouse"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากโรงพยาบาล</h5>
-                                </div>
-                                <div class="compareChart" id="no_restur"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากภัตาคาร/ร้านอาหาร</h5>
-                                </div>
-                                <div class="compareChart" id="no_hospi"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากตลาด</h5>
-                                </div>
-                                <div class="compareChart" id="no_market"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากห้างสรรพสินค้า</h5>
-                                </div>
-                                <div class="compareChart" id="no_mall"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h5>ปริมาณน้ำเสียจากสำนักงาน</h5>
-                                </div>
-                                <div class="compareChart" id="no_office"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
 
                 <h5>ตำแหน่งเก็บปริมาณน้ำเสีย</h5>
                 <div class="card">
@@ -309,8 +198,6 @@
                                     <th>วัด</th>
                                     <th>ศูนย์ราชการ</th>
                                     <th>คลินิก</th>
-
-
                                 </tr>
                             </thead>
                         </table>
