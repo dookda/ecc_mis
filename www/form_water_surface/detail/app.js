@@ -47,25 +47,30 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -76,8 +81,8 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตตำบล": tam,
+    "ขอบเขตอำเภอ": amp,
     "ขอบเขตจังหวัด": pro.addTo(map)
 }
 
@@ -96,8 +101,6 @@ map.on('click', (e) => {
         name: 'p'
     }).addTo(map);
 });
-
-
 
 axios.post(url + "/ws-api/getone", { ws_id: ws_id }).then(r => {
     $("#ws_station").val(r.data.data[0].ws_station)

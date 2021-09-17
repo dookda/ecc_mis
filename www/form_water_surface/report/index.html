@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</title>
+    <title>รายงานข้อมูลนำเข้าคุณภาพน้ำผิวดิน</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -56,10 +56,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -91,9 +92,11 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</h2>
+                    <h2>รายงานข้อมูลนำเข้าคุณภาพน้ำผิวดิน</h2>
                     <p>
-                        การนำเข้าข้อมูลค่าพารามิเตอร์คุณภาพน้ำผิวดินในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบรายงานสถานการณ์คุณภาพน้ำผิวดินเป็นการรายงานสถานการณ์คุณภาพน้ำผิวดินจากข้อมูลสถิติที่ได้รวบรวมมาจากการตรวจวัดและวิเคราะห์ของสำนักงานสิ่งแวดล้อมภาคที่
+                        ๑๓ (ชลบุรี) ข้อมูลประกอบด้วยค่าพารามิเตอร์ต่างๆ เพื่อใช้ช่วยสนับสนุนการตัดสินใจในการวางแผน
+                        และแก้ไขปัญหา ที่จะนำไปสู่การกำหนดแผนและนโยบายในด้านต่างๆ ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
 
@@ -225,12 +228,22 @@
                     <div class="row" id="chartd"></div>
                 </div>
             </div>
+            <div class="container">
+                <div class="row" style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
+                    <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
+                    <P>สำนักงานสิ่งแวดล้อมภาคที่ 13 (ชลบุรี) ปี2563</P>
+
+                </div>
+                <!-- <div class="row" style="margin-left: 1%;">
+                    อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
+                        href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
+            </div>
         </section><!-- End Services Section -->
 
         <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container-fluid mt-3 mb-6">
+        <!-- <div class="container-fluid mt-3 mb-6">
             <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-        </div>
+        </div> -->
 
     </main><!-- End #main -->
     <br>
@@ -253,8 +266,16 @@
     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบโครงการ <span id="projName"></span></p>
+                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        ยืนยันการลบข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center mx-auto">
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span></b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
                 <div class="modal-footer">

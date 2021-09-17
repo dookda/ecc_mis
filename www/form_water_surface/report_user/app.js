@@ -1,10 +1,17 @@
 let urid = 'user';
 
 $("#tbdata").hide();
+var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
+var L58 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__58_water_mnre&maxFeatures=50&outputFormat=application%2Fjson'
+var L59 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__59_water_onep&maxFeatures=50&outputFormat=application%2Fjson'
+var L60 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__60_water_stand_eec&maxFeatures=50&outputFormat=application%2Fjson'
 $(document).ready(() => {
     loadTable()
-
-});
+    layermark(L53, 53)
+    layermark(L58, 58)
+    layermark(L59, 59)
+    layermark(L60, 60)
+})
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -35,25 +42,49 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const watermnre = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__58_water_mnre',
+    name: "lyr",
+    format: 'image/png',
+    transparent: true,
+});
+const wateronep = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__59_water_onep',
+    name: "lyr",
+    format: 'image/png',
+    transparent: true,
+});
+const waterstandeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__60_water_stand_eec',
+    name: "lyr",
+    format: 'image/png',
+    transparent: true,
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -63,22 +94,61 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 
-var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+const overlayMap = {
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+
+    // "จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13": watermnre.addTo(map),
+    // "จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ": wateronep.addTo(map),
+    // "จุดวัดคุณภาพน้ำผิวดิน": waterstandeec.addTo(map),
+}
+const lyrControl = L.control.layers(baseMap, overlayMap, {
+    collapsed: true
+}).addTo(map);
+
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<div class ="center"><button class="btn btn-sm" onClick="hideLegend()">
+        <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+      </button></div>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #7acdf3; border-radius: 1%;"></i><span>อ่างเก็บน้ำ</span><br>';
+        div.innerHTML += '<i style="background: #006898; border-radius: 50%;"></i><span>จุดวัดคุณภาพน้ำผิวดิน</span><br>';
+        div.innerHTML += '<i style="background: #01c8ff; border-radius: 50%;"></i><span>จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13</span><br>';
+        div.innerHTML += '<i style="background: #216cdc; border-radius: 50%;"></i><span>จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ</span><br>';
+        div.innerHTML += '<img src="./Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span>';
+        return div;
+    }
+    legend.addTo(map);
 }
 
-L.control.layers(baseMap, overlayMap).addTo(map);
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<div class ="center"><button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button></div>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
     // console.log("ok");
 }
 
-let confirmDelete = (ws_id, ws_station) => {
+let confirmDelete = (ws_id, ws_station, ws_location, date) => {
     $("#projId").val(ws_id)
-    $("#projName").text(ws_station)
+    $("#projName").text(`สถานี ${ws_station} ${ws_location} วันที่ ${date} `)
     $("#deleteModal").modal("show")
 }
 
@@ -93,6 +163,7 @@ let deleteValue = () => {
     let ws_id = $("#projId").val()
     axios.post(url + "/ws-api/delete", { ws_id: ws_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -139,7 +210,7 @@ let getChart = (ws_id) => {
         ws_id: ws_id
     }
     axios.post(url + "/ws-api/getone", obj).then((r) => {
-        console.log(r);
+        // console.log(r);
         $("#staname").text(r.data.data[0].ws_station);
         $("#date").text(r.data.data[0].date)
         $("#charttitle").show();
@@ -164,6 +235,25 @@ let getChart = (ws_id) => {
 
 
 let loadTable = () => {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
     let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
@@ -178,6 +268,7 @@ let loadTable = () => {
                     return `${row.ws_station}`
                 }
             },
+
             { data: 'ws_location' },
             { data: 'ws_river' },
             { data: 'date' },
@@ -187,19 +278,25 @@ let loadTable = () => {
             { data: 'ws_tcb' },
             { data: 'ws_fcb' },
             { data: 'ws_nh3n' },
-            { data: 'ws_wqi' },
+            {
+                data: null,
+                "render": function (data, type, row) { return Number(data.ws_wqi).toFixed(2) }
+            },
             { data: 'ws_tp' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.ws_id},'${row.ws_station}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.ws_id}','${row.ws_station}','${row.ws_location}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <a class="btn btn-margin btn-outline-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</a>
                        <a class="btn btn-margin btn-outline-info" href="#charttitle" onclick="getDetail(${row.ws_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</a>`
                 },
                 // width: '30%'
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
         ],
         searching: true,
         scrollX: true,
@@ -215,20 +312,27 @@ let loadTable = () => {
     });
 }
 
-
+var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-
+    // console.log(d)
+    mg = L.layerGroup();
     d.map(i => {
         if (i.geojson) {
             let json = JSON.parse(i.geojson);
-            L.geoJson(json, {
+            // console.log(json)
+            mk = L.geoJson(json, {
                 name: "marker"
-            }).addTo(map)
+            })
+                .bindPopup(`<h6><b>รหัสสถานี :</b> ${i.ws_station}</h6><h6><b>สถานที่ :</b> ${i.ws_location}</h6><h6><b>ชื่อแหล่งน้ำ :</b> ${i.ws_river}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+            // .addTo(map)
         }
+        mg.addLayer(mk);
     });
+    mg.addTo(map)
+    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
 }
 
 let getDetail = (e) => {
@@ -277,6 +381,18 @@ let geneChart = (arr, div, tt, unit) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 
@@ -360,17 +476,143 @@ let lineChart = (div, label, unit, series) => {
 
     chart.legend = new am4charts.Legend();
     chart.cursor = new am4charts.XYCursor();
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 lineChart()
 
 
-
-
-
-
-
-
-
-
+var m58, m59, m60, ms58, ms59, ms60, m53, ms53
+let layermark = (Url, Nlayer) => {
+    var MIcon1 = L.icon({
+        iconUrl: './Marker/Mark1.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
+    var MIcon2 = L.icon({
+        iconUrl: './Marker/Mark2.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
+    var MIcon3 = L.icon({
+        iconUrl: './Marker/Mark3.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
+    if (Nlayer == 58) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms58 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m58 = L.circleMarker([i.geometry.coordinates[1], i.geometry.coordinates[0]]
+                        , {
+                            radius: 8,
+                            fillColor: "#01c8ff",
+                            color: "#232323",
+                            weight: 0.2,
+                            opacity: 1,
+                            fillOpacity: 1,
+                        })
+                        .bindPopup(`<h6><b>ที่ตั้ง :</b> ${i.properties.tam_nam_t} ${i.properties.amphoe_t} ${i.properties.prov_nam_t}</h6>`)
+                    // .addTo(map);
+                }
+                ms58.addLayer(m58);
+            })
+            ms58.addTo(map)
+            lyrControl.addOverlay(ms58, "จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13")
+        });
+    }
+    else if (Nlayer == 59) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms59 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m59 = L.circleMarker([i.properties.point_y, i.properties.point_x]
+                        , {
+                            radius: 8,
+                            fillColor: "#216cdc",
+                            color: "#232323",
+                            weight: 0.2,
+                            opacity: 1,
+                            fillOpacity: 1,
+                        })
+                        .bindPopup(`<h6><b>ที่ตั้ง :</b> ${i.properties.tam_nam_t} ${i.properties.amphoe_t} ${i.properties.prov_nam_t}</h6>`)
+                    // .addTo(map);
+                }
+                ms59.addLayer(m59);
+            })
+            ms59.addTo(map)
+            lyrControl.addOverlay(ms59, "จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ")
+        });
+    }
+    else if (Nlayer == 60) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms60 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m60 = L.circleMarker([i.properties.lat, i.properties.long], {
+                        radius: 8,
+                        fillColor: "#006898",
+                        color: "#232323",
+                        weight: 0.2,
+                        opacity: 1,
+                        fillOpacity: 1,
+                    })
+                        .bindPopup(`<h6><b>รหัสสถานี :</b> ${i.properties.station}</h6><h6><b>ชื่อแหล่งน้ำ :</b> ${i.properties.name_river}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6><h6><b>ค่า WQI :</b> ${i.properties.wqi.toFixed(2)} ${i.properties.quality}</h6> `)
+                    // .addTo(map);
+                }
+                ms60.addLayer(m60);
+            })
+            ms60.addTo(map)
+            lyrControl.addOverlay(ms60, "จุดวัดคุณภาพน้ำผิวดิน")
+        });
+    }
+    else if (Nlayer == 53) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms53 = L.layerGroup()
+            d.map(i => {
+                if (i.geometry) {
+                    let json = i.geometry;
+                    m53 = L.geoJson(json, {
+                        style: {
+                            fillcolor: "#7acdf3",
+                            color: "#7acdf3",
+                            weight: 0.2,
+                            opacity: 1,
+                            fillOpacity: 1,
+                        },
+                        name: "53",
+                    })
+                        .bindPopup(`<h6><b>ชื่อแหล่งน้ำ :</b> ${i.properties.name}</h6>`)
+                    //        .addTo(map)
+                }
+                ms53.addLayer(m53);
+            })
+            ms53.addTo(map)
+            lyrControl.addOverlay(ms53, "อ่างเก็บน้ำ")
+        });
+    }
+}
 

@@ -36,25 +36,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:tambon_4326",
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:amphoe_4326",
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: "th:province_4326",
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=22 OR pro_code=23 OR pro_code=24 OR pro_code=25 OR pro_code=26 OR pro_code=27'
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -65,9 +65,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบเขตตำบล": tam.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตจังหวัด": pro.addTo(map)
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -99,14 +99,6 @@ map.on('click', (e) => {
         name: 'p'
     }).addTo(map);
 });
-
-let getStation = () => {
-    axios.get(url + "/ws-api/getstation").then(r => {
-        // console.log(r);
-        r.data.data.map(i => $("#ws_station").append(`<option value="${i.ws_station}">${i.ws_river} (${i.ws_station})</option>`))
-    })
-}
-getStation();
 
 $("#ws_recorder").val(urname);
 let sendData = () => {
@@ -157,7 +149,7 @@ let sendData = () => {
             geom: geom ? geom.toGeoJSON() : null
         }
     }
-    console.log(obj.data);
+    // console.log(obj.data);
     axios.post(url + "/ws-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null
     })
