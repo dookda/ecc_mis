@@ -17,10 +17,15 @@ app.post("/waste-api/getone", (req, res) => {
 })
 
 app.post("/waste-api/getdata", (req, res) => {
-    const { usrid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-                TO_CHAR(wdate, 'DD-MM-YYYY') as date 
-            FROM wastewat`
+    const { urname } = req.body;
+    let sql;
+    // console.log(urname);
+    if (urname == 'ทุกเทศบาล') {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat`
+    } else {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE insti='${urname}'`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

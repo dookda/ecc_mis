@@ -8,9 +8,11 @@ if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
 
+var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
 $(document).ready(() => {
     loadTable()
     // loadMap()
+    layermark(L62, 62)
 });
 
 let latlng = {
@@ -19,7 +21,7 @@ let latlng = {
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 7
+    zoom: 9
 });
 
 let marker;
@@ -46,8 +48,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 18,
-    minZoom: 14,
+    // maxZoom: 18,
+    // minZoom: 14,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -55,8 +57,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 14,
-    minZoom: 10,
+    // maxZoom: 14,
+    // minZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -64,9 +66,25 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 10,
+    // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
+const wpipeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__63_w_pipe_eec',
+    format: 'image/png',
+    transparent: true
+});
+const wscopeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__64_w_scope_eec',
+    format: 'image/png',
+    transparent: true,
+});
+const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__81_pollution_group',
+    format: 'image/png',
+    transparent: true,
+});
+
 
 let lyrs = L.featureGroup().addTo(map)
 
@@ -75,32 +93,86 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 
-var overlayMap = {
+const overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+    "แหล่งกำเนิดมลพิษ": pollution,
+    // "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wsystemeec.addTo(map),
+    "เส้นท่อระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wpipeeec.addTo(map),
+    "ขอบเขตระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wscopeeec.addTo(map),
 }
-L.control.layers(baseMap, overlayMap).addTo(map);
+// L.control.layers(baseMap, overlayMap).addTo(map);
+const lyrControl = L.control.layers(baseMap, overlayMap, {
+    collapsed: true
+}).addTo(map);
 
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>สัญลักษณ์</h4>";
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-    return div;
-};
-legend.addTo(map);
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<img src="./img/arrowup.png"  height="30px"><span>ระบบบำบัดน้ำเสีย</span><br>';
+        div.innerHTML += '<img src="./img/linepipe.png" width="10px"><span>เส้นท่อระบบบำบัดน้ำเสีย</span><br>';
+        div.innerHTML += '<img src="./img/linescope.png" width="10px"><span>ขอบเขตระบบบำบัดน้ำเสีย</span><br>';
+        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
+    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+  </button>`
+        div.innerHTML += `<div id='PU'></div>`
+        return div;
+    };
+    legend.addTo(map);
+}
+
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
+
+function Puop() {
+    $('#PUOP').hide()
+    $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
+    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+    <i style="background: #ff3769; border-radius: 1%;"></i><span>ตัวเมืองและย่านการค้า</span><br>
+    <i style="background: #379eff; border-radius: 1%;"></i><span>ท่าเรือ</span><br>
+    <i style="background: #ad71db; border-radius: 1%;"></i><span>นิคมอุตสาหกรรม</span><br>
+    <i style="background: #ffadec; border-radius: 1%;"></i><span>รีสอร์ท โรงแรม เกสต์เฮ้าส์</span><br>
+    <i style="background: #861790; border-radius: 1%;"></i><span>โรงงานอุตสาหกรรม</span><br>
+    <i style="background: #ffe435; border-radius: 1%;"></i><span>โรงเรือนเลี้ยงสัตว์</pan><br>
+    <i style="background: #7ae3ff; border-radius: 1%;"></i><span>สถานที่เพาะเลี้ยงสัตว์น้ำ</span><br>
+    <i style="background: #000988; border-radius: 1%;"></i><span>สถานที่ราชการและสถาบันต่าง ๆ</span><br>
+    <i style="background: #f9b310; border-radius: 1%;"></i><span>สถานีบริการน้ำมัน</span><br>
+    <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`)
+}
+function Puclose() {
+    $('#PUOP').show()
+    $('#PU').html('')
+}
 
 let refreshPage = () => {
     window.open("./../report/index.html", "_self");
     // console.log("ok");
 }
 
-let confirmDelete = (w_id, prj_name) => {
+let confirmDelete = (w_id, prj_name, prj_prov, prj_time) => {
     $("#projId").val(w_id)
-    $("#projName").text(prj_name)
+    $("#projName").html(`${prj_name} จ.${prj_prov}`)
+    if (prj_time !== null) { $("#projTime").html(`วันที่ ${prj_time}`) }
     $("#deleteModal").modal("show")
 }
 
@@ -115,6 +187,7 @@ let deleteValue = () => {
     let w_id = $("#projId").val()
     axios.post(url + "/waste-api/delete", { w_id: w_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -136,7 +209,7 @@ let showMarker = (lat, lon) => {
 
 $("#chartdiv").hide()
 let getChart = (w_id) => {
-    console.log(w_id);
+    // console.log(w_id);
     let obj = { w_id: w_id }
     axios.post(url + "/waste-api/getone", obj).then((r) => {
         $("#chartdiv").show()
@@ -251,9 +324,13 @@ let loadTable = () => {
                     return `${row.insti}`
                 }
             },
-            { data: 'prov' },
+            {
+                data: 'prov'
+            },
             // { data: 'prov' },
-            { data: 'date' },
+            {
+                data: 'date'
+            },
 
             { data: 'no_house' },
             { data: 'no_hotel' },
@@ -276,12 +353,16 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.w_id},'${row.insti}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                        <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
                 }
             }
         ],
+        columnDefs: [
+            { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
+        ],
+
         order: [2, 'dasc'],
         searching: true,
         scrollX: true,
@@ -297,24 +378,32 @@ let loadTable = () => {
     });
 }
 
+var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-
+    mg = L.layerGroup();
     d.map(i => {
         if (i.geojson) {
             let json = JSON.parse(i.geojson);
-            L.geoJson(json, {
+            mk = L.geoJson(json, {
                 name: "marker"
-            }).addTo(map)
+            })
+                .bindPopup(`<h6><b>พื้นที่รับผิดชอบ :</b> ${i.insti}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+            // .addTo(map)
+            mg.addLayer(mk);
         }
+
     });
+    mg.addTo(map)
+    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
 }
 
 let getDetail = (e) => {
     sessionStorage.setItem('w_id', e);
     location.href = "./../detail/index.html";
+    // console.log(e)
 }
 
 let geneChart = (arr, div, tt, unit, place) => {
@@ -359,6 +448,18 @@ let geneChart = (arr, div, tt, unit, place) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let pieChart = (place, arr) => {
@@ -383,6 +484,18 @@ let pieChart = (place, arr) => {
         title.marginBottom = 5;
 
         chart.hiddenState.properties.radius = am4core.percent(0);
+
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
     });
 }
 
@@ -479,13 +592,45 @@ let compareWasteWater = (div, data) => {
         // Cursor
         chart.cursor = new am4charts.XYCursor();
 
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
+
     });
 }
+var m62, ms62
+let layermark = (Url, Nlayer) => {
+    var MIcon1 = L.icon({
+        iconUrl: './img/arrowup.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
 
+    if (Nlayer == 62) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms62 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m62 = L.marker([i.geometry.coordinates[1], i.geometry.coordinates[0]], { icon: MIcon1 })
+                        .bindPopup(`<h6><b>ระบบบำบัดน้ำเสีย :</b> ${i.properties.system}</h6>`)
+                    // .addTo(map);
+                }
+                ms62.addLayer(m62);
+            })
+            ms62.addTo(map)
+            lyrControl.addOverlay(ms62, "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก")
+        });
+    }
 
-
-
-
-
-
-
+}

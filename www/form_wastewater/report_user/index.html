@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>รายงานข้อมูลนำเข้าน้ำทิ้งและน้ำเสีย</title>
+    <title>ระบบรายงานข้อมูลปริมาณน้ำทิ้ง/น้ำเสีย</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -71,7 +71,7 @@
                     <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    
+
                     <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
                     <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
@@ -99,9 +99,11 @@
         <section id="services" class="services">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
-                    <h2>รายงานข้อมูลนำเข้าน้ำทิ้งและน้ำเสีย</h2>
+                    <h2>รายงานข้อมูลปริมาณน้ำทิ้ง/น้ำเสีย</h2>
                     <p>
-                        การรายงานข้อมูลนำเข้าน้ำทิ้งและน้ำเสีย ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบรายงานสถานการณ์ปริมาณน้ำทิ้ง/น้ำเสียเป็นการแสดงผลข้อมูลสถิติปริมาณของน้ำก่อนและหลังการบำบัดของหน่วยงานท้องถิ่น
+                        เพื่อใช้ช่วยสนับสนุนการตัดสินใจในการวางแผน และแก้ไขปัญหา
+                        ที่จะนำไปสู่การกำหนดแผนและนโยบายในด้านต่างๆ ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
                 <hr>
@@ -302,7 +304,23 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
-
+    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ท่านต้องการลบข้อมูลปริมาณน้ำทิ้ง/น้ำเสีย</h5>
+                </div>
+                <div class="modal-body">
+                    <p>เขตพื้นที่รับผิดชอบ <span id="projName"></span><br><span id="projTime"></span></p>
+                    <input type="hidden" id="projId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>

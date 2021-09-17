@@ -59,7 +59,7 @@ function loadMap() {
 }
 
 map.on('click', (e) => {
-    console.log(e)
+    // console.log(e)
     if (gps) {
         map.removeLayer(gps);
     }
@@ -137,7 +137,7 @@ function insertData() {
     }
     // console.log(obj.data);
     axios.post(url + "/waste-api/insert", obj).then((r) => {
-        console.log(r.data.data);
+        // console.log(r.data.data);
         $('#insti').val("");
         $('#prov').val("");
         $('#wdate').val("");
