@@ -19,8 +19,8 @@ $(document).ready(() => {
     layermark(L60, 60)
 })
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
