@@ -61,9 +61,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
 
 
@@ -236,14 +238,90 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row" id="approvedarea">
-                                        <div class="col-sm-2">
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <div class="form-group form-check">
-                                                <input type="checkbox" class="form-check-input" id="approved">
-                                                <label class="form-check-label" for="">ผ่านการตรวจสอบข้อมูลแล้ว</label>
+                                    <div id="approvedarea">
+                                        <hr>
+                                        <div class="form-group row">
+                                            <div class="col-sm-2">
                                             </div>
+                                            <div class="col-sm-10">
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="approved">
+                                                    <label class="form-check-label"
+                                                        for="">ผ่านการตรวจสอบข้อมูลแล้ว</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group row">
+
+                                            <div class="col-sm-2">
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label for="">ฟอร์มข้อมูลที่สามารถดำเนินการได้</label>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_water_lev">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลปริมาณน้ำผิวดิน</label>
+                                                </div>
+
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_wastewater">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลปริมาณน้ำทิ้ง/น้ำเสีย</label>
+                                                </div>
+
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        id="f_water_surface">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_water_qua">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลคุณภาพน้ำก่อนและหลังบำบัด</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_seawater_qua">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่ง</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_gw">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลคุณภาพน้ำบาดาล</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_air">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลมลพิษทางอากาศ</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_green">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลพื้นที่สีเขียว</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_biodiversity">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลความหลากหลายทางชีวภาพ</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_familyforest">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลป่าครอบครัว</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_organic">
+                                                    <label class="form-check-label"
+                                                        for="">ระบบนำเข้าข้อมูลเกษตรอินทรีย์</label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="f_garbage">
+                                                    <label class="form-check-label" for="">ระบบนำเข้าข้อมูลขยะ</label>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -264,9 +342,9 @@
             </div>
         </section><!-- End Services Section -->
         <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-        <div class="container mt-3">
+        <!-- <div class="container mt-3">
             <p> <span class="ver">ปรับปรุง 21/06/2021</span></p>
-        </div>
+        </div> -->
     </main><!-- End #main -->
     <br>
     <br>
@@ -292,7 +370,6 @@
                     <span id="notify"></span>update ข้อมูลสำเร็จ
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoAdmin()">ตกลง</button> -->
                     <button type="button" class="btn btn-light" data-dismiss="modal">ตกลง</button>
                 </div>
             </div>

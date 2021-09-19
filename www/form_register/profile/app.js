@@ -13,18 +13,18 @@ if (fromadmin) {
     pfid = sessionStorage.getItem('pfid');
     pfname = sessionStorage.getItem('pfname');
 
-    // $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-    //     <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-    // </button>`);
+    $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+        <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+    </button>`);
     sessionStorage.removeItem('fromadmin');
 } else {
     pfid = urid;
     pfname = urname;
     $('#autharea').hide();
     $('#approvedarea').hide();
-    // eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-    //     <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-    //     </button>`) : null;
+    eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+        <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+        </button>`) : null;
 }
 
 // var url = 'http://localhost:3700';
