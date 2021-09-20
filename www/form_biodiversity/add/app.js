@@ -4,7 +4,9 @@ let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
 urid ? null : location.href = "./../../form_register/login/index.html";
 
-if (eecauth !== "admin" && eecauth !== "user") {
+let formAccess = sessionStorage.getItem('eecname');
+
+if (eecauth !== "admin" || formAccess != 'true') {
     location.href = "./../../form_register/login/index.html";
 }
 

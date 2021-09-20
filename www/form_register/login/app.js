@@ -30,7 +30,6 @@ let gotoInput = (id, name, auth, aproved, f_water_lev, f_wastewater, f_water_sur
     sessionStorage.setItem('f_air', f_air);
     sessionStorage.setItem('f_green', f_green);
     sessionStorage.setItem('f_biodiversity', f_biodiversity);
-    sessionStorage.setItem('f_biodiversity', f_biodiversity);
     sessionStorage.setItem('f_familyforest', f_familyforest);
     sessionStorage.setItem('f_organic', f_organic);
     sessionStorage.setItem('f_garbage', f_garbage);
@@ -63,8 +62,18 @@ let sendData = () => {
                 let auth = r.data.data[0].auth;
 
 
-
-
+                let f_water_lev = r.data.data[0].f_water_lev;
+                let f_wastewater = r.data.data[0].f_wastewater;
+                let f_water_surface = r.data.data[0].f_water_surface;
+                let f_water_qua = r.data.data[0].f_water_qua;
+                let f_seawater_qua = r.data.data[0].f_seawater_qua;
+                let f_gw = r.data.data[0].f_gw;
+                let f_air = r.data.data[0].f_air;
+                let f_green = r.data.data[0].f_green;
+                let f_biodiversity = r.data.data[0].f_biodiversity;
+                let f_familyforest = r.data.data[0].f_familyforest;
+                let f_organic = r.data.data[0].f_organic;
+                let f_garbage = r.data.data[0].f_garbage;
 
                 gotoInput(regid, usrname, auth, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage);
             } else {
