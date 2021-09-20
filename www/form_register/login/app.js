@@ -16,10 +16,25 @@ let gotoRegister = () => {
     location.href = "./../register/index.html";
 }
 
-let gotoInput = (id, name, auth, aproved) => {
+let gotoInput = (id, name, auth, aproved, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage) => {
     sessionStorage.setItem('eecid', id);
     sessionStorage.setItem('eecname', name);
     sessionStorage.setItem('eecauth', auth);
+
+    sessionStorage.setItem('f_water_lev', f_water_lev);
+    sessionStorage.setItem('f_wastewater', f_wastewater);
+    sessionStorage.setItem('f_water_surface', f_water_surface);
+    sessionStorage.setItem('f_water_qua', f_water_qua);
+    sessionStorage.setItem('f_seawater_qua', f_seawater_qua);
+    sessionStorage.setItem('f_gw', f_gw);
+    sessionStorage.setItem('f_air', f_air);
+    sessionStorage.setItem('f_green', f_green);
+    sessionStorage.setItem('f_biodiversity', f_biodiversity);
+    sessionStorage.setItem('f_biodiversity', f_biodiversity);
+    sessionStorage.setItem('f_familyforest', f_familyforest);
+    sessionStorage.setItem('f_organic', f_organic);
+    sessionStorage.setItem('f_garbage', f_garbage);
+
     location.href = "./../../index.html";
 }
 
@@ -41,12 +56,17 @@ let sendData = () => {
     }
     axios.post(url + "/profile-api/userlogin", obj).then(r => {
         if (r.data.data.length > 0) {
-            console.log(r.data.data[0].approved);
+            // console.log(r.data.data[0].approved);
             if (r.data.data[0].approved == 'ตรวจสอบแล้ว') {
                 let regid = r.data.data[0].regid;
                 let usrname = r.data.data[0].usrname;
                 let auth = r.data.data[0].auth;
-                gotoInput(regid, usrname, auth);
+
+
+
+
+
+                gotoInput(regid, usrname, auth, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage);
             } else {
                 $("#detail").empty();
                 $("#detail").append(`การลงทะเบียนของท่านอยู่ระหว่างตรวจสอบข้อมูล`);

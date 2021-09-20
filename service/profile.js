@@ -76,7 +76,7 @@ app.post("/profile-api/updateimgprofile", async (req, res) => {
 
 app.post("/profile-api/userlogin", (req, res) => {
     const { usrname, pass } = req.body;
-    const sql = "SELECT usrname, regid, auth, approved FROM register WHERE tel=$1 and pass=$2";
+    const sql = "SELECT usrname,regid,auth,approved,f_water_lev,f_wastewater,f_water_surface,f_water_qua,f_seawater_qua,f_gw,f_air,f_green,f_biodiversity,f_familyforest,f_organic,f_garbage FROM register WHERE tel=$1 and pass=$2";
     const val = [usrname, pass];
 
     eec.query(sql, val).then(r => {
@@ -121,7 +121,7 @@ app.post("/profile-api/resetmail", async (req, res) => {
                 subject: 'รหัสผ่านใหม่',
                 // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
                 html: `รหัสผ่านใหม่ของท่านคือ  <b>${newpass}</b> 
-                <br>เข้าสู่ระบบอีครั้งที่ https://eec-onep.online/form_register/login/index.html 
+                <br>เข้าสู่ระบบอีกครั้งที่ https://eec-onep.online/form_register/login/index.html 
                 <br>เมื่อเข้าสู้ระบบได้แล้วกรุณาเปลี่ยนรหัสผ่านใหม่`
             };
 
@@ -144,6 +144,52 @@ app.post("/profile-api/resetmail", async (req, res) => {
 
 })
 
+app.post("/profile-api/approvedmail", async (req, res) => {
+    const { email } = req.body;
+
+    let sql = `SELECT email from register WHERE email='${email}'`;
+    await eec.query(sql).then(async (r) => {
+        console.log(r.rows);
+
+        if (r.rows.length > 0) {
+            let newpass = Date.now()
+            await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
+
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'sakda.homhuan@uru.ac.th',
+                    pass: 'uruDa45060071'
+                }
+            });
+
+            var mailOptions = {
+                from: 'sakda.homhuan@uru.ac.th',
+                to: email,
+                subject: 'การสมัครเข้าใช้งานผ่านการตรวจสอบข้อมูลแล้ว',
+                // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
+                html: `การสมัครเข้าใช้งานระบบรายงานสถานการณ์สิ่งแวดล้อมเป็นการรายงานสถานการณ์สิ่งแวดล้อมด้านต่าง ๆ ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก <b>ผ่านการตรวจสอบข้อมูลแล้ว</b>
+                <br>เข้าสู่ระบบที่ https://eec-onep.online/form_register/login/index.html`
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    // console.log('Email sent: ' + info.response);
+                    res.status(200).json({
+                        data: `ส่งไปยัง ${email} เรียบร้อยแล้ว`
+                    })
+                }
+            });
+        } else {
+            res.status(200).json({
+                data: `${email} ยังไม่ได้ลงทะเบียน <br>กรุณาลงทะเบียนก่อนใช้งาน`
+            })
+        }
+    })
+
+})
 
 // let i = 101;
 // setInterval(() => {

@@ -27,9 +27,9 @@ if (fromadmin) {
         </button>`) : null;
 }
 
-// var url = 'http://localhost:3700';
+var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+// var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);
@@ -38,6 +38,8 @@ function onLocationError(e) {
 function refreshPage() {
     location.reload(true);
 }
+
+let isApproved;
 
 let getData = async () => {
     // console.log(pfid, pfname);
@@ -67,8 +69,21 @@ let getData = async () => {
         $('#dt').val(r.data.data[0].dt);
 
         $("#preview").attr("src", r.data.data[0].img);
-        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false);
         $("#imgfile").val("");
+        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false);
+        isApproved = r.data.data[0].approved;
+        r.data.data[0].f_water_lev == 'true' ? $("#f_water_lev").prop("checked", true) : $("#f_water_lev").prop("checked", false);
+        r.data.data[0].f_wastewater == 'true' ? $("#f_wastewater").prop("checked", true) : $("#f_wastewater").prop("checked", false);
+        r.data.data[0].f_water_surface == 'true' ? $("#f_water_surface").prop("checked", true) : $("#f_water_surface").prop("checked", false);
+        r.data.data[0].f_water_qua == 'true' ? $("#f_water_qua").prop("checked", true) : $("#f_water_qua").prop("checked", false);
+        r.data.data[0].f_seawater_qua == 'true' ? $("#f_seawater_qua").prop("checked", true) : $("#f_seawater_qua").prop("checked", false);
+        r.data.data[0].f_gw == 'true' ? $("#f_gw").prop("checked", true) : $("#f_gw").prop("checked", false);
+        r.data.data[0].f_air == 'true' ? $("#f_air").prop("checked", true) : $("#f_air").prop("checked", false);
+        r.data.data[0].f_green == 'true' ? $("#f_green").prop("checked", true) : $("#f_green").prop("checked", false);
+        r.data.data[0].f_biodiversity == 'true' ? $("#f_biodiversity").prop("checked", true) : $("#f_biodiversity").prop("checked", false);
+        r.data.data[0].f_familyforest == 'true' ? $("#f_familyforest").prop("checked", true) : $("#f_familyforest").prop("checked", false);
+        r.data.data[0].f_organic == 'true' ? $("#f_organic").prop("checked", true) : $("#f_organic").prop("checked", false);
+        r.data.data[0].f_garbage == 'true' ? $("#f_garbage").prop("checked", true) : $("#f_garbage").prop("checked", false);
     })
 }
 
@@ -147,38 +162,96 @@ let checkdata = async () => {
         a += 1
     }
 
+
+    if (!$('#email').val()) {
+        $("#detail").append(`<span> email</span>`);
+        a += 1
+    }
+
     a > 0 ? $('#errormodal').modal('show') : sendData();
 }
 
+console.log(eecauth, urname, urid);
+
 let sendData = () => {
+
     // e.preventDefault();
-    const obj = {
-        regid: pfid,
-        data: {
-            // userid: userid,
-            usrname: $('#user_name').val(),
-            tel: $('#tele').val(),
-            pass: $('#password').val(),
-            email: $('#email').val() ? $('#email').val() : '-',
-            pro_name: $('#pro_name').val(),
-            amp_name: $('#amp_name').val(),
-            tam_name: $('#tam_name').val(),
-            pro: $('#pro').val(),
-            amp: $('#amp').val(),
-            tam: $('#tam').val(),
-            ocup: $('#ocup').val(),
-            sex: $('#sex').val(),
-            address: $('#address').val(),
-            auth: $('#auth').val(),
-            approved: $("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ'
+    let obj
+
+    if (eecauth == 'admin') {
+        obj = {
+            regid: pfid,
+            data: {
+                // userid: userid,
+                usrname: $('#user_name').val(),
+                tel: $('#tele').val(),
+                pass: $('#password').val(),
+                email: $('#email').val() ? $('#email').val() : '-',
+                pro_name: $('#pro_name').val(),
+                amp_name: $('#amp_name').val(),
+                tam_name: $('#tam_name').val(),
+                pro: $('#pro').val(),
+                amp: $('#amp').val(),
+                tam: $('#tam').val(),
+                ocup: $('#ocup').val(),
+                sex: $('#sex').val(),
+                address: $('#address').val(),
+                auth: $('#auth').val(),
+                approved: $("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ',
+                f_water_lev: $("#f_water_lev").prop("checked") == true ? 'true' : 'false',
+                f_wastewater: $("#f_wastewater").prop("checked") == true ? 'true' : 'false',
+                f_water_surface: $("#f_water_surface").prop("checked") == true ? 'true' : 'false',
+                f_water_qua: $("#f_water_qua").prop("checked") == true ? 'true' : 'false',
+                f_seawater_qua: $("#f_seawater_qua").prop("checked") == true ? 'true' : 'false',
+                f_gw: $("#f_gw").prop("checked") == true ? 'true' : 'false',
+                f_air: $("#f_air").prop("checked") == true ? 'true' : 'false',
+                f_green: $("#f_green").prop("checked") == true ? 'true' : 'false',
+                f_biodiversity: $("#f_biodiversity").prop("checked") == true ? 'true' : 'false',
+                f_familyforest: $("#f_familyforest").prop("checked") == true ? 'true' : 'false',
+                f_organic: $("#f_organic").prop("checked") == true ? 'true' : 'false',
+                f_garbage: $("#f_garbage").prop("checked") == true ? 'true' : 'false'
+            }
+        }
+    } else {
+        obj = {
+            regid: pfid,
+            data: {
+                // userid: userid,
+                usrname: $('#user_name').val(),
+                tel: $('#tele').val(),
+                pass: $('#password').val(),
+                email: $('#email').val() ? $('#email').val() : '-',
+                pro_name: $('#pro_name').val(),
+                amp_name: $('#amp_name').val(),
+                tam_name: $('#tam_name').val(),
+                pro: $('#pro').val(),
+                amp: $('#amp').val(),
+                tam: $('#tam').val(),
+                ocup: $('#ocup').val(),
+                sex: $('#sex').val(),
+                address: $('#address').val()
+            }
         }
     }
+
     // console.log(obj);
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
         $('#okmodal').modal('show');
+        if (eecauth == 'admin') {
+            sendAlertMail(document.getElementById("isApproved").value, obj.data.approved, obj.data.email)
+        }
     })
+
     return false;
 };
+
+let sendAlertMail = (oldVal, newVal, email) => {
+
+    if (oldVal !== newVal && newVal == 'ตรวจสอบแล้ว') {
+        console.log(oldVal, newVal, email);
+        $.post(url + '/profile-api/approvedmail', { email }).done(r => console.log(r))
+    }
+}
 
 let dataurl;
 $("#imgfile").change(async () => {
