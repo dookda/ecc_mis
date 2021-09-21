@@ -20,8 +20,8 @@ let getUserProfile = async () => {
     userid = profile.userId;
 }
 
-var url = 'http://localhost:3700';
-// var url = 'https://eec-onep.online:3700';
+// var url = 'http://localhost:3700';
+var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);

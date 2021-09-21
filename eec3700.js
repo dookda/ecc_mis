@@ -106,3 +106,6 @@ app.use(waterlevel);
 
 const ews = require('./service/ews');
 app.use(ews);
+
+const promonphase2 = require('./service/promonphase2');
+app.use(promonphase2);

@@ -20,8 +20,8 @@ let map = L.map('map', {
     zoom: 9
 });
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -71,19 +71,89 @@ let refreshPage = () => {
     window.open("./../report/index.html", "_self");
 }
 
-// tinymce.init({
-//     selector: 'textarea',
-//     menubar: false,
-//     statusbar: false,
-//     toolbar: true
-// })
+let getPrjcate = () => {
+    axios.post(url + "/projmon2-api/prj_cate").then(r => {
+        $("#prj_mac").empty();
+        $("#prj_plan").empty();
+        $("#prj_name").empty();
+        $("#prj_cate").append("<option></option>");
+        r.data.data.map(i => {
+            $("#prj_cate").append(`<option value="${i.prj_cate}">${i.prj_cate}</option>`);
+        });
+    })
+}
 
-$("#prj_cate").change(i => {
-    console.log(i)
-})
+let getPrjmac = (prj_cate) => {
+    axios.post(url + "/projmon2-api/prj_mac", { prj_cate }).then(r => {
+        $("#prj_mac").empty();
+        $("#prj_plan").empty();
+        $("#prj_name").empty();
+        $("#prj_mac").append("<option></option>")
+        r.data.data.map(i => {
+            $("#prj_mac").append(`<option value='${i.prj_mac}'>${i.prj_mac}</option>`)
+        });
+    });
+}
 
-$("#div_proc_troub").hide()
-$("#div_fund_troub").hide()
+let getPrjplan = (prj_mac) => {
+    axios.post(url + "/projmon2-api/prj_plan", { prj_mac }).then(r => {
+        $("#prj_plan").empty();
+        $("#prj_name").empty();
+        $("#prj_plan").append("<option></option>")
+        r.data.data.map(i => {
+            $("#prj_plan").append(`<option value='${i.prj_plan}'>${i.prj_plan}'</option>`)
+        });
+    });
+}
+
+let getPrjname = (prj_plan) => {
+    axios.post(url + "/projmon2-api/prj_name", { prj_plan }).then(r => {
+        $("#prj_name").empty();
+        $("#prj_name").append("<option></option>");
+        r.data.data.map(i => {
+            $("#prj_name").append(`<option value='${i.prj_name}'>${i.prj_name}'</option>`);
+        });
+    });
+}
+
+let getProjtime = (prj_name) => {
+    axios.post(url + "/projmon2-api/prj_detail", { prj_name }).then(r => {
+        r.data.data[0].plan_65 == 'TRUE' ? $("#plan_65").prop("checked", true) : $("#plan_65").prop("checked", false);
+        r.data.data[0].plan_66 == 'TRUE' ? $("#plan_66").prop("checked", true) : $("#plan_66").prop("checked", false);
+        r.data.data[0].plan_67 == 'TRUE' ? $("#plan_67").prop("checked", true) : $("#plan_67").prop("checked", false);
+        r.data.data[0].plan_68 == 'TRUE' ? $("#plan_68").prop("checked", true) : $("#plan_68").prop("checked", false);
+        r.data.data[0].plan_69 == 'TRUE' ? $("#plan_69").prop("checked", true) : $("#plan_69").prop("checked", false);
+        r.data.data[0].plan_70 == 'TRUE' ? $("#plan_70").prop("checked", true) : $("#plan_70").prop("checked", false);
+
+        $("#budget").val(r.data.data[0].budget);
+        $("#prj_operat").val(r.data.data[0].prj_operat);
+        $("#prj_suboperat").val(r.data.data[0].prj_suboperat);
+    });
+}
+
+getPrjcate()
+$("#prj_cate").on("change", () => {
+    let prj_cate = $("#prj_cate").val();
+    getPrjmac(prj_cate);
+});
+
+$("#prj_mac").on("change", () => {
+    let prj_mac = $("#prj_mac").val();
+    getPrjplan(prj_mac);
+});
+
+$("#prj_plan").on("change", () => {
+    let prj_plan = $("#prj_plan").val();
+    getPrjname(prj_plan);
+});
+
+$("#prj_name").on("change", () => {
+    let prj_name = $("#prj_name").val();
+    getProjtime(prj_name);
+});
+
+$("#div_proc_troub").hide();
+$("#div_fund_troub").hide();
 // $("#div_fund_accpt").hide()
 // $("#div_opert_stat").hide()
 

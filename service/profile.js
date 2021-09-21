@@ -110,13 +110,13 @@ app.post("/profile-api/resetmail", async (req, res) => {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'sakda.homhuan@uru.ac.th',
-                    pass: 'uruDa45060071'
+                    user: 'eec.onep@gmail.com',
+                    pass: 'eec090164'
                 }
             });
 
             var mailOptions = {
-                from: 'sakda.homhuan@uru.ac.th',
+                from: 'eec.onep@gmail.com',
                 to: email,
                 subject: 'รหัสผ่านใหม่',
                 // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
@@ -145,8 +145,8 @@ app.post("/profile-api/resetmail", async (req, res) => {
 })
 
 app.post("/profile-api/approvedmail", async (req, res) => {
-    const { email } = req.body;
-
+    const { email, name } = req.body;
+    console.log(name, email)
     let sql = `SELECT email from register WHERE email='${email}'`;
     await eec.query(sql).then(async (r) => {
         console.log(r.rows);
@@ -158,18 +158,22 @@ app.post("/profile-api/approvedmail", async (req, res) => {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'sakda.homhuan@uru.ac.th',
-                    pass: 'uruDa45060071'
+                    user: 'eec.onep@gmail.com',
+                    pass: 'eec090164'
                 }
             });
 
             var mailOptions = {
-                from: 'sakda.homhuan@uru.ac.th',
+                from: 'eec.onep@gmail.com',
                 to: email,
                 subject: 'การสมัครเข้าใช้งานผ่านการตรวจสอบข้อมูลแล้ว',
                 // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
-                html: `การสมัครเข้าใช้งานระบบรายงานสถานการณ์สิ่งแวดล้อมเป็นการรายงานสถานการณ์สิ่งแวดล้อมด้านต่าง ๆ ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก <b>ผ่านการตรวจสอบข้อมูลแล้ว</b>
-                <br>เข้าสู่ระบบที่ https://eec-onep.online/form_register/login/index.html`
+                html: `เรียน คุณ ${name} <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ตามที่ท่านได้การสมัครสมาชิกเพื่อเข้าใช้งานระบบสารสนเทศเพื่อการจัดการสิ่งแวดล้อม ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก บัดนี้ทางผู้ดูแลระบบได้กำหนดสิทธิ์การเข้าถึงให้แก่ท่านเรียบร้อยแล้ว <b>(ผ่านการตรวจสอบข้อมูลแล้ว)</b>
+                <br>ท่านสามารถเข้าตรวจสอบสิทธิ์การใช้งานได้ที่ https://eec-onep.online/form_register/login/index.html
+                <br>
+                <br>
+                 ด้วยความนับถือ 
+                <br> ผู้ดูแลระบบ`
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
