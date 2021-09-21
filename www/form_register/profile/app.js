@@ -27,9 +27,9 @@ if (fromadmin) {
         </button>`) : null;
 }
 
-var url = 'http://localhost:3700';
+// var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-// var url = 'https://eec-onep.online:3700';
+var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);
@@ -210,6 +210,8 @@ let sendData = () => {
                 f_familyforest: $("#f_familyforest").prop("checked") == true ? 'true' : 'false',
                 f_organic: $("#f_organic").prop("checked") == true ? 'true' : 'false',
                 f_garbage: $("#f_garbage").prop("checked") == true ? 'true' : 'false'
+
+
             }
         }
     } else {
@@ -234,22 +236,22 @@ let sendData = () => {
         }
     }
 
-    // console.log(obj);
+    console.log(obj);
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
         $('#okmodal').modal('show');
         if (eecauth == 'admin') {
-            sendAlertMail(document.getElementById("isApproved").value, obj.data.approved, obj.data.email)
+            sendAlertMail(document.getElementById("isApproved").value, obj.data.approved, obj.data.email, obj.data.usrname)
         }
     })
 
     return false;
 };
 
-let sendAlertMail = (oldVal, newVal, email) => {
+let sendAlertMail = (oldVal, newVal, email, name) => {
 
     if (oldVal !== newVal && newVal == 'ตรวจสอบแล้ว') {
-        console.log(oldVal, newVal, email);
-        $.post(url + '/profile-api/approvedmail', { email }).done(r => console.log(r))
+        console.log(oldVal, newVal, email, name);
+        $.post(url + '/profile-api/approvedmail', { email, name }).done(r => console.log(r))
     }
 }
 

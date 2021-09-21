@@ -16,7 +16,7 @@ let gotoRegister = () => {
     location.href = "./../register/index.html";
 }
 
-let gotoInput = (id, name, auth, aproved, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage) => {
+let gotoInput = (id, name, auth, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage) => {
     sessionStorage.setItem('eecid', id);
     sessionStorage.setItem('eecname', name);
     sessionStorage.setItem('eecauth', auth);
@@ -54,8 +54,9 @@ let sendData = () => {
         pass: $("#password").val()
     }
     axios.post(url + "/profile-api/userlogin", obj).then(r => {
+
+        console.log(r.data);
         if (r.data.data.length > 0) {
-            // console.log(r.data.data[0].approved);
             if (r.data.data[0].approved == 'ตรวจสอบแล้ว') {
                 let regid = r.data.data[0].regid;
                 let usrname = r.data.data[0].usrname;
@@ -76,6 +77,7 @@ let sendData = () => {
                 let f_garbage = r.data.data[0].f_garbage;
 
                 gotoInput(regid, usrname, auth, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage);
+                // console.log(regid, usrname, auth, f_water_lev, f_wastewater, f_water_surface, f_water_qua, f_seawater_qua, f_gw, f_air, f_green, f_biodiversity, f_familyforest, f_organic, f_garbage)
             } else {
                 $("#detail").empty();
                 $("#detail").append(`การลงทะเบียนของท่านอยู่ระหว่างตรวจสอบข้อมูล`);
@@ -102,5 +104,3 @@ let gotoResetpass = () => {
         $("#res").html(r.data.data)
     })
 }
-
-
