@@ -16,28 +16,9 @@ if (eecauth == 'admin') {
 let pfid = sessionStorage.getItem('pfid');
 let pfname = sessionStorage.getItem('pfname');
 
-// console.log(fromadmin);
-// if (fromadmin) {
-//     pfid = sessionStorage.getItem('pfid');
-//     pfname = sessionStorage.getItem('pfname');
-
-//     $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-//         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-//     </button>`);
-//     sessionStorage.removeItem('fromadmin');
-// } else {
-//     pfid = urid;
-//     pfname = urname;
-//     $('#autharea').hide();
-//     $('#approvedarea').hide();
-//     eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
-//         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
-//         </button>`) : null;
-// }
-
 var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-// var url = 'https://eec-onep.online:3700';
+var url = 'https://eec-onep.online:3700';
 
 function onLocationError(e) {
     console.log(e.message);
@@ -232,7 +213,7 @@ let sendData = () => {
         }
     }
 
-    console.log(obj);
+    // console.log(obj);   
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
         $('#okmodal').modal('show');
         if (eecauth == 'admin') {
