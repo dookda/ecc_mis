@@ -16,7 +16,7 @@ if (eecauth == 'admin') {
 let pfid = sessionStorage.getItem('pfid');
 let pfname = sessionStorage.getItem('pfname');
 
-var url = 'http://localhost:3700';
+// var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
 var url = 'https://eec-onep.online:3700';
 
@@ -40,7 +40,11 @@ let getOcup = () => {
 }
 getOcup()
 
-let isApproved;
+// let isApproved;
+let oldApprove = [];
+let newApprove = [];
+let oldCheck = [];
+let newCheck = [];
 let getData = async () => {
     // console.log(pfid, pfname);
     let obj = { regid: await pfid }
@@ -71,7 +75,7 @@ let getData = async () => {
         $("#preview").attr("src", r.data.data[0].img);
         $("#imgfile").val("");
         r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false);
-        isApproved = r.data.data[0].approved;
+        // isApproved = r.data.data[0].approved;
         r.data.data[0].f_water_lev == 'true' ? $("#f_water_lev").prop("checked", true) : $("#f_water_lev").prop("checked", false);
         r.data.data[0].f_wastewater == 'true' ? $("#f_wastewater").prop("checked", true) : $("#f_wastewater").prop("checked", false);
         r.data.data[0].f_water_surface == 'true' ? $("#f_water_surface").prop("checked", true) : $("#f_water_surface").prop("checked", false);
@@ -84,8 +88,18 @@ let getData = async () => {
         r.data.data[0].f_familyforest == 'true' ? $("#f_familyforest").prop("checked", true) : $("#f_familyforest").prop("checked", false);
         r.data.data[0].f_organic == 'true' ? $("#f_organic").prop("checked", true) : $("#f_organic").prop("checked", false);
         r.data.data[0].f_garbage == 'true' ? $("#f_garbage").prop("checked", true) : $("#f_garbage").prop("checked", false);
+
+
+        $("input:checkbox[name=f]:checked").each(function () {
+            oldCheck.push($(this).val());
+        });
+        oldApprove.push($("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ')
+        // console.log(oldApprove);
     })
 }
+
+
+
 
 let getProv = async () => {
     axios.get(url + "/eec-api/get-th-prov").then(r => {
@@ -177,7 +191,6 @@ $("#ocup").on("change", () => {
 })
 
 let sendData = () => {
-
     // e.preventDefault();
     let obj = {
         regid: pfid,
@@ -213,24 +226,75 @@ let sendData = () => {
         }
     }
 
-    // console.log(obj);   
+    $("input:checkbox[name=f]:checked").each(function () {
+        newCheck.push($(this).val());
+    });
+    newApprove.push($("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ')
+
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
+
+        let chkfrom = JSON.stringify(oldCheck) === JSON.stringify(newCheck);
+        let chkapp = JSON.stringify(oldApprove) === JSON.stringify(newApprove);
+        sendAlertMail(chkapp, chkfrom, obj.data.email, obj.data.usrname)
         $('#okmodal').modal('show');
-        if (eecauth == 'admin') {
-            sendAlertMail(document.getElementById("isApproved").value, obj.data.approved, obj.data.email, obj.data.usrname)
-        }
     })
 
     return false;
 };
 
-let sendAlertMail = (oldVal, newVal, email, name) => {
-
-    if (oldVal !== newVal && newVal == 'ตรวจสอบแล้ว') {
-        // console.log(oldVal, newVal, email, name);
-        $.post(url + '/profile-api/approvedmail', { email, name }).done(r => console.log(r))
+let sendAlertMail = (appv, ckkb, email, name) => {
+    if (appv == false || ckkb == false) {
+        if (newApprove == 'ตรวจสอบแล้ว') {
+            console.log(newApprove, appv, ckkb, email, name);
+            $.post(url + '/profile-api/approvedmail', { email, name }).done(r => console.log(r))
+        }
     }
 }
+
+$("#auth").on("change", () => {
+    if ($("#auth").val() == "admin") {
+        $("#f_water_lev").prop("checked", true);
+        $("#f_wastewater").prop("checked", true);
+        $("#f_water_surface").prop("checked", true);
+        $("#f_water_qua").prop("checked", true);
+        $("#f_seawater_qua").prop("checked", true);
+        $("#f_gw").prop("checked", true);
+        $("#f_air").prop("checked", true);
+        $("#f_green").prop("checked", true);
+        $("#f_biodiversity").prop("checked", true);
+        $("#f_familyforest").prop("checked", true);
+        $("#f_organic").prop("checked", true);
+        $("#f_garbage").prop("checked", true);
+    } else if ($("#auth").val() == "office") {
+        $("#f_water_lev").prop("checked", false);
+        $("#f_wastewater").prop("checked", true);
+        $("#f_water_surface").prop("checked", true);
+        $("#f_water_qua").prop("checked", true);
+        $("#f_seawater_qua").prop("checked", true);
+        $("#f_gw").prop("checked", true);
+        $("#f_air").prop("checked", false);
+        $("#f_green").prop("checked", true);
+        $("#f_biodiversity").prop("checked", false);
+        $("#f_familyforest").prop("checked", false);
+        $("#f_organic").prop("checked", false);
+        $("#f_garbage").prop("checked", true);
+    } else {
+        $("#f_water_lev").prop("checked", true);
+        $("#f_wastewater").prop("checked", false);
+        $("#f_water_surface").prop("checked", false);
+        $("#f_water_qua").prop("checked", false);
+        $("#f_seawater_qua").prop("checked", false);
+        $("#f_gw").prop("checked", false);
+        $("#f_air").prop("checked", true);
+        $("#f_green").prop("checked", true);
+        $("#f_biodiversity").prop("checked", true);
+        $("#f_familyforest").prop("checked", true);
+        $("#f_organic").prop("checked", true);
+        $("#f_garbage").prop("checked", false);
+    }
+})
+
+
 
 let dataurl;
 $("#imgfile").change(async () => {
@@ -254,7 +318,6 @@ $("#imgfile").change(async () => {
             getData();
         })
     }, 1000)
-
 });
 
 let resizeImage = (file) => {
@@ -286,6 +349,10 @@ let gotoLogin = () => {
 
 let gotoAdmin = () => {
     eecauth == 'admin' ? location.href = "./../admin/index.html" : getProv();
+}
+
+let refresh = () => {
+    location.reload()
 }
 
 //init

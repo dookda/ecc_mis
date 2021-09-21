@@ -209,7 +209,7 @@
                                             <select class="form-control" id="auth">
                                                 <option value="admin">ผู้ดูแลระบบ</option>
                                                 <!-- <option value="guest">guest</option> -->
-                                                <option value="office">เจ้าหน้าที่</option>
+                                                <option value="office">เจ้าหน้าที่/ตัวแทนเครือข่าย</option>
                                                 <option value="user">ผู้ใช้</option>
                                             </select>
                                         </div>
@@ -239,7 +239,7 @@
                                                         แจ้งผู้ใช้งาน)</label>
                                                 </div> -->
                                             </div>
-                                            <input type="hidden" id="isApproved">
+                                            <!-- <input type="hidden" value="approve" name="approve" id="isApproved"> -->
                                         </div>
                                         <hr>
                                         <div class="form-group row">
@@ -249,65 +249,76 @@
                                             </div>
                                             <div class="col-sm-10">
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_water_lev">
+                                                    <input type="checkbox" class="form-check-input" value="f_water_lev"
+                                                        name="f" id="f_water_lev">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลปริมาณน้ำผิวดิน</label>
                                                 </div>
 
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_wastewater">
+                                                    <input type="checkbox" class="form-check-input" value="f_wastewater"
+                                                        name="f" id="f_wastewater">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลปริมาณน้ำทิ้ง/น้ำเสีย</label>
                                                 </div>
 
                                                 <div class="form-group form-check">
                                                     <input type="checkbox" class="form-check-input"
-                                                        id="f_water_surface">
+                                                        value="f_water_surface" name="f" id="f_water_surface">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_water_qua">
+                                                    <input type="checkbox" class="form-check-input" value="f_water_qua"
+                                                        name="f" id="f_water_qua">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลคุณภาพน้ำก่อนและหลังบำบัด</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_seawater_qua">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        value="f_seawater_qua" name="f" id="f_seawater_qua">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลคุณภาพน้ำทะเลและชายฝั่ง</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_gw">
+                                                    <input type="checkbox" class="form-check-input" value="f_gw"
+                                                        name="f" id="f_gw">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลคุณภาพน้ำบาดาล</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_air">
+                                                    <input type="checkbox" class="form-check-input" value="f_air"
+                                                        name="f" id="f_air">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลมลพิษทางอากาศ</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_green">
+                                                    <input type="checkbox" class="form-check-input" value="f_green"
+                                                        name="f" id="f_green">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลพื้นที่สีเขียว</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_biodiversity">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        value="f_biodiversity" name="f" id="f_biodiversity">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลความหลากหลายทางชีวภาพ</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_familyforest">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        value="f_familyforest" name="f" id="f_familyforest">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลป่าครอบครัว</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_organic">
+                                                    <input type="checkbox" class="form-check-input" value="f_organic"
+                                                        name="f" id="f_organic">
                                                     <label class="form-check-label"
                                                         for="">ระบบนำเข้าข้อมูลเกษตรอินทรีย์</label>
                                                 </div>
                                                 <div class="form-group form-check">
-                                                    <input type="checkbox" class="form-check-input" id="f_garbage">
+                                                    <input type="checkbox" class="form-check-input" value="f_garbage"
+                                                        name="f" id="f_garbage">
                                                     <label class="form-check-label" for="">ระบบนำเข้าข้อมูลขยะ</label>
                                                 </div>
                                             </div>
@@ -360,7 +371,7 @@
                     <span id="notify"></span> ปรับปรุงข้อมูลสำเร็จ
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">ตกลง</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="refresh()">ตกลง</button>
                 </div>
             </div>
         </div>

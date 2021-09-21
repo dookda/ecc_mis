@@ -158,9 +158,10 @@ app.post("/profile-api/resetmail", async (req, res) => {
 app.post("/profile-api/approvedmail", async (req, res) => {
     const { email, name } = req.body;
     // console.log(name, email)
-    let sql = `SELECT email from register WHERE email='${email}'`;
+    let sql = `SELECT email FROM register WHERE email='${email}'`;
     await eec.query(sql).then(async (r) => {
         if (r.rows.length > 0) {
+            console.log(r.rows);
             // let newpass = Date.now()
             // await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
 
