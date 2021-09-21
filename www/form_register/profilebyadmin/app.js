@@ -5,12 +5,35 @@ let fromadmin = sessionStorage.getItem('fromadmin');
 $("#usrname").text(urname);
 
 urid ? null : location.href = "./../../form_register/login/index.html";
+eecauth == "admin" ? null : location.href = "./../../form_register/login/index.html";
 
 if (eecauth == 'admin') {
     $("#btnid").append(` <button type="button" class="btn btn-light" id="refresh" onclick="gotoAdmin()">
         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;จัดการผู้ใช้</span>
     </button>`);
 }
+
+let pfid = sessionStorage.getItem('pfid');
+let pfname = sessionStorage.getItem('pfname');
+
+// console.log(fromadmin);
+// if (fromadmin) {
+//     pfid = sessionStorage.getItem('pfid');
+//     pfname = sessionStorage.getItem('pfname');
+
+//     $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+//         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+//     </button>`);
+//     sessionStorage.removeItem('fromadmin');
+// } else {
+//     pfid = urid;
+//     pfname = urname;
+//     $('#autharea').hide();
+//     $('#approvedarea').hide();
+//     eecauth == 'admin' ? $("#btnid").append(` <button type="button" class="btn btn-secondary" id="refresh" onclick="gotoAdmin()">
+//         <span><i class="bi bi-arrow-clockwise"></i>&nbsp;กลับหน้าจัดการผู้ใช้</span>
+//         </button>`) : null;
+// }
 
 var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
@@ -24,10 +47,22 @@ function refreshPage() {
     location.reload(true);
 }
 
-let isApproved;
+let getOcup = () => {
+    $("#ocup").empty()
+    axios.post(url + "/profile-api/getocup").then(r => {
+        $("#ocup").append(`<option ></option>`)
+        r.data.data.map(i => {
+            $("#ocup").append(`<option value="${i.ocup}">${i.ocup}</option>`)
+        })
+        $("#ocup").append(`<option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>`)
+    })
+}
+getOcup()
 
+let isApproved;
 let getData = async () => {
-    let obj = { regid: urid }
+    // console.log(pfid, pfname);
+    let obj = { regid: await pfid }
     axios.post(url + "/profile-api/getprofile", obj).then(async (r) => {
         // console.log(r);
         getAmp(await r.data.data[0].pro);
@@ -49,26 +84,27 @@ let getData = async () => {
         $('#ocup').val(r.data.data[0].ocup);
         $('#sex').val(r.data.data[0].sex);
         $('#address').val(r.data.data[0].address);
-        // $('#auth').val(r.data.data[0].auth);
+        $('#auth').val(r.data.data[0].auth);
         $('#dt').val(r.data.data[0].dt);
 
         $("#preview").attr("src", r.data.data[0].img);
         $("#imgfile").val("");
+        r.data.data[0].approved == 'ตรวจสอบแล้ว' ? $("#approved").prop("checked", true) : $("#approved").prop("checked", false);
+        isApproved = r.data.data[0].approved;
+        r.data.data[0].f_water_lev == 'true' ? $("#f_water_lev").prop("checked", true) : $("#f_water_lev").prop("checked", false);
+        r.data.data[0].f_wastewater == 'true' ? $("#f_wastewater").prop("checked", true) : $("#f_wastewater").prop("checked", false);
+        r.data.data[0].f_water_surface == 'true' ? $("#f_water_surface").prop("checked", true) : $("#f_water_surface").prop("checked", false);
+        r.data.data[0].f_water_qua == 'true' ? $("#f_water_qua").prop("checked", true) : $("#f_water_qua").prop("checked", false);
+        r.data.data[0].f_seawater_qua == 'true' ? $("#f_seawater_qua").prop("checked", true) : $("#f_seawater_qua").prop("checked", false);
+        r.data.data[0].f_gw == 'true' ? $("#f_gw").prop("checked", true) : $("#f_gw").prop("checked", false);
+        r.data.data[0].f_air == 'true' ? $("#f_air").prop("checked", true) : $("#f_air").prop("checked", false);
+        r.data.data[0].f_green == 'true' ? $("#f_green").prop("checked", true) : $("#f_green").prop("checked", false);
+        r.data.data[0].f_biodiversity == 'true' ? $("#f_biodiversity").prop("checked", true) : $("#f_biodiversity").prop("checked", false);
+        r.data.data[0].f_familyforest == 'true' ? $("#f_familyforest").prop("checked", true) : $("#f_familyforest").prop("checked", false);
+        r.data.data[0].f_organic == 'true' ? $("#f_organic").prop("checked", true) : $("#f_organic").prop("checked", false);
+        r.data.data[0].f_garbage == 'true' ? $("#f_garbage").prop("checked", true) : $("#f_garbage").prop("checked", false);
     })
 }
-
-let getOcup = () => {
-    $("#ocup").empty()
-    axios.post(url + "/profile-api/getocup").then(r => {
-        $("#ocup").append(`<option ></option>`)
-        r.data.data.map(i => {
-            $("#ocup").append(`<option value="${i.ocup}">${i.ocup}</option>`)
-        })
-        $("#ocup").append(`<option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>`)
-    })
-}
-getOcup()
-
 
 let getProv = async () => {
     axios.get(url + "/eec-api/get-th-prov").then(r => {
@@ -85,7 +121,9 @@ let getProv = async () => {
 }
 
 let getAmp = (e) => {
+    // console.log(e);
     axios.get(url + "/eec-api/get-th-amp/" + e).then(r => {
+        // console.log(r);
         $("#amp").empty()
         $("#tam").empty()
         $("#amp").append(`<option value=""></option>`)
@@ -97,6 +135,7 @@ let getAmp = (e) => {
 
 let getTam = (e) => {
     axios.get(url + "/eec-api/get-th-tam/" + e).then(r => {
+        // console.log(r);
         $("#tam").empty()
         $("#tam").append(`<option value=""></option>`)
         r.data.data.map(i => {
@@ -151,16 +190,16 @@ let checkdata = async () => {
     a > 0 ? $('#errormodal').modal('show') : sendData();
 }
 
-
 $("#ocupother").hide()
 $("#ocup").on("change", () => {
     $("#ocup").val() !== "อื่นๆ" ? $("#ocupother").hide() : $("#ocupother").show();
 })
 
 let sendData = () => {
+
     // e.preventDefault();
     let obj = {
-        regid: urid,
+        regid: pfid,
         data: {
             // userid: userid,
             usrname: $('#user_name').val(),
@@ -175,17 +214,42 @@ let sendData = () => {
             tam: $('#tam').val(),
             ocup: $("#ocup").val() !== "อื่นๆ" ? $("#ocup").val() : $("#ocupother").val(),
             sex: $('#sex').val(),
-            address: $('#address').val()
+            address: $('#address').val(),
+            auth: $('#auth').val(),
+            approved: $("#approved").prop("checked") == true ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบ',
+            f_water_lev: $("#f_water_lev").prop("checked") == true ? 'true' : 'false',
+            f_wastewater: $("#f_wastewater").prop("checked") == true ? 'true' : 'false',
+            f_water_surface: $("#f_water_surface").prop("checked") == true ? 'true' : 'false',
+            f_water_qua: $("#f_water_qua").prop("checked") == true ? 'true' : 'false',
+            f_seawater_qua: $("#f_seawater_qua").prop("checked") == true ? 'true' : 'false',
+            f_gw: $("#f_gw").prop("checked") == true ? 'true' : 'false',
+            f_air: $("#f_air").prop("checked") == true ? 'true' : 'false',
+            f_green: $("#f_green").prop("checked") == true ? 'true' : 'false',
+            f_biodiversity: $("#f_biodiversity").prop("checked") == true ? 'true' : 'false',
+            f_familyforest: $("#f_familyforest").prop("checked") == true ? 'true' : 'false',
+            f_organic: $("#f_organic").prop("checked") == true ? 'true' : 'false',
+            f_garbage: $("#f_garbage").prop("checked") == true ? 'true' : 'false'
         }
     }
 
-    // console.log(obj);
+    console.log(obj);
     $.post(url + '/profile-api/updateprofile', obj).done(async (res) => {
         $('#okmodal').modal('show');
+        if (eecauth == 'admin') {
+            sendAlertMail(document.getElementById("isApproved").value, obj.data.approved, obj.data.email, obj.data.usrname)
+        }
     })
 
     return false;
 };
+
+let sendAlertMail = (oldVal, newVal, email, name) => {
+
+    if (oldVal !== newVal && newVal == 'ตรวจสอบแล้ว') {
+        // console.log(oldVal, newVal, email, name);
+        $.post(url + '/profile-api/approvedmail', { email, name }).done(r => console.log(r))
+    }
+}
 
 let dataurl;
 $("#imgfile").change(async () => {

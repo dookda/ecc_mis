@@ -81,7 +81,7 @@ let manageUser = (uid, usrname) => {
     sessionStorage.setItem('pfid', uid);
     sessionStorage.setItem('pfname', usrname);
     sessionStorage.setItem('fromadmin', 'yes');
-    location.href = "./../profile/index.html";
+    location.href = "./../profilebyadmin/index.html";
 }
 
 

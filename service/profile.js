@@ -44,6 +44,17 @@ app.post("/profile-api/getprofile", (req, res) => {
     })
 })
 
+app.post("/profile-api/getocup", (req, res) => {
+    const { regid } = req.body;
+    // console.log(userid);
+    const sql = `SELECT distinct ocup FROM register ORDER BY ocup`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/profile-api/updateprofile", async (req, res) => {
     const { regid, data } = req.body;
 
@@ -146,14 +157,12 @@ app.post("/profile-api/resetmail", async (req, res) => {
 
 app.post("/profile-api/approvedmail", async (req, res) => {
     const { email, name } = req.body;
-    console.log(name, email)
+    // console.log(name, email)
     let sql = `SELECT email from register WHERE email='${email}'`;
     await eec.query(sql).then(async (r) => {
-        console.log(r.rows);
-
         if (r.rows.length > 0) {
-            let newpass = Date.now()
-            await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
+            // let newpass = Date.now()
+            // await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
 
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
