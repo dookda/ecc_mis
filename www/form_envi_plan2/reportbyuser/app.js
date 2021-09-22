@@ -4,6 +4,8 @@ let org = sessionStorage.getItem('org');
 
 sessionStorage.removeItem("gid");
 
+org == "admin" ? org = "ทสจ." : null;
+
 let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
@@ -97,12 +99,12 @@ let loadTable = () => {
     let table = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/projmon2-api/getallproj',
-            data: { typ: typ },
+            url: url + '/projmon2-api/getuserproj',
+            data: { prj_operat: org },
             dataSrc: 'data'
         },
         columns: [
-            { data: 'gid' },
+            { data: 'prj_id' },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -120,8 +122,8 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     // console.log(row);
                     return `
-                       <button type="button" class="btn btn-margin btn-info" onclick="gotoEdit(${row.gid})"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</button>
-                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.prj_name}', 'prj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                       <button type="button" class="btn btn-margin btn-info" onclick="gotoEdit(${row.prj_id})"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</button>
+                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'prj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 width: "15%"
             }

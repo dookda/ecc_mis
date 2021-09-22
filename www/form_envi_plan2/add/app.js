@@ -101,7 +101,7 @@ let getPrjplan = (prj_mac) => {
         $("#prj_name").empty();
         $("#prj_plan").append("<option></option>")
         r.data.data.map(i => {
-            $("#prj_plan").append(`<option value='${i.prj_plan}'>${i.prj_plan}'</option>`)
+            $("#prj_plan").append(`<option value='${i.prj_plan}'>${i.prj_plan}</option>`)
         });
     });
 }
@@ -111,7 +111,7 @@ let getPrjname = (prj_plan) => {
         $("#prj_name").empty();
         $("#prj_name").append("<option></option>");
         r.data.data.map(i => {
-            $("#prj_name").append(`<option value='${i.prj_name}'>${i.prj_name}'</option>`);
+            $("#prj_name").append(`<option value='${i.prj_name}'>${i.prj_name}</option>`);
         });
     });
 }
@@ -234,23 +234,22 @@ $("#fieldForm").submit(function (e) {
             prj_cate: $('#prj_cate').val(),
             prj_group: $('#prj_group').val(),
             prj_name: $('#prj_name').val(),
-            prj_measure: $('#prj_measure').val(),
-
-            act_1: $('#act_1').val(),
-            act_2: $('#act_2').val(),
-            act_3: $('#act_3').val(),
-            act_4: $('#act_4').val(),
-            act_5: $('#act_5').val(),
-            act_6: $('#act_6').val(),
-            act_7: $('#act_7').val(),
-            act_8: $('#act_8').val(),
-            act_9: $('#act_9').val(),
-            act_10: $('#act_10').val(),
-            act_11: $('#act_11').val(),
-
             prj_detail: $('#prj_detail').val(),
-            prj_obj: $('#prj_obj').val(),
-            // prj_site: $('#prj_site').val(),
+
+            // prj_obj: $('#prj_obj').val(),
+            // prj_measure: $('#prj_measure').val(),
+            // act_1: $('#act_1').val(),
+            // act_2: $('#act_2').val(),
+            // act_3: $('#act_3').val(),
+            // act_4: $('#act_4').val(),
+            // act_5: $('#act_5').val(),
+            // act_6: $('#act_6').val(),
+            // act_7: $('#act_7').val(),
+            // act_8: $('#act_8').val(),
+            // act_9: $('#act_9').val(),
+            // act_10: $('#act_10').val(),
+            // act_11: $('#act_11').val(),
+
             prj_time: $('#prj_time').val(),
             budget: $('#budget').val(),
             budg_61: $('#budg_61').val(),
@@ -274,9 +273,9 @@ $("#fieldForm").submit(function (e) {
             opert_stat: $('#opert_stat').val(),
             opert_estm: $('#opert_estm').val(),
             budg_year: $('#budg_year').val(),
-            prj_type: $('#prj_type').val(),
+            // prj_type: $('#prj_type').val(),
             prj_locate: $('#prj_locate').val(),
-            prj_rai: $('#prj_rai').val(),
+            // prj_rai: $('#prj_rai').val(),
             prj_name_c: $('#prj_name_c').val(),
             prj_obj_c: $('#prj_obj_c').val(),
             // prj_method: $('#prj_method').val(),

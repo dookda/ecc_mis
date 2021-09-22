@@ -115,7 +115,7 @@
                             <input type="text" class="form-control" id="prj_detail" required>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <h6>วัตถุประสงค์โครงการ<span style="color: firebrick;">*</span></h6>
                             <textarea type="text" class="form-control" id="prj_obj"></textarea>
                         </div>
@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <h6>แนวทางการปฎิบัติ<span style="color: firebrick;">*</span></h6>
                             <ul id="list_measure"></ul>
-                        </div>
+                        </div> -->
 
                         <h5>ผลการดำเนินงานโครงการ</h5>
                         <h5>1. งบประมาณ</h5>
@@ -268,6 +268,9 @@
                                     <textarea class="form-control" id="prj_operat"></textarea>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-sm">
                                 <div class="form-group">
                                     <h6>แหล่งเงินงบประมาณที่ประสงค์จะใช้ดำเนินการ</h6>
@@ -301,18 +304,9 @@
                                 </div>
                             </li>
                             <li id="div_fund_accpt">
-
                                 <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <h6>งบประมาณที่ได้รับ (ล้านบาท)</h6>
-                                            <input type="number" step='0.01' class="form-control" id="fund_accpt">
-                                        </div>
-                                        <!-- <div class="col-sm">
-                                            <h6>ปีงบประมาณที่จะดำเนินการ:</h6>
-                                            <input type="text" class="form-control" id="fund_year">
-                                        </div> -->
-                                    </div>
+                                    <h6>งบประมาณที่ได้รับ (ล้านบาท)</h6>
+                                    <input type="number" step='0.01' class="form-control" id="fund_accpt">
                                 </div>
                             </li>
                         </ul>
@@ -351,7 +345,7 @@
 
                         <h5>2. สถานภาพโครงการ</h5>
                         <div class="row">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <div class="col-sm">
                                     <h6>ลักษณะโครงการ </h6>
                                     <select class="form-control" id="prj_type">
@@ -359,7 +353,7 @@
                                         <option value="โครงการต่อเนื่อง">โครงการต่อเนื่อง</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm">
                                 <div class="form-group">
                                     <h6>พื้นที่ดำเนินการ</h6>
@@ -367,12 +361,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm">
+                            <!-- <div class="col-sm">
                                 <div class="form-group">
                                     <h6>เนื้อที่ (ไร่)</h6>
                                     <input type="number" class="form-control" id="prj_rai" value="0">
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div id="map"></div>
