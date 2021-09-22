@@ -21,3 +21,41 @@ h1, h2, h3, h4, h5, h6 {
 .blue{
     background-color: #29a0f0 !important;
 }
+
+.login100-form-btn {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    min-width: 120px;
+    height: 50px;
+    background-color: #46b89c;
+    border-radius: 25px;
+    font-family: "Kanit", sans-serif;
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.form-control2 {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.0);
+    border-radius: .25rem;
+    /* transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s; */
+}

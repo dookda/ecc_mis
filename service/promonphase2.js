@@ -136,5 +136,15 @@ app.post("/projmon2-api/updatedata", async (req, res) => {
     })
 })
 
+app.get("/projmon2-api/getuser", async (req, res) => {
+    let sql = "select distinct prj_operat from eecprj_mon_phase2_user"
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+
 
 module.exports = app;

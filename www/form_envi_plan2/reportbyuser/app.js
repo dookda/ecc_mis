@@ -4,7 +4,7 @@ let org = sessionStorage.getItem('org');
 
 sessionStorage.removeItem("gid");
 
-org == "admin" ? org = "ทสจ." : null;
+// org == "admin" ? org = "ทสจ." : null;
 
 let logout = () => {
     sessionStorage.clear();
@@ -22,8 +22,8 @@ if (typ == "admin") {
     $("#isadmin").hide()
     $("#isadmin2").hide()
 }
-// const url = "https://eec-onep.online:3700";
-const url = "http://localhost:3700";
+const url = "https://eec-onep.online:3700";
+// const url = "http://localhost:3700";
 
 let latlng;
 

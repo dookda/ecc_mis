@@ -20,8 +20,8 @@ if (typ == "admin") {
     $("#isadmin").hide()
     $("#isadmin2").hide()
 }
-// const url = "https://eec-onep.online:3700";
-const url = "http://localhost:3700";
+const url = "https://eec-onep.online:3700";
+// const url = "http://localhost:3700";
 
 let latlng;
 
@@ -98,7 +98,7 @@ let loadTable = () => {
         ajax: {
             type: "POST",
             url: url + '/projmon2-api/getallproj',
-            data: { typ: typ },
+            data: { typ: org },
             dataSrc: 'data'
         },
         columns: [
