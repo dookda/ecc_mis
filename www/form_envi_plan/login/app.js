@@ -43,3 +43,25 @@ $('#loginForm').submit(function (e) {
 
     return false
 })
+
+$("#loginplan1").show();
+$("#loginplan2").hide();
+$("#planitem").on("change", () => {
+    if ($("#planitem").val() == "plan2") {
+        $("#loginplan1").hide();
+        $("#loginplan2").show();
+    } else {
+        $("#loginplan1").show();
+        $("#loginplan2").hide();
+    }
+})
+
+let getuser = () => {
+    axios.get(url + "/projmon2-api/getuser").then(r => {
+        $("#usrname").append(`<option value="admin">admin</option>`)
+        r.data.data.map(i => {
+            $("#usrname").append(`<option value="${i.prj_operat}">${i.prj_operat}</option>`)
+        })
+    })
+}
+getuser()
