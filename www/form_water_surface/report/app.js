@@ -235,14 +235,30 @@ let getChart = (ws_id) => {
                             </div>
                         </div>`
                     )
-                    geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1]);
+                    if (key == "ws_do") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 4, 10, value); }
+                    else if (key == "ws_bod") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 2, value); }
+                    else if (key == "ws_fcb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 4000, value); }
+                    else if (key == "ws_wqi") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 61, 100, value); }
+                    else if (key == "ws_nh3n") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.5, value); }
+                    else if (key == "ws_tcb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 20000, value); }
+                    else if (key == "ws_tp") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0, value); }
+                    else {
+                        geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 999999, value);
+                    }
                 }
             }
         }
     });
+    $("#referlink").html(
+        `<div class="row" style="margin-left: 1%; color: darkgrey;">
+                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำผิวดินไม่อยู่ในเกณฑ์มาตรฐาน </div>
+        <div class="row" style="margin-left: 1%;" id=>
+        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+            href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a>
+    </div>`)
 }
 
-
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -263,7 +279,7 @@ let loadTable = () => {
             }
         }
     });
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
             url: url + '/ws-api/getownerdata',
@@ -325,21 +341,23 @@ let getMarker = (d) => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
     // console.log(d)
-    mg = L.layerGroup();
-    d.map(i => {
-        if (i.geojson) {
-            let json = JSON.parse(i.geojson);
-            // console.log(json)
-            mk = L.geoJson(json, {
-                name: "marker"
-            })
-                .bindPopup(`<h6><b>รหัสสถานี :</b> ${i.ws_station}</h6><h6><b>สถานที่ :</b> ${i.ws_location}</h6><h6><b>ชื่อแหล่งน้ำ :</b> ${i.ws_river}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
-            // .addTo(map)
-        }
-        mg.addLayer(mk);
-    });
-    mg.addTo(map)
-    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
+                let json = JSON.parse(i.geojson);
+                // console.log(json)
+                mk = L.geoJson(json, {
+                    name: "marker"
+                })
+                    .bindPopup(`<h6><b>รหัสสถานี :</b> ${i.ws_station}</h6><h6><b>สถานที่ :</b> ${i.ws_location}</h6><h6><b>ชื่อแหล่งน้ำ :</b> ${i.ws_river}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+                // .addTo(map)
+            }
+            mg.addLayer(mk);
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let getDetail = (e) => {
@@ -347,7 +365,7 @@ let getDetail = (e) => {
     location.href = "./../detail/index.html";
 }
 
-let geneChart = (arr, div, tt, unit) => {
+let geneChart = (arr, div, tt, unit, min, max, value) => {
     $("#spinner").hide();
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
@@ -368,6 +386,7 @@ let geneChart = (arr, div, tt, unit) => {
     var axis = chart.yAxes.push(new am4charts.ValueAxis());
     axis.paddingLeft = 5;
     axis.paddingRight = 5;
+    axis.min = 0;
     // axis.layout = "absolute";
 
     axis.title.text = unit;
@@ -385,9 +404,32 @@ let geneChart = (arr, div, tt, unit) => {
     series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
     series.columns.template.fillOpacity = .8;
 
+    if (value > max) {
+        series.stroke = am4core.color("#e53935");
+        series.tooltip.getFillFromObject = false;
+        series.tooltip.background.fill = am4core.color("#e53935");
+        series.columns.template.stroke = am4core.color("#e53935");
+        series.columns.template.fill = am4core.color("#e53935");
+    }
+
+    else if (value <= max) {
+        series.stroke = am4core.color("#64b5f6");
+        series.tooltip.getFillFromObject = false;
+        series.tooltip.background.fill = am4core.color("#64b5f6");
+        series.columns.template.stroke = am4core.color("#64b5f6");
+        series.columns.template.fill = am4core.color("#64b5f6");
+    }
+
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    // var range = axis.createSeriesRange(series);
+    // range.value = min;
+    // range.endValue = max;
+    // range.contents.stroke = am4core.color("#396478");
+    // range.contents.fill = range.contents.stroke;
+
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
@@ -403,45 +445,52 @@ let geneChart = (arr, div, tt, unit) => {
 
 
 let getStation = () => {
-    axios.get(url + "/ws-api/getstation").then(r => {
-        // console.log(r);
+    axios.post(url + '/ws-api/getownerdata', { usrid: urid }).then(r => {
+        // console.log(r.data.data);
         r.data.data.map(i => $("#sta").append(`<option value="${i.ws_station}">${i.ws_river} (${i.ws_station})</option>`))
     })
 }
 getStation();
 
-let getSeries = (sta) => {
-    let ws_wqi = [];
-    let ws_bod = [];
-    let ws_do = [];
-    let ws_fcb = [];
-    let ws_nh3n = [];
-    let ws_tcb = [];
-    axios.post(url + "/ws-api/getstationone", { ws_station: sta }).then(async r => {
-        // console.log(r);
-        await r.data.data.map(i => {
-            ws_wqi.push({ "date": i.ws_date, "value": Number(i.ws_wqi) });
-            ws_bod.push({ "date": i.ws_date, "value": Number(i.ws_bod) });
-            ws_do.push({ "date": i.ws_date, "value": Number(i.ws_do) });
-            ws_fcb.push({ "date": i.ws_date, "value": Number(i.ws_fcb) });
-            ws_nh3n.push({ "date": i.ws_date, "value": Number(i.ws_nh3n) });
-            ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
-        });
+// let getSeries = (sta) => {
+//     let ws_wqi = [];
+//     let ws_bod = [];
+//     let ws_do = [];
+//     let ws_fcb = [];
+//     let ws_nh3n = [];
+//     let ws_tcb = [];
+//     axios.post(url + "/ws-api/getstationone", { ws_station: sta }).then(async r => {
+//         // console.log(r);
+//         await r.data.data.map(i => {
+//             ws_wqi.push({ "date": i.ws_date, "value": Number(i.ws_wqi) });
+//             ws_bod.push({ "date": i.ws_date, "value": Number(i.ws_bod) });
+//             ws_do.push({ "date": i.ws_date, "value": Number(i.ws_do) });
+//             ws_fcb.push({ "date": i.ws_date, "value": Number(i.ws_fcb) });
+//             ws_nh3n.push({ "date": i.ws_date, "value": Number(i.ws_nh3n) });
+//             ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
+//         });
 
-        lineChart("_ws_wqi", "WQI", "WQI", ws_wqi);
-        lineChart("_ws_bod", "DO", "(mg/l)", ws_bod);
-        lineChart("_ws_do", "BOD", "(mg/l)", ws_do);
-        lineChart("_ws_fcb", "FCB", "(MPN/100ml)", ws_fcb);
-        lineChart("_ws_nh3n", "แอมโมเนีย", "(mg/l)", ws_nh3n);
-        lineChart("_ws_tcb", "TCB", "(MPN/100ml)", ws_tcb);
-    })
-}
-getSeries("BK01");
+//         lineChart("_ws_wqi", "WQI", "WQI", ws_wqi);
+//         lineChart("_ws_bod", "DO", "(mg/l)", ws_bod);
+//         lineChart("_ws_do", "BOD", "(mg/l)", ws_do);
+//         lineChart("_ws_fcb", "FCB", "(MPN/100ml)", ws_fcb);
+//         lineChart("_ws_nh3n", "แอมโมเนีย", "(mg/l)", ws_nh3n);
+//         lineChart("_ws_tcb", "TCB", "(MPN/100ml)", ws_tcb);
+//     })
+// }
+// getSeries("BK01");
 $("#sta").change(function () {
-    getSeries(this.value);
+    let sta = this.value;
+    if (sta == "ทุกสถานีตรวจวัดค่า") {
+        $("#chartall").hide()
+        dtable.search('').draw();
+    } else {
+        dtable.search(sta).draw();
+    }
+    zoomsta(sta)
 })
 
-let lineChart = (div, label, unit, series) => {
+let lineChart = (div, label, unit, series, min1, max1, min2, max2) => {
 
     am4core.useTheme(am4themes_animated);
 
@@ -464,16 +513,53 @@ let lineChart = (div, label, unit, series) => {
         series.dataFields.valueY = field;
         series.dataFields.dateX = "date";
         series.name = name;
-        series.tooltipText = "{dateX}: [b]{valueY}[/]";
+        // series.tooltipText = `{dateX}: [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
         series.strokeWidth = 2;
+        // series.tensionX = 0.77;
+        // series.tooltip.getFillFromObject = false;
+        // series.tooltip.background.fill = am4core.color("#35E1E5");
+        // series.stroke = am4core.color("#e53935");
 
         var bullet = series.bullets.push(new am4charts.CircleBullet());
-        bullet.circle.strokeWidth = 2;
+        bullet.circle.strokeWidth = 3;
         bullet.circle.radius = 4;
         bullet.circle.fill = am4core.color("#fff");
+        // bullet.circle.stroke = am4core.color("#03a9f4");
+        bullet.adapter.add("stroke", function (fill, target) {
+            if (target.dataItem.valueY > min2) {
+                return am4core.color("#E53935");
+            }
+            else if (target.dataItem.valueY < max1) {
+                return am4core.color("#E53935");
+            } return fill;
+
+        })
+
+        var bullet2 = series.bullets.push(new am4charts.Bullet());
+        bullet2.tooltipText = `{dateX}: [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
+        bullet2.adapter.add("fill", function (fill, target) {
+            if (target.dataItem.valueY > min2) {
+                return am4core.color("#E53935");
+            }
+            else if (target.dataItem.valueY < max1) {
+                return am4core.color("#E53935");
+            } return fill;
+        })
 
         var bullethover = bullet.states.create("hover");
         bullethover.properties.scale = 1.3;
+
+        var range = valueAxis.createSeriesRange(series);
+        range.value = min1;
+        range.endValue = max1;
+        range.contents.stroke = am4core.color("#E53935");
+        range.contents.fill = range.contents.stroke;
+
+        var range2 = valueAxis.createSeriesRange(series);
+        range2.value = min2;
+        range2.endValue = max2;
+        range2.contents.stroke = am4core.color("#E53935");
+        range2.contents.fill = range.contents.stroke;
 
         return series;
     }
@@ -482,6 +568,7 @@ let lineChart = (div, label, unit, series) => {
 
     chart.legend = new am4charts.Legend();
     chart.cursor = new am4charts.XYCursor();
+
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
@@ -494,9 +581,6 @@ let lineChart = (div, label, unit, series) => {
         return { data: data };
     });
 }
-
-lineChart()
-
 
 var m58, m59, m60, ms58, ms59, ms60, m53, ms53
 let layermark = (Url, Nlayer) => {
@@ -620,4 +704,201 @@ let layermark = (Url, Nlayer) => {
         });
     }
 }
+$("#chartall").hide();
+let callChart = () => {
+    $("#chartall").show();
+    var sta = $("#sta").val();
+    var staname = $("#sta").children("option:selected").text()
+    var parameter = $("#parameter").val();
+    $('#staname').html(` ${parameter} ของสถานี ${staname} `)
+    let ws_wqi = [];
+    let ws_bod = [];
+    let ws_do = [];
+    let ws_fcb = [];
+    let ws_nh3n = [];
+    let ws_tcb = [];
 
+
+    if (sta == "ทุกสถานีตรวจวัดค่า") {
+        chartstaall()
+    } else {
+        axios.post(url + '/ws-api/getownerdata', { usrid: urid }).then(async r => {
+            await r.data.data.map(i => {
+                ws_wqi.push({ "date": i.ws_date, "value": Number(i.ws_wqi) });
+                ws_bod.push({ "date": i.ws_date, "value": Number(i.ws_bod) });
+                ws_do.push({ "date": i.ws_date, "value": Number(i.ws_do) });
+                ws_fcb.push({ "date": i.ws_date, "value": Number(i.ws_fcb) });
+                ws_nh3n.push({ "date": i.ws_date, "value": Number(i.ws_nh3n) });
+                ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
+            });
+            if (parameter == "WQI") { lineChart("chartdiv", "WQI", "WQI", ws_wqi, 0, 61, 100, 500); }
+            else if (parameter == "DO") { lineChart("chartdiv", "DO", "(mg/l)", ws_do, 0, 4, 10, 100); }
+            else if (parameter == "BOD") { lineChart("chartdiv", "BOD", "(mg/l)", ws_bod, 0, 2, 100, 500); }
+            else if (parameter == "FCB") { lineChart("chartdiv", "FCB", "(MPN/100ml)", ws_fcb, 0, 0, 4000, 500000); }
+            else if (parameter == "AMM") { lineChart("chartdiv", "แอมโมเนีย", "(mg/l)", ws_nh3n, 0, 0, 0.5, 10); }
+            else if (parameter == "TCB") { lineChart("chartdiv", "TCB", "(MPN/100ml)", ws_tcb, 0, 0, 20000, 250000); }
+        })
+    }
+}
+
+let Dws_wqi = [];
+let Dws_bod = [];
+let Dws_do = [];
+let Dws_fcb = [];
+let Dws_nh3n = [];
+let Dws_tcb = [];
+let setall_dat = () => {
+    axios.post(url + '/ws-api/getownerdata', { usrid: urid }).then(r => {
+        // console.log(r);
+        r.data.data.map(i =>
+            axios.post(url + '/ws-api/getstationone', { ws_station: i.ws_station }).then(r => {
+                // console.log(r.data.data)
+                var data = r.data.data
+                var length = data.length - 1
+                var staname = data[length].ws_river + "(" + data[length].ws_station + ")";
+                Dws_wqi.push({ "sta": staname, "value": Number(data[length].ws_wqi) });
+                Dws_bod.push({ "sta": staname, "value": Number(data[length].ws_bod) });
+                Dws_do.push({ "sta": staname, "value": Number(data[length].ws_do) });
+                Dws_fcb.push({ "sta": staname, "value": Number(data[length].ws_fcb) });
+                Dws_nh3n.push({ "sta": staname, "value": Number(data[length].ws_nh3n) });
+                Dws_tcb.push({ "sta": staname, "value": Number(data[length].ws_tcb) });
+            })
+        )
+    })
+}
+setall_dat()
+let chartstaall = () => {
+    // var sta = data
+    // console.log(sta)
+    var parameter = $("#parameter").val();
+
+    if (parameter == "WQI") {
+        chartall(Dws_wqi, "WQI", "WQI")
+    } else if (parameter == "BOD") {
+        chartall(Dws_bod, "BOD", "mg/l")
+    } else if (parameter == "DO") {
+        chartall(Dws_do, "DO", "mg/l")
+    } else if (parameter == "FCB") {
+        chartall(Dws_fcb, "FCB", "MPN/100ml")
+    } else if (parameter == "AMM") {
+        chartall(Dws_nh3n, "แอมโมเนีย", "mg/l")
+    } else if (parameter == "TCB") {
+        chartall(Dws_tcb, "TCB", "MPN/100ml")
+    }
+
+}
+let chartall = (data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+    // Add percent sign to all numbers
+    chart.numberFormatter.numberFormat = "#,###,###.##";
+    chart.legend = new am4charts.Legend()
+    // chart.legend.position = 'bottom'
+    // chart.legend.paddingBottom = 20
+    // chart.legend.labels.template.maxWidth = 95
+
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "sta";
+    // categoryAxis.renderer.inside = true;
+    // categoryAxis.renderer.labels.template.valign = "top";
+    categoryAxis.renderer.labels.template.fontSize = 14;
+    // categoryAxis.renderer.grid.template.location = 0;
+    // categoryAxis.renderer.minGridDistance = 30;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + "(" + unit + ")";
+    valueAxis.title.fontWeight = 800;
+
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.categoryX = "sta";
+    series.clustered = false;
+    series.name = 'สถานีตรวจวัด'
+    series.tooltipText = `สถานีตรวจวัด {categoryX}: [bold]{valueY}[/] ${unit}`;
+    series.stroke = am4core.color('#5AD6F4');
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.background.fill = am4core.color('#5AD6F4');
+    series.columns.template.stroke = am4core.color('#5AD6F4');
+    series.columns.template.fill = am4core.color('#5AD6F4');
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.disabled = true;
+    chart.cursor.lineY.disabled = true;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+
+        return { data: data };
+    });
+}
+let zoomsta = (sta) => {
+    axios.get(L60).then((r) => {
+        var d = r.data.features
+        d.map(i => {
+            if (i.properties.station == sta) {
+                var popup = L.popup()
+                    .setLatLng([i.properties.lat, i.properties.long])
+                    .setContent(`<h6><b>รหัสสถานี :</b> ${i.properties.station}</h6><h6><b>ชื่อแหล่งน้ำ :</b> ${i.properties.name_river}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6><h6><b>ค่า WQI :</b> ${i.properties.wqi.toFixed(2)} ${i.properties.quality}</h6> `)
+                    .openOn(map);
+                map.setView([i.properties.lat, i.properties.long], 12);
+                // console.log(i.properties.station_n)
+            } else {
+                zoommap2(sta)
+            }
+        })
+    })
+
+    if (sta == "ทุกสถานีตรวจวัดค่า") {
+        map.closePopup();
+        zoomExtent("pro", "eec")
+    }
+}
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+
+let zoommap2 = (sta) => {
+    axios.post(url + '/ws-api/getdata', { staid: sta }).then((r) => {
+        var dat = r.data.data
+        dat.map(i => {
+            if (i.geojson !== null && sta !== "ทุกสถานีตรวจวัดค่า") {
+                let json = JSON.parse(i.geojson);
+                // console.log(json)
+                var popup = L.popup()
+                    .setLatLng([json.coordinates[1], json.coordinates[0]])
+                    .setContent(`<h6><b>รหัสสถานี:</b> ${i.ws_station}</h6><h6><b>ชื่อแหล่งน้ำ:</b> ${i.ws_river}</h6><h6><b>สถานที่ตรวจวัด:</b> ${i.ws_location}</h6>
+                    <h6><b>จังหวัด:</b> ${i.ws_province}</h6><h6><b>ค่า WQI:</b> ${i.ws_wqi}</h6> `)
+                    .openOn(map);
+                map.setView([json.coordinates[1], json.coordinates[0]], 12);
+            }
+
+        })
+    })
+}

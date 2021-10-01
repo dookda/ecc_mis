@@ -229,9 +229,12 @@ let refreshPage = () => {
     // console.log("ok");
 }
 
-let confirmDelete = (sq_id, prj_name) => {
+let confirmDelete = (sq_id, prj_name, date) => {
     $("#projId").val(sq_id)
-    $("#projName").text(prj_name)
+    $("#projName").text(`${prj_name}`)
+    if (date !== 'null') {
+        $("#projTime").text(`วันที่ ${date}`)
+    }
     $("#deleteModal").modal("show")
 }
 
@@ -246,6 +249,7 @@ let deleteValue = () => {
     let sq_id = $("#projId").val()
     axios.post(url + "/sq-api/delete", { sq_id: sq_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -271,10 +275,12 @@ function getChart(sq_id) {
 }
 let dataurl
 if (eecauth == "admin") {
-    dataurl = url + '/sq-api/getdata/admin';
+    dataurl = url + '/sq-api/getownerdata/' + urid;
+    // dataurl = url + '/sq-api/getdata/admin';
 } else if (eecauth !== "admin") {
     dataurl = url + '/sq-api/getownerdata/' + urid;
 }
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -296,7 +302,7 @@ let loadTable = () => {
         }
     });
 
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         ajax: {
             type: "get",
             url: dataurl,
@@ -331,7 +337,7 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                        <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>`
                 }
@@ -361,22 +367,24 @@ let getMarker = (d) => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
     // console.log(d)
-    mg = L.layerGroup();
-    d.map(i => {
-        if (i.geojson) {
-            let json = JSON.parse(i.geojson);
-            // console.log(json)
-            mk = L.geoJson(json, {
-                name: "marker"
-            })
-                .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
-            // .addTo(map) 
-            mg.addLayer(mk);
-        }
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
+                let json = JSON.parse(i.geojson);
+                // console.log(json)
+                mk = L.geoJson(json, {
+                    name: "marker"
+                })
+                    .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+                // .addTo(map) 
+                mg.addLayer(mk);
+            }
 
-    });
-    mg.addTo(map)
-    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let getDetail = (e) => {
@@ -422,6 +430,20 @@ let geneChart = (arr, div, tt, unit) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let getDataByPro = (sq_pro) => {
@@ -495,14 +517,222 @@ let lineChart = (div, data, label, unit) => {
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+
     dateAxis.start = 0.50;
     dateAxis.keepSelection = true;
 }
 
 getDataByPro("ชลบุรี");
-$("#prov").change(function () {
-    getDataByPro(this.value);
+
+$("#sta").change(function () {
+    if (this.value == "ทุกสถานีตรวจวัดค่า") {
+        dtable.search('').draw();
+    } else {
+        dtable.search(this.value).draw();
+    }
 })
+
+let getStation = () => {
+    // var provnam = prov
+    axios.post(url + "/sq-api/getstation/uid", { usrid: urid }).then(r => {
+        var data = r.data.data.filter(e => e.sta_loc !== null);
+        data.map(i => {
+            $("#sta").append(`<option value="${i.sta_loc}">${i.sta_loc}</option>`)
+        })
+    })
+}
+getStation()
+
+let callChart = () => {
+    let sq_sta = $("#sta").children("option:selected").text()
+    let parameter = $('#parameter').val()
+    let parameter_n = $('#parameter').children("option:selected").text()
+    let sta_n = $("#sta").val()
+    // console.log(sta_n)
+
+    let sq_po43p = [];
+    let sq_no3n = [];
+    let sq_ph = [];
+    let sq_mwqi = [];
+    if (sta_n == "ทุกสถานีตรวจวัดค่า") {
+        $("#chartall").show();
+        $('#staname').html(` ${parameter_n} ของ${sq_sta} `)
+        chartstaall()
+        // axios.get(dataurl).then(async (r) => {
+        //     // console.log(r.data.data)
+        //     await r.data.data.map(i => {
+        //         sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
+        //         sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
+        //         sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
+        //         sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
+        //     });
+        //     if (parameter == "MWQI") {
+        //         lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+        //     }
+        //     else if (parameter == "PH") {
+        //         lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+        //     }
+        //     else if (parameter == "NN") {
+        //         lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+        //     }
+        //     else if (parameter == "FF") {
+        //         lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+        //     }
+        // })
+    } else if (sta_n !== "ทุกสถานีตรวจวัดค่า") {
+        $("#chartall").show();
+        $('#staname').html(` ${parameter_n} ของสถานีตรวจวัด${sq_sta} `)
+        axios.post(url + "/sq-api/getdatabysta", { sta: sta_n }).then((r) => {
+            r.data.data.map(i => {
+                sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
+                sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
+                sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
+                sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
+            });
+            console.log(sq_mwqi)
+            if (parameter == "MWQI") {
+                lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+            }
+            else if (parameter == "PH") {
+                lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+            }
+            else if (parameter == "NN") {
+                lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+            }
+            else if (parameter == "FF") {
+                lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+            }
+        })
+    }
+}
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+
+let Dsq_po43p = [];
+let Dsq_no3n = [];
+let Dsq_ph = [];
+let Dsq_mwqi = [];
+let setall_dat = () => {
+    axios.post(url + "/sq-api/getstation/uid", { usrid: urid }).then(r => {
+        console.log(r.data.data);
+        r.data.data.map(i =>
+            axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
+                r.data.data.map(i => {
+                    var data = r.data.data
+                    var length = data.length - 1
+                    Dsq_po43p.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_po43p) });
+                    Dsq_no3n.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_no3n) });
+                    Dsq_ph.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_ph) });
+                    Dsq_mwqi.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_mwqi) });
+                })
+            })
+        )
+    })
+}
+
+setall_dat()
+
+let chartstaall = () => {
+    // var sta = data
+    // console.log(sta)
+    var parameter = $("#parameter").val();
+
+    if (parameter == "MWQI") {
+        chartall(Dsq_mwqi, "MWQI", "MWQI")
+    } else if (parameter == "NN") {
+        chartall(Dsq_no3n, "ไนเตรท-ไนโตรเจน", "mg/l")
+    } else if (parameter == "DO") {
+        chartall(Dsq_ph, "ค่า pH", "pH")
+    } else if (parameter == "FCB") {
+        chartall(Dsq_po43p, "ฟอสเฟต-ฟอสฟอรัส", "mg/l")
+    }
+}
+let chartall = (data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("divchart", am4charts.XYChart);
+
+    // Add percent sign to all numbers
+    chart.numberFormatter.numberFormat = "#,###,###.##";
+    chart.legend = new am4charts.Legend()
+    // chart.legend.position = 'bottom'
+    // chart.legend.paddingBottom = 20
+    // chart.legend.labels.template.maxWidth = 95
+
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "sta";
+    // categoryAxis.renderer.inside = true;
+    // categoryAxis.renderer.labels.template.valign = "top";
+    categoryAxis.renderer.labels.template.fontSize = 14;
+    // categoryAxis.renderer.grid.template.location = 0;
+    // categoryAxis.renderer.minGridDistance = 30;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + "(" + unit + ")";
+    valueAxis.title.fontWeight = 800;
+
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.categoryX = "sta";
+    series.clustered = false;
+    series.name = 'สถานีตรวจวัด'
+    series.tooltipText = `สถานีตรวจวัด {categoryX}: [bold]{valueY}[/] ${unit}`;
+    series.stroke = am4core.color('#5AD6F4');
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.background.fill = am4core.color('#5AD6F4');
+    series.columns.template.stroke = am4core.color('#5AD6F4');
+    series.columns.template.fill = am4core.color('#5AD6F4');
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.disabled = true;
+    chart.cursor.lineY.disabled = true;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+
+        return { data: data };
+    });
+}
 
 var m61, ms61
 let layermark = (Url, Nlayer) => {

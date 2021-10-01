@@ -47,8 +47,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 18,
-    minZoom: 14,
+    // maxZoom: 18,
+    // minZoom: 14,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -56,8 +56,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 14,
-    minZoom: 10,
+    // maxZoom: 14,
+    // minZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -65,7 +65,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 10,
+    // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 // const specieseec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
@@ -83,6 +83,13 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
 //     format: 'image/png',
 //     transparent: true
 // });
+
+const forest2563 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__27_f_type63_eec',
+    format: 'image/png',
+    transparent: true
+});
+
 let lyrs = L.featureGroup().addTo(map)
 
 var baseMap = {
@@ -94,40 +101,91 @@ let specieseec = L.featureGroup();
 let naturaleec = L.featureGroup();
 let wetlandeec = L.featureGroup();
 
-var overlayMap = {
+const overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+    "ข้อมูลป่าไม้ ปี2563": forest2563,
     "ชนิดพันธุ์สำคัญ หายาก และชีวภาพที่มีความสำคัญในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": specieseec.addTo(map),
     "ตำแหน่งแหล่งธรรมชาติในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": naturaleec.addTo(map),
     "พื้นที่ชุ่มน้ำ": wetlandeec.addTo(map),
 }
 
-L.control.layers(baseMap, overlayMap).addTo(map);
+const lyrControl = L.control.layers(baseMap, overlayMap, {
+    collapsed: true
+}).addTo(map);
 
 var legend = L.control({ position: "bottomleft" });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>สัญลักษณ์</h4>";
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-    div.innerHTML += '<img src="./../../marker/forest2.png" width="10px"><span>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</span><br>';
-    div.innerHTML += '<img src="./../../marker/mountains.png" width="10px"><span>ตำแหน่งแหล่งธรรมชาติ</span><br>';
-    div.innerHTML += '<img src="./../../marker/grass.png" width="10px"></i><span>พื้นที่ชุ่มน้ำ</span><br>';
-    div.innerHTML += '<img src="./Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
-    return div;
-};
-legend.addTo(map);
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += `<button class="btn btn-sm" onClick="Forop()" id="FOROP">
+    <span class="kanit">ข้อมูลป่าไม้ปี 2563</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+  </button>`
+        div.innerHTML += `<div id='ForLegend'></div>`
+        div.innerHTML += '<img src="./img/bio3.png" width="10px"><span>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</span><br>';
+        div.innerHTML += '<img src="./img/bio1.png" width="10px"><span>ตำแหน่งแหล่งธรรมชาติ</span><br>';
+        div.innerHTML += '<img src="./img/bio2.png" width="10px"></i><span>พื้นที่ชุ่มน้ำ</span><br>';
+        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        return div;
+    };
+    legend.addTo(map);
+}
+
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
+
+function Forop() {
+    $('#FOROP').hide()
+    $('#ForLegend').html(`<button class="btn btn-sm" onClick="Forclose()" id="FORCLOSE">
+    <span class="kanit">ข้อมูลป่าไม้ปี 2563</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+       <i style="background: #00441b; border-radius: 1%;"></i><span>ป่าชายเลน</span><br>
+    <i style="background: #006629; border-radius: 1%;"></i><span>ป่าชายหาด</span><br>
+    <i style="background: #137e3a; border-radius: 1%;"></i><span>ป่าดิบแล้ง</span><br>
+    <i style="background: #2a924a; border-radius: 1%;"></i><span>ป่าเต็งรัง</span><br>
+    <i style="background: #3da75a; border-radius: 1%;"></i><span>ป่าที่ฟื้นฟูตามธรรมชาติ</span><br>
+    <i style="background: #5bb86a; border-radius: 1%;"></i><span>ป่าทุ่ง</span><br>
+    <i style="background: #7bc87c; border-radius: 1%;"></i><span>ป่าเบญจพรรณ</span><br>
+    <i style="background: #98d593; border-radius: 1%;"></i><span>ป่าไผ่</span><br>
+    <i style="background: #b2e0ab; border-radius: 1%;"></i><span>ป่าพรุ</span><br>
+    <i style="background: #caeac3; border-radius: 1%;"></i><span>สวนป่าสัก</span><br>
+    <i style="background: #ddf2d7; border-radius: 1%;"></i><span>สวนป่าอื่นๆ</span><br>
+    <i style="background: #ecf8e8; border-radius: 1%;"></i><span>สังคมพืชลานหิน</span><br>
+    <i style="background: #f7fcf5; border-radius: 1%;"></i><span>ไม่มีข้อมูล</span></div>`)
+}
+function Forclose() {
+    $('#FOROP').show()
+    $('#ForLegend').html('')
+}
 
 let refreshPage = () => {
     location.href = "./../report/index.html";
     // console.log("ok");
 }
 
-let confirmDelete = (id, gr_name) => {
+let confirmDelete = (id, gr_name, date) => {
     $("#projId").val(id)
-    $("#projName").text(gr_name)
+    if (gr_name !== null) { $("#projName").text(gr_name) }
+    if (date !== null) {
+        $('#projTime').text(`วันที่ ${date}`)
+    }
     $("#deleteModal").modal("show")
 }
 
@@ -135,17 +193,20 @@ let closeModal = () => {
     $('#editModal').modal('hide')
     $('#deleteModal').modal('hide')
     $('#myTable').DataTable().ajax.reload();
+    window.location.reload();
 }
 
 let deleteValue = () => {
     // console.log($("#projId").val());
     let proj_id = $("#projId").val()
     axios.post(url + "/biodiversity-api/delete", { proj_id: proj_id }).then(r => {
-        r.data.data == "success" ? closeModal() : null
+        r.data.data == "success" ? closeModal() : null;
+        $('#myTable').DataTable().ajax.reload();
+        window.location.reload();
     })
 }
 
-
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -166,7 +227,7 @@ let loadTable = () => {
             }
         }
     });
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
             async: true,
@@ -191,10 +252,13 @@ let loadTable = () => {
                     // console.log(row);
                     return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
                             <button class="btn m btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
-                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 // width: "30%"
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [2, 3] },
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
@@ -220,31 +284,39 @@ let zoomMap = (lat, lon) => {
 let onEachFeature = (feature, layer) => {
     // console.log(feature);
     if (feature.properties) {
-        layer.bindPopup(`<b>${feature.properties.bioname}</b>
+        layer.bindPopup(`<span class="kanit"><b>${feature.properties.bioname}</b>
             <br>${feature.properties.biodetail}
-            <br><img src="${feature.properties.img}" width="240px">`,
-            { maxWidth: 240 });
+            <br><img src="${feature.properties.img}" width="240px"
+            <br><button class="btn m btn-outline-success kanit" onclick="getDetail(${feature.properties.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button></span>`,
+            { maxWidth: 240 }
+        );
     }
 }
-
+var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
 
-    d.map(i => {
+                let json = JSON.parse(i.geojson);
+                json.properties = { bioname: i.bioname, biodetail: i.biodetail, img: i.img };
 
-        if (i.geojson) {
+                mk = L.geoJson(json, {
+                    onEachFeature: onEachFeature,
+                    name: "marker"
+                })
+                // .addTo(map)
+                mg.addLayer(mk);
+            }
 
-            let json = JSON.parse(i.geojson);
-            json.properties = { bioname: i.bioname, biodetail: i.biodetail, img: i.img };
-
-            L.geoJson(json, {
-                onEachFeature: onEachFeature,
-                name: "marker"
-            }).addTo(map)
-        }
-    });
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let loadBiotype = async (d) => {
@@ -292,30 +364,40 @@ let loadBiopro = async (d) => {
         i.pro_name == "สระแก้ว" ? skeaw += 1 : null;
     })
     let dat = [{
-        name: "จันทบุรี",
-        value: chan
-    }, {
-        name: "ฉะเชิงเทรา",
-        value: csao
-    }, {
         name: "ชลบุรี",
         value: chon
-    }, {
-        name: "ตราด",
-        value: trad
-    }, {
-        name: "นครนายก",
-        value: nyok
-    }, {
-        name: "ปราจีนบุรี",
-        value: pchin
     }, {
         name: "ระยอง",
         value: ryong
     }, {
-        name: "สระแก้ว",
-        value: skeaw
-    }];
+        name: "ฉะเชิงเทรา",
+        value: csao
+    }]
+    // let dat = [{
+    //     name: "จันทบุรี",
+    //     value: chan
+    // }, {
+    //     name: "ฉะเชิงเทรา",
+    //     value: csao
+    // }, {
+    //     name: "ชลบุรี",
+    //     value: chon
+    // }, {
+    //     name: "ตราด",
+    //     value: trad
+    // }, {
+    //     name: "นครนายก",
+    //     value: nyok
+    // }, {
+    //     name: "ปราจีนบุรี",
+    //     value: pchin
+    // }, {
+    //     name: "ระยอง",
+    //     value: ryong
+    // }, {
+    //     name: "สระแก้ว",
+    //     value: skeaw
+    // }];
 
     chartbiopro("chartbiopro", dat)
 }
@@ -379,6 +461,18 @@ let chartbiopro = (div, val) => {
 
     // Cursor
     chart.cursor = new am4charts.XYCursor();
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+
 }
 
 let pieChart = (div, val) => {
@@ -398,6 +492,17 @@ let pieChart = (div, val) => {
     series.hiddenState.properties.endAngle = -90;
 
     chart.legend = new am4charts.Legend();
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let wfs = "https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputFormat=application%2Fjson"
@@ -412,8 +517,8 @@ let getSpecies = () => {
         let fs = r.data;
 
         var icon = L.icon({
-            iconUrl: './../../marker/forest2.png',
-            iconSize: [32, 37],
+            iconUrl: './img/bio3.png',
+            iconSize: [32, 32],
             iconAnchor: [16, 37],
             popupAnchor: [0, -28]
         });
@@ -443,8 +548,8 @@ let getNatural = () => {
         let fs = r.data;
 
         var icon = L.icon({
-            iconUrl: './../../marker/mountains.png',
-            iconSize: [32, 37],
+            iconUrl: './img/bio1.png',
+            iconSize: [32, 32],
             iconAnchor: [16, 37],
             popupAnchor: [0, -28]
         });
@@ -476,8 +581,8 @@ let getWetland = () => {
         let fs = r.data;
 
         var icon = L.icon({
-            iconUrl: './../../marker/grass.png',
-            iconSize: [32, 37],
+            iconUrl: './img/bio2.png',
+            iconSize: [32, 32],
             iconAnchor: [16, 37],
             popupAnchor: [0, -28]
         });
@@ -504,6 +609,62 @@ let getWetland = () => {
 
 getWetland()
 
+$('#prov').on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
+
+    let pro = $("#prov").children("option:selected").text()
+    if (pro !== "ทุกจังหวัด") {
+        dtable.search(pro).draw();
+    } else {
+        dtable.search('').draw();
+    }
+})
+$('#amp').on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+
+    let amp = $("#amp").children("option:selected").text()
+    dtable.search(amp).draw();
+})
+$('#tam').on("change", function () {
+    zoomExtent("tam", this.value)
+
+    let tam = $("#tam").children("option:selected").text()
+    dtable.search(tam).draw();
+})
+
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
 
 
 

@@ -55,8 +55,8 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -123,6 +123,14 @@
                                             </label>
                                             <br>
                                             <img id="wtrlLegend" width="30px">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Wqua" id="Wqua">
+                                            <label class="form-check-label">
+                                                จุดตรวจวัดคุณภาพน้ำผิวดิน
+                                            </label>
+                                            <br>
+                                            <img id="WquaLegend" width="30px">
                                         </div>
 
                                         <div class="form-check">
@@ -365,15 +373,15 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
-        <div class="fixed-bottom p-4">
-            <div class="toast cookie text-white text-left" role="alert" data-autohide="false">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
                 <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
-                    <div class="mr-auto p-2 bd-highlight">
+                    <div class="p-2 bd-highlight  text-justify">
                         <span style="font-size: 12px; font-stretch: condensed;">
                             เว็บไซต์นี้
                             มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
-                            หากท่านใช้<br>บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
-                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์<br>
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
                             <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
@@ -381,11 +389,14 @@
                             และ <a href="https://www.onep.go.th/cookie-policy/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">นโยบายคุกกี้
-                                (Cookie Policy)</a>
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
                         </span>
                     </div>
                     <div class="ml-auto p-2 bd-highlight">
-                        <button type="button" class="btn btn-success" id="btnAccept">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
                             ยอมรับและปิด
                         </button>
                     </div>
@@ -410,6 +421,27 @@
                     <div class="hchart" id="tempChart"></div>
                     <p></p>
                     <div class="hchart" id="humiChart"></div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WquaModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hchart" id="pHChart"></div>
+                    <p></p>
+                    <div class="hchart" id="TempChart"></div>
+                    <p></p>
+                    <div class="hchart" id="ECChart"></div>
+                    <p></p>
+                    <div class="hchart" id="DOChart"></div>
 
                 </div>
                 <div class="modal-footer">

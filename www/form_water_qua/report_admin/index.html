@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>รายงานข้อมูลคุณภาพน้ำก่อนและหลังการบำบัด</title>
+    <title>ระบบรายงานข้อมูลคุณภาพน้ำทิ้ง/น้ำเสีย</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -61,9 +61,8 @@
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
 
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
                     <li><a href="./../../form_register/profile/index.html"><i
@@ -93,9 +92,11 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
-                    <h2>รายงานข้อมูลนำเข้าคุณภาพน้ำก่อนและหลังบำบัด</h2>
+                    <h2>ระบบรายงานสถานการณ์คุณภาพน้ำทิ้ง/น้ำเสีย</h2>
                     <p>
-                        การรายงานข้อมูลค่าพารามิเตอร์คุณภาพน้ำก่อนเข้าสู่ระบบบำบัดและหลังออกจากระบบบำบัดในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบรายงานสถานการณ์คุณภาพน้ำทิ้ง/น้ำเสียเป็นการแสดงผลข้อมูลสถิติคุณภาพของน้ำก่อนและหลังการบำบัดของกรมโรงงานอุตสาหกรรมและสำนักงานสิ่งแวดล้อมภาคที่
+                        13 (ชลบุรี) ข้อมูลประกอบด้วยค่าพารามิเตอร์ๆ เพื่อใช้ช่วยสนับสนุนการตัดสินใจในการวางแผน
+                        และแก้ไขปัญหา ที่จะนำไปสู่การกำหนดแผนและนโยบายในด้านต่างๆ ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
 
@@ -106,70 +107,56 @@
                     <div class="card-body">
                         รายการนำเข้าข้อมูลค่าพารามิเตอร์คุณภาพน้ำก่อนเข้าสู่ระบบบำบัดและหลังออกจากระบบบำบัด
                         <hr>
-                        <div class="col-sm-4 form-group">
-                            <label for="sta">เลือกจุดตรวจวัด:</label>
-                            <select class="form-control" name="sta" id="sta">
-                                <option value="ทม.แสนสุข (เหนือ)">ทม.แสนสุข (เหนือ)</option>
-                                <option value="ทน.ระยอง">ทน.ระยอง</option>
-                                <option value="โรงปรับปรุงคุณภาพน้ำ จ.ชลบุรี">โรงปรับปรุงคุณภาพน้ำ จ.ชลบุรี</option>
-                                <option value="โรงานปรับปรุงคุณภาพน้ำแสนสุขเหนือ">โรงานปรับปรุงคุณภาพน้ำแสนสุขเหนือ
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                        <div class="row d-flex align-items-end w-100 mw-100">
+                            <div class="col-sm-3 form-group">
+                                <label for="">ข้อมูลของจังหวัด:</label>
+                                <select class="form-control" name="" id="prov">
+                                    <option value="ทุกจังหวัด">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="cchart" id="c_bod"></div>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body ">
-                                <div class="cchart" id="c_cod"></div>
+                            <div class="col-sm-3 form-group">
+                                <label for="sta">เลือกจุดตรวจวัด:</label>
+                                <select class="form-control" name="sta" id="sta">
+                                    <option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body ">
-                                <div class="cchart" id="c_do"></div>
+                            <div class="col-sm-2 form-group">
+                                <label for="">ค่าการตรวจวัด:</label>
+                                <select class="form-control" name="" id="parameter">
+                                    <option value="BOD">BOD</option>
+                                    <option value="COD">COD</option>
+                                    <option value="DO">DO</option>
+                                    <option value="PH">pH</option>
+                                    <option value="SS">SS</option>
+                                    <option value="TEMP">TEMP</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body ">
-                                <div class="cchart" id="c_ph"></div>
+                            <div class="col-sm-4 form-group">
+                                <button class="btn btn-success" onclick="callChart()"><i
+                                        class="bi bi-clipboard-data"></i>
+                                    แสดงผลกราฟของข้อมูลที่เลือก</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body ">
-                                <div class="cchart" id="c_ss"></div>
-                            </div>
+                <div class="p-1 w-100" id="chartall">
+                    <div class="card">
+                        <div class="card-body">
+                            <label>ค่าการตรวจวัด<span id="staname"></span>ที่ผ่านมา</label>
+                            <div style="width: 100%; height: 400px;" id="divchart"></div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body ">
-                                <div class="cchart" id="c_temp"></div>
-                            </div>
-                        </div>
+                        <div class="row" style="margin-left: 1%; color: darkgrey;">
+                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                        <div class="row" style="margin-left: 1%;">
+                            อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                                href="http://pcd.go.th/info_serv/reg_std_water04.html">กรมควบคุมมลพิษ</a></div>
+                        <br>
                     </div>
                 </div>
-
                 <br>
                 <h5>ตำแหน่งที่ตรวจวัดคุณภาพน้ำ</h5>
                 <div class="card">
@@ -181,6 +168,7 @@
                         <a class="btn btn-success" href="./../create/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                         <hr>
+                        <label for="">ดาวน์โหลดข้อมูล</label>
                         <table id="myTable" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                                 <tr>
@@ -210,16 +198,16 @@
                 <div class="container">
                     <div class="row" style="align-items: baseline; margin-left: -2px; margin-bottom: -10px;">
                         <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
-                        <P>กรมโรงงานอุตสาหกรรมและสำนักงานสิ่งแวดล้อมภาคที่ 13 (ชลบุรี) ปี2563</P>
+                        <P>กรมโรงงานอุตสาหกรรม</P>
                     </div>
                     <!-- <div class="row" style="margin-left: 1%;">
                         อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
                             href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="container-fluid mt-3 mb-6">
+                <!-- <div class="container-fluid mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
 
@@ -244,8 +232,17 @@
     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบข้อมูลวันที่ <span id="projName"></span></p>
+                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        ยืนยันการลบข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center mx-auto">
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span>
+                        </b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
                 <div class="modal-footer">
@@ -359,6 +356,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" style="margin-left: 1%; color: darkgrey;">
+                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                        <div class="row" style="margin-left: 1%;">
+                            อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                                href="http://pcd.go.th/info_serv/reg_std_water04.html">กรมควบคุมมลพิษ</a></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -397,6 +399,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <!-- 
+    <script src="https://cdn.datatables.net/plug-ins/1.11.3/dataRender/datetime.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script> -->
 
     <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>

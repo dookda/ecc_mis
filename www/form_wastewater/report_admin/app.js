@@ -411,7 +411,7 @@ let getMarker = (d) => {
 }
 
 let getDetail = (e) => {
-    sessionStorage.setItem('w_gid', e);
+    sessionStorage.setItem('w_id', e);
     sessionStorage.setItem('w_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }

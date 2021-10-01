@@ -53,12 +53,30 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     lyrname: "bmap"
 });
-
-var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
     transparent: true,
-    lyrname: "bmap"
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -66,7 +84,9 @@ var baseMap = {
     "แผนที่ถนน": mapbox
 }
 var overlayMap = {
-    "ขอบเขตจังหวัด": pro.addTo(map)
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 L.control.layers(baseMap, overlayMap).addTo(map);
 
@@ -129,7 +149,7 @@ axios.post(url + "/gb-api/getone", { gb_id: gb_id }).then(r => {
     // });
     // site.addTo(lyrs)
 
-    console.log(r.data.data[0].geojson);
+    // console.log(r.data.data[0].geojson);
 
     if (r.data.data[0].geojson) {
         if (geom) {
@@ -139,7 +159,7 @@ axios.post(url + "/gb-api/getone", { gb_id: gb_id }).then(r => {
         geom = L.geoJSON(JSON.parse(g), {
             name: "p"
         }).addTo(map)
-        console.log(g);
+        // console.log(g);
         map.setView([JSON.parse(g).coordinates[1], JSON.parse(g).coordinates[0]], 16)
     }
     // map.fitBounds(site.getBounds());
@@ -194,9 +214,12 @@ function refreshPage() {
     $("#gform")[0].reset();
 }
 
-
-
-
-
-
-
+let UserReport = () => {
+    if (eecauth !== "admin" && eecauth !== "office") {
+        location.href = "./../report_user/index.html";
+    } else if (eecauth == "admin") {
+        location.href = "./../report_admin/index.html"
+    } else if (eecauth == "office") {
+        location.href = "./../report/index.html"
+    }
+}

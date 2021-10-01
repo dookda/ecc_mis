@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลพื้นที่สีเขียว</title>
+    <title>ระบบนำเข้าข้อมูลพื้นที่สีเขียวสาธารณะ</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -62,10 +62,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
 
@@ -115,9 +116,15 @@
                 <!-- ฟอร์มนำเข้า -->
 
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลพื้นที่สีเขียว</h2>
+                    <h2>ระบบนำเข้าข้อมูลพื้นที่สีเขียวสาธารณะ</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลพื้นที่สีเขียวในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลพื้นที่สีเขียวสาธารณะ
+                        เป็นการนำเข้าข้อมูลพื้นที่สีเขียวสาธารณะจากองค์การปกครองส่วนท้องถิ่น
+                        ซึ่งเจ้าหน้าที่ที่เกี่ยวข้องสามารถสร้างข้อมูลรูปแบบแปลงของพื้นที่สีเขียวสาธารณะ
+                        พร้อมทั้งระบุรายละเอียดของพื้นที่
+                        โดยระบบจะทำการคำนวณเนื้อที่ของพื้นที่สีเขียวสาธารณะให้อัตโนมัติ
+                        ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถนำเข้า แก้ไข
+                        และเรียกดูข้อมูลสถิติของพื้นที่ได้
                     </p>
                 </div>
                 <hr>
@@ -175,7 +182,8 @@
 
                                 <div class="form-group">
                                     <label for="type">ประเภทพื้นที่สีเขียว &nbsp;(<a
-                                            href="http://thaigreenurban.onep.go.th/frmTassaban.aspx">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a>)</label>
+                                            href="http://thaigreenurban.onep.go.th/frmTassaban.aspx" target="_blank"
+                                            rel="noopener noreferrer">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a>)</label>
                                     <select class="form-control" id="type" required>
                                         <option value=""></option>
                                         <option value="ประเภทที่1">พื้นที่สีเขียวเพื่อการบริการ สาธารณะ</option>
@@ -218,9 +226,9 @@
                 </div>
 
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="mt-3 mb-6">
+                <!-- <div class="mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section>
     </main><!-- End #main -->

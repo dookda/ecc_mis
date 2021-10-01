@@ -57,3 +57,4 @@ $('#loginForm').submit(function (e) {
 
     return false
 })
+

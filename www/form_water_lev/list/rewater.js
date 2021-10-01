@@ -10,7 +10,7 @@ if (eecauth !== "admin" && eecauth !== "user") {
 
 
 $.get(" https://eec-onep.online:3700/api/getLv").done(r => {
-    console.log(r)
+    // console.log(r)
     let name = [];
     let waterLv = [];
     r.data.map(i => {
@@ -26,7 +26,7 @@ $.get(" https://eec-onep.online:3700/api/getLv").done(r => {
 })
 
 function showChart(name, waterLv) {
-    console.log(name, waterLv)
+    // console.log(name, waterLv)
     Highcharts.chart('chart', {
         chart: {
             type: 'column'

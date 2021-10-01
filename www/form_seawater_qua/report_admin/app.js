@@ -228,9 +228,12 @@ let refreshPage = () => {
     // console.log("ok");
 }
 
-let confirmDelete = (sq_id, prj_name) => {
+let confirmDelete = (sq_id, prj_name, date) => {
     $("#projId").val(sq_id)
     $("#projName").text(prj_name)
+    if (date !== 'null') {
+        $("#projTime").text(`วันที่ ${date}`)
+    }
     $("#deleteModal").modal("show")
 }
 
@@ -245,6 +248,7 @@ let deleteValue = () => {
     let sq_id = $("#projId").val()
     axios.post(url + "/sq-api/delete", { sq_id: sq_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -256,19 +260,19 @@ function getChart(sq_id) {
     axios.post(url + "/sq-api/getone", obj).then((r) => {
         $("#chartdiv").show()
         // console.log(r.data.data[0]);
-        geneChart([{ "cat": "ค่าดีโอ", "val": r.data.data[0].sq_do }], "sq_do", "ค่าดีโอ", "mg/L");
-        geneChart([{ "cat": "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "val": r.data.data[0].sq_tcb }], "sq_tcb", "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "MPN/100ml");
-        geneChart([{ "cat": "ฟอสเฟต-ฟอสฟอรัส", "val": r.data.data[0].sq_po43p }], "sq_po43p", "ฟอสเฟต-ฟอสฟอรัส", "μg-P/l");
-        geneChart([{ "cat": "ไนเตรท-ไนโตรเจน", "val": r.data.data[0].sq_no3n }], "sq_no3n", "ไนเตรท-ไนโตรเจน", "μg-N/l");
-        geneChart([{ "cat": "อุณหภูมิ", "val": r.data.data[0].sq_temp }], "sq_temp", "อุณหภูมิ", "ºC");
-        geneChart([{ "cat": "สารแขวนลอย", "val": r.data.data[0].sq_ss }], "sq_ss", "สารแขวนลอย", "");
-        geneChart([{ "cat": "ค่าความเป็นกรด-ด่าง", "val": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH");
-        geneChart([{ "cat": "ปริมาณแอมโมเนีย", "val": r.data.data[0].sq_nh3 }], "sq_nh3", "ปริมาณแอมโมเนีย", "μg-N/l");
-        geneChart([{ "cat": "ค่ามาตรฐานคุณภาพน้ำทะเล", "val": r.data.data[0].sq_mwqi }], "sq_mwqi", "ค่ามาตรฐานคุณภาพน้ำทะเล", "");
-        geneChart([{ "cat": "ปริมาณสารตะกั่ว", "val": r.data.data[0].sq_pb }], "sq_pb", "ปริมาณสารตะกั่ว", "μg/l");
+        geneChart([{ "cat": "ค่าดีโอ", "value": r.data.data[0].sq_do }], "sq_do", "ค่าดีโอ", "mg/L", 4, 10);
+        geneChart([{ "cat": "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "value": r.data.data[0].sq_tcb }], "sq_tcb", "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "MPN/100ml", 0, 1000,);
+        geneChart([{ "cat": "ฟอสเฟต-ฟอสฟอรัส", "value": r.data.data[0].sq_po43p }], "sq_po43p", "ฟอสเฟต-ฟอสฟอรัส", "μg-P/l", 0, 45);
+        geneChart([{ "cat": "ไนเตรท-ไนโตรเจน", "value": r.data.data[0].sq_no3n }], "sq_no3n", "ไนเตรท-ไนโตรเจน", "μg-N/l", 0, 60);
+        geneChart([{ "cat": "อุณหภูมิ", "value": r.data.data[0].sq_temp }], "sq_temp", "อุณหภูมิ", "ºC", 0, 100);
+        geneChart([{ "cat": "สารแขวนลอย", "value": r.data.data[0].sq_ss }], "sq_ss", "สารแขวนลอย", "", 0, 1000);
+        geneChart([{ "cat": "ค่าความเป็นกรด-ด่าง", "value": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH", 7, 8.5);
+        geneChart([{ "cat": "ปริมาณแอมโมเนีย", "value": r.data.data[0].sq_nh3 }], "sq_nh3", "ปริมาณแอมโมเนีย", "μg-N/l", 0, 0.5);
+        geneChart([{ "cat": "ค่ามาตรฐานคุณภาพน้ำทะเล", "value": r.data.data[0].sq_mwqi }], "sq_mwqi", "ค่ามาตรฐานคุณภาพน้ำทะเล", "", 0, 100);
+        geneChart([{ "cat": "ปริมาณสารตะกั่ว", "value": r.data.data[0].sq_pb }], "sq_pb", "ปริมาณสารตะกั่ว", "μg/l", 0, 8.5);
     })
 }
-
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -289,11 +293,11 @@ let loadTable = () => {
             }
         }
     });
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
             url: url + '/sq-api/getdata',
-            data: { userid: "sakda" },
+            data: {},
             dataSrc: 'data'
         },
         columns: [
@@ -325,7 +329,7 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                        <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                        <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>`
                 }
@@ -354,22 +358,25 @@ let getMarker = (d) => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
     // console.log(d)
-    mg = L.layerGroup();
-    d.map(i => {
-        if (i.geojson) {
-            let json = JSON.parse(i.geojson);
-            // console.log(json)
-            mk = L.geoJson(json, {
-                name: "marker"
-            })
-                .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
-            // .addTo(map) 
-            mg.addLayer(mk);
-        }
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
+                let json = JSON.parse(i.geojson);
+                // console.log(json)
+                mk = L.geoJson(json, {
+                    name: "marker",
+                    // onEachFeature: onEachFeature
+                })
+                    .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+                // .addTo(map) 
+                mg.addLayer(mk);
+            }
 
-    });
-    mg.addTo(map)
-    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let getDetail = (e) => {
@@ -378,11 +385,12 @@ let getDetail = (e) => {
     location.href = "./../detail/index.html";
 }
 
-let geneChart = (arr, div, tt, unit) => {
+let geneChart = (arr, div, tt, unit, min, max, value) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
 
     chart.data = arr
+    // console.log(arr)
 
     var title = chart.titles.create();
     title.text = tt;
@@ -406,40 +414,95 @@ let geneChart = (arr, div, tt, unit) => {
     axis.title.dy = 40;
 
     // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = "val";
-    series.dataFields.categoryX = "cat";
-    // series.name = "Visits";
-    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = .8;
+    function createSeries(field, name) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueY = field;
+        series.dataFields.categoryX = "cat";
+        series.name = name;
+        series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]";
+        series.columns.template.fillOpacity = .8;
 
-    var columnTemplate = series.columns.template;
-    columnTemplate.strokeWidth = 2;
-    columnTemplate.strokeOpacity = 1;
+        var columnTemplate = series.columns.template;
+        columnTemplate.strokeWidth = 2;
+        columnTemplate.strokeOpacity = 1;
+
+        if (field == "value") {
+            if (arr[0].value > max) {
+                series.stroke = am4core.color("#e53935");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#e53935");
+                series.columns.template.stroke = am4core.color("#e53935");
+                series.columns.template.fill = am4core.color("#e53935");
+            }
+
+            else if (arr[0].value < max) {
+                series.stroke = am4core.color("#00bcd4");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#00bcd4");
+                series.columns.template.stroke = am4core.color("#00bcd4");
+                series.columns.template.fill = am4core.color("#00bcd4");
+            }
+        }
+    }
+    createSeries("value", "คุณภาพน้ำทะเล");
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
-let getDataByPro = (sq_pro) => {
+
+
+let getDataByPro = (code) => {
+    let sq_pro
+    if (code == "20") {
+        sq_pro = "ชลบุรี"
+    } else if (code == "21") {
+        sq_pro = "ระยอง"
+    } else if (code == "24") {
+        sq_pro = "ฉะเชิงเทรา"
+    }
+    let parameter = $('#parameter').val()
     let sq_po43p = [];
     let sq_no3n = [];
     let sq_ph = [];
     let sq_mwqi = [];
 
     axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
+        // console.log(r.data.data)
         await r.data.data.map(i => {
             sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
             sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
             sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
             sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
         });
-
-        lineChart("csq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
-        lineChart("csq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
-        lineChart("csq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
-        lineChart("csq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
+        if (parameter == "MWQI") {
+            lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+        }
+        else if (parameter == "PH") {
+            lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+        }
+        else if (parameter == "NN") {
+            lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+        }
+        else if (parameter == "FF") {
+            lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+        }
     })
 }
 
-let lineChart = (div, data, label, unit) => {
+let lineChart = (div, data, label, unit, min1, max1, min2, max2,) => {
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -458,22 +521,59 @@ let lineChart = (div, data, label, unit) => {
     valueAxis.title.text = unit;
 
     // Create series
+
     var series = chart.series.push(new am4charts.LineSeries());
     series.dataFields.valueY = "dat";
     series.dataFields.dateX = "cat";
     series.strokeWidth = 2;
     series.name = label;
     series.minBulletDistance = 10;
-    series.tooltipText = "{valueY}";
+    // series.tooltipText = "{valueY}";
     series.showOnInit = true;
+    series.stroke = am4core.color("#00bcd4");
 
     var bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.circle.strokeWidth = 2;
+    bullet.circle.strokeWidth = 3;
     bullet.circle.radius = 4;
     bullet.circle.fill = am4core.color("#fff");
+    // bullet.circle.stroke = am4core.color("#00bcd4");
+    bullet.adapter.add("stroke", function (fill, target) {
+        if (target.dataItem.valueY > min2) {
+            return am4core.color("#e53935");
+        }
+        else if (target.dataItem.valueY < max1) {
+            return am4core.color("#e53935");
+        } return fill;
+
+    })
+
+    var bullet2 = series.bullets.push(new am4charts.Bullet());
+    bullet2.tooltipText = `{dateX} : [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
+    bullet2.adapter.add("fill", function (fill, target) {
+        if (target.dataItem.valueY > min2) {
+            return am4core.color("#e53935");
+        }
+        else if (target.dataItem.valueY < max1) {
+            return am4core.color("#e53935");
+        } return am4core.color("#00bcd4");
+    })
+
 
     var bullethover = bullet.states.create("hover");
     bullethover.properties.scale = 1.3;
+
+    var range = valueAxis.createSeriesRange(series);
+    range.value = min1;
+    range.endValue = max1;
+    range.contents.stroke = am4core.color("#e53935");
+    range.contents.fill = range.contents.stroke;
+
+    var range2 = valueAxis.createSeriesRange(series);
+    range2.value = min2;
+    range2.endValue = max2;
+    range2.contents.stroke = am4core.color("#e53935");
+    range2.contents.fill = range.contents.stroke;
+
 
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.fullWidthLineX = true;
@@ -484,19 +584,283 @@ let lineChart = (div, data, label, unit) => {
 
     chart.legend = new am4charts.Legend();
 
+
     // Create a horizontal scrollbar with previe and place it underneath the date axis
     chart.scrollbarX = new am4charts.XYChartScrollbar();
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    dateAxis.start = 0.50;
-    dateAxis.keepSelection = true;
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+}
+// dateAxis.start = 0.50;
+// dateAxis.keepSelection = true;
+
+
+let provStation = (prov) => {
+    var provnam = prov
+    axios.post(url + "/sq-api/getstation", { prov: provnam }).then(r => {
+        var data = r.data.data.filter(e => e.sta_loc !== null);
+        data.map(i => {
+            $("#sta").append(`<option value="${i.sta_loc}">${i.sta_loc}</option>`)
+        })
+    })
+}
+provStation()
+
+$('#chartall').hide();
+$("#prov").change(function () {
+    let prov_n = $("#prov").children("option:selected").text()
+    // $("#myTable").dataTable().fnDestroy();
+    $("#sta").empty().append('<option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>');
+    if (prov_n !== "ทุกจังหวัด") {
+        // getDataByPro(this.value);
+        // loadTable(url + '/sq-api/getdatabyprov', { prov: prov_n })
+        dtable.search(prov_n).draw();
+        // $("#sta").empty()
+        provStation(prov_n)
+        zoomExtent("pro", this.value)
+    } else {
+        $('#chartall').hide();
+        zoomExtent("pro", "eec")
+        // loadTable(url + '/sq-api/getdata', {})
+        dtable.search('').draw();
+    }
+})
+$("#sta").change(function () {
+    let sta_n = $("#sta").children("option:selected").text()
+    let prov_n = $("#prov").children("option:selected").text()
+    // $("#myTable").dataTable().fnDestroy();
+    if (sta_n !== "ทุกสถานีตรวจวัดค่า") {
+        // getDataByPro(this.value);
+        // loadTable(url + '/sq-api/getdatabysta', { sta: sta_n })
+        dtable.search(sta_n).draw();
+    } else {
+        // loadTable(url + '/sq-api/getdatabyprov', { prov: prov_n })
+        dtable.search(prov_n).draw();
+    }
+    zoomsta(sta_n)
+})
+let callChart = () => {
+    let sq_pro = $("#prov").children("option:selected").text()
+    let sq_sta = $("#sta").children("option:selected").text()
+    let parameter = $('#parameter').val()
+    let parameter_n = $('#parameter').children("option:selected").text()
+    let sta_n = $("#sta").val()
+    // console.log(sta_n)
+
+    let sq_po43p = [];
+    let sq_no3n = [];
+    let sq_ph = [];
+    let sq_mwqi = [];
+    if (sta_n == "ทุกสถานีตรวจวัดค่า" && sq_pro !== "ทุกจังหวัด") {
+        $("#chartall").show();
+        $('#staname').html(` ${parameter_n} ของจังหวัด${sq_pro} `)
+        axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
+            console.log(r.data.data)
+            await r.data.data.map(i => {
+                sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
+                sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
+                sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
+                sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
+            });
+            if (parameter == "MWQI") {
+                lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+            }
+            else if (parameter == "PH") {
+                lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+            }
+            else if (parameter == "NN") {
+                lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+            }
+            else if (parameter == "FF") {
+                lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+            }
+        })
+    } else if (sta_n !== "ทุกสถานีตรวจวัดค่า" && sq_pro !== "ทุกจังหวัด") {
+        $("#chartall").show();
+        $('#staname').html(` ${parameter_n} ของสถานีตรวจวัด${sq_sta} จังหวัด${sq_pro} `)
+        axios.post(url + "/sq-api/getdatabysta", { sta: sta_n }).then((r) => {
+            r.data.data.map(i => {
+                sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
+                sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
+                sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
+                sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
+            });
+            // console.log(sq_mwqi)
+            if (parameter == "MWQI") {
+                lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+            }
+            else if (parameter == "PH") {
+                lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+            }
+            else if (parameter == "NN") {
+                lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+            }
+            else if (parameter == "FF") {
+                lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+            }
+        })
+    }
+}
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
 }
 
-getDataByPro("ชลบุรี");
-$("#prov").change(function () {
-    getDataByPro(this.value);
-})
+// let Dsq_po43p = [];
+// let Dsq_no3n = [];
+// let Dsq_ph = [];
+// let Dsq_mwqi = [];
+let setall_dat = (prov) => {
+    let Dsq_po43p = [];
+    let Dsq_no3n = [];
+    let Dsq_ph = [];
+    let Dsq_mwqi = [];
+    var provnam = prov
+    if (provnam !== "ทุกจังหวัด") {
+        axios.post(url + "/sq-api/getstation", { prov: provnam }).then(r => {
+            var data = r.data.data.filter(e => e.sta_loc !== null);
+            data.map(i => {
+                axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
+                    r.data.data.map(i => {
+                        var data = r.data.data
+                        var length = data.length - 1
+                        Dsq_po43p.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_po43p) });
+                        Dsq_no3n.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_no3n) });
+                        Dsq_ph.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_ph) });
+                        Dsq_mwqi.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_mwqi) });
+                    })
+                    console.log(Dsq_mwqi)
+                    console.log(Dsq_ph)
+                    console.log(Dsq_po43p)
+                    console.log(Dsq_no3n)
+                })
+            })
+        })
+    } else {
+        // axios.post(url + '/sq-api/getdata', {}).then(r => {
+        //     var data = r.data.data.filter(e => e.sta_loc !== null);
+        //     data.map(i => {
+        //         axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
+        //             r.data.data.map(i => {
+        //                 var data = r.data.data
+        //                 var length = data.length - 1
+        //                 Dsq_po43p.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_po43p) });
+        //                 Dsq_no3n.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_no3n) });
+        //                 Dsq_ph.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_ph) });
+        //                 Dsq_mwqi.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_mwqi) });
+        //             })
+        //             console.log(Dsq_mwqi)
+        //             console.log(Dsq_ph)
+        //             console.log(Dsq_po43p)
+        //             console.log(Dsq_no3n)
+        //         })
+        //     })
+        // })
+
+    }
+}
+
+setall_dat("ชลบุรี")
+
+let chartstaall = () => {
+    // var sta = data
+    // console.log(sta)
+    var parameter = $("#parameter").val();
+
+    if (parameter == "MWQI") {
+        chartall(Dsq_mwqi, "MWQI", "MWQI")
+    } else if (parameter == "NN") {
+        chartall(Dsq_no3n, "ไนเตรท-ไนโตรเจน", "mg/l")
+    } else if (parameter == "DO") {
+        chartall(Dsq_ph, "ค่า pH", "pH")
+    } else if (parameter == "FCB") {
+        chartall(Dsq_po43p, "ฟอสเฟต-ฟอสฟอรัส", "mg/l")
+    }
+}
+let chartall = (data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+    // Add percent sign to all numbers
+    chart.numberFormatter.numberFormat = "#,###,###.##";
+    chart.legend = new am4charts.Legend()
+    // chart.legend.position = 'bottom'
+    // chart.legend.paddingBottom = 20
+    // chart.legend.labels.template.maxWidth = 95
+
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "sta";
+    // categoryAxis.renderer.inside = true;
+    // categoryAxis.renderer.labels.template.valign = "top";
+    categoryAxis.renderer.labels.template.fontSize = 14;
+    // categoryAxis.renderer.grid.template.location = 0;
+    // categoryAxis.renderer.minGridDistance = 30;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + "(" + unit + ")";
+    valueAxis.title.fontWeight = 800;
+
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.categoryX = "sta";
+    series.clustered = false;
+    series.name = 'สถานีตรวจวัด'
+    series.tooltipText = `สถานีตรวจวัด {categoryX}: [bold]{valueY}[/] ${unit}`;
+    series.stroke = am4core.color('#5AD6F4');
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.background.fill = am4core.color('#5AD6F4');
+    series.columns.template.stroke = am4core.color('#5AD6F4');
+    series.columns.template.fill = am4core.color('#5AD6F4');
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.disabled = true;
+    chart.cursor.lineY.disabled = true;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+
+        return { data: data };
+    });
+}
 
 var m61, ms61
 let layermark = (Url, Nlayer) => {
@@ -524,6 +888,9 @@ let layermark = (Url, Nlayer) => {
                     })
                         .bindPopup(`<h6><b>สถานี :</b> ${i.properties.station_n}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6> <h6><b>ค่าที่ตรวจวัดได้ :</b> ${i.properties.value}</h6>`)
                     // .addTo(map);
+                    m61.on("click", function () {
+                        dtable.search(i.properties.station_n).draw();
+                    })
                 }
                 ms61.addLayer(m61);
             })
@@ -532,4 +899,23 @@ let layermark = (Url, Nlayer) => {
         });
     }
 
+}
+let zoomsta = (sta) => {
+    axios.get(L61).then((r) => {
+        var d = r.data.features
+        d.map(i => {
+            if (i.properties.station_n == sta) {
+                var popup = L.popup()
+                    .setLatLng([i.geometry.coordinates[1], i.geometry.coordinates[0]])
+                    .setContent(`<h6><b>สถานี :</b> ${i.properties.station_n}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6> <h6><b>ค่าที่ตรวจวัดได้ :</b> ${i.properties.value}</h6>`)
+                    .openOn(map);
+                map.setView([i.geometry.coordinates[1], i.geometry.coordinates[0]], 12);
+                // console.log(i.properties.station_n)
+            }
+        })
+    })
+    if (sta == "ทุกสถานีตรวจวัดค่า") {
+        map.closePopup();
+        zoomExtent("pro", "eec")
+    }
 }

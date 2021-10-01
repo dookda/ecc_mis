@@ -14,7 +14,7 @@ if (urname) {
       เข้าสู่ระบบ</a></li>`);
 }
 let Accept = sessionStorage.getItem('accept');
-if (Accept) {
+if (Accept || eecauth) {
     $('.toast').toast('hide')
 }
 else {
@@ -263,7 +263,7 @@ map.on('pm:create', async e => {
         "&BBOX=" + bbox;
 
     axios.get(aqiUrl).then(r => {
-        console.log(r.data.features);
+        // console.log(r.data.features);
 
         if (r.data.features.length > 0 && r.data.features[0].properties) {
             tmpGreen = ((area / 1600) * (-9.575 * 0.000001)) - (r.data.features[0].properties.GRAY_INDEX * 3.507) + 28.148;
@@ -282,7 +282,7 @@ map.on('pm:create', async e => {
     // $("#arealist").append(` <li>เนื้อที่: ${(area / 1600).toFixed(2)} ไร่ อุณหภูมิ: ${(tmpGreen).toFixed(2) < 28 ? 28 : (tmpGreen).toFixed(2)} (${(tmpGreen).toFixed(2)})</li>`);
     e.layer.on('pm:edit', function (x) {
         e.layer.options.name2 = "da";
-        console.log('edit', x)
+        // console.log('edit', x)
     });
 });
 
@@ -307,7 +307,7 @@ let stopEdit = () => {
 
     map.eachLayer((lyr) => {
         if (lyr.options.name == 'da') {
-            console.log(lyr.options.name);
+            // console.log(lyr.options.name);
             map.removeLayer(lyr);
         }
     });

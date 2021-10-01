@@ -194,10 +194,10 @@ function insertData() {
     dataurl ? dataurl : dataurl = '-'
     const obj = {
     }
-    console.log(obj)
-    var url = "http://localhost:3000/api/add/"
+    // console.log(obj)
+    // var url = "http://localhost:3000/api/add/"
     $.get(url + obj).done((res) => {
-        console.log("ok");
+        // console.log("ok");
         // $.post(url, obj).done((res) => {
         //     getData();
         //     dataurl = null;
@@ -214,7 +214,7 @@ function editData() {
         sname: $('#sname').val(),
         stype: $('#stype').val(),
         sdesc: $('#sdesc').val(),
-        img: dataurl,
+        img: dataimgurl,
         geom: pos.geom,
         id: pos.id
     }
@@ -287,7 +287,7 @@ function resize() {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl = canvas.toDataURL(file.type);
+                dataimgurl = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }

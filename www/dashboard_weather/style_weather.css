@@ -75,6 +75,11 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+
     }
     
+  }
+
+  #hchart-400{
+    height: 280px;
   }

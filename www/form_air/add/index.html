@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
 
 
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css"
         href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
@@ -67,10 +67,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
 
@@ -101,8 +102,11 @@
                 <div class="section-title">
                     <h2>ระบบนำเข้าข้อมูลมลพิษทางอากาศ</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลมลพิษทางอากาศ เป็นการนำเข้าข้อมูลมลพิษทางอากาศ
-                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลมลพิษทางอากาศ (แบบการมีส่วนร่วมของประชาชน)
+                        เป็นการร่วมนำเข้าข้อมูลผลกระทบทางสุขภาพที่เกิดขึ้นกับประชาชนในพื้นที่
+                        เพื่อใช้ประกอบการเฝ้าระวังตนเองและบริหารจัดการความเสี่ยงต่อต่อสุขภาพของประชาชนในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถนำเข้า แก้ไข
+                        และเรียกดูข้อมูลนั้นได้
                     </p>
                 </div>
                 <hr>
@@ -118,7 +122,7 @@
                                     <div class="form-group row">
                                         <div class="col-sm">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="No Have"
+                                                <input class="form-check-input" type="checkbox" value="ไม่มีโรคประจำตัว"
                                                     id="sickness01">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     ไม่มี
@@ -212,92 +216,69 @@
                                                 </div>
                                             </div> -->
                                     <div class="col-sm">
-                                        <h6>ความรู้สึกต่อคุณภาพอากาศ</h6>
+                                        <h6 style="text-align: center;">ความรู้สึกต่อคุณภาพอากาศ</h6>
                                         <br>
+                                        <div class="container-feel">
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-success "
+                                                    style="border:none;" id="verygood"
+                                                    onclick="getfeel('01','ดีมาก',1)">
+                                                    <img src="./img/verygood.svg" class="center h">
+                                                    <h5>ดีมาก</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P> ท้องฟ้าปลอดโปร่ง แจ่มใส ไม่มีเมฆหรือมีเล็กน้อย
+                                                        มองเห็นวิวทิวทัศน์มากกว่า 17 กม.</P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-success "
+                                                    style="border:none;" id="good" onclick="getfeel('01','ดี',2)">
+                                                    <img src="./img/goog.svg" class="center h">
+                                                    <h5>ดี</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>ท้องฟ้าโปร่ง มีเมฆเล็กน้อย อากาศสดชื่น
+                                                        มองเห็นวิวทิวทัศน์ได้ชัดเจน 9-16
+                                                        กม.
+                                                    </P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-warning"
+                                                    style="border:none;" id="medium"
+                                                    onclick="getfeel('01','ปานกลาง',3)">
+                                                    <img src="./img/nomal.svg" class="center h">
+                                                    <h5>ปานกลาง</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>ท้องฟ้ามีเมฆปกคลุม หรือ มีฝุ่นละอองในอากาศเล็กน้อย
+                                                        มองเห็นวิวทิวทัศน์ 5-8 กม.</P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    style="border:none;" id="bad" onclick="getfeel('01','แย่',4)">
+                                                    <img src="./img/bad2.svg" class="center h">
+                                                    <h5>แย่</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>มีฝุ่นละอองในอากาศ
+                                                        เริ่มมีผลกระทบต่อสุขภาพ และมองเห็นวิวได้น้อยกว่า 4
+                                                        กม.
 
-                                        <div class="form-group row">
-                                            <!-- <div class="col-sm-6">
-                                                        <button type="button" class="btn btn-outline-success "
-                                                            style="border:none;" id="wat1">
-                                                            <img src="./img/happy.png" width="" height="75px"
-                                                                class="center h" onclick="getfeel1('01','Have',1)">
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button type="button" class="btn btn-outline-success "
-                                                            style="border:none;" id="wat1">
-                                                            <img src="./img/tick.svg" class="center h"
-                                                                onclick="getno1('01','Have',1)">
-                                                        </button>
-                                                    </div> -->
-                                            <div class=" form-group col-sm">
-                                                <div class="card radius" style="height: 250px;">
-                                                    <button type="button" class="btn btn-outline-success "
-                                                        style="border:none;" id="verygood">
-                                                        <img src="./img/verygood.svg" class="center h"
-                                                            onclick="getfeel('01','ดีมาก',1)">
-                                                        <h5>ดีมาก</h5>
-                                                    </button>
-                                                    <div class="card-body">
-                                                        <P> ท้องฟ้าปลอดโปร่ง แจ่มใส ไม่มีเมฆปกคลุมหรือมีเล็กน้อย
-                                                            อากาศสดชื่น</P>
-                                                    </div>
+                                                    </P>
                                                 </div>
-                                            </div>
-                                            <div class=" form-group col-sm">
-                                                <div class="card radius" style="height: 250px;">
-                                                    <button type="button" class="btn btn-outline-success "
-                                                        style="border:none;" id="good">
-                                                        <img src="./img/goog.svg" class="center h"
-                                                            onclick="getfeel('01','ดี',2)">
-                                                        <h5>ดี</h5>
-                                                    </button>
-                                                    <div class="card-body">
-                                                        <P>ท้องฟ้าโปร่ง มีเมฆเล็กน้อย มองเห็นไกลได้เกิน 4 กม.
-                                                        </P>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class=" form-group col-sm">
-                                                <div class="card radius" style="height: 250px;">
-                                                    <button type="button" class="btn btn-outline-warning"
-                                                        style="border:none;" id="medium">
-                                                        <img src="./img/nomal.svg" class="center h"
-                                                            onclick="getfeel('01','ปานกลาง',3)">
-                                                        <h5>ปานกลาง</h5>
-                                                    </button>
-                                                    <div class="card-body">
-                                                        <P>ท้องฟ้ามีเมฆปกคลุม หรือ มีฝุ่นละอองในอากาศ
-                                                            เริ่มมองเห็นไกลได้ไม่เกิน 4 กม.</P>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class=" form-group col-sm">
-                                                <div class="card radius" style="height: 250px;">
-                                                    <button type="button" class="btn btn-outline-danger"
-                                                        style="border:none;" id="bad">
-                                                        <img src="./img/bad2.svg" class="center h"
-                                                            onclick="getfeel('01','แย่',4)">
-                                                        <h5>แย่</h5>
-                                                    </button>
-                                                    <div class="card-body">
-                                                        <P>มีฝุ่นละอองในอากาศ มองเห็นไกลๆได้ไม่น้อยกว่า 4 กม.
-                                                            และเริ่มมีผลกระทบต่อสุขภาพ
-                                                        </P>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class=" form-group col-sm">
-                                                <div class="card radius" style="height: 250px;">
-                                                    <button type="button" class="btn btn-outline-danger"
-                                                        style="border:none;" id="badend">
-                                                        <img src="./img/badend.svg" class="center h"
-                                                            onclick="getfeel('01','แย่มาก',5)">
-                                                        <h5>แย่มาก</h5>
-                                                    </button>
-                                                    <div class="card-body">
-                                                        <P>มีผลกระบทต่อสุขภาพ</P>
-                                                    </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    style="border:none;" id="badend">
+                                                    <img src="./img/badend.svg" class="center h"
+                                                        onclick="getfeel('01','แย่มาก',5)">
+                                                    <h5>แย่มาก</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>มีผลกระบทต่อสุขภาพ มองเห็นวิวทิวทัศน์ได้น้อยกว่า 1.5 กม.</P>
                                                 </div>
                                             </div>
                                         </div>
@@ -306,268 +287,190 @@
                                 <hr>
                                 <div class="form-group row">
                                     <div class="container-fluid">
-                                        <h6>อาการ/ผลกระทบจากฝุ่นละอองในพื้นที่</h6>
-                                        <br>
-                                        <div class="form-group row">
-                                            <div class="col-sm">
-                                                <div class="card circle">
-                                                    <button type="button" class="btn btn-outline-dark circle" id="no00">
-                                                        <img src="./img/sick/00.svg" class="center h"
-                                                            onclick="getsick('00','HaveNot',0)">
-                                                        <h5>ไม่มีอาการ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no01">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/01.svg" class="center h"
-                                                            onclick="getsick('01','Have',1)">
-                                                        <h5>คัดจมูก</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no02">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/02.svg" class="center h"
-                                                            onclick="getsick('02','Have',2)">
-                                                        <h5>มีน้ำมูก</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no03">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/03.svg" class="center h"
-                                                            onclick="getsick('03','Have',3)">
-                                                        <h5>แสบจมูก</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no04">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/04.svg" class="center h"
-                                                            onclick="getsick('04','Have',4)">
-                                                        <h5>เลือดกำเดาไหล</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no05">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/05.svg" class="center h"
-                                                            onclick="getsick('05','Have',5)">
-                                                        <h5>แสบคอ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no06">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/06.svg" class="center h"
-                                                            onclick="getsick('06','Have',6)">
-                                                        <h5>เสียงแหบ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no07">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/07.svg" class="center h"
-                                                            onclick="getsick('07','Have',7)">
-                                                        <h5>ไอไม่มีเสมหะ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no08">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/08.svg" class="center h"
-                                                            onclick="getsick('08','Have',8)">
-                                                        <h5>ไอมีเสมหะ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no09">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/09.svg" class="center h"
-                                                            onclick="getsick('09','Have',9)">
-                                                        <h5>หายใจลำบาก</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no10">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/10.svg" class="center h"
-                                                            onclick="getsick('10','Have',10)">
-                                                        <h5>หายใจมีเสียงหวีด</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no11">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/11.svg" class="center h"
-                                                            onclick="getsick('11','Have',11)">
-                                                        <h5>ปวดหัว</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no12">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/12.svg" class="center h"
-                                                            onclick="getsick('12','Have',12)">
-                                                        <h5>เวียนหัว</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no13">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/13.svg" class="center h"
-                                                            onclick="getsick('13','Have',13)">
-                                                        <h5>เหนื่อยง่ายผิดปกติ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no14">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/14.svg" class="center h"
-                                                            onclick="getsick('14','Have',14)">
-                                                        <h5>เท้าบวมผิดปกติ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no15">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/15.svg" class="center h"
-                                                            onclick="getsick('15','Have',15)">
-                                                        <h5>หัวใจเต้นเร็วผิดปกติ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no16">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/16.svg" class="center h"
-                                                            onclick="getsick('16','Have',16)">
-                                                        <h5>คันตามร่างกาย</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no17">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/17.svg" class="center h"
-                                                            onclick="getsick('17','Have',17)">
-                                                        <h5>มีผื่นแดงตามร่างกาย</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no18">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/18.svg" class="center h"
-                                                            onclick="getsick('18','Have',18)">
-                                                        <h5>คันตา/แสบตา</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no19">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/19.svg" class="center h"
-                                                            onclick="getsick('19','Have',19)">
-                                                        <h5>ตาแดง</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no20">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/20.svg" class="center h"
-                                                            onclick="getsick('20','Have',20)">
-                                                        <h5>น้ำตาไหลมากผิดปกติ</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no21">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/21.svg" class="center h"
-                                                            onclick="getsick('21','Have',21)">
-                                                        <h5>ปวดตา</h5>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="card circle" id="no22">
-                                                    <button type="button" class="btn btn-outline-dark circle">
-                                                        <img src="./img/sick/22.svg" class="center h"
-                                                            onclick="getsick('22','Have',22)">
-                                                        <h5>มองภาพไม่ค่อยชัด</h5>
-                                                    </button>
-                                                </div>
+                                        <h6 style="text-align: center;">อาการ/ผลกระทบจากฝุ่นละอองในพื้นที่</h6>
+                                        <div class="container-sick">
+                                            <div class="card circle" id="no00" onclick="getsick('00','HaveNot',0)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/00.svg" class="center h">
+                                                    <h5>ไม่มีอาการ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no01" onclick="getsick('01','Have',1)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/01.svg" class="center h">
+                                                    <h5>คัดจมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no02" onclick="getsick('02','Have',2)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/02.svg" class="center h">
+                                                    <h5>มีน้ำมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no03" onclick="getsick('03','Have',3)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/03.svg" class="center h">
+                                                    <h5>แสบจมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no04" onclick="getsick('04','Have',4)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/04.svg" class="center h">
+                                                    <h5>เลือดกำเดาไหล</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no05" onclick="getsick('05','Have',5)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/05.svg" class="center h">
+                                                    <h5>แสบคอ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no06" onclick="getsick('06','Have',6)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/06.svg" class="center h">
+                                                    <h5>เสียงแหบ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no07" onclick="getsick('07','Have',7)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/07.svg" class="center h">
+                                                    <h5>ไอไม่มีเสมหะ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no08" onclick="getsick('08','Have',8)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/08.svg" class="center h">
+                                                    <h5>ไอมีเสมหะ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no09" onclick="getsick('09','Have',9)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/09.svg" class="center h">
+                                                    <h5>หายใจลำบาก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no10" onclick="getsick('10','Have',10)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/10.svg" class="center h">
+                                                    <h5>หายใจมีเสียงหวีด</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no11" onclick="getsick('11','Have',11)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/11.svg" class="center h">
+                                                    <h5>ปวดหัว</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no12" onclick="getsick('12','Have',12)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/12.svg" class="center h">
+                                                    <h5>เวียนหัว</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no13" onclick="getsick('13','Have',13)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/13.svg" class="center h">
+                                                    <h5>เหนื่อยง่ายผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no14" onclick="getsick('14','Have',14)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/14.svg" class="center h">
+                                                    <h5>เท้าบวมผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no15" onclick="getsick('15','Have',15)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/15.svg" class="center h">
+                                                    <h5>หัวใจเต้นเร็วผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no16" onclick="getsick('16','Have',16)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/16.svg" class="center h">
+                                                    <h5>คันตามร่างกาย</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no17" onclick="getsick('17','Have',17)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/17.svg" class="center h">
+                                                    <h5>มีผื่นแดงตามร่างกาย</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no18" onclick="getsick('18','Have',18)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/18.svg" class="center h">
+                                                    <h5>คันตา/แสบตา</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no19" onclick="getsick('19','Have',19)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/19.svg" class="center h">
+                                                    <h5>ตาแดง</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no20" onclick="getsick('20','Have',20)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/20.svg" class="center h">
+                                                    <h5>น้ำตาไหลมากผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no21" onclick="getsick('21','Have',21)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/21.svg" class="center h">
+                                                    <h5>ปวดตา</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no22" onclick="getsick('22','Have',22)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/22.svg" class="center h">
+                                                    <h5>มองภาพไม่ค่อยชัด</h5>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
+                                <br>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col">
                                             <h5>พื้นที่ได้รับผลกระทบ</h5>
-                                            <p>กรุณาวาดขอบเขตพื้นที่ที่คาดว่าได้รับผลกระทบ</p>
                                         </div>
                                     </div>
-                                    <br>
-
-                                    <div class="row">
-                                        <div class="col">
+                                    <hr>
+                                    <p style="text-align: center;">กรุณาวาดขอบเขตพื้นที่ที่คาดว่าได้รับผลกระทบ
+                                    </p>
+                                    <div class="card">
+                                        <div class="card-body p2">
                                             <div id="map"></div>
+                                            <img class="border-10" src="./aqi.png" width="100%">
                                         </div>
                                     </div>
-                                    <br>
                                     <div class="row">
-                                        <div class="col-sm-3">
+                                        <div class="container-sick">
                                             <div class="card radius-r" id="cardaqi">
                                                 <div class="card-content">
                                                     <div class="card-body">
                                                         <div class="media d-flex">
                                                             <div class="align-self-center">
-                                                                <i class="icon-graph success font-large-2 float-left
-                                                                    w3-xxxlarge"></i>
+                                                                <i class="icon-graph success font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
                                                             </div>
                                                             <div class="media-body text-right">
                                                                 <h3><span id="aqi"></span></h3>
-                                                                <span>ดัชนีคุณภาพอากาศ AQI</span>
+                                                                <span>คุณภาพอากาศ AQI</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <div class="card radius-r" id="cardpm10">
                                                 <div class="card-content">
                                                     <div class="card-body">
                                                         <div class="media d-flex">
                                                             <div class="align-self-center">
-                                                                <i class="icon-graph success font-large-2 float-left
-                                                                    w3-xxxlarge"></i>
+                                                                <i class="icon-graph success font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
                                                             </div>
                                                             <div class="media-body text-right">
                                                                 <h3><span id="pm10"></span></h3>
@@ -576,16 +479,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <div class="card radius-r" id="cardpm25">
                                                 <div class="card-content">
                                                     <div class="card-body">
                                                         <div class="media d-flex">
                                                             <div class="align-self-center">
-                                                                <i class="icon-graph success font-large-2 float-left
-                                                                    w3-xxxlarge"></i>
+                                                                <i class="icon-graph success font-large-2 float-lef"
+                                                                    style="font-size:36px;"></i>
                                                             </div>
                                                             <div class="media-body text-right">
                                                                 <h3><span id="pm25"></span></h3>
@@ -594,9 +495,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <div class="card radius-r" id="cardtime">
                                                 <div class="card-content">
                                                     <div class="card-body">
@@ -604,8 +503,8 @@
                                                             <div class="align-self-center">
                                                                 <!-- <i class="icon-graph success font-large-2 float-left
                                                                     w3-xxxlarge"></i> -->
-                                                                <i class="fa fa-calendar font-large-2 float-left
-                                                                        w3-xxxlarge"></i>
+                                                                <i class="fa fa-calendar font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
                                                             </div>
                                                             <div class="media-body text-right">
                                                                 <h6><span id="datetime"></span></h6>
@@ -614,10 +513,28 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="card radius-r" id="cardsta">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <!-- <i class="icon-graph success font-large-2 float-left
+                                                                    w3-xxxlarge"></i> -->
+                                                                <i class="fa fa-map-marker font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h6><span id="staair"></span></h6>
+                                                                <span>สถานีตรวจวัด</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="card-deck p-3 mb-1">
                                             <div class="card card-stats">
                                                 <div class="card-body p-1 ">
@@ -625,14 +542,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="row">
                                     <div class="col-sm">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">ค่าพิกัด X:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="lat">
+                                                <input type="text" class="form-control" id="lat" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -640,7 +557,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">ค่าพิกัด Y:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="lon">
+                                                <input type="text" class="form-control" id="lon" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -686,26 +603,28 @@
 
 
                                 <hr>
-                                <div class="form-group row center">
+                                <div class="form-group"
+                                    style="flex-direction: row; display: flex; justify-content: center;">
                                     <!-- <button type=" button" class="btn btn-outline-success"
                                                 onClick="window.location.reload();">
                                                 <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;refresh</button>
                                             &nbsp;&nbsp; -->
 
 
-                                    <a href="https://eec-onep.online/" class="btn btn-info">
+                                    <!-- <a href="https://eec-onep.online/" class="btn btn-info">
                                         <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>
-                                    &nbsp;&nbsp;
-
-                                    <a href="./../dashboard/index.html" class="btn btn-primary">
-                                        <i class="fa fa-bar-chart" aria-hidden="true">
-                                        </i>&nbsp;หน้ารายงาน</a>
-                                    &nbsp;&nbsp;
-
+                                    &nbsp;&nbsp; -->
                                     <a href="" type="submit" class="btn btn-success" onclick="saveData()"
                                         data-toggle="modal" data-target=".bd-example-modal-lg">
                                         <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;บันทึก</a>
                                     &nbsp;&nbsp;
+
+                                    <a href="./../dashboard/index.html" class="btn btn-light">
+                                        <i class="fa fa-bar-chart" aria-hidden="true">
+                                        </i>&nbsp;หน้ารายงาน</a>
+                                    &nbsp;&nbsp;
+
+
 
                                 </div>
                             </form>
@@ -713,9 +632,9 @@
                     </div>
                 </form>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="mt-3 mb-6">
+                <!-- <div class="mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
     </main><!-- End #main -->
@@ -747,22 +666,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">ตำบล:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="tambon">
-                            </div>
-                        </div>
+                            <div class="col-sm">
+                                <label for="sel1">จังหวัด:</label>
+                                <select class="form-control" id="pro">
+                                    <option value="eec">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
 
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">อำเภอ:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="amphor">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">จังหวัด:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="province">
+                            <div class="col-sm">
+                                <label for="sel1">อำเภอ:</label>
+                                <select class="form-control" id="amp">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm">
+                                <label for="sel1">ตำบล:</label>
+                                <select class="form-control" id="tam">
+                                </select>
                             </div>
                         </div>
 
@@ -780,18 +706,21 @@
         <div class="modal-dialog" role="document">
             <div class="w3-animate-top">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">ยืนยันการบันทึกข้อมูล</h5>
+                    <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                        <h4 class="modal-title">
+                            <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                                style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                        </h4>
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
                     </div>
-                    <div class="modal-body">
-                        <p>ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                    <div class="modal-body text-center mx-auto">
+                        <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <a href="/form_air/dashboard" class="btn btn-primary">ยืนยัน</a>
+                        <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
                     </div>
                 </div>
             </div>

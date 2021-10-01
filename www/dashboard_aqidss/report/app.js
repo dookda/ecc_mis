@@ -14,7 +14,7 @@ if (urname) {
       เข้าสู่ระบบ</a></li>`);
 }
 let Accept = sessionStorage.getItem('accept');
-if (Accept) {
+if (Accept || eecauth) {
     $('.toast').toast('hide')
 }
 else {
@@ -145,6 +145,14 @@ const vill = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", 
     transparent: true,
     zIndex: 2
 });
+const pollu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__81_pollution_eec",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
 
 
 let lyrs = L.featureGroup().addTo(map)
@@ -162,7 +170,9 @@ $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
 $("#ecoboundLegend").attr("src", eecUrl + "eec:a__82_landscape");
-
+$("#polluLegend").attr("src", eecUrl + "eec:a__81_pollution_eec");
+$("#radarLegend").attr("src", "./img/radar.png");
+$("#staaqiLegend").attr("src", "./marker/location-pin-blue.svg");
 $("#aqiLegend").attr("src", eecUrl + "eec:aqi_v_pcd_aqi_d1.tif");
 $("#pm25Legend").attr("src", eecUrl + "eec:pm25_v_pcd_aqi_d1.tif");
 $("#pm10Legend").attr("src", eecUrl + "eec:pm10_v_pcd_aqi_d1.tif");
@@ -199,7 +209,8 @@ let lyr = {
     lu: lu,
     muni: muni,
     pcontrol: pcontrol,
-    ecobound: ecobound
+    ecobound: ecobound,
+    pollu: pollu,
 }
 
 pro.addTo(map);
@@ -605,6 +616,9 @@ $("input[type=checkbox]").change(async () => {
         if (lyr[`${i}`]) {
             lyr[`${i}`].addTo(map);
         }
+        if (i == "radar") {
+            initialize(apiData, optionKind);
+        }
 
     })
 })
@@ -756,7 +770,7 @@ let getFeatureInfo = async (aqiLyr, lyrLen, pnt, size, bbox, div, param, std, da
     var M1 = map.hasLayer(marker1)
     var M2 = map.hasLayer(marker2)
     var M3 = map.hasLayer(marker3)
-    console.log(M1, M2, M3)
+    // console.log(M1, M2, M3)
     if (div == "aqichart" && dataid == "data1") {
         await axios.get(aqiUrl).then(r => {
             let wk = 0;
@@ -1413,7 +1427,7 @@ map.on("click", async (e) => {
     }
 });
 function getM1() {
-    console.log(latlngM1)
+    // console.log(latlngM1)
     var pnt = map.latLngToContainerPoint(latlngM1);
     var size = map.getSize();
     var bbox = map.getBounds().toBBoxString();
@@ -1800,3 +1814,276 @@ let closeMark = (value) => {
         $("#area3").hide()
     }
 }
+
+var apiData = {};
+var mapFrames = [];
+var lastPastFramePosition = -1;
+var radarLayers = [];
+
+var optionKind = 'radar'; // can be 'radar' or 'satellite'
+
+var optionTileSize = 256; // can be 256 or 512.
+var optionColorScheme = 2; // from 0 to 8. Check the https://rainviewer.com/api/color-schemes.html for additional information
+var optionSmoothData = 1; // 0 - not smooth, 1 - smooth
+var optionSnowColors = 1; // 0 - do not show snow colors, 1 - show snow colors
+
+var animationPosition = 0;
+var animationTimer = false;
+
+var apiRequest = new XMLHttpRequest();
+apiRequest.open("GET", "https://api.rainviewer.com/public/weather-maps.json", true);
+apiRequest.onload = function (e) {
+    // store the API response for re-use purposes in memory
+    apiData = JSON.parse(apiRequest.response);
+    initialize(apiData, optionKind);
+};
+apiRequest.send();
+
+function initialize(api, kind) {
+    // remove all already added tiled layers
+    for (var i in radarLayers) {
+        map.removeLayer(radarLayers[i]);
+    }
+    mapFrames = [];
+    radarLayers = [];
+    animationPosition = 0;
+
+    if (!api) {
+        return;
+    }
+    if (kind == 'satellite' && api.satellite && api.satellite.infrared) {
+        mapFrames = api.satellite.infrared;
+
+        lastPastFramePosition = api.satellite.infrared.length - 1;
+        showFrame(lastPastFramePosition);
+    }
+    else if (api.radar && api.radar.past) {
+        mapFrames = api.radar.past;
+        if (api.radar.nowcast) {
+            mapFrames = mapFrames.concat(api.radar.nowcast);
+        }
+        lastPastFramePosition = api.radar.past.length - 1;
+        showFrame(lastPastFramePosition);
+    }
+}
+
+function addLayer(frame) {
+    if (!radarLayers[frame.path]) {
+        var colorScheme = optionKind == 'satellite' ? 0 : optionColorScheme;
+        var smooth = optionKind == 'satellite' ? 0 : optionSmoothData;
+        var snow = optionKind == 'satellite' ? 0 : optionSnowColors;
+
+        radarLayers[frame.path] = new L.TileLayer(apiData.host + frame.path + '/' + optionTileSize + '/{z}/{x}/{y}/' + colorScheme + '/' + smooth + '_' + snow + '.png', {
+            tileSize: 256,
+            opacity: 0.001,
+            zIndex: frame.time,
+            name: "lyr"
+        });
+    }
+
+    if (!map.hasLayer(radarLayers[frame.path])) {
+        map.addLayer(radarLayers[frame.path]);
+    }
+}
+
+function changeRadarPosition(position, preloadOnly) {
+    while (position >= mapFrames.length) {
+        position -= mapFrames.length;
+    }
+    while (position < 0) {
+        position += mapFrames.length;
+    }
+
+    var currentFrame = mapFrames[animationPosition];
+    var nextFrame = mapFrames[position];
+
+    addLayer(nextFrame);
+
+    if (preloadOnly) {
+        return;
+    }
+
+    animationPosition = position;
+
+    if (radarLayers[currentFrame.path]) {
+        radarLayers[currentFrame.path].setOpacity(0);
+    }
+    radarLayers[nextFrame.path].setOpacity(100);
+}
+
+function showFrame(nextPosition) {
+    var preloadingDirection = nextPosition - animationPosition > 0 ? 1 : -1;
+
+    changeRadarPosition(nextPosition);
+    changeRadarPosition(nextPosition + preloadingDirection, true);
+}
+
+$('#imgaqi').hide()
+$("#staaqi").click(function () {
+    if (this.checked) {
+        markerAQI.addTo(map)
+        $('#imgaqi').fadeIn()
+    } else {
+        map.removeLayer(markerAQI)
+        $('#imgaqi').fadeOut()
+    }
+
+})
+let markerAQI = L.layerGroup();
+let loadAQI = async () => {
+    let response = axios.get(url + '/eec-api/get-aqi');
+    let responseAll = axios.get(url + '/eec-api/get-aqi-all');
+
+    let iconblue = L.icon({
+        iconUrl: './marker/location-pin-blue.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let icongreen = L.icon({
+        iconUrl: './marker/location-pin-green.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconyellow = L.icon({
+        iconUrl: './marker/location-pin-yellow.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconorange = L.icon({
+        iconUrl: './marker/location-pin-orange.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let iconred = L.icon({
+        iconUrl: './marker/location-pin-red.svg',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let d = await response;
+    let datArr = [];
+    d.data.data.map(i => {
+        datArr.push({
+            "station": i.sta_th,
+            "data": Number(i.aqi)
+        })
+    })
+
+    let x = await responseAll;
+    x.data.data.map(i => {
+        let dat = {
+            sta_id: i.sta_id,
+            sta_th: i.sta_th,
+            area_th: i.area_th,
+            aqi: i.aqi,
+            co: i.co,
+            no2: i.no2,
+            o3: i.o3,
+            pm10: i.pm10,
+            pm25: i.pm25,
+            so2: i.so2
+        }
+        let marker
+        if (Number(i.aqi) <= 25) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconblue,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 50) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: icongreen,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 100) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconyellow,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else if (Number(i.aqi) <= 200) {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconorange,
+                name: 'markerAQI',
+                data: dat
+            });
+        } else {
+            marker = L.marker([Number(i.lat), Number(i.lon)], {
+                icon: iconred,
+                name: 'markerAQI',
+                data: dat
+            });
+
+        }
+        markerAQI.addLayer(marker)
+
+        marker.bindPopup(`รหัส : ${i.sta_id}<br> 
+      ชื่อสถานี : ${i.sta_th} <br> 
+        ค่า AQI : ${Number(i.aqi).toFixed(1)}`
+        )
+
+    })
+    // markerAQI.addTo(map)
+}
+loadAQI()
+
+let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
+let onEachFeature = (feature, layer) => {
+    if (feature.properties) {
+        const time = feature.properties.acq_time;
+        const hr = Number(time.slice(0, 2));
+        const mn = Number(time.slice(2, 4));
+        layer.bindPopup(
+            '<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>' +
+            '<br/>lat: ' + feature.properties.latitude +
+            '<br/>lon: ' + feature.properties.longitude +
+            // '<br/>satellite: ' + feature.properties.satellite +
+            '<br/>วันที่: ' + feature.properties.acq_date +
+            '<br/>เวลา: ' + hr + ':' + mn + '</span>'
+        );
+    }
+}
+
+let markerHP = L.layerGroup();
+let loadHotspot = async () => {
+    let hp = await hpData;
+    // console.log(hp);
+    const fs = hp.data.data.features;
+
+    var geojsonMarkerOptions = {
+        radius: 6,
+        fillColor: "#ff5100",
+        color: "#a60b00",
+        weight: 0,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+
+    let marker = await L.geoJSON(fs, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        onEachFeature: onEachFeature
+    })
+    markerHP.addLayer(marker)
+
+}
+loadHotspot()
+$("#hsport").click(function () {
+    if (this.checked) {
+        markerHP.addTo(map)
+    } else {
+        map.removeLayer(markerHP)
+    }
+
+})

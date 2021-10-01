@@ -106,6 +106,7 @@ map.on('click', (e) => {
 });
 
 axios.post(url + "/waste-api/getone", { w_id: w_id }).then(async (r) => {
+    // console.log(w_id)
     $('#insti').val(r.data.data[0].insti);
     $('#prov').val(r.data.data[0].prov);
     $('#wdate').val(r.data.data[0].date);

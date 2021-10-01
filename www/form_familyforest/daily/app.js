@@ -89,7 +89,7 @@ $("#plantlist").on("change", function () {
     // console.log(this.value);
     if (this.value) {
         axios.post(url + "/ff-api/getpacelgid", { gid: this.value }).then(r => {
-            console.log(r);
+            // console.log(r);
             $("#ffid").val(`${r.data.data[0].ffid}`);
             $("#fplant").val(`${r.data.data[0].fplant}`);
             $("#ftype").val(`${r.data.data[0].ftype}`);
@@ -108,7 +108,7 @@ let getDetail = (ffid) => {
 
 let getParcel = (ffid) => {
     map.eachLayer(i => {
-        console.log(i);
+        // console.log(i);
         if (i.options.name) {
             map.removeLayer(i);
         }
@@ -155,7 +155,7 @@ axios.post(url + "/ff-api/getpacellist", { usrid: urid }).then(r => {
 });
 
 fc.on("click", (e) => {
-    console.log(e.layer.toGeoJSON());
+    // console.log(e.layer.toGeoJSON());
 });
 $(document).ready(function () {
     $.extend(true, $.fn.dataTable.defaults, {
@@ -282,6 +282,7 @@ let closeModal = () => {
     $('#editModal').modal('hide');
     $('#deleteModal').modal('hide');
     $('#myTable').DataTable().ajax.reload();
+    window.location.reload();
 }
 
 let confirmAdd = () => {
@@ -296,6 +297,7 @@ let deleteValue = () => {
         if (r.data.data == "success") {
             $('#deleteModal').modal('hide')
             $('#myTable').DataTable().ajax.reload();
+            window.location.reload();
         }
     })
 }

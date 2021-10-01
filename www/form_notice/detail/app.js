@@ -68,12 +68,31 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 // let lyrs = L.featureGroup().addTo(map)
 
 var baseMap = {
@@ -82,7 +101,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -153,7 +174,7 @@ let sendData = () => {
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/notice-api/update", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null;
         sessionStorage.removeItem('notice_gid');
@@ -195,7 +216,7 @@ let getTam = (e) => {
 let getTamOne = (e) => {
     axios.get(url + "/eec-api/get-th-onetam/" + e).then(r => {
         r.data.data.map(i => {
-            console.log(i);
+            // console.log(i);
             $("#pro_name").val(i.pro_name)
             $("#amp_name").val(i.amp_name)
             $("#tam_name").val(i.tam_name)

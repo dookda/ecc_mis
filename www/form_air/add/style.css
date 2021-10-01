@@ -55,7 +55,8 @@ html, body {
 
 #map{
     height: 450px; 
-    border-radius: 0.8rem;
+    z-index: 0;
+    /* border-radius: 0.8rem; */
 }
 
 #pos-map{
@@ -177,17 +178,17 @@ td {
     border-radius: 0.8rem;
 }
 .BG01 {
-    background: #03989E !important;
+    background: #68B1FD  !important;
     color: white;
 }
 .BG02 {
     
-    background: #51CF87 !important;
+    background: #67D636 !important;
     color: white;
 }
 .BG03 {
     
-    background: #FFDE59 !important;
+    background: #FFD864 !important;
     color: white;
 }
 .BG04 {
@@ -195,7 +196,7 @@ td {
     color: white;
 }
 .BG05 {
-    background: #FF5752 !important;
+    background: #FF5757 !important;
     color: white;
 }
 
@@ -238,15 +239,60 @@ td {
 #cardfeelD {
     margin-left: 0%;
 }
-.radius{
-    width: 180px;
-    height: 250px;
-    border-radius: 0.8rem;
+.container-feel{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+justify-content: space-around;
+align-items: stretch;
+}
+.card-feel{
+    width: 200px;
+    height: 300px;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+.card-feel button{ width: 100%;}
+.container-sick{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+justify-content: flex-start;
+align-items: stretch;
+}
+@media (max-width: 760px) {
+    .container-feel{
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-feel{
+        width: 100%;
+    }
+}
+
+@media (max-width: 1366px) {
+    .container-feel{
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+    }
 }
 .radius-r{
-    width: 250px;
+    width: 215px;
     border-radius: 0.8rem;
 }
+@media (max-width: 760px) {
+    .radius-r{
+        width: 100%;
+}}
 section{
     background-color: #f6f6f8;
     height: 100%;
@@ -318,4 +364,7 @@ section{
         border-radius: 0.8rem;
     }
     
+}
+.card-body{
+    text-align: center;
 }

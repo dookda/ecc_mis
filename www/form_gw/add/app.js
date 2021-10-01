@@ -8,7 +8,9 @@ if (eecauth !== "admin" && eecauth !== "office") {
     location.href = "./../../form_register/login/index.html";
 }
 
-let userid;
+// if (eecauth !== "admin" && eecauth !== "user") {
+//     location.href = "./../../form_register/login/index.html";
+// }
 
 let main = async () => {
     await liff.init({ liffId: "1655648770-JLXzogag" })
@@ -42,8 +44,6 @@ let map = L.map('map', {
     zoom: 9
 });
 
-let dataurl;
-
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -55,26 +55,41 @@ var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y
 });
 
 const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-    maxZoom: 20,
+    // maxZoom: 20,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
     "Mapbox": mapbox,
-    "google Hybrid": ghyb.addTo(map)
+    "google Hybrid": ghyb.addTo(map),
 }
-
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
-
-L.control.layers(baseMap, overlayMap).addTo(map);
+const Lycontrol = L.control.layers(baseMap, overlayMap).addTo(map);
 var lat;
 var lng;
 let gps;
@@ -120,12 +135,65 @@ map.pm.addControls({
     position: 'topleft',
     drawMarker: true,
     drawCircle: false,
+    drawPolygon: false,
     drawPolyline: false,
     drawRectangle: false,
     drawCircleMarker: false,
     cutPolygon: false
-});
 
+});
+let dataurl;
+$("#pro").on("change", function () {
+    getPro(this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+        tam_code = r.data.data[0].tambon_idn
+        tam_name = r.data.data[0].tam_namt
+    })
+
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+    })
+}
 var datageom
 let geom = [];
 let datlatlon = [];
@@ -199,9 +267,9 @@ let resize = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl = canvas.toDataURL(file.type);
-                // console.log(dataurl)
-                // document.getElementById('output').src = dataurl;
+                dataimgurl = canvas.toDataURL(file.type);
+                // console.log(dataimgurl)
+                // document.getElementById('output').src = dataimgurl;
             }
             reader.readAsDataURL(file);
         }
@@ -216,9 +284,12 @@ function saveData() {
         // data: val ? val : val = '99',
         staid: $("#staid").val(),
         staname: $("#staname").val(),
-        tambon: $("#tambon").val(),
-        amphoe: $("#amphoe").val(),
-        prov: $("#province").val(),
+        tambon: tam_name,
+        amphoe: amp_name,
+        prov: prov_name,
+        p_code: prov_code,
+        a_code: amp_code,
+        t_code: tam_code,
         senid: $("#senid").val(),
         sencode: $("#senname").val(),
         gwyear: $("#gwyear").val() ? $("#gwyear").val() : "0000",

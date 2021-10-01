@@ -63,7 +63,7 @@ function loadMap() {
 }
 
 map.on('click', (e) => {
-    console.log(e)
+    // console.log(e)
     if (gps) {
         map.removeLayer(gps);
     }

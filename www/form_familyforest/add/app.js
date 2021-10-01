@@ -219,7 +219,9 @@ let postData = async () => {
             fplant: i,
             ffid: ffid
         }
-        axios.post(url + "/ff-api/insert", obj).then(() => console.log("พืชกินได้ ok"));
+        axios.post(url + "/ff-api/insert", obj).then(
+            // () => console.log("พืชกินได้ ok")
+        );
     })
 
     await use_plant_list.map(i => {
@@ -228,7 +230,9 @@ let postData = async () => {
             fplant: i,
             ffid: ffid
         }
-        axios.post(url + "/ff-api/insert", obj).then(() => console.log("พืชใช้สอย ok"));
+        axios.post(url + "/ff-api/insert", obj).then(
+            // () => console.log("พืชใช้สอย ok")
+        );
     })
 
     await econ_plant_list.map(i => {
@@ -237,7 +241,9 @@ let postData = async () => {
             fplant: i,
             ffid: ffid
         }
-        axios.post(url + "/ff-api/insert", obj).then(() => console.log("พืชเศรษฐกิจ ok"));
+        axios.post(url + "/ff-api/insert", obj).then(
+            // () => console.log("พืชเศรษฐกิจ ok")
+        );
     })
 
     await herb_plant_list.map(i => {
@@ -246,7 +252,9 @@ let postData = async () => {
             fplant: i,
             ffid: ffid
         }
-        axios.post(url + "/ff-api/insert", obj).then(r => console.log("พืชสมุนไพร ok"));
+        axios.post(url + "/ff-api/insert", obj).then(
+            // () => console.log("พืชสมุนไพร ok")
+        );
     })
 
     // let fname = $("#fname").val();
@@ -267,7 +275,7 @@ let postData = async () => {
 }
 
 let gotoDaily = () => {
-    console.log("ok");
+    // console.log("ok");
     location.href = "./../daily/index.html";
     sessionStorage.setItem('usr', usr);
 }

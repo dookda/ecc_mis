@@ -2,37 +2,185 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+// urid ? null : location.href = "./../../form_register/login/index.html";
 
-if (eecauth !== "admin" && eecauth !== "user") {
-    location.href = "./../../form_register/login/index.html";
-}
+// if (eecauth !== "admin" && eecauth !== "user") {
+//     location.href = "./../../form_register/login/index.html";
+// }
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3000';
+let dataurl
+if (eecauth == "admin") {
+    dataurl = url + "/form_ap/get_geom";
+    $('#login').hide()
+} else if (eecauth == "user" || eecauth == "office") {
+    dataurl = url + "/form_ap/get_geom/" + urid;
+    $('#cardselect').hide()
+    $('#login').hide()
 
+} else {
+    dataurl = url + "/form_ap/get_geom";
+    $('#cardtable').hide()
+    $('#usr1').hide()
+    $('#usr2').hide()
+}
+$("#pro").on("change", function () {
+    getPro(this.value)
+    seclectdata(eecauth, "prov", this.value)
+    zoomSec("pro", this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
+    seclectdata(eecauth, "amp", this.value)
+    zoomSec("amp", this.value)
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+    seclectdata(eecauth, "tam", this.value)
+    zoomSec("tam", this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
 
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+    })
+}
+let seclectdata = (auth, type, code) => {
+    if (auth !== "user") {
+        if (type == "prov" && code !== "eec") {
+            dataurl = url + '/form_ap/getgeom/pro/' + code;
+            table.ajax.url(dataurl).load();
+        } else if (type == "prov" && code == 'eec') {
+            dataurl = url + "/form_ap/get_geom";
+            table.ajax.url(dataurl).load();
+        }
+        else if (type == "amp") {
+            dataurl = url + '/form_ap/getgeom/amp/' + code
+            table.ajax.url(dataurl).load();
+        } else if (type == "tam") {
+            dataurl = url + '/form_ap/getgeom/tam/' + code
+            table.ajax.url(dataurl).load();
+        }
+    }
+}
+let zoomSec = (lyr, code) => {
+    axios.get(url + `/eec-api/get-extent/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        // console.log(geom);
+        map.fitBounds([
+            geom.coordinates[0][0],
+            geom.coordinates[0][2],
+        ]);
+    })
+}
+
+let table
 $(document).ready(function () {
-    let table = $('#myTable').DataTable({
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
+    table = $('#myTable').DataTable({
         ajax: {
             type: "get",
-            url: url + "/form_ap/get_geom",
-            data: { userid: "sakda" },
+            url: dataurl,
+            data: { userid: urid },
             dataSrc: 'data'
         },
         columns: [
-            { data: 'datreport' },
+            { data: 'repor_date' },
             { data: 'dattime' },
             { data: 'tambon' },
             { data: 'amphoe' },
             { data: 'province' },
-            { data: 'feeling' },
+            {
+                data: 'feeling',
+                render: function (data, type, row) {
+                    var a = data;
+                    if (a == 'ดีมาก') {
+                        return '<img src="./img/F01.png" class="center h" height="30px">';
+                    } else if (a == 'ดี') {
+                        return '<img src="./img/F02.png" class="center h" height="30px">';
+                    } else if (a == 'ปานกลาง') {
+                        return '<img src="./img/F03.png" class="center h"height="30px">';
+                    } else if (a == 'แย่') {
+                        return '<img src="./img/F04.png" class="center h"height="30px">';
+                    } else if (a == 'แย่มาก') {
+                        return '<img src="./img/F05.png" class="center h"height="30px">';
+                    } else {
+                        return '<img src="./img/F06.png" class="center h"height="30px">';
+                        // return data;
+                    }
+
+                }
+            },
+            { data: 'aqi' },
+            { data: 'pm25' },
+            { data: 'pm10' },
+            { data: 'staair' },
             {
                 // targets: -1,
                 data: null,
                 defaultContent: `<button type="button" class="btn btn-success" id="getMap">ขยายแผนที่</button>
                                  <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
         ],
         searching: true,
         scrollX: true
@@ -58,7 +206,7 @@ $(document).ready(function () {
 
     $('#myTable tbody').on('click', '#delete', function () {
         var data = table.row($(this).parents('tr')).data();
-        confirmDelete(data.datreport, data.dattime, data.id_date)
+        confirmDelete(data.repor_date, data.dattime, data.id_date)
     });
 })
 
@@ -87,10 +235,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -98,12 +261,43 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
-L.control.layers(baseMap, overlayMap).addTo(map);
+const lyrControl = L.control.layers(baseMap, overlayMap).addTo(map);
 
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
+
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<img src="./marker/location-pin-blue.svg" width="25px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        return div;
+    };
+    legend.addTo(map);
+}
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 // map.pm.addControls({
 //     position: 'topleft',
@@ -229,8 +423,15 @@ let getMap = (x) => {
                 data: dat
             });
         }
-
-        marker.addTo(map)
+        if (i.img) {
+            marker
+                .bindPopup(`<h6><b>ที่ตั้ง :</b> ต.${i.tambon}  อ.${i.amphoe} จ.${i.province}</h6><br><img class="border-10" src="${i.img}" width="100%">`)
+                .addTo(map)
+        } else {
+            marker
+                .bindPopup(`<h6><b>ที่ตั้ง :</b> ต.${i.tambon}  อ.${i.amphoe} จ.${i.province}</h6>`)
+                .addTo(map)
+        }
     })
 }
 
@@ -255,16 +456,20 @@ let closeModal = () => {
 }
 
 let confirmDelete = (datreport, dattime, id_date) => {
-    $("#proj_id").val(id_date)
-    $("#proj_name").text(`วันที่ : ${datreport} เวลา : ${dattime}`)
+    $("#projId").val(id_date)
+    if (datreport !== null) { $("#projName").text(`วันที่ ${datreport}`) }
+    if (dattime !== null) {
+        $("#projTime").text(`เวลา ${dattime}`)
+    }
     $("#deleteModal").modal("show")
 }
 
 let deleteValue = () => {
-    // console.log($("#projId").val());
-    let proj_id = $("#proj_id").val()
-    axios.post("http://localhost:3000/form_ap/deletedata", { id_date: proj_id }).then(r => {
+    let proj_id = $("#projId").val();
+    axios.post(url + "/form_ap/deletedata", { id_date: proj_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
+        window.location.reload();
     })
 }
 

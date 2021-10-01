@@ -55,9 +55,8 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -106,7 +105,23 @@
                                     <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
                                     <hr>
                                     <div class="scroll">
-
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="aqi" id="staaqi">
+                                            <label class="form-check-label">
+                                                จุดตรวจวัดคุณภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                            </label>
+                                            <br>
+                                            <img id="staaqiLegend" width="30px">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="hsport" id="hsport">
+                                            <label class="form-check-label">
+                                                จุดความร้อน
+                                            </label>
+                                            <br>
+                                            <img src="./img/hotspot.png" width="30px">
+                                            <!-- <img id="staaqiLegend" width="30px"> -->
+                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="pro" id="lyr_prov"
                                                 checked>
@@ -164,6 +179,16 @@
                                         </div>
 
                                         <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="radar" id="radar"
+                                                checked>
+                                            <label class="form-check-label">
+                                                เรดาห์น้ำฝน
+                                            </label>
+                                            <br>
+                                            <img id="radarLegend" width="30px">
+                                        </div>
+
+                                        <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="lu" id="lu">
                                             <label class="form-check-label">
                                                 การใช้ประโยชน์ที่ดิน
@@ -179,6 +204,14 @@
                                             </label>
                                             <br>
                                             <img id="ecoboundLegend">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="pollu" id="pollu">
+                                            <label class="form-check-label">
+                                                แหล่งกำเนิดมลพิษ
+                                            </label>
+                                            <br>
+                                            <img id="polluLegend">
                                         </div>
                                     </div>
 
@@ -309,6 +342,7 @@
                             </div>
                             <div class="card">
                                 <div id="map" value="0"></div>
+                                <img class="border-10" src="./img/aqi.png" width="100%" id="imgaqi">
                             </div>
                             <div class="card">
                                 <div class="card-body">
@@ -722,9 +756,9 @@
                     </div>
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="container-fluid mb-6">
+                <!-- <div class="container-fluid mb-6">
                     <p> <span class="ver">ปรับปรุง 14/03/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
     </main><!-- End #main -->
@@ -734,15 +768,15 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
-        <div class="fixed-bottom p-4">
-            <div class="toast cookie text-white text-left" role="alert" data-autohide="false">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
                 <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
-                    <div class="mr-auto p-2 bd-highlight">
+                    <div class="p-2 bd-highlight  text-justify">
                         <span style="font-size: 12px; font-stretch: condensed;">
                             เว็บไซต์นี้
                             มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
-                            หากท่านใช้<br>บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
-                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์<br>
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
                             <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
@@ -750,11 +784,14 @@
                             และ <a href="https://www.onep.go.th/cookie-policy/"
                                 style="color: white; text-decoration: underline;" target="_blank"
                                 rel="noopener noreferrer">นโยบายคุกกี้
-                                (Cookie Policy)</a>
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
                         </span>
                     </div>
                     <div class="ml-auto p-2 bd-highlight">
-                        <button type="button" class="btn btn-success" id="btnAccept">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
                             ยอมรับและปิด
                         </button>
                     </div>

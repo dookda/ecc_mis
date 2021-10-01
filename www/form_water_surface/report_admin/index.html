@@ -122,69 +122,46 @@
                     <div class="card-body">
                         รายงานข้อมูลคุณภาพน้ำผิวดิน
                         <hr>
-                        <div class="col-sm-4 form-group">
-                            <label for="sta">เลือกสถานีเพื่อดูค่าการตรวจวัดที่ผ่านมา :</label>
-                            <select class="form-control" id="sta">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด WQI ที่ผ่านมา</label>
-                                <div class="chart" id="_ws_wqi"></div>
+                        <div class="row d-flex align-items-end">
+                            <div class="col-sm-4 form-group">
+                                <label for="sta">เลือกสถานีเพื่อดูค่าการตรวจวัดที่ผ่านมา :</label>
+                                <select class="form-control" id="sta">
+                                    <option value="ทุกสถานีตรวจวัดค่า">ข้อมูลทั้งหมด</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด DO ที่ผ่านมา </label>
-                                <div class="chart" id="_ws_bod"></div>
+                            <div class="col-sm-4 form-group">
+                                <label for="">เลือกค่าการตรวจวัด :</label>
+                                <select class="form-control" id="parameter">
+                                    <option value="WQI">WQI</option>
+                                    <option value="DO">DO</option>
+                                    <option value="BOD">BOD</option>
+                                    <option value="FCB">Fecal Coliform Bacteria</option>
+                                    <option value="AMM">Ammonia</option>
+                                    <option value="TCB">Total Coliform Bacteria</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด BOD ที่ผ่านมา </label>
-                                <div class="chart" id="_ws_do"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด Fecal Coliform Bacteria ที่ผ่านมา </label>
-                                <div class="chart" id="_ws_fcb"></div>
+                            <div class="col-sm-4 form-group">
+                                <button class="btn btn-success" onclick="callChart()"><i
+                                        class="bi bi-clipboard-data"></i>
+                                    แสดงผลกราฟของข้อมูลที่เลือก</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด แอมโมเนีย ที่ผ่านมา </label>
-                                <div class="chart" id="_ws_nh3n"></div>
-                            </div>
+                <div class="p-1 w-100" id="chartall">
+                    <div class="card">
+                        <div class="card-body">
+                            <label>ค่าการตรวจวัด<span id="staname"></span>ที่ผ่านมา</label>
+                            <div style="width: 100%; height: 400px;" id="chartdiv"></div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <label>ค่าการตรวจวัด Total Coliform Bacteria ที่ผ่านมา </label>
-                                <div class="chart" id="_ws_tcb"></div>
-                            </div>
-                        </div>
+                        <div class="row" style="margin-left: 1%; color: darkgrey;">
+                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำผิวดินไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                        <div class="row" style="margin-left: 1%;">
+                            อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                                href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a></div>
+                        <br>
                     </div>
                 </div>
-                <p></p>
                 <h5>ตำแหน่งตรวจวัดคุณภาพน้ำผิวดิน</h5>
                 <div class="card" style="z-index: 0;">
                     <div class="card-body" id="map"></div>
@@ -226,7 +203,9 @@
                         <span class="sr-only">กำลังโหลด...</span>
                     </div>
                     <div class="row" id="chartd"></div>
+                    <div id=referlink></div>
                 </div>
+                <br>
             </div>
             <div class="container">
                 <div class="row" style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
@@ -282,6 +261,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WquaModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hchart" id="pHChart"></div>
+                    <p></p>
+                    <div class="hchart" id="TempChart"></div>
+                    <p></p>
+                    <div class="hchart" id="ECChart"></div>
+                    <p></p>
+                    <div class="hchart" id="DOChart"></div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
                 </div>
             </div>
         </div>

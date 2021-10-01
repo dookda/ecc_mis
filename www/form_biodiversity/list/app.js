@@ -263,7 +263,7 @@ let getDetail = (e) => {
 }
 
 let chartbiopro = (div, val) => {
-    console.log(val);
+    // console.log(val);
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end

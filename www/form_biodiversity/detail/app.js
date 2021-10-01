@@ -155,7 +155,7 @@ let sendData = () => {
             geom: geom == "" ? "" : geom.toGeoJSON()
         }
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/biodiversity-api/update", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null;
         sessionStorage.removeItem('biodiversity_proj_gid');
@@ -197,7 +197,7 @@ let getTam = (e) => {
 let getTamOne = (e) => {
     axios.get(url + "/eec-api/get-th-onetam/" + e).then(r => {
         r.data.data.map(i => {
-            console.log(i);
+            // console.log(i);
             $("#pro_name").val(i.pro_name)
             $("#amp_name").val(i.amp_name)
             $("#tam_name").val(i.tam_name)

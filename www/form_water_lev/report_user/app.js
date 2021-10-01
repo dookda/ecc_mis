@@ -151,6 +151,9 @@ let loadTable = () => {
                 // width: "30%"
             }
         ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 3, 4] },
+        ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
         buttons: [

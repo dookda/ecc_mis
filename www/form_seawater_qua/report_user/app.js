@@ -411,6 +411,20 @@ let geneChart = (arr, div, tt, unit) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let getDataByPro = (sq_pro) => {
@@ -483,6 +497,20 @@ let lineChart = (div, data, label, unit) => {
     chart.scrollbarX = new am4charts.XYChartScrollbar();
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 
     dateAxis.start = 0.50;
     dateAxis.keepSelection = true;

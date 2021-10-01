@@ -56,24 +56,24 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
 });
 
 const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: "eec:a__03_tambon_eec",
-  format: "image/png",
-  transparent: true,
-  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: "eec:a__02_amphoe_eec",
-  format: "image/png",
-  transparent: true,
-  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-  layers: "eec:a__01_prov_eec",
-  format: "image/png",
-  transparent: true,
-  // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 let lyrs = L.featureGroup().addTo(map)
@@ -149,7 +149,7 @@ let sendData = () => {
         }
     }
 
-    console.log(obj);
+    // console.log(obj);
 
     axios.post(url + "/waterlevel-api/insert", obj).then((r) => {
         r.data.data == "success" ? $("#okmodal").modal("show") : null

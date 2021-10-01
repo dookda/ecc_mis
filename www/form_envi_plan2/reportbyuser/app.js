@@ -175,17 +175,6 @@ let deleteValue = () => {
             }
         })
     }
-
-    if ($("#tbType").val() == "nonprj") {
-        axios.post(url + "/projmon-api/deletedatanonprj", { prj_id: prj_id }).then(r => {
-            if (r.data.data == "success") {
-                $('#editModal').modal('hide')
-                $('#deleteModal').modal('hide')
-                $('#mTable').DataTable().ajax.reload();
-            }
-        })
-    }
-
 }
 
 let getMap = (x) => {

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลคุณภาพน้ำก่อนและหลังการบำบัด</title>
+    <title>ระบบนำเข้าข้อมูลคุณภาพน้ำหลังการบำบัด</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -35,6 +35,7 @@
     <link href="./../../assets/vendor/venobox/venobox.css" rel="stylesheet">
     <link href="./../../assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <!-- Template Main CSS File -->
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
@@ -53,10 +54,10 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -86,15 +87,18 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำก่อนและหลังบำบัด</h2>
+                    <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำทิ้ง/น้ำเสีย</h2>
                     <p>
-                        การนำเข้าข้อมูลค่าพารามิเตอร์คุณภาพน้ำก่อนเข้าสู่ระบบบำบัดและหลังออกจากระบบบำบัดในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลคุณภาพน้ำทิ้ง/น้ำเสีย เป็นการนำเข้าข้อมูลค่าพารามิเตอร์น้ำหลังเข้าสู่ระบบบำบัด
+                        ประกอบด้วยตำแหน่งจุดเก็บตัวอย่างน้ำ ข้อมูลค่าพารามิเตอร์ต่างๆ หลังการบำบัด ข้อมูลผู้บันทึกข้อมูล
+                        และรูปภาพหรือเอกสารแนบ ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถนำเข้า
+                        แก้ไข และเรียกดูข้อมูลสถิติของพื้นที่ได้
                     </p>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm">
-                        <h4>จุดเก็บตัวอย่างน้ำหลังการบำบัด</h4>
+                        <h4>จุดเก็บตัวอย่างน้ำทิ้ง/น้ำเสีย</h4>
                         <label for="">คลิิ๊กลงบนแผนที่เพื่อระบุตำแหน่งที่ต้องการ</label>
                         <div class="card mt-1 p-0">
                             <div id="map"></div>
@@ -227,7 +231,7 @@
                         </form>
                         <div class="col-sm">
                             <!-- submit button -->
-                            <a class="btn btn-light pull-right m-1" href="./../report/index.html">กลับหน้ารายงาน</a>
+                            <a class="btn btn-light pull-right m-1" onclick="UserReport()">กลับหน้ารายงาน</a>
 
                             <button class="btn btn-info pull-right m-1" onclick="saveData()"><i
                                     class="fa fa-plus"></i>&nbsp;
@@ -236,9 +240,9 @@
                     </div>
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="container-fluid mt-3 mb-6">
+                <!-- <div class="container-fluid mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
 

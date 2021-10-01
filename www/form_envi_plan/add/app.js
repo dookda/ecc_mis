@@ -160,9 +160,7 @@ $("#fieldForm").submit(function (e) {
     const obj = {
         data: {
             // org: org,
-            prj_order: $('#prj_order').val(),
             prj_cate: $('#prj_cate').val(),
-            prj_group: $('#prj_group').val(),
             prj_name: $('#prj_name').val(),
             prj_measure: $('#prj_measure').val(),
 

@@ -10,28 +10,152 @@ if (eecauth !== "admin" && eecauth !== "user") {
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3000';
+let dataurl, button
+if (eecauth == "admin") {
+    dataurl = url + "/insee-api/getgeom";
+    button = `<button type="button" class="btn btn-success" id="getMap">ที่ตั้งแปลง</button>
+     <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
+
+} else if (eecauth == "user") {
+    dataurl = url + "/insee-api/getgeom/" + urid;
+    $('#cardselect').hide()
+    button = `<button type="button" class="btn btn-success" id="getMap">ที่ตั้งแปลง</button>
+    <button type="button" class="btn btn-warning" id="edit">แก้ไขข้อมูล</button>
+    <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
+
+} else if (eecauth == "office") {
+    dataurl = url + "/insee-api/getgeom";
+    button = `<button type="button" class="btn btn-success" id="getMap">ที่ตั้งแปลง</button>`
+}
+
+$("#pro").on("change", function () {
+    getPro(this.value)
+    zoommap("pro", this.value)
+    seclectdata(eecauth, "prov", this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
+    zoommap("amp", this.value)
+    seclectdata(eecauth, "amp", this.value)
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+    zoommap("tam", this.value)
+    seclectdata(eecauth, "tam", this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+        $('#area').text('พื้นที่จังหวัดชลบุรี');
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+        $('#area').text('พื้นที่จังหวัดระยอง');
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+        $('#area').text('พื้นที่จังหวัดฉะเชิงเทรา');
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+        $('#area').text(`พื้นที่จังหวัด${prov_name} อำเภอ${amp_name}`);
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+        $('#area').text(`พื้นที่จังหวัด${prov_name} อำเภอ${amp_name} ตำบล${tam_name}`);
+    })
+}
+
+let seclectdata = (auth, type, code) => {
+    if (auth == "admin") {
+        if (type == "prov" && code !== "eec") {
+            dataurl = url + '/insee-api/getgeom/prov/' + code;
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        } else if (type == "prov" && code == 'eec') {
+            dataurl = url + "/insee-api/getgeom";
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        }
+        else if (type == "amp") {
+            dataurl = url + '/insee-api/getgeom/amp/' + code
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        } else if (type == "tam") {
+            dataurl = url + '/insee-api/getgeom/tam/' + code
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        }
+    }
+}
 
 let table
 $(document).ready(function () {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
     table = $('#myTable').DataTable({
         ajax: {
             type: "get",
-            url: url + "/insee-api/get_geom",
-            data: { userid: "" },
+            url: dataurl,
+            data: { userid: urid },
             dataSrc: 'data'
         },
         columns: [
-            { data: 'dateD' },
+            { data: 'repor_date' },
             { data: 'intoname' },
             { data: 'typeag' },
             { data: 'tcate' },
+            { data: 'tambon' },
+            { data: 'amphoe' },
+            { data: 'province' },
             {
                 // targets: -1,
                 data: null,
-                defaultContent: `<button type="button" class="btn btn-success" id="getMap">ขยายแผนที่</button>
-                                 <button type="button" class="btn btn-warning" id="edit">แก้ไขข้อมูล</button>
-                                 <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
+                defaultContent: button
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7] },
         ],
         searching: true,
         scrollX: true
@@ -56,7 +180,7 @@ $(document).ready(function () {
 
     $('#myTable tbody').on('click', '#delete', function () {
         var data = table.row($(this).parents('tr')).data();
-        confirmDelete(data.staid, data.staname, data.id_date)
+        confirmDelete(data.intoname, data.id_date, data.repor_date, data.typeag)
     });
 })
 
@@ -85,10 +209,30 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -96,13 +240,49 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 L.control.layers(baseMap, overlayMap).addTo(map);
 
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #A5B806"></i><span>พื้นที่เกษตรกรรม</span><br>';
+        div.innerHTML += '<i style="background: #FA584B"></i><span>พื้นที่ปศุสัตว์</span><br>';
+        div.innerHTML += '<i style="background: #4F9DE8"></i><span>พื้นที่การประมง</span><br>';
+        div.innerHTML += '<i style="background: #ff7800"></i><span>พื้นที่อื่นๆ</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+        // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+        return div;
+    };
+
+    legend.addTo(map);
+}
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 // map.pm.addControls({
 //     position: 'topleft',
 //     drawCircle: false,
@@ -158,42 +338,100 @@ let getMap = (x) => {
     }
 
     x.map(i => {
-        if (i.st_asgeojson && i.typeag == 'เกษตรกรรม') {
-            let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
-                style: style_agri,
-                name: "st_asgeojson",
-                onEachFeature: function (feature, layer) {
-                    drawnItems.addLayer(layer);
-                }
-            })
-            geojson.addTo(map);
-        } else if (i.st_asgeojson && i.typeag == 'ปศุสัตว์') {
-            let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
-                style: style_ani,
-                name: "st_asgeojson",
-                onEachFeature: function (feature, layer) {
-                    drawnItems.addLayer(layer);
-                }
-            })
-            geojson.addTo(map);
-        } else if (i.st_asgeojson && i.typeag == 'การประมง') {
-            let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
-                style: style_fish,
-                name: "st_asgeojson",
-                onEachFeature: function (feature, layer) {
-                    drawnItems.addLayer(layer);
-                }
-            })
-            geojson.addTo(map);
-        } else { // console.log(i.geojson);
-            let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
-                style: style,
-                name: "st_asgeojson",
-                onEachFeature: function (feature, layer) {
-                    drawnItems.addLayer(layer);
-                }
-            })
-            geojson.addTo(map);
+        // console.log(i)
+        if (eecauth == "user") {
+            if (i.st_asgeojson && i.typeag == 'เกษตรกรรม') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_agri,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6><img class="border-10" src="${i.img}" width="100%">`)
+                    .addTo(map);
+            } else if (i.st_asgeojson && i.typeag == 'ปศุสัตว์') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_ani,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6><img class="border-10" src="${i.img}" width="100%">`)
+                    .addTo(map);
+            } else if (i.st_asgeojson && i.typeag == 'การประมง') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_fish,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6><img class="border-10" src="${i.img}" width="100%">`)
+                    .addTo(map);
+            } else { // console.log(i.geojson);
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6><img class="border-10" src="${i.img}" width="100%">`)
+                    .addTo(map);
+            }
+        } else {
+            if (i.st_asgeojson && i.typeag == 'เกษตรกรรม') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_agri,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                    .addTo(map);
+            } else if (i.st_asgeojson && i.typeag == 'ปศุสัตว์') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_ani,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                    .addTo(map);
+            } else if (i.st_asgeojson && i.typeag == 'การประมง') {
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style_fish,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                    .addTo(map);
+            } else { // console.log(i.geojson);
+                let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
+                    style: style,
+                    name: "st_asgeojson",
+                    onEachFeature: function (feature, layer) {
+                        drawnItems.addLayer(layer);
+                    }
+                })
+                geojson
+                    .bindPopup(`<h6><b>เจ้าของแปลง :</b> ${i.id_user}</h6><h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                    .addTo(map);
+            }
+
         }
     })
 }
@@ -222,12 +460,15 @@ let editdata = (data) => {
         let dateAgout = moment(time2).format("YYYY-MM-DD");
         let rpdate = moment(time3).format("YYYY-MM-DD");
         // title.textContent = "Format example: " + time;
-        console.log(data)
+
         $("#proj_name1").text(data.typeag);
         $("#typeA").val(data.typeag);
         $("#proj_id1").val(data.id_date)
         $("#into1").val(data.intono);
         $("#into2").val(data.intoname);
+        $("#prov1").val(data.province);
+        $("#amp1").val(data.amphoe);
+        $("#tam1").val(data.tambon);
         $("#TypeA1").val(data.t1types);
         $("#cateAgri").val(data.tcate);
         $("#dateAgri").val(dateAgri);
@@ -242,12 +483,15 @@ let editdata = (data) => {
         $("#animalModal").modal("show")
         let time3 = new Date(data.repordat).getTime();
         let rpdate = moment(time3).format("YYYY-MM-DD");
-        console.log(data)
+        // console.log(data)
         $("#proj_name2").text(data.typeag);
         $("#typeA").val(data.typeag);
         $("#proj_id2").val(data.id_date)
         $("#into12").val(data.intono);
         $("#into22").val(data.intoname);
+        $("#prov2").val(data.province);
+        $("#amp2").val(data.amphoe);
+        $("#tam2").val(data.tambon);
         $("#selAni").val(data.t2sel);
         $("#cateAni").val(data.tcate);
         $("#quanAni").val(data.t2amount);
@@ -258,13 +502,16 @@ let editdata = (data) => {
         $("#fisherModal").modal("show")
         let time3 = new Date(data.repordat).getTime();
         let rpdate = moment(time3).format("YYYY-MM-DD");
-        console.log(data)
-        console.log(data.t3select)
+        // console.log(data)
+        // console.log(data.t3select)
         $("#proj_name3").text(data.typeag);
         $("#typeA").val(data.typeag);
         $("#proj_id3").val(data.id_date)
         $("#into13").val(data.intono);
         $("#into23").val(data.intoname);
+        $("#prov3").val(data.province);
+        $("#amp3").val(data.amphoe);
+        $("#tam3").val(data.tambon);
         $("#watercat").val(data.t3wc);
         $("#fishselect").val(data.t3select);
         //1
@@ -288,10 +535,8 @@ let editdata = (data) => {
         $("#fishnum5").val(data.t3f5num);
         $("#fishunit5").val(data.t3f5unit);
         $("#rpdate3").val(rpdate);
-
     }
 }
-
 let closeModal = () => {
     $('#editModal').modal('hide')
     $("#agriModal").modal("hide")
@@ -299,27 +544,37 @@ let closeModal = () => {
     $("#fisherModal").modal("hide")
     $('#deleteModal').modal('hide')
     table.ajax.reload();
+    window.location.reload();
 }
 
-let confirmDelete = (staid, staname, id_date) => {
-    $("#proj_id").val(id_date)
-    $("#proj_name").text(staname)
+let confirmDelete = (name, id_date, date, type) => {
+    $("#projId").val(id_date)
+    $("#projName").text(`${name} ประเภท${type}`)
+    $('#projTime').text(`วันที่ ${date}`)
     $("#deleteModal").modal("show");
+
+    axios.post(url + "/insee-api/deletedata", { id_date: id_date }).then(r => {
+        r.data.data == "success" ? closeModal() : null
+    })
 }
 
 let deleteValue = () => {
     // console.log($("#projId").val());
-    let proj_id = $("#proj_id").val()
-    axios.post("http://localhost:3000/form_gw/deletedata", { id_date: proj_id }).then(r => {
-        r.data.data == "success" ? closeModal() : null
-    })
+    // let projid = $("#projId").val();
+    // axios.post(url + "/insee-api/deletedata", { id_date: projid }).then(r => {
+    //     r.data.data == "success" ? closeModal() : null
+    // })
+    $('#deleteModal').modal('hide')
+    table.ajax.reload();
+    window.location.reload();
 }
+
 let refreshPage = () => {
     location.reload(true);
 }
-let dataurl1
+let dataimgurl1
 $('#imgfile1').change(function (evt) {
-    console.log(evt);
+    // console.log(evt);
     var files = evt.target.files;
     var file = files[0];
     if (file) {
@@ -362,7 +617,7 @@ let resize1 = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl1 = canvas.toDataURL(file.type);
+                dataimgurl1 = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }
@@ -372,9 +627,9 @@ let resize1 = () => {
         alert('The File APIs are not fully supported in this browser.');
     }
 }
-let dataurl2
+let dataimgurl2
 $('#imgfile2').change(function (evt) {
-    console.log(evt);
+    // console.log(evt);
     var files = evt.target.files;
     var file = files[0];
     if (file) {
@@ -417,7 +672,7 @@ let resize2 = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl2 = canvas.toDataURL(file.type);
+                dataimgurl2 = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }
@@ -427,9 +682,9 @@ let resize2 = () => {
         alert('The File APIs are not fully supported in this browser.');
     }
 }
-let dataurl3
+let dataimgurl3
 $('#imgfile3').change(function (evt) {
-    console.log(evt);
+    // console.log(evt);
     var files = evt.target.files;
     var file = files[0];
     if (file) {
@@ -472,7 +727,7 @@ let resize3 = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl3 = canvas.toDataURL(file.type);
+                dataimgurl3 = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }
@@ -485,13 +740,16 @@ let resize3 = () => {
 
 function saveData() {
     var a = $("#typeA").val()
-    console.log(a)
+    // console.log(a)
     if (a == "เกษตรกรรม") {
         let dataA = [{
             typeag: $("#typeA").val(),
             id_date: $("#proj_id1").val(),
             intono: $("#into1").val(),
             intoname: $("#into2").val(),
+            province: $("#prov1").val(),
+            tambon: $("#tam1").val(),
+            amphoe: $("#amp1").val(),
             t1types: $("#TypeA1").val(),
             tcate: $("#cateAgri").val(),
             t1sdate: $("#dateAgri").val(),
@@ -500,8 +758,11 @@ function saveData() {
             t1stdname: $("#namestand").val(),
             tarea: $("#areaAgri").val(),
             tarunit: $("#unitAgri").val(),
-            img: dataurl1 ? dataurl1 : dataurl1 = "",
+            img: dataimgurl1,
             repordat: $("#rpdate").val(),
+            datreport: $("#rpdate").val(),
+            id_user: urname,
+            id_userid: urid,
         }]
         sendData(dataA)
         table.ajax.reload();
@@ -512,13 +773,19 @@ function saveData() {
             id_date: $("#proj_id2").val(),
             intono: $("#into12").val(),
             intoname: $("#into22").val(),
+            province: $("#prov2").val(),
+            tambon: $("#tam2").val(),
+            amphoe: $("#amp2").val(),
             t2sel: $("#selAni").val(),
             tcate: $("#cateAni").val(),
             t2amount: $("#quanAni").val(),
             tarea: $("#areaAni").val(),
             tarunit: $("#unitAni").val(),
-            img: dataurl2 ? dataurl2 : dataurl2 = "",
+            img: dataimgurl2,
             repordat: $("#rpdate2").val(),
+            datreport: $("#rpdate2").val(),
+            id_user: urname,
+            id_userid: urid,
         }]
         sendData(dataB);
         closeModal()
@@ -529,6 +796,9 @@ function saveData() {
             id_date: $("#proj_id3").val(),
             intono: $("#into13").val(),
             intoname: $("#into23").val(),
+            province: $("#prov3").val(),
+            tambon: $("#tam3").val(),
+            amphoe: $("#amp3").val(),
             tcate: $("#watercat").val(),
             t3wc: $("#watercat").val(),
             t3select: $("#fishselect").val(),
@@ -552,8 +822,11 @@ function saveData() {
             t3f5na: $("#namefish5").val(),
             t3f5num: $("#fishnum5").val(),
             t3f5unit: $("#fishunit5").val(),
-            img: dataurl3 ? dataurl3 : dataurl3 = "",
+            img: dataimgurl3,
             repordat: $("#rpdate3").val(),
+            datreport: $("#rpdate3").val(),
+            id_user: urname,
+            id_userid: urid,
         }]
         sendData(dataC)
         table.ajax.reload();
@@ -572,9 +845,10 @@ let sendData = (data) => {
     const obj = {
         data: data
     }
-    console.log(obj)
+    // console.log(obj)
     $.post(url + "/form_insee/update", obj).done((r) => {
         r.data.data == "success"
+        window.location.href = '/form_organic/update/index.html'
     })
 }
 
@@ -670,7 +944,7 @@ $("#BuySellUse").on("change", function () {
         $("#Sell").show();
         $("#BSselect").on("change", function () {
             var a = $("#BSselect").val();
-            console.log(a)
+            // console.log(a)
             if (a == "ซื้อขาย") {
                 $("#Buy").show();
                 $("#Sell").show();
@@ -746,3 +1020,20 @@ $("#prodselect").on("change", function () {
         $("#product").hide();
     }
 })
+
+let zoommap = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+    if (code == "eec") {
+        map.closePopup();
+    }
+}

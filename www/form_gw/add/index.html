@@ -38,8 +38,7 @@
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -57,8 +56,9 @@
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
 
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
     <link rel="stylesheet" type="text/css"
         href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
@@ -74,17 +74,17 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
-
-                    <li><a href="./../../form_register/profile/index.html"><i
+                    <li id="usr1"><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
-                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                    <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
                             ออกจากระบบ</a></li>
                 </ul>
             </nav>
@@ -111,248 +111,240 @@
                 <div class="section-title">
                     <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำบาดาล</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลคุณภาพน้ำบาดาล
-                        เป็นการนำเข้าข้อมูลคุณภาพน้ำบาดาล ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบนำเข้าข้อมูลคุณภาพน้ำบาดาลเป็นการนำเข้าข้อมูลคุณภาพน้ำบาดาลจากกรมทรัพยากรน้ำบาดาล
+                        ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถนำเข้า แก้ไข
+                        และเรียกดูข้อมูลสถิติของพื้นที่ได้ โดยระบบประกอบด้วยตำแหน่งสถานีตรวจวัดคุณภาพน้ำบาดาล
+                        ข้อมูลสถานี และค่าพารามิเตอร์ต่างๆ ที่ได้จากการตรวจวัด
+                        ระบบนำเข้าข้อมูลมลพิษทางอากาศ
                     </p>
                 </div>
                 <hr>
-                <div class="container-fluid">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <!-- รับค่า ID Line -->
-                                <div id="card">
-                                    <img alt="" id="profile">
-                                </div>
-                            </div>
-                            <div class="col-xs-4 aml-1">
-                                <h5> <span class="badge badge-info" id="displayName"></span></h5>
-                                <span id="statusMessage"></span>
+                <h3>แผนที่</h3>
+                <h6>กรุณาคลิกบนแผนที่เพื่อนำเข้าตำแหน่งที่ตรวจวัดคุณภาพน้ำบาดาล</h6>
+                <div class="form-group row">
+                    <div id="map"></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm">
+                        <div class="form-group row">
+                            <label class="col-form-label">ค่าพิกัด lat :</label>
+                            <div class="col-sm">
+                                <input type="text" class="form-control" id="lat" readonly>
                             </div>
                         </div>
                     </div>
-                    <h3>แผนที่</h3>
-                    <h6>กรุณาคลิกบนแผนที่เพื่อนำเข้าตำแหน่งที่ตรวจวัดคุณภาพน้ำบาดาล</h6>
-                    <div class="form-group row">
-                        <div id="map"></div>
+                    <div class="col-sm">
+                        <div class="form-group row">
+                            <label class="col-form-label">ค่าพิกัด lng :</label>
+                            <div class="col-sm">
+                                <input type="text" class="form-control" id="lon" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" style="flex-direction: column; display: flex;">
+                    <h6><b>ข้อมูลสถานีตรวจน้ำบาดาล</b></h6>
+                    <div class="form-group row" style="flex-wrap: wrap; flex-direction: row;">
+                        <div class="col-sm">
+                            <label for="locate">station ID</label>
+                            <input type="text" class="form-control" id="staid">
+                        </div>
+                        <div class="col-sm">
+                            <label for="locate">ชื่อสถานีตรวจวัดน้ำบาดาล</label>
+                            <input type="text" class="form-control" id="staname">
+                        </div>
+                        <div class="col-sm">
+                            <label for="sel1">จังหวัด</label>
+                            <select class="form-control" id="pro">
+                                <option value="eec">ทุกจังหวัด</option>
+                                <option value="24">ฉะเชิงเทรา</option>
+                                <option value="20">ชลบุรี</option>
+                                <option value="21">ระยอง</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <label for="sel1">อำเภอ</label>
+                            <select class="form-control" id="amp">
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <label for="sel1">ตำบล</label>
+                            <select class="form-control" id="tam">
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm">
-                            <div class="form-group row">
-                                <label class="col-form-label">ค่าพิกัด lat :</label>
-                                <div class="col-sm">
-                                    <input type="text" class="form-control" id="lat">
-                                </div>
-                            </div>
+                            <label for="locate">Sensor ID</label>
+                            <input type="text" class="form-control" id="senid">
                         </div>
                         <div class="col-sm">
-                            <div class="form-group row">
-                                <label class="col-form-label">ค่าพิกัด lng :</label>
-                                <div class="col-sm">
-                                    <input type="text" class="form-control" id="lon">
-                                </div>
-                            </div>
+                            <label for="locate">Sensor code/name</label>
+                            <input type="text" class="form-control" id="senname">
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <h6><b>ข้อมูลสถานีตรวจน้ำบาดาล</b></h6>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="locate">station ID :</label>
-                                <input type="text" class="form-control" id="staid">
-                            </div>
-                            <div class="col-sm">
-                                <label for="locate">ชื่อสถานีตรวจวัดน้ำบาดาล :</label>
-                                <input type="text" class="form-control" id="staname">
-                            </div>
-                            <div class="col-sm">
-                                <label for="locate">ตำบล :</label>
-                                <input type="text" class="form-control" id="tambon">
-                            </div>
-                            <div class="col-sm">
-                                <label for="locate">อำเภอ :</label>
-                                <input type="text" class="form-control" id="amphoe">
-                            </div>
-                            <div class="col-sm">
-                                <label for="sel1">จังหวัด :</label>
-                                <input type="text" class="form-control" id="province">
-                            </div>
+                        <div class="col-sm">
+                            <label for="gwdate">วันที่เก็บข้อมูล</label>
+                            <input type="datetime-local" class="form-control" id="gwdate" required>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="locate">Sensor ID :</label>
-                                <input type="text" class="form-control" id="senid">
-                            </div>
-                            <div class="col-sm">
-                                <label for="locate">Sensor code/name :</label>
-                                <input type="text" class="form-control" id="senname">
-                            </div>
-                            <div class="col-sm">
-                                <label for="gwdate">วันที่เก็บข้อมูล :</label>
-                                <input type="datetime-local" class="form-control" id="gwdate" required>
-                            </div>
-                            <div class="col-sm">
-                                <label for="year" data-provide="datepicker">ปี :</label>
-                                <input type="number" class="form-control" id="gwyear" required>
-                            </div>
-                            <div class="col-sm">
-                                <label for="record">ผู้บันทึกข้อมูลหรือหน่วยงานที่เก็บข้อมูล :</label>
-                                <input type="text" class="form-control" id="record">
-                            </div>
+                        <div class="col-sm">
+                            <label for="year" data-provide="datepicker">ปี</label>
+                            <input type="number" class="form-control" id="gwyear" required>
                         </div>
-                    </div>
-                    <hr>
-                    <!-- ค่าพารามิเตอร์/ค่าต่างๆ -->
-                    <div class="form-group row">
-                        <h6><b>กลุ่มที่ 1 ทางกายภาพ และเคมี</b></h6>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="watercolor">สีของน้ำ :</label>
-                                <input type="number" step="0.01" class="form-control" id="wc" placeholder="NTU">
-                            </div>
-                            <div class="col-sm">
-                                <label for="turbidity">ความขุ่น (turbidity) :</label>
-                                <input type="number" step="0.01" class="form-control" id="td" placeholder="ADMI">
-                            </div>
-                            <div class="col-sm">
-                                <label for="pH">ค่าความเป็นกรด-ด่าง :</label>
-                                <input type="number" class="form-control" id="ph">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fe">ค่าการนำไฟฟ้า :</label>
-                                <input type="number" class="form-control" id="ec" placeholder="µS/cm">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fe">แคลเซียม (Ca) :</label>
-                                <input type="number" step="0.1" class="form-control" id="cal" placeholder="mg/l">
-                            </div>
+                        <div class="col-sm">
+                            <label for="record">ผู้บันทึกข้อมูล/หน่วยงาน</label>
+                            <input type="text" class="form-control" id="record">
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="Fe">แมกนีเซียม (Mg) :</label>
-                                <input type="number" step="0.01" class="form-control" id="magne" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fe">โซเดียม (Sodium) :</label>
-                                <input type="number" step="0.01" class="form-control" id="sodium" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fe">โพแทสเซียม (K) :</label>
-                                <input type="number" step="0.01" class="form-control" id="pota" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fe">เหล็ก (Iron) :</label>
-                                <input type="number" step="0.01" class="form-control" id="fe" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Mnn">แมงกานีส (Mn) :</label>
-                                <input type="number" step="0.01" class="form-control" id="mnn" placeholder="mg/l">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="SO">ซัลเฟต (SO4) :</label>
-                                <input type="number" step="0.01" class="form-control" id="so4" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="CI">คลอไรด์ (CI) :</label>
-                                <input type="number" step="0.01" class="form-control" id="cl" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Fluoride">ฟลูออไรด์ (F) :</label>
-                                <input type="number" step="0.01" class="form-control" id="fluor" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="NO">ไนเตรด (NO3) :</label>
-                                <input type="number" step="0.01" class="form-control" id="no3" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="TS">ปริมาณสารทั้งหมด (total Solids) :</label>
-                                <input type="number" class="form-control" id="ts" placeholder="mg/l">
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <!-- กลุ่มสารพิษ -->
-                        <h6><b>กลุ่มที่ 2 โลหะหนัก และสารพิษ</b></h6>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="Cu">ทองแดง (Cu) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="cu" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Zn">สังกะสี (Zn) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="zn" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="As">สารหนู (As) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="ars" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Pb">ตะกั่ว (Pb) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="pb" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Cd">แคดเมียม (Cd) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="cd" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Cd">โครเมียม (Cr) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="cm" placeholder="mg/l">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm">
-                                <label for="Hg">ปรอท (Hg) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="hg" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="Hg">ซีลีเนียม (Se) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="se" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="CN">นิกเกิล (Ni) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="nc" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="CN">เงิน (Silver) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="sv" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="CN">แบเรียม (Ba) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="br" placeholder="mg/l">
-                            </div>
-                            <div class="col-sm">
-                                <label for="CN">ไซยาไนด์ (CN) :</label>
-                                <input type="number" step="0.0001" class="form-control" id="cn" placeholder="mg/l">
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row center">
-                        <button type=" button" class="btn btn-outline-success" onClick="window.location.reload();">
-                            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;refresh</button>
-                        &nbsp;&nbsp;
-
-                        <button type="submit" class="btn btn-success" data-toggle="modal"
-                            data-target=".bd-example-modal-lg" onclick="saveData()">
-                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;บันทึก</button>
-                        &nbsp;&nbsp;
-
-                        <a href="https://eec-onep.online/" class="btn btn-primary">
-                            <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>
-                        &nbsp;&nbsp;
-
-                        <a href="./../dashboard/index.html" class="btn btn-primary">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;หน้ารายงาน</a>
-
                     </div>
                 </div>
-                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="container-fluid mt-3 mb-6">
-                    <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+                <hr>
+                <!-- ค่าพารามิเตอร์/ค่าต่างๆ -->
+                <div class="form-group row">
+                    <h6><b>กลุ่มที่ 1 ทางกายภาพ และเคมี</b></h6>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <label for="watercolor">สีของน้ำ :</label>
+                            <input type="number" step="0.01" class="form-control" id="wc" placeholder="NTU">
+                        </div>
+                        <div class="col-sm">
+                            <label for="turbidity">ความขุ่น (turbidity) :</label>
+                            <input type="number" step="0.01" class="form-control" id="td" placeholder="ADMI">
+                        </div>
+                        <div class="col-sm">
+                            <label for="pH">ค่าความเป็นกรด-ด่าง :</label>
+                            <input type="number" class="form-control" id="ph">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fe">ค่าการนำไฟฟ้า :</label>
+                            <input type="number" class="form-control" id="ec" placeholder="µS/cm">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fe">แคลเซียม (Ca) :</label>
+                            <input type="number" step="0.1" class="form-control" id="cal" placeholder="mg/l">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <label for="Fe">แมกนีเซียม (Mg) :</label>
+                            <input type="number" step="0.01" class="form-control" id="magne" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fe">โซเดียม (Sodium) :</label>
+                            <input type="number" step="0.01" class="form-control" id="sodium" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fe">โพแทสเซียม (K) :</label>
+                            <input type="number" step="0.01" class="form-control" id="pota" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fe">เหล็ก (Iron) :</label>
+                            <input type="number" step="0.01" class="form-control" id="fe" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Mnn">แมงกานีส (Mn) :</label>
+                            <input type="number" step="0.01" class="form-control" id="mnn" placeholder="mg/l">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <label for="SO">ซัลเฟต (SO4) :</label>
+                            <input type="number" step="0.01" class="form-control" id="so4" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="CI">คลอไรด์ (CI) :</label>
+                            <input type="number" step="0.01" class="form-control" id="cl" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Fluoride">ฟลูออไรด์ (F) :</label>
+                            <input type="number" step="0.01" class="form-control" id="fluor" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="NO">ไนเตรด (NO3) :</label>
+                            <input type="number" step="0.01" class="form-control" id="no3" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="TS">ปริมาณสารทั้งหมด (total Solids) :</label>
+                            <input type="number" class="form-control" id="ts" placeholder="mg/l">
+                        </div>
+                    </div>
                 </div>
+                <hr>
+                <div class="form-group row">
+                    <!-- กลุ่มสารพิษ -->
+                    <h6><b>กลุ่มที่ 2 โลหะหนัก และสารพิษ</b></h6>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <label for="Cu">ทองแดง (Cu) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="cu" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Zn">สังกะสี (Zn) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="zn" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="As">สารหนู (As) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="ars" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Pb">ตะกั่ว (Pb) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="pb" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Cd">แคดเมียม (Cd) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="cd" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Cd">โครเมียม (Cr) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="cm" placeholder="mg/l">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <label for="Hg">ปรอท (Hg) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="hg" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="Hg">ซีลีเนียม (Se) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="se" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="CN">นิกเกิล (Ni) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="nc" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="CN">เงิน (Silver) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="sv" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="CN">แบเรียม (Ba) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="br" placeholder="mg/l">
+                        </div>
+                        <div class="col-sm">
+                            <label for="CN">ไซยาไนด์ (CN) :</label>
+                            <input type="number" step="0.0001" class="form-control" id="cn" placeholder="mg/l">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group"
+                    style="flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; display: flex;">
+                    <!-- <button type=" button" class="btn btn-outline-success" onClick="window.location.reload();">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;refresh</button>&nbsp;&nbsp; -->
+
+                    <!-- <a href="https://eec-onep.online/" class="btn btn-primary">
+                        <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>&nbsp;&nbsp; -->
+                    <button type="submit" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg"
+                        onclick="saveData()">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;บันทึก</button>&nbsp;&nbsp;
+                    <a href="./../dashboard/index.html" class="btn btn-light">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;หน้ารายงาน</a>&nbsp;&nbsp;
+
+                </div>
+            </div>
+            <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+            <!-- <div class="container-fluid mt-3 mb-6">
+                <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+            </div> -->
             </div>
 
         </section><!-- End Services Section -->
@@ -364,18 +356,20 @@
         <div class="modal-dialog" role="document">
             <div class="w3-animate-top">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">ยืนยันการบันทึกข้อมูล</h5>
-                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                        <h4 class="modal-title">
+                            <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                                style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล</h5>
+                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button> -->
                     </div>
-                    <div class="modal-body">
-                        <p>ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                    <div class="modal-body text-center mx-auto">
+                        <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <a href="/form_GW/dashboard/" class="btn btn-primary">ยืนยัน</a>
+                        <a href="/form_GW/dashboard/" class="btn btn-success">ยืนยัน</a>
                     </div>
                 </div>
             </div>

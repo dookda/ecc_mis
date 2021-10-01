@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลการแจ้งร้องเรียน</title>
+    <title>รายงานการแจ้งปัญหาสิ่งแวดล้อม</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -62,9 +62,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -96,12 +98,12 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
-                    <h2>ระบบนำเข้าข้อมูลแจ้งปัญหาสิ่งแวดล้อม</h2>
+                    <h2>รายงานการแจ้งปัญหาสิ่งแวดล้อม</h2>
                     <p>
-                        ระบบนำเข้าข้อมูลแจ้งปัญหาสิ่งแวดล้อม
-                        เป็นการนำเข้าข้อมูลการแจ้งร้องเรียนในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบรายงานปัญหาสิ่งแวดล้อมเป็นการนำเข้าข้อมูลการแจ้งร้องเรียน
+                        เพื่อช่วยแก้ปัญหาสิ่งแวดล้อมที่เกิดขึ้นในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ได้จากการนำเข้าข้อมูลสู่ระบบโดยหน่วยงานที่รับผิดชอบรายงานสิ่งแวดล้อมและเครือข่ายภาคประชาชน
                     </p>
-
                 </div>
                 <hr>
                 <h4>แจ้งปัญหา/แจ้งเหตุ</h4>
@@ -147,9 +149,9 @@
                     </div>
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="mt-3 mb-6">
+                <!-- <div class="mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
 
@@ -174,8 +176,17 @@
     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบโครงการ <span id="projName"></span></p>
+                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        ยืนยันการลบข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center mx-auto">
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span>
+                        </b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
                 <div class="modal-footer">

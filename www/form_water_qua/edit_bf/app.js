@@ -15,7 +15,8 @@ $(document).ready(() => {
 
 let searchParams = new URLSearchParams(window.location.search)
 let wq_id = searchParams.get('id')
-console.log(wq_id);
+let report = sessionStorage.getItem('wq_report');
+// console.log(wq_id);
 
 let latlng = {
     lat: 13.305567,
@@ -98,7 +99,7 @@ let loadData = () => {
         tb: "watquality_af"
     }
     axios.post(url + "/wq-api/getone", obj).then(r => {
-        console.log(r.data.data[0]);
+        // console.log(r.data.data[0]);
         $('#wq_turb').val(r.data.data[0].bf_wq_turb)
         $('#wq_cond').val(r.data.data[0].bf_wq_cond)
         $('#wq_sal').val(r.data.data[0].bf_wq_sal)
@@ -121,7 +122,7 @@ let loadData = () => {
 
         if (r.data.data[0].geojson) {
             let json = JSON.parse(r.data.data[0].geojson);
-            console.log(json);
+            // console.log(json);
             marker = L.marker([json.coordinates[1], json.coordinates[0]], {
                 draggable: true,
                 name: 'mk'
@@ -133,7 +134,7 @@ let loadData = () => {
 }
 
 let saveData = () => {
-    console.log(marker);
+    // console.log(marker);
     const obj = {
         data: {
             wq_turb: $('#wq_turb').val(),
@@ -160,7 +161,7 @@ let saveData = () => {
         tb: "watquality_bf",
         wq_id: wq_id,
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post(url + "/wq-api/update", obj).then(r => {
         r.data.data == "success" ? refreshPage() : null
     })
@@ -220,12 +221,29 @@ let resize = () => {
         alert('The File APIs are not fully supported in this browser.');
     }
 }
+let UserReport = () => {
+    // if (eecauth !== "admin" && eecauth !== "office") {
+    //     location.href = "./../report_user/index.html";
+    // } else if (eecauth == "admin") {
+    //     location.href = "./../report_admin/index.html"
+    // } else if (eecauth == "office") {
+    //     location.href = "./../report/index.html"
+    // }
 
-
-
-
-
-
-
-
-
+    if (report == "admin") {
+        location.href = "./../report_admin/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else if (report == "user") {
+        location.href = "./../report_user/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else if (report == "normal") {
+        location.href = "./../report/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else {
+        location.href = "./../report_user/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+}

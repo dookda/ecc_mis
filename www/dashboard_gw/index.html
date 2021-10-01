@@ -80,8 +80,8 @@
                     <li class="active"><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li><a href="./../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
                     <!-- <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
@@ -224,9 +224,10 @@
                                     <label for="sel1">จังหวัด:</label>
                                     <select class="form-control" id="pro">
                                         <option value="eec">ทุกจังหวัด</option>
+                                        <option value="24">ฉะเชิงเทรา</option>
                                         <option value="20">ชลบุรี</option>
                                         <option value="21">ระยอง</option>
-                                        <option value="24">ฉะเชิงเทรา</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -263,32 +264,32 @@
             <div class="container-sec">
                 <div class="card-sec">
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showDepth')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('depth')">
                             <i class="las las la-swimming-pool p-2" aria-hidden="true"
                                 style="font-size: 20px;"></i>ความลึก</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showWl')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('wl')">
                             <i class="las la-water p-2" aria-hidden="true"></i>ระดับน้ำ</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="showEc('ec')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('ec')">
                             <i class="las la-chart-line p-2" aria-hidden="true"></i>ค่าการนำไฟฟ้า</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="showPh('ph')" id="butph">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('ph')" id="butph">
                             <i class="las la-tachometer-alt p-2" aria-hidden="true"></i>ค่าความเป็นกรด-ด่าง</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showTemp')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('temp')">
                             <i class="las la-temperature-high p-2" aria-hidden="true"></i>ค่าอุณหภูมิ</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showTds')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('tds')">
                             <i class="las la-star-half-alt p-2" aria-hidden="true"></i>ค่าความขุ่น</button>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="card card-stats">
-                        <button class="btn btn-info btn-lg flex-fill" onclick="getshow('showSal')">
+                        <button class="btn btn-info btn-lg flex-fill" onclick="getparameter('sal')">
                             <i class="las la-biohazard p-2" aria-hidden="true"></i>ค่าความเค็ม</button>
                     </div>
 
@@ -302,6 +303,11 @@
                     <div class="col-sm">
                         <div class="card card-stats">
                             <div class="card-body center">
+                                <div class="text-center">
+                                    <span id="pro_tn">ทุกจังหวัด</span>
+                                    <span id="amp_tn"></span>
+                                    <span id="tam_tn"></span>
+                                </div>
                                 <div class="form-inline" id="years" style="display: none;">
                                     <div class="form-group">
                                         <!-- <h5>รายปี</h5>&nbsp;&nbsp;&nbsp; -->
@@ -339,6 +345,7 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>เรียกดูข้อมูล</th>
                                             <th>รหัสบ่อ</th>
                                             <th>สถานีตรวจวัด</th>
                                             <th>ตำบล</th>
@@ -365,8 +372,8 @@
                         <div class="col-sm-12">
                             <div class="card card-stats text-center">
                                 <div class="card-body ">
-                                    ข้อมูลบ่อสังเกตการณ์น้ำบาดาล
-                                    <h3><span id="sta_name"></span></h3>
+                                    ข้อมูลจากบ่อสังเกตการณ์น้ำบาดาลที่อยู่ใกล้ ณ ตำแหน่งผู้ใช้ระบบ
+                                    <h4><span id="sta_name"></span></h4>
                                 </div>
                             </div>
                         </div>
@@ -717,16 +724,45 @@
             <br>
         </section>
     </main>
-    <div class="container-fluid mt-3 mb-6">
+    <!-- <div class="container-fluid mt-3 mb-6">
         <p>
             <span class="ver">ปรับปรุง 08/07/2021</span>
         </p>
-    </div>
+    </div> -->
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="p-2 bd-highlight  text-justify">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
-
             <div class="copyright">
                 <img src="./../assets/img/onep_logo.png" class="img-circle" style="width:3%"> &nbsp;
                 สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>

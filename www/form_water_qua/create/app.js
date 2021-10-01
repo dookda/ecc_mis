@@ -13,7 +13,7 @@ const url = "https://eec-onep.online:3700";
 
 let refreshPage = () => {
     // window.open("./../report/index.html", "_self");
-    console.log("ok");
+    // console.log("ok");
 }
 
 let gotoReport = () => {
@@ -36,7 +36,7 @@ let insertData = () => {
     }
 
     axios.post(url + "/wq-api/createreport", obj).then(r => {
-        console.log(obj);
+        // console.log(obj);
         if (r.data.data == "success") {
             $('#report_n').val("")
             $('#systype').val("")

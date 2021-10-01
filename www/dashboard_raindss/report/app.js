@@ -14,7 +14,7 @@ if (urname) {
       เข้าสู่ระบบ</a></li>`);
 }
 let Accept = sessionStorage.getItem('accept');
-if (Accept) {
+if (Accept || eecauth) {
     $('.toast').toast('hide')
 }
 else {
@@ -178,6 +178,7 @@ $("#controlLegend").attr("src", eecUrl + "eec:a__06_pollution_control");
 $("#wbodyLegend").attr("src", eecUrl + "eec:a__14_w2_eec");
 $("#meteoLegend").attr("src", "./marker-meteo/location-pin-green.svg");
 $("#wtrlLegend").attr("src", "./marker-meteo/gas-station.png");
+$("#WquaLegend").attr("src", "./marker/sta_qu.png");
 $("#gwLegend").attr("src", "./img/gw.png");
 $("#radarLegend").attr("src", "./img/radar.png");
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
@@ -446,7 +447,7 @@ let wtrlModal = (stname) => {
         wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
         wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
         wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
-    }, 300)
+    }, 500)
 
 
     $("#wtrlModal").modal("show");
@@ -744,6 +745,9 @@ $("input[type=checkbox]").change(async () => {
             loadWtrl();
         }
 
+        if (i == "Wqua") {
+            loadWqua()
+        }
 
         if (i == "radar") {
             initialize(apiData, optionKind);
@@ -823,7 +827,7 @@ let wtrlChart = (arrData, div, unit) => {
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    dateAxis.start = 0.89;
+    dateAxis.start = 0.59;
     dateAxis.keepSelection = true;
 }
 
@@ -1049,3 +1053,206 @@ map.on("click", async (e) => {
 });
 
 $("#announce").html(`คลิกลงบนแผนที่เพื่อแสดงข้อมูลปริมาณน้ำฝนรายสัปดาห์`);
+
+let loadWqua = async () => {
+    let sta = [
+        {
+            staname: "station_01",
+            latlon: [13.691624, 101.442835]
+        }, {
+            staname: "station_02",
+            latlon: [13.0465397, 100.9197114]
+        }, {
+            staname: "station_03",
+            latlon: [12.8291659, 101.3244348]
+        }]
+
+    let sum_data = []
+    sta.map(async (i) => {
+        let dat_ec = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ec", sort: "DESC", stname: i.staname, limit: 1 });
+        dat_ec.then(r => {
+            let A1 = r.data.data;
+
+            let dat_ph = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ph", sort: "DESC", stname: i.staname, limit: 1 });
+            dat_ph.then(r => {
+                let B1 = r.data.data;
+
+                let dat_do = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "do", sort: "DESC", stname: i.staname, limit: 1 });
+                dat_do.then(r => {
+                    let C1 = r.data.data;
+
+                    let dat_tmp = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "tmp", sort: "DESC", stname: i.staname, limit: 1 });
+                    dat_tmp.then(r => {
+                        let D1 = r.data.data;
+                        sum_data.push({ staname: i.staname, latlon: i.latlon, ec: Number(A1[0].val), ec_time: A1[0].t, ph: Number(B1[0].val), ph_time: B1[0].t, do: Number(C1[0].val), do_time: C1[0].t, tmp: Number(D1[0].val), tmp_time: D1[0].t, tmp: Number(D1[0].val), tmp_time: D1[0].t });
+
+                        if (sum_data.length == '3') {
+                            marker_Wqua(sum_data)
+                        }
+                    })
+                })
+            })
+        })
+    })
+}
+
+let staW_qua
+let marker_Wqua = (d) => {
+    let iconblue = L.icon({
+        iconUrl: './marker/sta_qu.png',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+    staW_qua = L.layerGroup()
+    let data = d;
+    console.log(data)
+    data.map(i => {
+        let marker = L.marker(i.latlon, {
+            icon: iconblue,
+            name: 'lyr',
+            // data: dat
+        });
+        marker.addTo(map)
+        marker.bindPopup(`<div style="font-family:'Kanit'; font-size: 15px;"> 
+                        ชื่อสถานี : ${i.staname} <br>
+                        ค่า pH : ${Number(i.ph).toFixed(1)}<br>
+                        ค่าการนำไฟฟ้า : ${Number(i.ec).toFixed(1)} µS/cm<br>
+                        ค่า DO : ${Number(i.do).toFixed(1)} ppm<br>
+                        อุณหภูมิ : ${Number(i.tmp).toFixed(1)} องศาเซลเซียส<br>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="WquaModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        </div>`)
+        staW_qua.addLayer(marker);
+    })
+}
+
+let WquaModal = (stname) => {
+    // console.log(stname);
+    let arrPh = [];
+    let arrTemp = [];
+    let arrEC = [];
+    let arrDO = [];
+
+    let dat_ec = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ec", sort: "DESC", stname: stname, limit: 100 });
+    dat_ec.then(r => {
+        let A1 = r.data.data;
+        // console.log(A1)
+        A1.map(i => {
+            arrEC.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_ph = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ph", sort: "DESC", stname: stname, limit: 100 });
+    dat_ph.then(r => {
+        let B1 = r.data.data;
+        // console.log(B1)
+        B1.map(i => {
+            arrPh.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_do = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "do", sort: "DESC", stname: stname, limit: 100 });
+    dat_do.then(r => {
+        let C1 = r.data.data;
+        // console.log(C1)
+        C1.map(i => {
+            arrDO.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_tmp = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "tmp", sort: "DESC", stname: stname, limit: 100 });
+    dat_tmp.then(r => {
+        let D1 = r.data.data;
+        // console.log(D1)
+        D1.map(i => {
+            arrTemp.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    setTimeout(() => {
+        // console.log(arrDept, arrTemp, arrHumi);
+        Wquachart(arrPh, "pHChart", "ค่า pH");
+        Wquachart(arrEC, "ECChart", "ค่าการนำไฟฟ้า (µS/cm)");
+        Wquachart(arrTemp, "TempChart", "อุณหภูมิ (°C)");
+        Wquachart(arrDO, "DOChart", "ค่า DO (ppm)");
+    }, 500)
+
+
+    $("#WquaModal").modal("show");
+
+}
+
+let Wquachart = function (data, div, title) {
+
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    var chart = am4core.create(div, am4charts.XYChart);
+    chart.paddingRight = 60;
+    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.baseInterval = {
+        "timeUnit": "minute",
+        "count": 1
+    };
+
+    dateAxis.dateFormats.setKey("dd MMMM yyyy");
+    dateAxis.renderer.grid.template.location = 0;
+    dateAxis.renderer.minGridDistance = 60;
+    dateAxis.tooltipDateFormat = "yyyy-MM-dd HH:mm:ss";
+
+    chart.data = data;
+
+    // Create axes
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.tooltip.disabled = true;
+    valueAxis.title.text = title;
+
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.strokeWidth = 2;
+    // series.tensionX = 0.8;
+    series.stroke = am4core.color("#00BFFF");
+    series.minBulletDistance = 10;
+    series.tooltipText = "{valueY}";
+    series.tooltip.pointerOrientation = "value";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding(12, 12, 12, 12)
+
+    // var range = valueAxis.createSeriesRange(series);
+    // range.value = 35;
+    // range.endValue = 100;
+    // range.contents.stroke = am4core.color("#ff0000");
+    // range.contents.fill = range.contents.stroke;
+
+    // chart.cursor = new am4charts.XYCursor();
+    // chart.cursor.snapToSeries = series;
+    // chart.cursor.xAxis = dateAxis;
+
+    // chart.scrollbarY = new am4core.Scrollbar();
+    chart.scrollbarX = new am4core.Scrollbar();
+
+    // Add cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.snapToSeries = series;
+
+};

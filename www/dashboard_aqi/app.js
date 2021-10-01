@@ -260,7 +260,7 @@ let zoomExtent = (lyr, code) => {
     let geom = JSON.parse(r.data.data[0].geom)
     var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
 
-    console.log(lyr, code);
+    // console.log(lyr, code);
 
     $("#tab").dataTable().fnDestroy();
     showDataTable({ col: lyr, val: code });

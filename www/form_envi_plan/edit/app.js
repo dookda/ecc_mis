@@ -243,9 +243,7 @@ let getValue = (id) => {
     axios.post(url + "/projmon-api/getone", { prj_id: id }).then(async (r) => {
         // console.log(r.data.data[0]);
         $('#prj_id').val(r.data.data[0].prj_id)
-        $('#prj_order').val(r.data.data[0].prj_order)
         $('#prj_cate').val(r.data.data[0].prj_cate)
-        $('#prj_group').val(r.data.data[0].prj_group)
         $('#prj_measure').val(r.data.data[0].prj_measure)
         $('#prj_name').val(r.data.data[0].prj_name)
         $('#prj_detail').val(await r.data.data[0].prj_detail)
@@ -328,9 +326,7 @@ $("#fieldForm").submit(function (e) {
     const obj = {
         data: {
             prj_id: $('#prj_id').val(),
-            prj_order: $('#prj_order').val(),
             prj_cate: $('#prj_cate').val(),
-            prj_group: $('#prj_group').val(),
             prj_measure: $('#prj_measure').val(),
             act_1: $('#act_1').val() == "" ? "-" : $('#act_1').val(),
             act_2: $('#act_2').val() == "" ? "-" : $('#act_2').val(),

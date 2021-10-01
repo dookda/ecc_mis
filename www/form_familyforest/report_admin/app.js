@@ -8,6 +8,7 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
+
 let latlng = {
     lat: 13.196768,
     lng: 101.364720
@@ -17,14 +18,17 @@ let map = L.map('map', {
     zoom: 9
 });
 
-
-
-
 let marker, gps, dataurl;
 
 // const url = 'http://localhost:3700';
 const url = "https://eec-onep.online:3700";
-
+let urltable
+if (eecauth == "admin") {
+    urltable = url + '/ff-api/getalldaily'
+}
+else if (eecauth == "user") {
+    urltable = url + '/ff-api/getdaily'
+}
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -45,8 +49,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 18,
-    minZoom: 14,
+    // maxZoom: 18,
+    // minZoom: 14,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -54,8 +58,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 14,
-    minZoom: 10,
+    // maxZoom: 14,
+    // minZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -63,7 +67,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    maxZoom: 10,
+    // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -74,22 +78,39 @@ var baseMap = {
 }
 var overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
-    "ขอบเขตอำเภอ": amp.addTo(map),
-    "ขอบเขตตำบล": tam.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
     "แปลงป่าครอบครัว": fc.addTo(map)
 }
 L.control.layers(baseMap, overlayMap).addTo(map);
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>สัญลักษณ์</h4>";
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
-    div.innerHTML += '<i style="background: #feff17; border-color: #28a745; border-style: dotted; border-width: 2.5px;"></i><span>ป่าครอบครัว</span><br>';
-    return div;
-};
-legend.addTo(map);
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #feff17; border-color: #28a745; border-style: dotted; border-width: 2.5px;"></i><span>ป่าครอบครัว</span><br>';
+        return div;
+    };
+    legend.addTo(map);
+}
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 
 let datArr = [];
@@ -150,7 +171,7 @@ let showParcel = (data) => {
             },
             onEachFeature: (feature, layer) => {
 
-                let popupContent = `<span style="font-family: 'Kanit'"><b>ประเภทและชนิดของป่าครอบครัว</b> 
+                let popupContent = `<span style="font-family: 'Kanit';font-size: 16px;"><b>ประเภทและชนิดของป่าครอบครัว</b> 
                 <br>ประเภท: ${i.ftype} 
                 <br>ชื่อชนิด: ${i.fplant}<span>`;
                 layer.bindPopup(popupContent);
@@ -162,8 +183,14 @@ let showParcel = (data) => {
 
 
 let zoomBound = (d) => {
-    let b = L.geoJSON(JSON.parse(d))
-    map.fitBounds(b.getBounds());
+    if (d) {
+        let a = JSON.stringify(d);
+        let b = L.geoJSON(JSON.parse(a))
+        map.fitBounds(b.getBounds());
+    } else {
+        $('#warningModal').modal('show')
+    }
+    // console.log(d)
 }
 
 let getData = async (data) => {
@@ -219,6 +246,19 @@ let showChart = (dataArr) => {
 
     series.hiddenState.properties.endAngle = -90;
     chart.legend = new am4charts.Legend();
+    chart.exporting.menu = new am4core.ExportMenu();
+    // chart.exporting.menu.align = "left";
+    // chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 $(document).ready(function () {
     $.extend(true, $.fn.dataTable.defaults, {
@@ -243,7 +283,7 @@ $(document).ready(function () {
     let table = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/ff-api/getalldaily',
+            url: urltable,
             data: { usrid: urid },
             dataSrc: 'data'
         },
@@ -281,11 +321,14 @@ $(document).ready(function () {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `
-                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${JSON.stringify(row.geom)})'><i class="bi bi-zoom-in"></i>ซูม</button>
-                    <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${row.geom})'><i class="bi bi-zoom-in"></i>ซูม</button>
+                    <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 // width: "15%"
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6] },
         ],
         searching: true,
         scrollX: true,
@@ -306,7 +349,8 @@ $(document).ready(function () {
 
 let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id);
-    $("#projName").text(prj_name);
+    if (prj_name !== 'null') { $("#projName").text(prj_name); }
+    if (tbType !== 'null') { $("#projTime").text(`วันที่ ${tbType}`); }
     $("#tbType").val(tbType);
     $("#deleteModal").modal("show");
 }
@@ -315,6 +359,12 @@ let closeModal = () => {
     $('#editModal').modal('hide');
     $('#deleteModal').modal('hide');
     $('#myTable').DataTable().ajax.reload();
+    window.location.reload();
+}
+let closewarning = () => {
+    $('#warningModal').modal('hide');
+    window.location.reload();
+    // $('#myTable').DataTable().ajax.reload();
 }
 
 let confirmAdd = () => {
@@ -329,7 +379,52 @@ let deleteValue = () => {
         if (r.data.data == "success") {
             $('#deleteModal').modal('hide')
             $('#myTable').DataTable().ajax.reload();
+            window.location.reload();
         }
+    })
+}
+
+$('#prov').on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
+})
+$('#amp').on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+})
+$('#tam').on("change", function () {
+    zoomExtent("tam", this.value)
+})
+
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
     })
 }
 

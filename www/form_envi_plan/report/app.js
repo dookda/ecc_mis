@@ -17,8 +17,8 @@ if (typ == "admin") {
     $("#isadmin").hide()
     $("#isadmin2").hide()
 }
-const url = "https://eec-onep.online:3700";
-// const url = "http://localhost:3700";
+// const url = "https://eec-onep.online:3700";
+const url = "http://localhost:3700";
 // const url = 
 
 let latlng;
@@ -89,14 +89,14 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
-            { data: 'prj_order' },
+            // { data: 'prj_order' },
             // { data: 'prj_cate' },
-            // {
-            //     data: '',
-            //     render: (data, type, row, meta) => {
-            //         return `${meta.row + 1}`
-            //     }
-            // },
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    return `${meta.row + 1}`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -104,7 +104,6 @@ let loadTable = () => {
                     // return `${row.prj_name}`
                 }
             },
-            { data: 'prj_group' },
             { data: 'prj_operat' },
             { data: 'budget' },
             // { data: 'proc_stat' },
@@ -248,22 +247,27 @@ let getPrj_cate = async (x) => {
 }
 
 let getBudget = async (x) => {
-    let a = "งบประมาณปี 2561";
-    let b = "งบประมาณปี 2562";
-    let c = "งบประมาณปี 2563";
-    let d = "งบประมาณปี 2564";
-    let e = "งบประมาณปี 2565";
+    let a = "งบประมาณประจำปี 2561";
+    let b = "งบประมาณประจำปี 2562";
+    let c = "งบประมาณประจำปี 2563";
+    let d = "งบประมาณประจำปี 2564";
+    let e = "งบประมาณประจำปี 2565";
     let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map(i => {
-        // console.log(i);
-        av += Number(i.budg_61)
-        bv += Number(i.budg_62)
-        cv += Number(i.budg_63)
-        dv += Number(i.budg_64)
-        ev += Number(i.budg_65)
-    })
 
+        if (i.budg_61) {
+            av += Number(i.budg_61)
+        } else if (i.budg_62) {
+            bv += Number(i.budg_62)
+        } else if (i.budg_63) {
+            cv += Number(i.budg_63)
+        } else if (i.budg_64) {
+            dv += Number(i.budg_64)
+        } else if (i.budg_65) {
+            ev += Number(i.budg_65)
+        }
+    })
     let dat = [{
         cat: a,
         val: av
@@ -311,19 +315,16 @@ let getProc_stat = async (x) => {
         cat: c,
         val: cv
     }]
-    ratioChart(dat, "chart3", "จำนวนโครงการ")
+    barChart(dat, "chart3", "จำนวนโครงการ")
 }
 
 let getOpert_stat = async (x) => {
     let a = "อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด"
     let b = "อยู่ระหว่างตั้งของบประมาณ"
     let c = "อยู่ระหว่างดำเนินการ/ก่อสร้าง"
-    let d = "อยู่ระหว่างจัดซื้อจัดจ้าง"
-    let e = "ยังไม่ได้ดำเนินการ"
-    let f = "ดำเนินการแล้วเสร็จ"
-    let g = "ไม่ได้ดำเนินการ"
-    let h = "ยกเลิกโครงการ"
-    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0, fv = 0, gv = 0, hv = 0;
+    let d = "ยังไม่ได้ดำเนินการ"
+    let e = "ดำเนินการเรียบร้อยแล้ว"
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
     await x.map((i, k) => {
         // console.log(i);
@@ -337,12 +338,6 @@ let getOpert_stat = async (x) => {
             dv++
         } else if (i.opert_stat == e) {
             ev++
-        } else if (i.opert_stat == f) {
-            fv++
-        } else if (i.opert_stat == g) {
-            gv++
-        } else if (i.opert_stat == h) {
-            hv++
         }
         $("#projtotal").text(k + 1)
     })
@@ -361,15 +356,6 @@ let getOpert_stat = async (x) => {
     }, {
         cat: e,
         val: ev
-    }, {
-        cat: f,
-        val: fv
-    }, {
-        cat: g,
-        val: gv
-    }, {
-        cat: h,
-        val: hv
     }]
     // barChart(dat, "chart4", "จำนวนโครงการ");
     ratioChart(dat, "chart5", "จำนวนโครงการ");
@@ -470,40 +456,40 @@ let barChart = (datarr, chartdiv, unit) => {
     chart.data = datarr
 }
 
-// let loadTable2 = () => {
-//     let table = $('#mTable').DataTable({
-//         ajax: {
-//             type: "POST",
-//             url: url + '/projmon-api/getnonprojdata',
-//             data: { org: org, typ: typ },
-//             dataSrc: 'data'
-//         },
-//         columns: [
-//             {
-//                 data: '',
-//                 render: (data, type, row, meta) => {
-//                     // console.log(row);
-//                     return `${meta.row + 1}`
-//                 }
-//             },
-//             { data: 'prj_cate' },
-//             { data: 'prj_measure' },
-//             {
-//                 data: null,
-//                 render: function (data, type, row, meta) {
-//                     return `
-//                        <a type="button" class="btn btn-margin btn-info" href="./../edit_nonprj/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
-//                        <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'nonprj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-//                 },
-//                 // width: "11%"
-//             }
-//         ],
-//         searching: true,
-//         scrollX: false,
-//         // order: [2, 'asc'],
-//     });
-// }
-// loadTable2()
+let loadTable2 = () => {
+    let table = $('#mTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/projmon-api/getnonprojdata',
+            data: { org: org, typ: typ },
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: '',
+                render: (data, type, row, meta) => {
+                    // console.log(row);
+                    return `${meta.row + 1}`
+                }
+            },
+            { data: 'prj_cate' },
+            { data: 'prj_measure' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `
+                       <a type="button" class="btn btn-margin btn-info" href="./../edit_nonprj/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
+                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'nonprj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "11%"
+            }
+        ],
+        searching: true,
+        scrollX: false,
+        // order: [2, 'asc'],
+    });
+}
+loadTable2()
 
 
 

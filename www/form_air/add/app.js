@@ -4,12 +4,11 @@ let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
 urid ? null : location.href = "./../../form_register/login/index.html";
 
-if (eecauth !== "admin" && eecauth !== "user") {
+if (eecauth !== "admin" && eecauth !== "office" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
-
 let userid;
-
+// main()
 let main = async () => {
     await liff.init({ liffId: "1655648770-JLXzogag" })
     if (liff.isLoggedIn()) {
@@ -18,8 +17,6 @@ let main = async () => {
         liff.login()
     }
 }
-
-// main()
 
 let getUserProfile = async () => {
     const profile = await liff.getProfile();
@@ -59,10 +56,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -71,7 +83,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -120,11 +134,65 @@ map.pm.addControls({
     position: 'topleft',
     drawMarker: true,
     drawCircle: false,
+    drawPolygon: false,
     drawPolyline: false,
     drawRectangle: false,
     drawCircleMarker: false,
     cutPolygon: false
 });
+
+$("#pro").on("change", function () {
+    getPro(this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+        // console.log(r.data.data[0].tam_namt)
+        tam_code = r.data.data[0].tambon_idn
+        tam_name = r.data.data[0].tam_namt
+    })
+
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+    })
+}
 
 var idIW
 var datageom
@@ -176,11 +244,11 @@ function confirmvalue() {
 
 
 }
-
+var sa
 let nearData = async (e) => {
     let url = "https://eec-onep.online:3700";
     let res = await axios.post(url + '/eec-api/get-aqi-near', { geom: e });
-    console.log(res.data.data[0]);
+    // console.log(res.data.data[0]);
     var a = res.data.data[0]
     // AQI
     if (Number(a.aqi) <= 25) {
@@ -223,11 +291,14 @@ let nearData = async (e) => {
     $("#pm10").val(Number(a.pm10))
     $("#pm25").val(Number(a.pm25))
     $("#datetime").val(a.dt)
+    $("#staair").val(a.sta_th)
 
     $("#aqi").text(Number(a.aqi))
     $("#pm10").text(Number(a.pm10))
     $("#pm25").text(Number(a.pm25))
     $("#datetime").text(`วันที่ ${res.data.data[0].dt_} เวลา ${res.data.data[0].time_} น.`)
+    $("#staair").text(a.sta_th)
+    sa = a.sta_th
 }
 
 let refreshPage = () => {
@@ -235,7 +306,7 @@ let refreshPage = () => {
 }
 
 $('#imgfile').change(function (evt) {
-    console.log(evt);
+    // console.log(evt);
     var files = evt.target.files;
     var file = files[0];
     if (file) {
@@ -279,7 +350,7 @@ let resize = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl = canvas.toDataURL(file.type);
+                dataimgurl = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }
@@ -324,7 +395,7 @@ let getfeel = (x, y, z) => {
         $("#badend").css("border", "none").removeClass("BG05");
     }
     if (z == 5) {
-        console.log(y)
+        // console.log(y)
         feel1 = y
         $("#verygood").css("border", "none").removeClass("BG01");
         $("#good").css("border", "none").removeClass("BG02");
@@ -551,7 +622,7 @@ function saveData() {
     var sn1 = document.getElementById('sickness01');
     if (sn1.checked == true) {
         sick1 = $('#sickness01').val()
-    } else { sick1 = "Have" }
+    } else { sick1 = "Havenot" }
 
     var sn2 = document.getElementById('sickness02');
     if (sn2.checked == true) {
@@ -684,7 +755,8 @@ function saveData() {
 
     data01 = [{
         id_date: Date.now(),
-        id_user: $('#userId').val(),
+        id_user: urname,
+        id_userid: urid,
 
         // gender: $('#gender').val(),
         // age: $('#age').val(),
@@ -704,21 +776,25 @@ function saveData() {
 
         sickcheck: data02,
 
-        lat: latlon[0],
-        lng: latlon[1],
+        lat: $('#lat').val(),
+        lng: $('#lon').val(),
         geom: datageom,
 
-        tambon: $('#tambon').val(),
-        amphoe: $('#amphor').val(),
-        province: $('#province').val(),
+        tambon: tam_name,
+        amphoe: amp_name,
+        province: prov_name,
+        t_code: tam_code,
+        a_code: amp_code,
+        p_code: prov_code,
         aqi: $('#aqi').val(),
         pm10: $('#pm10').val(),
         pm25: $('#pm25').val(),
         datepm: $("#datetime").val(),
+        staair: sa,
         details: $('#detail').val(),
         datreport: $('#redate').val(),
         dattime: $('#retime').val(),
-        img: dataurl ? dataurl : dataurl = "",
+        img: dataimgurl ? dataimgurl : dataimgurl = "",
     }]
     // console.log(data02)
     // console.log(feel1)
@@ -729,7 +805,7 @@ let sendData = (data) => {
     const obj = {
         data: data
     }
-    console.log(obj)
+    // console.log(obj)
     // var url = "http://localhost:3000"
     // var url = "https://eec-onep.online:3700";
     $.post(url + "/form_ap/insert", obj).done((r) => {

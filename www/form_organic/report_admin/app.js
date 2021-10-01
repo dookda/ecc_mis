@@ -2,11 +2,27 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
-
-if (eecauth !== "admin" && eecauth !== "user") {
-    location.href = "./../../form_register/login/index.html";
+let Accept = sessionStorage.getItem('accept');
+if (Accept) {
+    $('.toast').toast('hide')
 }
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
+// urid ? null : location.href = "./../../form_register/login/index.html";
+
+// if (eecauth !== "admin" && eecauth !== "user") {
+//     location.href = "./../../form_register/login/index.html";}
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3000';
 
@@ -31,13 +47,140 @@ let getUserProfile = async () => {
     $('#displayName').text(await profile.displayName);
     userid = profile.userId;
 }
+let dataurl
+if (eecauth == "admin") {
+    dataurl = url + "/insee-api/getgeom";
+    $('#login').hide();
+} else if (eecauth == "user") {
+    dataurl = url + "/insee-api/getgeom/" + urid;
+    $('#login').hide();
+    $('#cardselect').hide();
+} else {
+    dataurl = url + "/insee-api/getgeom";
+    $('#usr1').hide();
+    $('#usr2').hide();
+    $('#cardtable').hide()
+}
+$("#pro").on("change", function () {
+    if (this.value !== "eec") {
+        getPro(this.value)
+    } else if (this.value == "eec") {
+        $("#amp").val("");
+        $("#tam").val("");
+    }
+    seclectdata(eecauth, "prov", this.value)
+    zoommap("pro", this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
+    seclectdata(eecauth, "amp", this.value)
+    zoommap("amp", this.value)
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+    seclectdata(eecauth, "tam", this.value)
+    zoommap("tam", this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+        $('#area1').text('ข้อมูลของจังหวัดชลบุรี');
+        $('#area2').text('ข้อมูลของจังหวัดชลบุรี');
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+        $('#area1').text('ข้อมูลของจังหวัดระยอง');
+        $('#area2').text('ข้อมูลของจังหวัดระยอง');
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+        $('#area1').text('ข้อมูลของจังหวัดฉะเชิงเทรา');
+        $('#area2').text('ข้อมูลของจังหวัดฉะเชิงเทรา');
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
 
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+        $('#area1').text(`ข้อมูลของจังหวัด${prov_name} อำเภอ${amp_name}`);
+        $('#area2').text(`ข้อมูลของจังหวัด${prov_name} อำเภอ${amp_name}`);
+
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+        $('#area1').text(`ข้อมูลของจังหวัด${prov_name} อำเภอ${amp_name} ตำบล${tam_name}`);
+        $('#area2').text(`ข้อมูลของจังหวัด${prov_name} อำเภอ${amp_name} ตำบล${tam_name}`);
+    })
+}
+let seclectdata = (auth, type, code) => {
+    if (auth !== "user") {
+        if (type == "prov" && code !== "eec") {
+            dataurl = url + '/insee-api/getgeom/prov/' + code;
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        } else if (type == "prov" && code == 'eec') {
+            dataurl = url + "/insee-api/getgeom";
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        }
+        else if (type == "amp") {
+            dataurl = url + '/insee-api/getgeom/amp/' + code
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        } else if (type == "tam") {
+            dataurl = url + '/insee-api/getgeom/tam/' + code
+            table.ajax.url(dataurl).load();
+            showALL(dataurl)
+        }
+    }
+}
+
+let table
 $(document).ready(function () {
-    let table = $('#myTable').DataTable({
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
+    table = $('#myTable').DataTable({
         ajax: {
             type: "get",
-            url: url + "/insee-api/get_geom",
-            data: { userid: "" },
+            url: dataurl,
+            data: { userid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -54,11 +197,15 @@ $(document).ready(function () {
                     // console.log(row);
                     // <button class="btn btn-margin btn-outline-success" onclick="zoomExtent('${row.typeag}','${row.t1sdateout}','${row.t2amount}','${row.lat}','${row.lon}')"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
 
-                    return `<button class="btn btn-margin btn btn-success" id="getvalue">ที่ตั้ง</button>
+                    return `<button class="btn btn-margin btn btn-success" id="getvalue">ที่ตั้งแปลง</button>
                             <button type="button" class="btn btn-warning" id="getdata">ข้อมูล</button>`
                     // <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.intoname}','${row.typeag}','${row.id_date}','${row.id_user}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
                 },
             }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'print'
         ],
         searching: true,
         scrollX: true,
@@ -118,10 +265,25 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -129,12 +291,47 @@ var baseMap = {
     "google Hybrid": ghyb
 }
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 L.control.layers(baseMap, overlayMap).addTo(map);
 
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
+
+var legend = L.control({ position: "bottomright" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #A5B806"></i><span>พื้นที่เกษตรกรรม</span><br>';
+        div.innerHTML += '<i style="background: #FA584B"></i><span>พื้นที่ปศุสัตว์</span><br>';
+        div.innerHTML += '<i style="background: #4F9DE8"></i><span>พื้นที่การประมง</span><br>';
+        div.innerHTML += '<i style="background: #ff7800"></i><span>พื้นที่อื่นๆ</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+        // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+        return div;
+    };
+
+    legend.addTo(map);
+}
+
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 // map.pm.addControls({
 //     position: 'topleft',
@@ -189,7 +386,6 @@ let getMap = (x) => {
         "weight": 2,
         "opacity": 0.65
     }
-
     x.map(i => {
         if (i.st_asgeojson && i.typeag == 'เกษตรกรรม') {
             let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
@@ -199,7 +395,9 @@ let getMap = (x) => {
                     drawnItems.addLayer(layer);
                 }
             })
-            geojson.addTo(map);
+            geojson
+                .bindPopup(`<h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                .addTo(map);
         } else if (i.st_asgeojson && i.typeag == 'ปศุสัตว์') {
             let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
                 style: style_ani,
@@ -208,7 +406,9 @@ let getMap = (x) => {
                     drawnItems.addLayer(layer);
                 }
             })
-            geojson.addTo(map);
+            geojson
+                .bindPopup(`<h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                .addTo(map);
         } else if (i.st_asgeojson && i.typeag == 'การประมง') {
             let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
                 style: style_fish,
@@ -217,7 +417,9 @@ let getMap = (x) => {
                     drawnItems.addLayer(layer);
                 }
             })
-            geojson.addTo(map);
+            geojson
+                .bindPopup(`<h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                .addTo(map);
         } else { // console.log(i.geojson);
             let geojson = L.geoJSON(JSON.parse(i.st_asgeojson), {
                 style: style,
@@ -226,14 +428,16 @@ let getMap = (x) => {
                     drawnItems.addLayer(layer);
                 }
             })
-            geojson.addTo(map);
+            geojson
+                .bindPopup(`<h6><b>ประภทของแปลง :</b> ${i.typeag}</h6><h6><b>ชื่อแปลง :</b> ${i.intoname}</h6><h6><b>ชนิด :</b> ${i.tcate}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
+                .addTo(map);
         }
     })
 }
 
 let zoomExtent = (data) => {
     var a = [data];
-    console.log(a)
+    // console.log(a)
     a.map(i => {
         var pop
         if (i.typeag == "เกษตรกรรม" && i.t1sdateout !== null) {
@@ -262,7 +466,7 @@ let zoomExtent = (data) => {
                     clearInterval(x);
                     $("#countdown").text(days + " วัน " + hours + " ชั่วโมง "
                         + minutes + " นาที " + seconds + " วินาที ");
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit}`;
                     }
@@ -297,7 +501,7 @@ let zoomExtent = (data) => {
                     clearInterval(x)
                     document.getElementById("countdown2").innerHTML = "EXPIRED"
                     document.getElementById("D1").innerHTML = `แปลง${i.typeag} ${i.tcate}`
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit}`;
                     }
@@ -326,7 +530,7 @@ let zoomExtent = (data) => {
                     clearInterval(x)
                     document.getElementById("D1").innerHTML = `แปลง${i.typeag} ${i.tcate}`
                     document.getElementById("animalval").innerHTML = ` ${i.t2amount} ตัว`;
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit} `;
                     }
@@ -354,7 +558,7 @@ let zoomExtent = (data) => {
                 if (i.t2amount == null) {
                     clearInterval(x)
                     document.getElementById("animalval").innerHTML = ` (ไม่ทราบจำนวน)`;
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit} `;
                     } else {
@@ -363,7 +567,7 @@ let zoomExtent = (data) => {
                 }
             }, 1000)
         } else if (i.typeag == "การประมง" && i.t3wc == "น้ำจืด" || i.t3wc == "น้ำเค็ม" || i.t3wc == "น้ำกร่อย") {
-            console.log(i.typeag, i.t3wc)
+            // console.log(i.typeag, i.t3wc)
             pop = L.popup({ minWidth: 200 });
             var content = `<h5>การทำประมง</h5><h6 id="fish1"></h6><h6>ประกอบด้วย</h6><h6 id="val1"></h6><h6 id="val2"></h6><h6 id="val3"></h6><h6 id="val4"></h6><h6 id="val5"></h6>`;
             var setlocation = [];
@@ -499,7 +703,7 @@ let getdata = (data) => {
                     clearInterval(x);
                     $("#countdown").text(days + " วัน " + hours + " ชั่วโมง "
                         + minutes + " นาที " + seconds + " วินาที ");
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit}`;
                     }
@@ -539,7 +743,7 @@ let getdata = (data) => {
                     clearInterval(x)
                     document.getElementById("D1").innerHTML = ` ${i.intoname} ${i.typeag} ${i.tcate}`
                     document.getElementById("animalval").innerHTML = ` ${i.t2amount} ตัว`;
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit} `;
                     }
@@ -557,7 +761,7 @@ let getdata = (data) => {
                     clearInterval(x)
                     document.getElementById("D1").innerHTML = ` ${i.intoname} ${i.typeag} ${i.tcate}`
                     document.getElementById("animalval").innerHTML = `(ไม่ทราบจำนวน)`;
-                    console.log(i.tarea, i.tarunit)
+                    // console.log(i.tarea, i.tarunit)
                     if (i.tarea !== null && i.tarunit !== null) {
                         document.getElementById("A1").innerHTML = `ขนาดพื้นที่ ${i.tarea} ${i.tarunit} `;
                     } else {
@@ -670,13 +874,15 @@ let closeModal = () => {
 }
 
 let confirmDelete = (intoname, typeag, id_date, id_user) => {
+    // console.log(intoname, typeag, id_date, id_user)
     $("#proj_id").val(id_date)
-    $("#proj_name").text(`${intoname} ${typeag}`)
+    $("#projName").text(`${intoname}`)
+    $("#projTime").text(`ประเภทแปลง ${typeag}`)
     $("#deleteModal").modal("show")
 }
 
 let deleteValue = () => {
-    console.log($("#proj_id").val());
+    // console.log($("#proj_id").val());
     let proj_id = $("#proj_id").val()
     // const url = "https://eec-onep.online:3700";
     axios.post(url + "/insee-api/deletedata", { id_date: proj_id }).then(r => {
@@ -693,7 +899,7 @@ let getScore = () => {
         var buysell = a.filter(e => e.use1 !== "" && e.use1 !== null && e.typeag !== null)
         var keep = a.filter(e => e.use2 !== "" && e.use2 !== null && e.typeag !== null)
         var trans = a.filter(e => e.use3 !== "" && e.use3 !== null && e.typeag !== null)
-        console.log(animal)
+        // console.log(animal)
         //         // var b = r.data.data[0].geom
         //         // let c = L.geoJSON(b)
         //         console.log(a)
@@ -710,13 +916,15 @@ let getScore = () => {
         // table.on('search.dt', function () {
         //     let data = table.rows({ search: 'applied' }).data()
         // $("#siteCnt").text(a.length)
-        $("#allvalue").text(a.length)
-        $("#agri").text(agri.length)
-        $("#animal").text(animal.length)
-        $("#fisher").text(fish.length)
+        // $("#numall").text(a.length)
+        // $("#numagri").text(agri.length)
+        // $("#numani").text(animal.length)
+        // $("#numfisher").text(fish.length)
         $("#buysell").text(buysell.length)
         $("#keep").text(keep.length)
         $("#transform").text(trans.length)
+
+
     })
 
 }
@@ -760,10 +968,14 @@ function showTable(data) {
         },
     });
 }
-
-showALL()
-function showALL() {
-    axios.get(url + "/insee-api/get_geom").then((r) => {
+let ALL = () => {
+    showALL(dataurl)
+    $('#dash_dall').show()
+    $('#detailchart').show()
+}
+showALL(dataurl)
+function showALL(urldata) {
+    axios.get(urldata).then((r) => {
         let datArr = [];
         let datval = [];
         let selDat = r.data.data
@@ -797,35 +1009,35 @@ function showALL() {
 
         selDatA1.map(e => {
             if (e.tcate !== null) {
-                dataA1.push({ name: e.tcate, value: 10 })
+                dataA1.push({ name: e.tcate, value: 5 })
             }
         })
         selDatA2.map(e => {
             if (e.tcate !== null) {
-                dataA2.push({ name: e.tcate, value: 10 })
+                dataA2.push({ name: e.tcate, value: 5 })
             }
         })
         selDatA3.map(e => {
             if (e.tcate !== null) {
-                dataA3.push({ name: e.tcate, value: 10 })
+                dataA3.push({ name: e.tcate, value: 5 })
             }
         })
         selDatA4.map(e => {
             if (e.tcate !== null) {
-                dataA4.push({ name: e.tcate, value: 10 })
+                dataA4.push({ name: e.tcate, value: 5 })
             }
         })
         selDatA5.map(e => {
             if (e.tcate !== null) {
-                dataA5.push({ name: e.tcate, value: 10 })
+                dataA5.push({ name: e.tcate, value: 5 })
             }
         })
         dataA = [
-            { name: "ข้าว", value: dataA1.length, "children": dataA1 },
-            { name: "พืชไร่", value: dataA2.length, "children": dataA2 },
-            { name: "ผัก", value: dataA3.length, "children": dataA3 },
-            { name: "ผลไม้", value: dataA4.length, "children": dataA4 },
-            { name: "สมุนไพร", value: dataA5.length, "children": dataA5 }
+            { name: "ข้าว", value: dataA1.length },
+            { name: "พืชไร่", value: dataA2.length },
+            { name: "ผัก", value: dataA3.length },
+            { name: "ผลไม้", value: dataA4.length },
+            { name: "สมุนไพร", value: dataA5.length }
         ]
 
         //ปศุสัตว์
@@ -844,30 +1056,30 @@ function showALL() {
         let selDatB5 = selDatB.filter(e => e.t2sel == "ควาย" && e.t2sel !== "" && e.t2sel !== null)
         let selDatB6 = selDatB.filter(e => e.t2sel == "อื่นๆ" && e.t2sel !== "" && e.t2sel !== null)
         selDatB1.map(e => {
-            dataB1.push({ name: e.tcate, value: e.t2amount })
+            dataB1.push({ name: e.tcate, value: 5 })
         });
         selDatB2.map(e => {
-            dataB2.push({ name: e.tcate, value: e.t2amount })
+            dataB2.push({ name: e.tcate, value: 5 })
         });
         selDatB3.map(e => {
-            dataB3.push({ name: e.tcate, value: e.t2amount })
+            dataB3.push({ name: e.tcate, value: 5 })
         });
         selDatB4.map(e => {
-            dataB4.push({ name: e.tcate, value: e.t2amount })
+            dataB4.push({ name: e.tcate, value: 5 })
         });
         selDatB5.map(e => {
-            dataB5.push({ name: e.tcate, value: e.t2amount })
+            dataB5.push({ name: e.tcate, value: 5 })
         });
         selDatB6.map(e => {
-            dataB6.push({ name: e.tcate, value: e.t2amount })
+            dataB6.push({ name: e.tcate, value: 5 })
         });
         dataB = [
-            { name: "ไก่", value: dataB1.length, "children": dataB1 },
-            { name: "เป็ด", value: dataB2.length, "children": dataB2 },
-            { name: "หมู", value: dataB3.length, "children": dataB3 },
-            { name: "วัว", value: dataB4.length, "children": dataB4 },
-            { name: "ควาย", value: dataB5.length, "children": dataB5 },
-            { name: "อื่นๆ", value: dataB6.length, "children": dataB6 }
+            { name: "ไก่", value: dataB1.length },
+            { name: "เป็ด", value: dataB2.length },
+            { name: "หมู", value: dataB3.length },
+            { name: "วัว", value: dataB4.length },
+            { name: "ควาย", value: dataB5.length },
+            { name: "อื่นๆ", value: dataB6.length }
 
         ]
 
@@ -882,111 +1094,111 @@ function showALL() {
         let selDatC3 = selDatC.filter(e => e.tcate === "น้ำกร่อย" && r.tcate !== "" && r.tcate !== null)
         selDatC1.map(e => {
             if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na !== null) {
-                dataC1.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num },
-                    { name: e.t3f5na, value: e.t3f5num }
+                dataC1.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 },
+                    { name: e.t3f5na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na == null) {
-                dataC1.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num }
+                dataC1.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na == null && e.t3f5na == null) {
-                dataC1.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num }
+                dataC1.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC1.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num }
+                dataC1.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na == null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC1.push({ name: e.t3f1na, value: e.t3f1num }
+                dataC1.push({ name: e.t3f1na, value: 5 }
                 )
             }
         })
         selDatC2.map(e => {
             if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na !== null) {
-                dataC2.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num },
-                    { name: e.t3f5na, value: e.t3f5num }
+                dataC2.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 },
+                    { name: e.t3f5na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na == null) {
-                dataC2.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num }
+                dataC2.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na == null && e.t3f5na == null) {
-                dataC2.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num }
+                dataC2.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC2.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num }
+                dataC2.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na == null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC2.push({ name: e.t3f1na, value: e.t3f1num }
+                dataC2.push({ name: e.t3f1na, value: 5 }
                 )
             }
         })
         selDatC3.map(e => {
             if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na !== null) {
-                dataC3.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num },
-                    { name: e.t3f5na, value: e.t3f5num }
+                dataC3.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 },
+                    { name: e.t3f5na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na !== null && e.t3f5na == null) {
-                dataC3.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num },
-                    { name: e.t3f4na, value: e.t3f4num }
+                dataC3.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 },
+                    { name: e.t3f4na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na !== null && e.t3f4na == null && e.t3f5na == null) {
-                dataC3.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num },
-                    { name: e.t3f3na, value: e.t3f3num }
+                dataC3.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 },
+                    { name: e.t3f3na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na !== null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC3.push({ name: e.t3f1na, value: e.t3f1num },
-                    { name: e.t3f2na, value: e.t3f2num }
+                dataC3.push({ name: e.t3f1na, value: 5 },
+                    { name: e.t3f2na, value: 5 }
                 )
             } else if (e.t3f1na !== null && e.t3f2na == null && e.t3f3na == null && e.t3f4na == null && e.t3f5na == null) {
-                dataC3.push({ name: e.t3f1na, value: e.t3f1num }
+                dataC3.push({ name: e.t3f1na, value: 5 }
                 )
             }
         })
         dataC = [
-            { name: "น้ำจืด", value: dataC1.length, "children": dataC1 },
-            { name: "น้ำเค็ม", value: dataC2.length, "children": dataC2 },
-            { name: "น้ำกร่อย", value: dataC3.length, "children": dataC3 }
+            { name: "น้ำจืด", value: dataC1.length },
+            { name: "น้ำเค็ม", value: dataC2.length },
+            { name: "น้ำกร่อย", value: dataC3.length }
         ]
         //////////////////
         datval = [
             {
                 name: "เกษตรอินทรีย์",
-                value: 1000,
+                value: selDat.length,
                 children: [
                     {
                         name: "การเพาะปลูก",
-                        value: 500,
+                        value: selDatA.length,
                         children: dataA
                     },
                     {
                         name: "ปศุสัตว์",
-                        value: 500,
+                        value: selDatB.length,
                         children: dataB
                     }, {
                         name: "การประมง",
-                        value: 500,
+                        value: selDatC.length,
                         children: dataC
                     }
                 ]
@@ -994,6 +1206,11 @@ function showALL() {
         // console.log(datval)
         chartAll(datval)
         $("#legend").hide()
+
+        $("#numall").text(selDat.length)
+        $("#numagri").text(selDatA.length)
+        $("#numani").text(selDatB.length)
+        $("#numfisher").text(selDatC.length)
     })
 }
 chartAll = async (data, unti, title, chart) => {
@@ -1002,7 +1219,9 @@ chartAll = async (data, unti, title, chart) => {
         var chart = am4core.create("chart", am4plugins_forceDirected.ForceDirectedTree);
         chart.legend = new am4charts.Legend();
         var networkSeries = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
-        chart.data = data
+        chart.data = data;
+        chart.svgContainer.autoResize = false;
+
 
         networkSeries.dataFields.value = "value";
         networkSeries.dataFields.name = "name";
@@ -1094,11 +1313,26 @@ chartAll = async (data, unti, title, chart) => {
                 return null;
             }
         })
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.menu.align = "left";
+        chart.exporting.menu.verticalAlign = "top";
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
     })
 }
 
 function showA() {
-    axios.get(url + "/insee-api/get_geom").then((r) => {
+    $('#dash_dall').hide()
+    $('#detailchart').hide()
+    axios.get(dataurl).then((r) => {
         let dataA = [];
         let dataA1 = [];
         let dataA2 = [];
@@ -1113,7 +1347,7 @@ function showA() {
         let selDatA4 = selDatA.filter(r => r.t1types === "ผลไม้" && r.tcate !== "" && r.tcate !== null)
         let selDatA5 = selDatA.filter(r => r.t1types === "สมุนไพร่" && r.tcate !== "" && r.tcate !== null)
 
-        console.log(selDatA3)
+        // console.log(selDatA3)
 
         selDatA1.map(e => {
             dataA1.push({ name: e.tcate, value: 10 })
@@ -1137,7 +1371,7 @@ function showA() {
             { "country": "ผลไม้", "litres": dataA4.length, "subData": dataA4 },
             { "country": "สมุนไพร", "litres": dataA5.length, "subData": dataA5 }
         ]
-        console.log(dataA)
+        // console.log(dataA)
         ChartC(dataA);
     })
     $("#legend").show()
@@ -1283,13 +1517,25 @@ chartA = async (data, unti, title, chart) => {
                 selectSlice(pieSeries.dataItems.getIndex(0));
             }, 1000);
         });
-
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
 
     }); // end am4core.ready()
 }
 
 function showB() {
-    axios.get(url + "/insee-api/get_geom").then((r) => {
+    $('#dash_dall').hide();
+    $('#detailchart').hide();
+    axios.get(dataurl).then((r) => {
         let dataB = [];
         let dataB1 = [];
         let dataB2 = [];
@@ -1435,11 +1681,24 @@ ChartB = async (data, unti, title, chart) => {
                 return null;
             }
         });
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
     });
 }
 
 function showC() {
-    axios.get(url + "/insee-api/get_geom").then((r) => {
+    $('#dash_dall').hide();
+    $('#detailchart').hide();
+    axios.get(dataurl).then((r) => {
         let dataC = [];
         let dataC1 = [];
         let dataC2 = [];
@@ -1600,7 +1859,7 @@ ChartC = async (data, unti, title, chart) => {
         //pieSeries2.labels.template.radius = am4core.percent(50);
         //pieSeries2.labels.template.inside = true;
         //pieSeries2.labels.template.fill = am4core.color("#ffffff");
-        pieSeries2.labels.template.disabled = true;
+        // pieSeries2.labels.template.disabled = true;
         pieSeries2.ticks.template.disabled = true;
         pieSeries2.alignLabels = false;
         pieSeries2.events.on("positionchanged", updateLines);
@@ -1723,11 +1982,24 @@ ChartC = async (data, unti, title, chart) => {
                 return null;
             }
         })
+        chart.exporting.menu = new am4core.ExportMenu();
+        chart.exporting.adapter.add("data", function (data, target) {
+            var data = [];
+            chart.series.each(function (series) {
+                for (var i = 0; i < series.data.length; i++) {
+                    series.data[i].name = series.name;
+                    data.push(series.data[i]);
+                }
+            });
+            return { data: data };
+        });
     }); // end am4core.ready()
 }
 
 function showD() {
-    axios.get(url + "/insee-api/get_geom").then((r) => {
+    $('#dash_dall').hide();
+    $('#detailchart').hide();
+    axios.get(dataurl).then((r) => {
         let datArr = [];
         let datArr2 = [];
         let datArr3 = [];
@@ -1786,14 +2058,14 @@ function showD() {
         let a33 = datArr3.filter(e => e.name == "การประมง")
         datt3.push({ name: "การประมง", value: a33.length })
 
-        console.log(datt3)
+        // console.log(datt3)
         let dataD = [
             { "country": "ซื้อขาย", "litres": datArr.length, "subData": datt1 },
             { "country": "กักเก็บ", "litres": datArr2.length, "subData": datt2 },
             { "country": "แปรรูป", "litres": datArr3.length, "subData": datt3 }
         ]
         ChartC(dataD)
-        console.log(selDatu1)
+        // console.log(selDatu1)
         // console.log(selDatu2)
         // console.log(selDatu3)
         // let selDat2 = selDat.filter(e => e.t2sel !== "" && e.t2sel !== null)
@@ -1812,4 +2084,20 @@ function showD() {
         // ChartB(datArr2)
     })
 
+}
+let zoommap = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+    if (code == "eec") {
+        map.closePopup();
+    }
 }

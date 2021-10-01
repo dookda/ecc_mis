@@ -81,11 +81,15 @@ let refreshPage = () => {
     // console.log("ok");
 }
 
-let confirmDelete = (id, gr_name) => {
+let confirmDelete = (id, name, date) => {
     $("#projId").val(id)
-    $("#projName").text(gr_name)
+    $("#projName").text(name)
+    if (date !== 'null') {
+        $("#projTime").text(`วันที่ ${date}`)
+    }
     $("#deleteModal").modal("show")
 }
+
 
 let closeModal = () => {
     $('#editModal').modal('hide')
@@ -98,6 +102,7 @@ let deleteValue = () => {
     let proj_id = $("#projId").val()
     axios.post(url + "/waterlevel-api/delete", { proj_id: proj_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -138,8 +143,8 @@ let loadTable = () => {
                     return `${meta.row + 1}`
                 }
             },
-            { data: 'watername' },
             { data: 'placename' },
+            { data: 'watername' },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -152,10 +157,13 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     // console.log(row);
                     return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
-                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.noticename}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.placename}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 // width: "30%"
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 3, 4] },
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',

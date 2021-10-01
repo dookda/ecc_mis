@@ -177,6 +177,7 @@ function showLegend() {
     div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
     div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
     div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>สถานีตรวจวัดสภาพอากาศ</span><br>'
+    div.innerHTML += '<img src="./marker/gas-station.png"  height="30px"><span>จุดตรวจวัดระดับน้ำผิวดิน</span><br>'
     div.innerHTML += '<i style="background: #65d4fb; border-radius: 1%;"></i><span>แหล่งน้ำ</span><br>'
     div.innerHTML += '<img src="./marker/WW.png"  height="30px"></i><span>แม่น้ำสายหลัก</span><br>'
     div.innerHTML += '<img src="./marker/Wmain.png"  height="30px"></i><span>แม่น้ำสายรอง</span><br>'
@@ -254,7 +255,7 @@ let zoomExtent = (lyr, code) => {
     let geom = JSON.parse(r.data.data[0].geom)
     var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
 
-    console.log(lyr, code);
+    // console.log(lyr, code);
 
     $("#tab").dataTable().fnDestroy();
     showTable({ col: lyr, val: code });
@@ -1125,7 +1126,7 @@ pressureChart = async (data) => {
 }
 
 let showChart = async (e) => {
-  console.log(e);
+  // console.log(e);
   let res = await axios.post(url + '/eec-api/get-weather-hist', { sta_num: e.sta_num });
 
   let rainfall = [];
@@ -1387,4 +1388,166 @@ let layermark = (Url, Nlayer) => {
       lyrControl.addOverlay(ms53, "อ่างเก็บน้ำ")
     });
   }
+}
+let mkWrl
+let loadWtrl = async () => {
+  let iconblue = L.icon({
+    iconUrl: './marker/gas-station.png',
+    iconSize: [40, 45],
+    iconAnchor: [12, 37],
+    popupAnchor: [5, -30]
+  });
+
+  let sta = [
+    {
+      staname: "station_01",
+      latlon: [12.8661616, 100.9989804]
+    }, {
+      staname: "station_02",
+      latlon: [12.848099999999983, 100.95313000000002]
+    }, {
+      staname: "station_03",
+      latlon: [12.846510200000028, 100.9376361]
+    }, {
+      staname: "station_04",
+      latlon: [12.694406999999996, 101.44470699999997]
+    }, {
+      staname: "station_05",
+      latlon: [12.703484000000008, 101.468717]
+    }, {
+      staname: "station_06",
+      latlon: [12.70139960000001, 101.49543049999]
+    }, {
+      staname: "station_07",
+      latlon: [12.985111299999994, 101.6776677]
+    }, {
+      staname: "station_08",
+      latlon: [12.909515899999995, 101.71460159999998]
+    }, {
+      staname: "station_09",
+      latlon: [12.836749900000017, 101.73254899999998]
+    }]
+  mkWrl = L.layerGroup()
+  sta.map(async (i) => {
+    let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
+    resSt01.then(r => {
+      let d = r.data.data[0];
+      let marker = L.marker(i.latlon, {
+        icon: iconblue,
+        name: 'lyr',
+        // data: dat
+      });
+      // marker.addTo(map)
+      marker.bindPopup(`<div style="font-family:'Kanit'"> 
+                      ชื่อสถานี : ${i.staname} <br>
+                      ระดับน้ำ : ${Number(d.deep).toFixed(1)} mm.<br>
+                      ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
+                      อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
+                      ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                      </div>`
+      )
+      mkWrl.addLayer(marker);
+    })
+  })
+  lyrControl.addOverlay(mkWrl, "จุดตรวจวัดระดับน้ำผิวดิน")
+}
+loadWtrl()
+
+let wtrlModal = (stname) => {
+  // console.log(stname);
+  let arrDept = [];
+  let arrTemp = [];
+  let arrHumi = [];
+  axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get-by-day.php", { stname }).then(r => {
+    // console.log(r);
+    r.data.data.map(i => {
+      arrDept.push({
+        "date": i.dt,
+        "value": Math.round(i.dept)
+      });
+      arrTemp.push({
+        "date": i.dt,
+        "value": Math.round(i.temp)
+      });
+      arrHumi.push({
+        "date": i.dt,
+        "value": Math.round(i.humi)
+      });
+    })
+  })
+
+  setTimeout(() => {
+    // console.log(arrDept, arrTemp, arrHumi);
+    wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
+    wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
+    wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
+  }, 500)
+
+
+  $("#wtrlModal").modal("show");
+
+}
+let wtrlChart = (arrData, div, unit) => {
+  am4core.useTheme(am4themes_animated);
+
+  // Create chart instance
+  var chart = am4core.create(div, am4charts.XYChart);
+
+  // Add data
+  chart.data = arrData;
+
+  // Set input format for the dates
+  // chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+  chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+  // Create axes
+  var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.baseValue = 0;
+  valueAxis.title.text = unit;
+
+  // Create series
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = "value";
+  series.dataFields.dateX = "date";
+  series.tooltipText = "{value}";
+  // series.tensionX = 0.8;
+  series.strokeWidth = 2;
+  series.minBulletDistance = 15;
+  series.stroke = am4core.color("#00b80f");
+
+  // Drop-shaped tooltips
+  series.tooltip.background.cornerRadius = 20;
+  series.tooltip.background.strokeOpacity = 0;
+  series.tooltip.pointerOrientation = "vertical";
+  series.tooltip.label.minWidth = 40;
+  series.tooltip.label.minHeight = 40;
+  series.tooltip.label.textAlign = "middle";
+  series.tooltip.label.textValign = "middle";
+
+  // var range = valueAxis.createSeriesRange(series);
+  // range.value = index;
+  // range.endValue = -1000;
+  // range.contents.stroke = am4core.color("#ff0000");
+  // range.contents.fill = range.contents.stroke;
+
+  // Make bullets grow on hover
+  var bullet = series.bullets.push(new am4charts.CircleBullet());
+  bullet.circle.strokeWidth = 2;
+  bullet.circle.radius = 4;
+  bullet.circle.fill = am4core.color("#fff");
+
+  // Make a panning cursor
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.behavior = "panXY";
+  chart.cursor.xAxis = dateAxis;
+  chart.cursor.snapToSeries = series;
+
+  // Create a horizontal scrollbar with previe and place it underneath the date axis
+  chart.scrollbarX = new am4charts.XYChartScrollbar();
+  chart.scrollbarX.series.push(series);
+  chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+  dateAxis.start = 0.59;
+  dateAxis.keepSelection = true;
 }

@@ -13,6 +13,23 @@ if (urname) {
       <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
       เข้าสู่ระบบ</a></li>`);
 }
+let Accept = sessionStorage.getItem('accept');
+if (Accept || eecauth) {
+    $('.toast').toast('hide')
+}
+else {
+    $('.toast').toast('show')
+}
+$('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+})
+let setAccept
+$('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 // if (eecauth !== "admin" && eecauth !== "office") {
 //     location.href = "./../../form_register/login/index.html";
@@ -65,7 +82,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 const LU61 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
-    layers: "eec:a__46_lu_eec_61:a__01_prov_eec",
+    layers: "eec:a__46_lu_eec_61",
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
@@ -165,17 +182,26 @@ lc.start();
 
 $("#pro").on("change", function () {
     getPro(this.value)
-    zoomExtent("pro", this.value)
+    zoomExtent("pro", this.value);
     seclectdata("pro", this.value);
+    if (this.value == 'eec') {
+        $("#pro_tn").html($('#pro').children("option:selected").text())
+    } else {
+        $("#pro_tn").html('จังหวัด' + $('#pro').children("option:selected").text())
+    }
+    $("#amp_tn").html('')
+    $("#tam_tn").html('')
 });
 $("#amp").on("change", function () {
     getAmp(this.value)
-    zoomExtent("amp", this.value)
+    zoomExtent("amp", this.value);
     seclectdata("amp", this.value);
+    $("#amp_tn").html('อำเภอ' + $('#amp').children("option:selected").text())
 });
 $("#tam").on("change", function () {
-    zoomExtent("tam", this.value)
+    zoomExtent("tam", this.value);
     seclectdata("tam", this.value);
+    $("#tam_tn").html('ตำบล' + $('#tam').children("option:selected").text())
 });
 // const url = "https://eec-onep.online:3700";
 let zoomExtent = (lyr, code) => {
@@ -186,6 +212,18 @@ let zoomExtent = (lyr, code) => {
             geom.coordinates[0][0],
             geom.coordinates[0][2],
         ]);
+    })
+
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
     })
 }
 let getPro = (procode) => {
@@ -378,220 +416,422 @@ let chartTemplate = (arrData, div) => {
     dateAxis.start = 0.59;
     dateAxis.keepSelection = true;
 }
-let getshow = async (r) => {
-    if (r == "showDepth") {
-        $("#years").hide()
-        axios.get(api_3 + 'depth').then((r) => {
-            let datArr = [];
-            let selDat = r.data.data
-            selDat.map(e => {
-                datArr.push({
-                    "station_name": e.station_name,
-                    "value": e.depth,
-                })
-            })
-            // console.log(datArr)
-            barChart(datArr, 'เมตร', "ความลึก (เมตร)");
-            $("#unit").html('ระดับความลึก (เมตร)');
-        })
-    } else if (r == "showWl") {
-        $("#years").hide()
-        axios.get(api_3 + 'wl').then((r) => {
-            let datArr = [];
-            let selDat = r.data.data
-            selDat.map(e => {
-                datArr.push({
-                    "station_name": e.station_name,
-                    "value": e.wl,
-                })
-            })
-            // console.log(datArr)
-            barChart(datArr, 'เมตร', "ระดับน้ำ (เมตร)");
-            $("#unit").html('เมตร');
-        })
-    } else if (r == "showTemp") {
-        $("#years").hide()
-        axios.get(api_3 + 'temp').then((r) => {
-            let datArr = [];
-            let selDat = r.data.data
-            selDat.map(e => {
-                datArr.push({
-                    "station_name": e.station_name,
-                    "value": e.temp,
-                })
-            })
-            // console.log(datArr)
-            barChart(datArr, '°C', "ค่าอุณหภูมิ (องศาเซลเซียส)");
-            $("#unit").html('ค่าอุณหภูมิ (องศาเซลเซียส)');
-        })
-    }
-    else if (r == "showTds") {
-        $("#years").hide()
-        axios.get(api_3 + 'tds').then((r) => {
-            let datArr = [];
-            let selDat = r.data.data
-            selDat.map(e => {
-                datArr.push({
-                    "station_name": e.station_name,
-                    "value": e.tds,
-                })
-            })
-            // console.log(datArr)
-            barChart(datArr, 'mg/L', "ค่าความขุ่น (mg/L)");
-            $("#unit").html('ค่าความขุ่น (mg/L)');
-        })
-    }
-    else if (r == "showSal") {
-        $("#years").hide()
-        axios.get(api_3 + 'Sal').then((r) => {
-            let datArr = [];
-            let selDat = r.data.data
-            selDat.map(e => {
-                datArr.push({
-                    "station_name": e.station_name,
-                    "value": e.sal,
-                })
-            })
-            // console.log(datArr)
-            barChart(datArr, 'ppt', "ค่าความเค็ม (ppt)");
-            $("#unit").html('ค่าความเค็ม (ppt)');
-        })
-    }
-}
-let showEc = async (r, year) => {
-    $("#years").show()
-    $("#type").val(r)
+let parameter = 'wl'
+// let getshow = async (r) => {
+//     let st_all = barChartdat
+//     let Pcode = $('#pro').val()
+//     $("#years").hide();
+//     if (r == "showDepth") {
+//         parameter = 'depth';
+//         if (Pcode !== 'eec') {
+//             axios.get(api_3 + 'depth').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 for (var i = 0; i < st_all.length; i++) {
+//                     let a = selDat.filter(e => e.station_id == st_all[i].station_id)
+//                     if (a.length == 1) {
+//                         datArr.push({
+//                             "station_name": a[0].station_name,
+//                             "value": a[0].depth,
+//                         })
+//                     }
+//                 }
+//                 barChart(datArr, 'เมตร', "ความลึก (เมตร)");
+//                 $("#unit").html('ระดับความลึก (เมตร)');
+//             })
+//         } else {
+//             axios.get(api_3 + 'depth').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 selDat.map(e => {
+//                     datArr.push({
+//                         "station_name": e.station_name,
+//                         "value": e.depth,
+//                     })
+//                 })
+//                 barChart(datArr, 'เมตร', "ความลึก (เมตร)");
+//                 $("#unit").html('ระดับความลึก (เมตร)');
+//             })
+//         }
+
+//     } else if (r == "showWl") {
+//         parameter = 'wl';
+//         if (Pcode !== 'eec') {
+//             // console.log(st_all)
+//             axios.get(api_3 + 'wl').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 // console.log(selDat)
+//                 for (var i = 0; i < st_all.length; i++) {
+//                     let a = selDat.filter(e => e.station_id == st_all[i].station_id)
+//                     if (a.length == 1) {
+//                         datArr.push({
+//                             "station_name": a[0].station_name,
+//                             "value": a[0].wl,
+//                             'staid': a[0].station_id,
+//                         })
+//                     }
+//                 }
+//                 // console.log(datArr)
+//                 barChart(datArr, 'เมตร', "ระดับน้ำ (เมตร)");
+//                 $("#unit").html('เมตร');
+//             })
+//         } else {
+//             axios.get(api_3 + 'wl').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 selDat.map(e => {
+//                     datArr.push({
+//                         "station_name": e.station_name,
+//                         "value": e.wl,
+//                     })
+//                 })
+//                 barChart(datArr, 'เมตร', "ระดับน้ำ (เมตร)");
+//                 $("#unit").html('เมตร');
+//             })
+//         }
+
+//     } else if (r == "showTemp") {
+//         parameter = 'temp';
+//         if (Pcode !== 'eec') {
+//             axios.get(api_3 + 'temp').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 for (var i = 0; i < st_all.length; i++) {
+//                     let a = selDat.filter(e => e.station_id == st_all[i].station_id)
+//                     if (a.length == 1) {
+//                         datArr.push({
+//                             "station_name": a[0].station_name,
+//                             "value": a[0].temp,
+//                         })
+//                     }
+//                 }
+//                 barChart(datArr, '°C', "ค่าอุณหภูมิ (องศาเซลเซียส)");
+//                 $("#unit").html('ค่าอุณหภูมิ (องศาเซลเซียส)');
+//             })
+//         } else {
+//             axios.get(api_3 + 'temp').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 selDat.map(e => {
+//                     datArr.push({
+//                         "station_name": e.station_name,
+//                         "value": e.temp,
+//                     })
+//                 })
+//                 barChart(datArr, '°C', "ค่าอุณหภูมิ (องศาเซลเซียส)");
+//                 $("#unit").html('ค่าอุณหภูมิ (องศาเซลเซียส)');
+//             })
+//         }
+//     } else if (r == "showTds") {
+//         parameter = 'tds';
+//         if (Pcode !== 'eec') {
+//             axios.get(api_3 + 'tds').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 for (var i = 0; i < st_all.length; i++) {
+//                     let a = selDat.filter(e => e.station_id == st_all[i].station_id)
+//                     if (a.length == 1) {
+//                         datArr.push({
+//                             "station_name": a[0].station_name,
+//                             "value": a[0].tds,
+//                         })
+//                     }
+//                 }
+//                 barChart(datArr, 'mg/L', "ค่าความขุ่น (mg/L)");
+//                 $("#unit").html('ค่าความขุ่น (mg/L)');
+//             })
+//         } else {
+//             axios.get(api_3 + 'tds').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 selDat.map(e => {
+//                     datArr.push({
+//                         "station_name": e.station_name,
+//                         "value": e.tds,
+//                     })
+//                 })
+//                 barChart(datArr, 'mg/L', "ค่าความขุ่น (mg/L)");
+//                 $("#unit").html('ค่าความขุ่น (mg/L)');
+//             })
+//         }
+//     } else if (r == "showSal") {
+//         parameter = 'sal';
+//         if (Pcode !== 'eec') {
+//             axios.get(api_3 + 'Sal').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 for (var i = 0; i < st_all.length; i++) {
+//                     let a = selDat.filter(e => e.station_id == st_all[i].station_id)
+//                     if (a.length == 1) {
+//                         datArr.push({
+//                             "station_name": a[0].station_name,
+//                             "value": a[0].sal,
+//                         })
+//                     }
+//                 }
+//                 barChart(datArr, 'ppt', "ค่าความเค็ม (ppt)");
+//                 $("#unit").html('ค่าความเค็ม (ppt)');
+//             })
+//         } else {
+//             axios.get(api_3 + 'Sal').then((r) => {
+//                 let datArr = [];
+//                 let selDat = r.data.data
+//                 selDat.map(e => {
+//                     datArr.push({
+//                         "station_name": e.station_name,
+//                         "value": e.sal,
+//                     })
+//                 })
+//                 barChart(datArr, 'ppt', "ค่าความเค็ม (ppt)");
+//                 $("#unit").html('ค่าความเค็ม (ppt)');
+//             })
+//         }
+//     }
+// }
+let showEc = async (r, year, data) => {
+    $("#years").show();
+    $("#type").val(r);
+    let st_all = data;
     var Y = $("#year").val()
+    parameter = 'ec';
     if (Y == year) {
         let r2 = await axios.get(url + "/form_gw/get/rank_ec/" + year).then(r => {
             var a = r.data.data
-            console.log(a)
             var b = []
-            a.map(i => {
-                b.push(
-                    {
-                        // "staid": i.staid,
+            for (var i = 0; i < st_all.length; i++) {
+                let dat = a.filter(e => e.staid == st_all[i].staid)
+                dat.map(i => {
+                    b.push({
                         "station_name": i.staname,
-                        "value": i.ec
-                    }
-                )
-            })
-            b.sort(function (a, b) {
-                if (a.ec < b.ec) {
-                    return -1;
-                } else if (a.ec > b.ec) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            b.reverse();
-            var btop_10 = b.slice(0, 10);
-            barChart(btop_10, 'µS/cm', `ค่าการนำไฟฟ้า ปี ${year}`);
+                        "value": i.ec,
+                    })
+                })
+            }
+            barChart(b, 'µS/cm', `ค่าการนำไฟฟ้า ปี ${year}`);
             $("#unit").html(`ค่าการนำไฟฟ้า ปี ${year}`);
-            // console.log(btop_10)
         })
+
     } else {
         let r2 = await axios.get(url + "/form_gw/get/rank_ec/2563").then(r => {
             var a = r.data.data
             var b = []
-            a.map(i => {
-                b.push(
-                    {
-                        // "staid": i.staid,
+            for (var i = 0; i < st_all.length; i++) {
+                let dat = a.filter(e => e.staid == st_all[i].staid)
+                dat.map(i => {
+                    b.push({
                         "station_name": i.staname,
-                        "value": i.ec
-                    }
-                )
-            })
-            b.sort(function (a, b) {
-                if (a.ec < b.ec) {
-                    return -1;
-                } else if (a.ec > b.ec) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            b.reverse();
-            var btop_10 = b.slice(0, 10);
-            barChart(btop_10, 'µS/cm', `ค่าการนำไฟฟ้า ปี ${Y}`);
+                        "value": i.ec,
+                    })
+                })
+            }
+            barChart(b, 'µS/cm', `ค่าการนำไฟฟ้า ปี ${Y}`);
             $("#unit").html(`ค่าการนำไฟฟ้า ปี ${Y}`);
-            // console.log(btop_10)
         })
+
     }
+    // else {
+    //     let r2 = await axios.get(url + "/form_gw/get/rank_ec/2563").then(r => {
+    //         var a = r.data.data
+    //         var b = []
+    //         a.map(i => {
+    //             b.push(
+    //                 {
+    //                     // "staid": i.staid,
+    //                     "station_name": i.staname,
+    //                     "value": i.ec
+    //                 }
+    //             )
+    //         })
+    //         b.sort(function (a, b) {
+    //             if (a.ec < b.ec) {
+    //                 return -1;
+    //             } else if (a.ec > b.ec) {
+    //                 return 1;
+    //             } else {
+    //                 return 0;
+    //             }
+    //         });
+    //         b.reverse();
+    //         // var btop_10 = b.slice(0, 10);
+    //         barChart(b, 'µS/cm', `ค่าการนำไฟฟ้า ปี ${Y}`);
+    //         $("#unit").html(`ค่าการนำไฟฟ้า ปี ${Y}`);
+    //     })
+    // }
 }
-let showPh = async (r, year) => {
-    $("#years").show()
-    $("#type").val(r)
-    var Y = $("#year").val()
+let showPh = async (r, year, data) => {
+    $("#years").show();
+    $("#type").val(r);
+    var Y = $("#year").val();
+    let st_all = data;
+    parameter = 'ph';
     if (Y == year) {
         let r2 = await axios.get(url + "/form_gw/get/rank_ph/" + year).then(r => {
             var a = r.data.data
             var b = []
-            a.map(i => {
-                b.push(
-                    {
-                        // "staid": i.staid,
+            for (var i = 0; i < st_all.length; i++) {
+                let dat = a.filter(e => e.staid == st_all[i].staid)
+                dat.map(i => {
+                    b.push({
                         "station_name": i.staname,
-                        "value": i.ph
-                    }
-                )
-            })
-            b.sort(function (a, b) {
-                if (a.ph < b.ph) {
-                    return -1;
-                } else if (a.ph > b.ph) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            b.reverse();
-            var btop_10 = b.slice(0, 10);
-            barChart(btop_10, '', `ค่าความเป็นกรด-ด่าง ปี ${year}`);
+                        "value": i.ph,
+                    })
+                })
+            }
+            barChart(b, '', `ค่าความเป็นกรด-ด่าง ปี ${year}`);
             $("#unit").html(`ค่าความเป็นกรด-ด่าง ปี ${year}`);
-            // console.log(btop_10)
         })
+
     } else {
-        let r2 = await axios.get(url + "/form_gw/get/rank_ph").then(r => {
+        let r2 = await axios.get(url + "/form_gw/get/rank_ph/").then(r => {
             var a = r.data.data
             var b = []
-            a.map(i => {
-                b.push(
-                    {
-                        // "staid": i.staid,
+            for (var i = 0; i < st_all.length; i++) {
+                let dat = a.filter(e => e.staid == st_all[i].staid)
+                dat.map(i => {
+                    b.push({
                         "station_name": i.staname,
-                        "value": i.ph
-                    }
-                )
-            })
-            b.sort(function (a, b) {
-                if (a.ph < b.ph) {
-                    return -1;
-                } else if (a.ph > b.ph) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            b.reverse();
-            var btop_10 = b.slice(0, 10);
-            barChart(btop_10, '', `ค่าความเป็นกรด-ด่าง ปี ${Y}`);
-            $("#unit").html(`ค่าความเป็นกรด-ด่าง ปี ${Y}`);
-            // console.log(btop_10)
+                        "value": i.ph,
+                    })
+                })
+            }
+            barChart(b, '', `ค่าความเป็นกรด-ด่าง ปี ${year}`);
+            $("#unit").html(`ค่าความเป็นกรด-ด่าง ปี ${year}`);
         })
     }
 }
+let showDepth = (data) => {
+    let st_all = data;
+    parameter = 'depth';
+    $("#years").hide();
+    axios.get(api_3 + 'depth').then((r) => {
+        let datArr = [];
+        let selDat = r.data.data
+        for (var i = 0; i < st_all.length; i++) {
+            let a = selDat.filter(e => e.station_id == st_all[i].staid)
+            if (a.length) {
+                datArr.push({
+                    "station_name": a[0].station_name,
+                    "value": a[0].depth,
+                })
+            }
+        }
+        barChart(datArr, 'เมตร', "ความลึก (เมตร)");
+        $("#unit").html('ระดับความลึก (เมตร)');
+    })
+}
+let showWl = (data) => {
+    let st_all = data;
+    parameter = 'wl';
+    $("#years").hide();
+    axios.get(api_3 + 'wl').then((r) => {
+        let datArr = [];
+        let selDat = r.data.data
+        for (var i = 0; i < st_all.length; i++) {
+            let a = selDat.filter(e => e.station_id == st_all[i].staid)
+            if (a.length) {
+                datArr.push({
+                    "station_name": a[0].station_name,
+                    "value": a[0].wl,
+                })
+            }
+        }
+        barChart(datArr, 'เมตร', "ระดับน้ำ (เมตร)");
+        $("#unit").html('เมตร');
+    })
+}
+let showTemp = (data) => {
+    let st_all = data;
+    parameter = 'temp';
+    $("#years").hide();
+    axios.get(api_3 + 'temp').then((r) => {
+        let datArr = [];
+        let selDat = r.data.data
+        for (var i = 0; i < st_all.length; i++) {
+            let a = selDat.filter(e => e.station_id == st_all[i].staid)
+            if (a.length) {
+                datArr.push({
+                    "station_name": a[0].station_name,
+                    "value": a[0].temp,
+                })
+            }
+        }
+        barChart(datArr, '°C', "ค่าอุณหภูมิ (องศาเซลเซียส)");
+        $("#unit").html('ค่าอุณหภูมิ (องศาเซลเซียส)');
+    })
+}
+let showTds = (data) => {
+    let st_all = data;
+    parameter = 'tds';
+    $("#years").hide();
+    axios.get(api_3 + 'tds').then((r) => {
+        let datArr = [];
+        let selDat = r.data.data
+        for (var i = 0; i < st_all.length; i++) {
+            let a = selDat.filter(e => e.station_id == st_all[i].staid)
+            if (a.length) {
+                datArr.push({
+                    "station_name": a[0].station_name,
+                    "value": a[0].tds,
+                })
+            }
+        }
+        barChart(datArr, 'mg/L', "ค่าความขุ่น (mg/L)");
+        $("#unit").html('ค่าความขุ่น (mg/L)');
+    })
+}
+let showSal = (data) => {
+    let st_all = data;
+    parameter = 'sal';
+    $("#years").hide();
+    axios.get(api_3 + 'sal').then((r) => {
+        let datArr = [];
+        let selDat = r.data.data
+        for (var i = 0; i < st_all.length; i++) {
+            let a = selDat.filter(e => e.station_id == st_all[i].staid)
+            if (a.length) {
+                datArr.push({
+                    "station_name": a[0].station_name,
+                    "value": a[0].sal,
+                })
+            }
+        }
+        barChart(datArr, 'ppt', "ค่าความเค็ม (ppt)");
+        $("#unit").html('ค่าความเค็ม (ppt)');
+    })
+}
+
+let Tyear
 $("#year").on("change", function () {
+    Tyear = $("#year").val()
     var y = $("#year").val()
     var t = $("#type").val()
     if (t == "ph") {
-        showPh(t, y)
+        showPh(t, y, barChartdat)
     } else if (t == "ec") {
-        showEc(t, y)
+        showEc(t, y, barChartdat)
     }
 })
+
+let getparameter = (r) => {
+    if (r == 'wl') {
+        showWl(barChartdat)
+    } else if (r == 'depth') {
+        showDepth(barChartdat)
+    } else if (r == 'temp') {
+        showTemp(barChartdat)
+    } else if (r == 'tds') {
+        showTds(barChartdat)
+    } else if (r == 'sal') {
+        showSal(barChartdat)
+    } else if (r == 'ec') {
+        var y = $("#year").val()
+        showEc(r, y, barChartdat)
+    } else if (r == 'ph') {
+        var y = $("#year").val()
+        showPh(r, y, barChartdat)
+    }
+}
 
 barChart = async (data, unit, title, header) => {
     am4core.useTheme(am4themes_animated);
@@ -693,7 +933,6 @@ let seclectdata = (type, code) => {
         dataurl = url + '/form_gw/getintro/pro/' + code;
         // console.log(dataurl);
         table.ajax.url(dataurl).load();
-
     } else if (type == "pro" && code == 'eec') {
         dataurl = url + "/form_gw/getintro";
         // console.log(dataurl);
@@ -713,8 +952,137 @@ let seclectdata = (type, code) => {
         dataurl = url + "/form_gw/getintro";
     }
 }
-function Marker(data) {
+let barChartdat
+let getchat_by_table = (data) => {
+    barChartdat = data
+    $('#pro_tn').hide();
+    $('#amp_tn').hide();
+    $('#tam_tn').hide();
+    // let st_all = data;
+    let r = parameter;
+    getparameter(r)
+    // if (r == "depth") {
+    //     axios.get(api_3 + 'depth').then((r) => {
+    //         let datArr = [];
+    //         let selDat = r.data.data
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let a = selDat.filter(e => e.station_id == st_all[i].staid)
+    //             if (a.length == 1) {
+    //                 datArr.push({
+    //                     "station_name": a[0].station_name,
+    //                     "value": a[0].depth,
+    //                 })
+    //             }
+    //         }
+    //         barChart(datArr, 'เมตร', "ความลึก (เมตร)");
+    //         $("#unit").html('ระดับความลึก (เมตร)');
+    //     })
+    // } else if (r == "wl") {
+    //     axios.get(api_3 + 'wl').then((r) => {
+    //         let datArr = [];
+    //         let selDat = r.data.data
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let a = selDat.filter(e => e.station_id == st_all[i].staid)
+    //             if (a.length == 1) {
+    //                 datArr.push({
+    //                     "station_name": a[0].station_name,
+    //                     "value": a[0].wl,
+    //                     'staid': a[0].station_id,
+    //                 })
+    //             }
+    //         }
+    //         barChart(datArr, 'เมตร', "ระดับน้ำ (เมตร)");
+    //         $("#unit").html('เมตร');
+    //     })
+    // } else if (r == "temp") {
+    //     axios.get(api_3 + 'temp').then((r) => {
+    //         let datArr = [];
+    //         let selDat = r.data.data
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let a = selDat.filter(e => e.station_id == st_all[i].staid)
+    //             if (a.length == 1) {
+    //                 datArr.push({
+    //                     "station_name": a[0].station_name,
+    //                     "value": a[0].temp,
+    //                 })
+    //             }
+    //         }
+    //         barChart(datArr, '°C', "ค่าอุณหภูมิ (องศาเซลเซียส)");
+    //         $("#unit").html('ค่าอุณหภูมิ (องศาเซลเซียส)');
+    //     })
+    // } else if (r == "tds") {
+    //     axios.get(api_3 + 'tds').then((r) => {
+    //         let datArr = [];
+    //         let selDat = r.data.data
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let a = selDat.filter(e => e.station_id == st_all[i].staid)
+    //             if (a.length == 1) {
+    //                 datArr.push({
+    //                     "station_name": a[0].station_name,
+    //                     "value": a[0].tds,
+    //                 })
+    //             }
+    //         }
+    //         barChart(datArr, 'mg/L', "ค่าความขุ่น (mg/L)");
+    //         $("#unit").html('ค่าความขุ่น (mg/L)');
+    //     })
 
+    // } else if (r == "sal") {
+    //     axios.get(api_3 + 'Sal').then((r) => {
+    //         let datArr = [];
+    //         let selDat = r.data.data
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let a = selDat.filter(e => e.station_id == st_all[i].staid)
+    //             if (a.length == 1) {
+    //                 datArr.push({
+    //                     "station_name": a[0].station_name,
+    //                     "value": a[0].sal,
+    //                 })
+    //             }
+    //         }
+    //         barChart(datArr, 'ppt', "ค่าความเค็ม (ppt)");
+    //         $("#unit").html('ค่าความเค็ม (ppt)');
+    //     })
+    // } else if (r == 'ec') {
+    //     let year = Tyear
+    //     $("#years").show();
+    //     axios.get(url + "/form_gw/get/rank_ec/" + year).then(r => {
+    //         var a = r.data.data
+    //         var b = []
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let dat = a.filter(e => e.staid == st_all[i].staid)
+    //             dat.map(i => {
+    //                 b.push({
+    //                     "station_name": i.staname,
+    //                     "value": i.ec,
+    //                 })
+    //             })
+    //         }
+    //         barChart(b, '', `ค่าความเป็นกรด-ด่าง ปี ${year}`);
+    //         $("#unit").html(`ค่าความเป็นกรด-ด่าง ปี ${year}`);
+    //     })
+
+    // } else if (r == 'ph') {
+    //     let year = Tyear
+    //     $("#years").show();
+    //     axios.get(url + "/form_gw/get/rank_ph/" + year).then(r => {
+    //         var a = r.data.data
+    //         var b = []
+    //         for (var i = 0; i < st_all.length; i++) {
+    //             let dat = a.filter(e => e.staid == st_all[i].staid)
+    //             dat.map(i => {
+    //                 b.push({
+    //                     "station_name": i.staname,
+    //                     "value": i.ph,
+    //                 })
+    //             })
+    //         }
+    //         barChart(b, '', `ค่าความเป็นกรด-ด่าง ปี ${year}`);
+    //         $("#unit").html(`ค่าความเป็นกรด-ด่าง ปี ${year}`);
+    //     })
+    // }
+}
+function Marker(data) {
     var markers = L.markerClusterGroup();
     for (let i = 0; i < data.length; i++) {
         if (data[i].lat !== null && data[i].lng !== null) {
@@ -830,6 +1198,7 @@ function Table() {
             dataSrc: 'data'
         },
         columns: [
+            { data: '' },
             { data: 'staid' },
             { data: 'staname' },
             { data: 'tambon' },
@@ -837,8 +1206,18 @@ function Table() {
             { data: 'prov' },
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 2, 3, 4] },
+            { className: 'text-center', targets: [0, 1, 3, 4, 5] },
+            {
+                'targets': 0,
+                'searchable': false,
+                'orderable': false,
+                'className': 'dt-body-center',
+                'render': function (data, type, full, meta) {
+                    return '<input type="radio" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                }
+            }
         ],
+        // order: [[1, 'asc']],
         select: true,
         dom: 'Bfrtip',
         buttons: [
@@ -850,18 +1229,36 @@ function Table() {
         },
         // 
     });
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data();
+        getchat_by_table(data)
+    });
     // $("#spin_table").hide()
-    $('#tab tbody').on('click', 'tr', function () {
-        var data = table.row(this).data();
-        // console.log(data.lat);
-        L.popup({ offset: [0, -27] })
-            .setLatLng([data.lat, data.lng])
-            .setContent(`<h6><b>รหัสบ่อ :</b> ${data.staid} </h6><h6><b>บ่อสังเกตการณ์ :</b> ${data.staname} </h6>`)
-            .openOn(map);
-        map.panTo([data.lat, data.lng])
-        $("#timeline").show()
-        $("#realtime").hide()
-        getData_Tab(data)
+    // $('#tab tbody').on('click', 'tr', function () {
+    //     var data = table.row(this).data();
+    //     console.log(data);
+    //     L.popup({ offset: [0, -27] })
+    //         .setLatLng([data.lat, data.lng])
+    //         .setContent(`<h6><b>รหัสบ่อ :</b> ${data.staid} </h6><h6><b>บ่อสังเกตการณ์ :</b> ${data.staname} </h6>`)
+    //         .openOn(map);
+    //     map.panTo([data.lat, data.lng])
+    //     $("#timeline").show()
+    //     $("#realtime").hide()
+    //     getData_Tab(data)
+    // })
+    $('#tab tbody').on('change', 'input[type="radio"]', function () {
+        if (this.checked) {
+            var data = table.row(this.closest('tr')).data()
+            // console.log(data);
+            L.popup({ offset: [0, -27] })
+                .setLatLng([data.lat, data.lng])
+                .setContent(`<h6><b>รหัสบ่อ :</b> ${data.staid} </h6><h6><b>บ่อสังเกตการณ์ :</b> ${data.staname} </h6>`)
+                .openOn(map);
+            map.panTo([data.lat, data.lng])
+            $("#timeline").show()
+            $("#realtime").hide()
+            getData_Tab(data)
+        }
     })
 }
 let getData_Tab = async (r) => {
@@ -1135,8 +1532,10 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dateFormats.setKey("day", "dd MMMM yyyy");
-    dateAxis.renderer.grid.template.location = 0;
-    dateAxis.renderer.minGridDistance = 60;
+    dateAxis.renderer.minGridDistance = 50;
+    dateAxis.renderer.grid.template.location = 0.5;
+    dateAxis.startLocation = 0.5;
+    dateAxis.endLocation = 0.5;
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = title;
@@ -1146,11 +1545,12 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
         series.dataFields.valueY = field;
         series.dataFields.dateX = "date";
         series.name = name;
-        series.tooltipText = "[b]{valueY}[/]";
+        // series.tooltipText = "[b]{valueY}[/]";
         series.strokeWidth = 2;
         series.data = data;
-        series.tooltip.getFillFromObject = false;
-        series.tooltip.background.fill = am4core.color(color);
+        // series.tooltip.getFillFromObject = false;
+        // series.tooltip.background.fill = am4core.color(color);
+        series.stroke = am4core.color(color);
 
         var bullet = series.bullets.push(new am4charts.CircleBullet());
         bullet.circle.stroke = am4core.color("#fff");
@@ -1158,11 +1558,23 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
         bullet.adapter.add("fill", function (fill, target) {
             if (target.dataItem.valueY > standMax) {
                 return am4core.color("#FF0000");
-            } else if (target.dataItem.valueY <= standard) {
-                return am4core.color("#5bc0de");
-            } else if (target.dataItem.valueY >= standard <= standMax) {
+            } else if (target.dataItem.valueY >= standard) {
                 return am4core.color("#ffd500");
-            } else { return fill; }
+            } else if (target.dataItem.valueY < standard) {
+                return am4core.color(color);
+            } return fill;
+        })
+
+        var bullet2 = series.bullets.push(new am4charts.Bullet());
+        bullet2.tooltipText = "[b]{valueY}[/]";
+        bullet2.adapter.add("fill", function (fill, target) {
+            if (target.dataItem.valueY > standMax) {
+                return am4core.color("#FF0000");
+            } else if (target.dataItem.valueY >= standard) {
+                return am4core.color("#ffd500");
+            } else if (target.dataItem.valueY < standard) {
+                return am4core.color(color);
+            } return fill;
         })
 
         var range = valueAxis.createSeriesRange(series);
@@ -1221,7 +1633,7 @@ let showChart_1S = (arrData, div, title, unit, standard, standMax) => {
     // chart.scrollbarY.parent = chart.leftAxesContainer;
     // chart.scrollbarY.toBack();
 
-    dateAxis.start = 0.79;
+    // dateAxis.start = 0.79;
     dateAxis.keepSelection = true;
     chart.animationEnabled = false;
 
@@ -1254,11 +1666,12 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
         series.dataFields.valueY = field;
         series.dataFields.dateX = "date";
         series.name = name;
-        series.tooltipText = "[b]{valueY}[/]";
+        // series.tooltipText = "[b]{valueY}[/]";
         series.strokeWidth = 2;
         series.data = data;
-        series.tooltip.getFillFromObject = false;
-        series.tooltip.background.fill = am4core.color(color);
+        // series.tooltip.getFillFromObject = false;
+        // series.tooltip.background.fill = am4core.color(color);
+        series.stroke = am4core.color(color);
 
         var range = valueAxis.createSeriesRange(series);
         range.value = 9999;
@@ -1278,12 +1691,25 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
         bullet.adapter.add("fill", function (fill, target) {
             if (target.dataItem.valueY > standMax) {
                 return am4core.color("#FF0000");
-            } else if (target.dataItem.valueY <= standard) {
-                return am4core.color("#5bc0de");
-            } else if (target.dataItem.valueY >= standard <= standMax) {
+            } else if (target.dataItem.valueY >= standard) {
                 return am4core.color("#ffd500");
-            } else { return fill; }
+            } else if (target.dataItem.valueY < standard) {
+                return am4core.color(color);
+            } return fill;
         })
+
+        var bullet2 = series.bullets.push(new am4charts.Bullet());
+        bullet2.tooltipText = "[b]{valueY}[/]";
+        bullet2.adapter.add("fill", function (fill, target) {
+            if (target.dataItem.valueY > standMax) {
+                return am4core.color("#FF0000");
+            } else if (target.dataItem.valueY >= standard) {
+                return am4core.color("#ffd500");
+            } else if (target.dataItem.valueY < standard) {
+                return am4core.color(color);
+            } return fill;
+        })
+
         // Create a horizontal scrollbar with previe and place it underneath the date axis
         chart.scrollbarX = new am4charts.XYChartScrollbar();
         chart.scrollbarX.series.push(series);
@@ -1292,7 +1718,7 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
 
         return series;
     }
-    createSeries("value", "Sensor 1", arrDataS1, "#67b7dc"
+    createSeries("value", "Sensor 1", arrDataS1, "#67d4dc"
         // { "date": "2021-01-01", "value": 0 },
         // { "date": arrData.date, "value": arrData.value, },
     );
@@ -1332,7 +1758,7 @@ let showChart_2S = (arrDataS1, arrDataS2, div, title, unit, standard, standMax) 
     // chart.scrollbarX.series.push(series);
     // chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    dateAxis.start = 0.79;
+    // dateAxis.start = 0.79;
     dateAxis.keepSelection = true;
 }
 let showChart_3S = (arrDataS1, arrDataS2, arrDataS3, div, title, unit) => {
@@ -1354,13 +1780,34 @@ let showChart_3S = (arrDataS1, arrDataS2, arrDataS3, div, title, unit) => {
         series.dataFields.valueY = field;
         series.dataFields.dateX = "date";
         series.name = name;
-        series.tooltipText = "[b]{valueY}[/]";
+        // series.tooltipText = "[b]{valueY}[/]";
         series.strokeWidth = 2;
         series.data = data;
 
         var bullet = series.bullets.push(new am4charts.CircleBullet());
         bullet.circle.stroke = am4core.color("#fff");
         bullet.circle.strokeWidth = 2;
+        bullet.adapter.add("fill", function (fill, target) {
+            if (target.dataItem.valueY > standMax) {
+                return am4core.color("#FF0000");
+            } else if (target.dataItem.valueY <= standard) {
+                return am4core.color("#5bc0de");
+            } else if (target.dataItem.valueY >= standard <= standMax) {
+                return am4core.color("#ffd500");
+            } else { return fill; }
+        })
+
+        var bullet2 = series.bullets.push(new am4charts.Bullet());
+        bullet2.tooltipText = "[b]{valueY}[/]";
+        bullet2.adapter.add("fill", function (fill, target) {
+            if (target.dataItem.valueY > standMax) {
+                return am4core.color("#FF0000");
+            } else if (target.dataItem.valueY <= standard) {
+                return am4core.color("#5bc0de");
+            } else if (target.dataItem.valueY >= standard <= standMax) {
+                return am4core.color("#ffd500");
+            } else { return fill; }
+        })
         // Create a horizontal scrollbar with previe and place it underneath the date axis
         chart.scrollbarX = new am4core.Scrollbar();
         chart.scrollbarX = new am4charts.XYChartScrollbar();
@@ -1408,7 +1855,7 @@ let showChart_3S = (arrDataS1, arrDataS2, arrDataS3, div, title, unit) => {
     // chart.scrollbarX.series.push(series);
     // chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    dateAxis.start = 0.79;
+    // dateAxis.start = 0.79;
     dateAxis.keepSelection = true;
 }
 function GetValue() {

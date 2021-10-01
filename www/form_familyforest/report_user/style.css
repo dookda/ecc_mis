@@ -23,11 +23,14 @@ html, body {
     height: 380px;
   }
 
-  
+  .kanit{
+    font-family: "Kanit",sans-serif !important;
+    font-size: 14px !important; 
+  }
   /*Legend specific*/
   .legend {
     padding: 6px 8px;
-    font: 14px Arial, Helvetica, sans-serif;
+    font: 13px Arial, Helvetica, sans-serif;
     background: white;
     background: rgba(255, 255, 255, 0.8);
     /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
@@ -37,9 +40,9 @@ html, body {
   }
   .legend h4 {
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     margin: 2px 12px 8px;
-    color: #777;
+    /* color: #777; */
   }
   
   .legend span {

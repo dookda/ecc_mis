@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- ชื่อเพจ -->
-    <title>ระบบนำเข้าข้อมูลปริมาณขยะ</title>
+    <title>รายงานข้อมูลนำเข้าปริมาณขยะ</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -56,10 +56,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-                    <!-- <li><a href="./../../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
@@ -90,12 +91,56 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
-                    <h2>ระบบรายงานข้อมูลปริมาณขยะ</h2>
+                    <h2>รายงานข้อมูลนำเข้าปริมาณขยะ</h2>
                     <p>
-                        การรายงานข้อมูลปริมาณขยะในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ระบบรายงานปริมาณขยะเป็นการรายงานข้อมูลปริมาณขยะที่เกิดขึ้นในแต่ละพื้นที่
+                        โดยรวบรวมโดยกรมการปกครองส่วนท้องถิ่น
+                        และเจ้าหน้าที่ที่เกี่ยวข้อง ผู้ใช้งานสามารถเลือกนำเข้าข้อมูลขยะที่เกิดขึ้นจริง
+                        พร้อมกับระบุตำแหน่งของขยะที่เกิดขึ้นในพื้นที่
+                        เพื่อนำไปใช้ประกอบการตัดสินใจของหน่วยงานภาครัฐและท้องถิ่นในการบริหารจัดการและภัยต่างๆ
+                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
                 </div>
                 <hr>
+                <div class="card">
+                    <div class="card-body">
+                        เรียกดูข้อมูลในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
+                                <select class="form-control" id="prov">
+                                    <option value="eec">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
+
+                                </select>
+                            </div>
+                            <!-- <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="sel1">เลือกอำเภอ:</label>
+                                    <select class="form-control" id="amp">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="sel1">เลือกตำบล:</label>
+                                    <select class="form-control" id="tam">
+                                    </select>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="sel1">เลือกอปท.</label>
+                                    <select class="form-control" id="sta">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h5>ตำแหน่งรายงานปริมาณขยะ</h5>
                 <div class="card">
                     <div id="map"></div>
@@ -172,17 +217,28 @@
                     <div class="col-md-7">
                         <div class="card">
                             <div class="card-body">
+                                <h6>ปริมาณขยะของ<span id="Cyear"></span> แยกตามแต่ละประภท</h6>
                                 <div class="gbchart" id="gbDetail"></div>
                             </div>
                         </div>
 
                     </div>
                 </div>
+                <hr>
+                <div class="container">
+                    <div class="row" style="align-items: baseline; margin-left:-2px; margin-bottom: -10px;">
+                        <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
+                        <P>กรมการปกครองส่วนท้องถิ่น</P>
 
-                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="container-fluid mt-3 mb-6">
-                    <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+                    </div>
+                    <!-- <div class="row" style="margin-left: 1%;">
+                        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
+                            href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
                 </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <!-- <div class="container-fluid mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+                </div> -->
 
             </div>
         </section><!-- End Services Section -->
@@ -207,8 +263,17 @@
     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบโครงการ <span id="projName"></span></p>
+                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        ยืนยันการลบข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center mx-auto">
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span>
+                        </b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
                 <div class="modal-footer">

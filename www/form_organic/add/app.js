@@ -57,10 +57,30 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-    layers: 'th:province_4326',
-    format: 'image/png',
-    transparent: true
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
 var baseMap = {
@@ -69,7 +89,9 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -132,7 +154,58 @@ map.on('pm:create', e => {
     datageom = e.layer.toGeoJSON();
 });
 // console.log(geom)
+$("#pro").on("change", function () {
+    getPro(this.value)
+});
+$("#amp").on("change", function () {
+    getAmp(this.value)
 
+});
+$("#tam").on("change", function () {
+    getTam(this.value)
+});
+let prov_name, prov_code, amp_name, amp_code, tam_name, tam_code;
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+    prov_code = procode
+    if (procode == 20) {
+        prov_name = "ชลบุรี"
+    } else if (procode == 21) {
+        prov_name = "ระยอง"
+    } else if (procode == 24) {
+        prov_name = "ฉะเชิงเทรา"
+    }
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+        tam_code = r.data.data[0].tambon_idn
+        tam_name = r.data.data[0].tam_namt
+    })
+
+    axios.get(url + `/eec-api/get-amp/${prov_code}`).then(r => {
+        let data = r.data.data.filter(e => e.amphoe_idn == ampcode)
+        amp_name = data[0].amp_namt
+        amp_code = ampcode
+    })
+}
+let getTam = (tamcode) => {
+    axios.get(url + `/eec-api/get-tam/${amp_code}`).then(r => {
+        let data = r.data.data.filter(e => e.tambon_idn == tamcode)
+        tam_name = data[0].tam_namt
+        tam_code = tamcode
+    })
+}
 
 var test = [{ Name: "", Date: "", Detail: "" }]
 showTable(test)
@@ -216,7 +289,7 @@ let refreshPage = () => {
 }
 
 $('#imgfile').change(function (evt) {
-    console.log(evt);
+    // console.log(evt);
     var files = evt.target.files;
     var file = files[0];
     if (file) {
@@ -228,7 +301,7 @@ $('#imgfile').change(function (evt) {
     }
     resize();
 });
-
+let dataimgurl
 let resize = () => {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         var filesToUploads = document.getElementById('imgfile').files;
@@ -260,7 +333,7 @@ let resize = () => {
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
-                dataurl = canvas.toDataURL(file.type);
+                dataimgurl = canvas.toDataURL(file.type);
                 // console.log(dataurl)
                 // document.getElementById('output').src = dataurl;
             }
@@ -366,7 +439,7 @@ $("#BuySellUse").on("change", function () {
         $("#Sell").show();
         $("#BSselect").on("change", function () {
             var a = $("#BSselect").val();
-            console.log(a)
+            // console.log(a)
             if (a == "ซื้อขาย") {
                 $("#Buy").show();
                 $("#Sell").show();
@@ -670,10 +743,18 @@ function saveModal() {
         u3p5prolo: $("#prodLocat5").val(),
 
         repordat: $('#rpdate').val(),
+        datreport: $('#rpdate').val(),
         id_date: Date.now(),
-        id_user: $('#userId').val(),
+        id_user: urname,
+        id_userid: urid,
+        province: prov_name,
+        p_code: prov_code,
+        amphoe: amp_name,
+        a_code: amp_code,
+        tambon: tam_name,
+        t_code: tam_code,
 
-        img: dataurl ? dataurl : dataurl = "",
+        img: dataimgurl,
         geom: datageom ? datageom : datageom = "",
     })
     dataleght.push({ intono: $('#into1').val() })
@@ -694,7 +775,7 @@ function saveModal() {
     $("#Transform").hide();
     $('#myModal').modal('hide');
 
-    console.log("SAVE")
+    // console.log("SAVE")
     $("#typegarden2").val(dataleght.length)
     sendData(dataVG)
 }
@@ -704,10 +785,10 @@ let sendData = (data) => {
     const obj = {
         data: data
     }
-    console.log(obj)
+    // console.log(obj)
     // var url = "http://localhost:3000"
-    // var url = "https://eec-onep.online:3700";
-    $.post(url + "/form_af/insert", obj).done((r) => {
+    // var url2 = "https://eec-onep.online:3700";
+    $.post(url + "/form_insee/insert", obj).done((r) => {
         r.data.data == "success"
     })
 }

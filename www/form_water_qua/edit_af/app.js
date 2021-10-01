@@ -15,7 +15,8 @@ $(document).ready(() => {
 
 let searchParams = new URLSearchParams(window.location.search)
 let wq_id = searchParams.get('id')
-console.log(wq_id);
+let report = sessionStorage.getItem('wq_report');
+// console.log(wq_id);
 
 let latlng = {
     lat: 13.305567,
@@ -96,7 +97,7 @@ let loadData = () => {
 
         if (r.data.data[0].geojson) {
             let json = JSON.parse(r.data.data[0].geojson);
-            console.log(json);
+            // console.log(json);
             marker = L.marker([json.coordinates[1], json.coordinates[0]], {
                 // draggable: true,
                 name: 'mk'
@@ -197,7 +198,31 @@ let resize = () => {
 }
 
 
-
+let UserReport = () => {
+    // if (eecauth !== "admin" && eecauth !== "office") {
+    //     location.href = "./../report_user/index.html";
+    // } else if (eecauth == "admin") {
+    //     location.href = "./../report_admin/index.html"
+    // } else if (eecauth == "office") {
+    //     location.href = "./../report/index.html"
+    // }
+    if (report == "admin") {
+        location.href = "./../report_admin/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else if (report == "user") {
+        location.href = "./../report_user/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else if (report == "normal") {
+        location.href = "./../report/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+    else {
+        location.href = "./../report_user/index.html"
+        sessionStorage.removeItem('wq_report');
+    }
+}
 
 
 

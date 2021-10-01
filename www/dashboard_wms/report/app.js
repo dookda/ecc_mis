@@ -669,6 +669,30 @@ const sea = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     transparent: true
 });
 
+const cp_cco = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__68_complaint_pollu_cco",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+const cp_cbi = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__69_complaint_pollu_cbi",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+const cp_ryg = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__70_complaint_pollu_ryg",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
 const coastalradar = L.tileLayer.wms("https://ocean.gistda.or.th/geoserver/coastalradar/wms?", {
     layers: "coastalradar:recent_gulf,coastalradar:v_recent_gul5",
     name: "lyr",
@@ -844,7 +868,10 @@ let lyr = {
     water_mnre: water_mnre,
     water_onep: water_onep,
     water_stand: water_stand,
-    sea: sea
+    sea: sea,
+    cp_cco: cp_cco,
+    cp_cbi: cp_cbi,
+    cp_ryg: cp_ryg
 
 }
 
@@ -1311,6 +1338,13 @@ $("input[type=checkbox]").change(async () => {
         if (i == "radar") {
             initialize(apiData, optionKind);
         }
+
+        if (i == "wtrl") {
+            loadWtrl();
+        }
+        if (i == "Wqua") {
+            loadWqua()
+        }
     })
 
     getLayer()
@@ -1407,6 +1441,9 @@ $("#water_mnreLegend").attr("src", eecUrl + "eec:a__58_water_mnre");
 $("#water_onepLegend").attr("src", eecUrl + "eec:a__59_water_onep");
 $("#water_standLegend").attr("src", eecUrl + "eec:a__60_water_stand_eec");
 $("#seaLegend").attr("src", eecUrl + "eec:a__61_sea_eec");
+$("#cp_ccoLegend").attr("src", eecUrl + "eec:a__68_complaint_pollu_cco");
+$("#cp_cbiLegend").attr("src", eecUrl + "eec:a__69_complaint_pollu_cbi");
+$("#cp_rygLegend").attr("src", eecUrl + "eec:a__70_complaint_pollu_ryg");
 
 $("#coastalradarLegend").attr("src", gistdaUrl + "coastalradar:recent_gulf");
 
@@ -1425,6 +1462,8 @@ $("#gwLegend").attr("src", "./img/gw.png");
 $("#radarLegend").attr("src", "./img/radar.png");
 
 $("#villLegend").attr("src", eecUrl + "eec:a__05_village");
+$("#wtrlLegend").attr("src", "./marker-meteo/gas-station.png");
+$("#WquaLegend").attr("src", "./marker/sta_qu.png");
 
 $("#cardpop").hide()
 $("#popcheck").click(function () {
@@ -1623,47 +1662,48 @@ let MWPop = (pcode) => {
             $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name} ประเภท${b}`)
         }
         dat.push({
-            "year": '2554',
+            "year": 'ปี 2554',
             "men": d[0].y2554,
             "women": d[1].y2554,
         }, {
-            "year": 2555,
+            "year": 'ปี 2555',
             "men": Number(d[0].y2555),
             "women": Number(d[1].y2555),
         }, {
-            "year": 2556,
+            "year": 'ปี 2556',
             "men": Number(d[0].y2556),
             "women": Number(d[1].y2556),
         }, {
-            "year": 2557,
+            "year": 'ปี 2557',
             "men": Number(d[0].y2557),
             "women": Number(d[1].y2557),
         }, {
-            "year": 2558,
+            "year": 'ปี 2558',
             "men": Number(d[0].y2558),
             "women": Number(d[1].y2558),
         }, {
-            "year": 2559,
+            "year": 'ปี 2559',
             "men": Number(d[0].y2559),
             "women": Number(d[1].y2559),
         }, {
-            "year": 2560,
+            "year": 'ปี 2560',
             "men": Number(d[0].y2560),
             "women": Number(d[1].y2560),
         }, {
-            "year": 2561,
+            "year": 'ปี 2561',
             "men": Number(d[0].y2561),
             "women": Number(d[1].y2561),
         }, {
-            "year": 2562,
+            "year": 'ปี 2562',
             "men": Number(d[0].y2562),
             "women": Number(d[1].y2562),
         }, {
-            "year": 2563,
+            "year": 'ปี 2563',
             "men": Number(d[0].y2563),
             "women": Number(d[1].y2563),
         })
-        popMW(dat)
+        // popMW(dat)
+        newpopMW(dat)
     })
 }
 function popMW(data) {
@@ -1725,6 +1765,65 @@ function popMW(data) {
     createSeries("men", "เพศชาย", "#a9d7f6", "#3DB2FF");
     createSeries("women", "เพศหญิง", "#f96d6d", "#FF2442");
 }
+let newpopMW = (data) => {
+    $("#chartdiv").removeAttr("style").css({ "width": "1200px", "height": "520px" })
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+    // Add data
+    chart.data = data
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.position = 'top'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 95
+
+    // Create axes
+    var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "year";
+    categoryAxis.numberFormatter.numberFormat = "#";
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.cellStartLocation = 0.1;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+
+    var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+    // valueAxis.renderer.opposite = true;
+    valueAxis.numberFormatter.numberFormat = "#,###,###,###' " + "คน" + "'";
+    // valueAxis.min = 10000000;
+    // valueAxis.max = 70000000;
+
+    // Create series
+    function createSeries(field, name, color1, color2) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueX = field;
+        series.dataFields.categoryY = "year";
+        series.stacked = true;
+        series.name = name;
+        series.columns.template.tooltipText = `{categoryY} : [bold]{valueX.formatNumber('###,###,###.##')} คน[/]`;
+        series.columns.template.height = am4core.percent(100);
+        series.sequencedInterpolation = true;
+        series.stroke = am4core.color(color2);
+        series.tooltip.getFillFromObject = false;
+        series.tooltip.background.fill = am4core.color(color2);
+        series.columns.template.stroke = am4core.color(color1);
+        series.columns.template.fill = am4core.color(color1);
+
+        var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+        labelBullet.locationX = 0.5;
+        labelBullet.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
+        labelBullet.label.fill = am4core.color("#fff");
+
+    }
+
+    createSeries("men", "เพศชาย", "#a9d7f6", "#3DB2FF");
+    createSeries("women", "เพศหญิง", "#f96d6d", "#FF2442");
+
+}
 let sumpop = (pcode) => {
     var a = pcode
     var b = $('#typepop').val()
@@ -1737,37 +1836,37 @@ let sumpop = (pcode) => {
             $('#hiprov').html(`ข้อมูลประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name} ประเภท${b}`)
         }
         dat.push({
-            "year": '2554',
+            "year": 'ปี 2554',
             "value": Number(d[5].y2554),
         }, {
-            "year": 2555,
+            "year": 'ปี 2555',
             "value": Number(d[5].y2555),
         }, {
-            "year": 2556,
+            "year": 'ปี 2556',
             "value": Number(d[5].y2556),
         }, {
-            "year": 2557,
+            "year": 'ปี 2557',
             "value": Number(d[5].y2557),
         }, {
-            "year": 2558,
+            "year": 'ปี 2558',
             "value": Number(d[5].y2558),
         }, {
-            "year": 2559,
+            "year": 'ปี 2559',
             "value": Number(d[5].y2559),
         }, {
-            "year": 2560,
+            "year": 'ปี 2560',
             "value": Number(d[5].y2560),
         }, {
-            "year": 2561,
+            "year": 'ปี 2561',
             "value": Number(d[5].y2561),
         }, {
-            "year": 2562,
+            "year": 'ปี 2562',
             "value": Number(d[5].y2562),
         }, {
-            "year": 2563,
+            "year": 'ปี 2563',
             "value": Number(d[5].y2563),
         })
-        charthistory(dat, "จำนวนประชากร", "คน", "#A2DBFA", "#39A2DB")
+        charthistory(dat, "จำนวนประชากรรวม", "คน", "#A2DBFA", "#39A2DB")
     })
 
 }
@@ -1782,34 +1881,34 @@ let denpop = (pcode) => {
             $('#hiprov').html(`ข้อมูลความหนาแน่นของประชากรย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name}`)
         }
         dat.push({
-            "year": '2554',
+            "year": 'ปี 2554',
             "value": Number(d[3].y2554),
         }, {
-            "year": 2555,
+            "year": 'ปี 2555',
             "value": Number(d[3].y2555),
         }, {
-            "year": 2556,
+            "year": 'ปี 2556',
             "value": Number(d[3].y2556),
         }, {
-            "year": 2557,
+            "year": 'ปี 2557',
             "value": Number(d[3].y2557),
         }, {
-            "year": 2558,
+            "year": 'ปี 2558',
             "value": Number(d[3].y2558),
         }, {
-            "year": 2559,
+            "year": 'ปี 2559',
             "value": Number(d[3].y2559),
         }, {
-            "year": 2560,
+            "year": 'ปี 2560',
             "value": Number(d[3].y2560),
         }, {
-            "year": 2561,
+            "year": 'ปี 2561',
             "value": Number(d[3].y2561),
         }, {
-            "year": 2562,
+            "year": 'ปี 2562',
             "value": Number(d[3].y2562),
         }, {
-            "year": 2563,
+            "year": 'ปี 2563',
             "value": Number(d[3].y2563),
         })
         charthistory(dat, "ความหนาแน่น", "คนต่อตร.กม.", "#B8B5FF", "#7868E6")
@@ -1826,34 +1925,34 @@ let homepop = (pcode) => {
             $('#hiprov').html(`ข้อมูลจำนวนครัวเรือนย้อนหลังตั้งแต่ปี 2554-2563 จังหวัด${d[0].p_name}`)
         }
         dat.push({
-            "year": '2554',
+            "year": 'ปี 2554',
             "value": Number(d[4].y2554),
         }, {
-            "year": 2555,
+            "year": 'ปี 2555',
             "value": Number(d[4].y2555),
         }, {
-            "year": 2556,
+            "year": 'ปี 2556',
             "value": Number(d[4].y2556),
         }, {
-            "year": 2557,
+            "year": 'ปี 2557',
             "value": Number(d[4].y2557),
         }, {
-            "year": 2558,
+            "year": 'ปี 2558',
             "value": Number(d[4].y2558),
         }, {
-            "year": 2559,
+            "year": 'ปี 2559',
             "value": Number(d[4].y2559),
         }, {
-            "year": 2560,
+            "year": 'ปี 2560',
             "value": Number(d[4].y2560),
         }, {
-            "year": 2561,
+            "year": 'ปี 2561',
             "value": Number(d[4].y2561),
         }, {
-            "year": 2562,
+            "year": 'ปี 2562',
             "value": Number(d[4].y2562),
         }, {
-            "year": 2563,
+            "year": 'ปี 2563',
             "value": Number(d[4].y2563),
         })
         charthistory(dat, "จำนวนครัวเรือน", "ครัวเรือน", "#94EBCD", "#6DDCCF")
@@ -1868,6 +1967,9 @@ function charthistory(data, catename, nunit, c1, c2) {
     // Create chart instance
     var chart = am4core.create("chartdiv", am4charts.XYChart);
     chart.legend = new am4charts.Legend();
+    chart.legend.position = 'top'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 95
     chart.numberFormatter.numberFormat = "#,###,###,###.##";
     // Add data
     chart.data = data
@@ -1881,7 +1983,13 @@ function charthistory(data, catename, nunit, c1, c2) {
     categoryAxis.renderer.cellEndLocation = 0.9;
 
     var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-    valueAxis.renderer.opposite = true;
+    // valueAxis.renderer.opposite = true;
+    if (nunit == 'ครัวเรือน') {
+        valueAxis.numberFormatter.numberFormat = "#.0as' " + nunit + "'";
+    } else {
+        valueAxis.numberFormatter.numberFormat = "#,###,###,###' " + nunit + "'";
+
+    }
 
     // Create series
     function createSeries(field, name, unit, color1, color2) {
@@ -2005,7 +2113,10 @@ let lyrName = {
     a__72_ancient_eec: 'โบราณสถาน',
     a__73_old_community_eec_point: 'ย่านชุมชนเก่า',
     a__74_oldtown_cco: "เขตเมืองเก่า จังหวัดฉะเชิงเทรา",
-    a__75_oldtown_ryg: "เขตเมืองเก่า จังหวัดระยอง"
+    a__75_oldtown_ryg: "เขตเมืองเก่า จังหวัดระยอง",
+    a__68_complaint_pollu_cco: "เรื่องร้องเรียนมลพิษ จังหวัดฉะเชิงเทรา",
+    a__69_complaint_pollu_cbi: "เรื่องร้องเรียนมลพิษ จังหวัดชลบุรี",
+    a__70_complaint_pollu_ryg: "เรื่องร้องเรียนมลพิษ จังหวัดระยอง"
 
 }
 
@@ -2024,10 +2135,10 @@ let fieldInfo = {
     lu_code: "รหัสการใช้ประโยชน์ที่ดิน",
     lu_des_th: "คำอธิบายการใช้ประโยชน์ที่ดิน",
     wsc_class: "ชั้นคุณภาพลุ่มน้ำ",
-    mbasin: "รหัสลุ่มน้ำหลัก",
+    mb_code: "รหัสลุ่มน้ำหลัก",
     mbasin_t: "ชื่อลุ่มน้ำหลัก",
-    sbasin: "รหัสลุ่มน้ำย่อย",
-    sbasin_t: "ชื่อลุ่มน้ำย่อย",
+    sb_code: "รหัสลุ่มน้ำย่อย",
+    sb_name_t: "ชื่อลุ่มน้ำย่อย",
     hydrount: "ชั้นข้อมูลอุทกธรณี",
     descript_t: "คำอธิบาย",
     name_code: "รหัสสถานี",
@@ -2117,8 +2228,9 @@ let fieldInfo = {
     lu52_nam: 'การใช้ประโยชน์ที่ดินในป่าชายเลน',
     ot_name: 'ชื่อเมืองเก่า',
     zone_detai: 'รายละเอียดโซน',
-    name_: "ชื่อวนอุทยานภาษาอังกฤษ"
-
+    name_: "ชื่อวนอุทยานภาษาอังกฤษ",
+    compliantly: "เรื่องร้องเรียน",
+    type2: "ประเภทเรื่องร้องเรียน"
 }
 
 
@@ -2127,6 +2239,9 @@ map.on("click", async (e) => {
     var size = await map.getSize();
     var bbox = await map.getBounds().toBBoxString();
     // console.log(pnt, size, bbox);
+    // console.log(e.latlng)
+    $("#showlat").text(e.latlng.lat)
+    $("#showlng").text(e.latlng.lng)
 
     let lyrInfoUrl = eecGeoserver + "/wms?SERVICE=WMS" +
         "&VERSION=1.1.1&REQUEST=GetFeatureInfo" +
@@ -2182,3 +2297,373 @@ map.on("click", async (e) => {
 
 pro.addTo(map)
 getLayer()
+
+let loadWtrl = async () => {
+    let iconblue = L.icon({
+        iconUrl: './marker/gas-station.png',
+        iconSize: [40, 45],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let sta = [
+        {
+            staname: "station_01",
+            latlon: [12.8661616, 100.9989804]
+        }, {
+            staname: "station_02",
+            latlon: [12.848099999999983, 100.95313000000002]
+        }, {
+            staname: "station_03",
+            latlon: [12.846510200000028, 100.9376361]
+        }, {
+            staname: "station_04",
+            latlon: [12.694406999999996, 101.44470699999997]
+        }, {
+            staname: "station_05",
+            latlon: [12.703484000000008, 101.468717]
+        }, {
+            staname: "station_06",
+            latlon: [12.70139960000001, 101.49543049999]
+        }, {
+            staname: "station_07",
+            latlon: [12.985111299999994, 101.6776677]
+        }, {
+            staname: "station_08",
+            latlon: [12.909515899999995, 101.71460159999998]
+        }, {
+            staname: "station_09",
+            latlon: [12.836749900000017, 101.73254899999998]
+        }]
+
+    sta.map(async (i) => {
+        let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
+        resSt01.then(r => {
+            let d = r.data.data[0];
+            let marker = L.marker(i.latlon, {
+                icon: iconblue,
+                name: 'lyr',
+                // data: dat
+            });
+
+            marker.addTo(map)
+            marker.bindPopup(`<div style="font-family:'Kanit'"> 
+                        ชื่อสถานี : ${i.staname} <br>
+                        ระดับน้ำ : ${Number(d.deep).toFixed(1)} mm.<br>
+                        ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
+                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        </div>`
+            )
+        })
+    })
+}
+let wtrlModal = (stname) => {
+    // console.log(stname);
+    let arrDept = [];
+    let arrTemp = [];
+    let arrHumi = [];
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get-by-day.php", { stname }).then(r => {
+        // console.log(r);
+        r.data.data.map(i => {
+            arrDept.push({
+                "date": i.dt,
+                "value": Math.round(i.dept)
+            });
+            arrTemp.push({
+                "date": i.dt,
+                "value": Math.round(i.temp)
+            });
+            arrHumi.push({
+                "date": i.dt,
+                "value": Math.round(i.humi)
+            });
+        })
+    })
+
+    setTimeout(() => {
+        // console.log(arrDept, arrTemp, arrHumi);
+        wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
+        wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
+        wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
+    }, 500)
+
+
+    $("#wtrlModal").modal("show");
+
+}
+let wtrlChart = (arrData, div, unit) => {
+    am4core.useTheme(am4themes_animated);
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
+
+    // Add data
+    chart.data = arrData;
+
+    // Set input format for the dates
+    // chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.baseValue = 0;
+    valueAxis.title.text = unit;
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.tooltipText = "{value}";
+    // series.tensionX = 0.8;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 15;
+    series.stroke = am4core.color("#00b80f");
+
+    // Drop-shaped tooltips
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.strokeOpacity = 0;
+    series.tooltip.pointerOrientation = "vertical";
+    series.tooltip.label.minWidth = 40;
+    series.tooltip.label.minHeight = 40;
+    series.tooltip.label.textAlign = "middle";
+    series.tooltip.label.textValign = "middle";
+
+    // var range = valueAxis.createSeriesRange(series);
+    // range.value = index;
+    // range.endValue = -1000;
+    // range.contents.stroke = am4core.color("#ff0000");
+    // range.contents.fill = range.contents.stroke;
+
+    // Make bullets grow on hover
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    // Make a panning cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.behavior = "panXY";
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.snapToSeries = series;
+
+    // Create a horizontal scrollbar with previe and place it underneath the date axis
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    dateAxis.start = 0.59;
+    dateAxis.keepSelection = true;
+}
+
+let loadWqua = async () => {
+    let sta = [
+        {
+            staname: "station_01",
+            latlon: [13.691624, 101.442835]
+        }, {
+            staname: "station_02",
+            latlon: [13.0465397, 100.9197114]
+        }, {
+            staname: "station_03",
+            latlon: [12.8291659, 101.3244348]
+        }]
+
+    let sum_data = []
+    sta.map(async (i) => {
+        let dat_ec = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ec", sort: "DESC", stname: i.staname, limit: 1 });
+        dat_ec.then(r => {
+            let A1 = r.data.data;
+
+            let dat_ph = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ph", sort: "DESC", stname: i.staname, limit: 1 });
+            dat_ph.then(r => {
+                let B1 = r.data.data;
+
+                let dat_do = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "do", sort: "DESC", stname: i.staname, limit: 1 });
+                dat_do.then(r => {
+                    let C1 = r.data.data;
+
+                    let dat_tmp = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "tmp", sort: "DESC", stname: i.staname, limit: 1 });
+                    dat_tmp.then(r => {
+                        let D1 = r.data.data;
+                        sum_data.push({ staname: i.staname, latlon: i.latlon, ec: Number(A1[0].val), ec_time: A1[0].t, ph: Number(B1[0].val), ph_time: B1[0].t, do: Number(C1[0].val), do_time: C1[0].t, tmp: Number(D1[0].val), tmp_time: D1[0].t, tmp: Number(D1[0].val), tmp_time: D1[0].t });
+
+                        if (sum_data.length == '3') {
+                            marker_Wqua(sum_data)
+                        }
+                    })
+                })
+            })
+        })
+    })
+}
+
+let staW_qua
+let marker_Wqua = (d) => {
+    let iconblue = L.icon({
+        iconUrl: './marker/sta_qu.png',
+        iconSize: [50, 50],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+    staW_qua = L.layerGroup()
+    let data = d;
+    data.map(i => {
+        let marker = L.marker(i.latlon, {
+            icon: iconblue,
+            name: 'lyr',
+            // data: dat
+        });
+        marker.addTo(map)
+        marker.bindPopup(`<div style="font-family:'Kanit'; font-size: 15px;"> 
+                        ชื่อสถานี : ${i.staname} <br>
+                        ค่า pH : ${Number(i.ph).toFixed(1)}<br>
+                        ค่าการนำไฟฟ้า : ${Number(i.ec).toFixed(1)} µS/cm<br>
+                        ค่า DO : ${Number(i.do).toFixed(1)} ppm<br>
+                        อุณหภูมิ : ${Number(i.tmp).toFixed(1)} องศาเซลเซียส<br>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="WquaModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        </div>`)
+        staW_qua.addLayer(marker);
+    })
+}
+
+let WquaModal = (stname) => {
+    // console.log(stname);
+    let arrPh = [];
+    let arrTemp = [];
+    let arrEC = [];
+    let arrDO = [];
+
+    let dat_ec = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ec", sort: "DESC", stname: stname, limit: 90 });
+    dat_ec.then(r => {
+        let A1 = r.data.data;
+        // console.log(A1)
+        A1.map(i => {
+            arrEC.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_ph = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "ph", sort: "DESC", stname: stname, limit: 90 });
+    dat_ph.then(r => {
+        let B1 = r.data.data;
+        // console.log(B1)
+        B1.map(i => {
+            arrPh.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_do = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "do", sort: "DESC", stname: stname, limit: 90 });
+    dat_do.then(r => {
+        let C1 = r.data.data;
+        // console.log(C1)
+        C1.map(i => {
+            arrDO.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    let dat_tmp = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrq-api-cherry.php', { param: "tmp", sort: "DESC", stname: stname, limit: 90 });
+    dat_tmp.then(r => {
+        let D1 = r.data.data;
+        // console.log(D1)
+        D1.map(i => {
+            arrTemp.push({
+                "date": i.t,
+                "value": Number(i.val)
+            });
+        })
+    })
+
+    setTimeout(() => {
+        // console.log(arrDept, arrTemp, arrHumi);
+        Wquachart(arrPh, "pHChart", "ค่า pH");
+        Wquachart(arrEC, "ECChart", "ค่าการนำไฟฟ้า (µS/cm)");
+        Wquachart(arrTemp, "TempChart", "อุณหภูมิ (°C)");
+        Wquachart(arrDO, "DOChart", "ค่า DO (ppm)");
+    }, 500)
+
+
+    $("#WquaModal").modal("show");
+
+}
+
+let Wquachart = function (data, div, title) {
+
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    var chart = am4core.create(div, am4charts.XYChart);
+    chart.paddingRight = 60;
+    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.baseInterval = {
+        "timeUnit": "minute",
+        "count": 1
+    };
+
+    dateAxis.dateFormats.setKey("dd MMMM yyyy");
+    dateAxis.renderer.grid.template.location = 0;
+    dateAxis.renderer.minGridDistance = 60;
+    dateAxis.tooltipDateFormat = "yyyy-MM-dd HH:mm:ss";
+
+    chart.data = data;
+
+    // Create axes
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.tooltip.disabled = true;
+    valueAxis.title.text = title;
+
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.strokeWidth = 2;
+    // series.tensionX = 0.8;
+    series.stroke = am4core.color("#00BFFF");
+    series.minBulletDistance = 10;
+    series.tooltipText = "{valueY}";
+    series.tooltip.pointerOrientation = "value";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.background.strokeOpacity = 0;
+    series.tooltip.label.minWidth = 40;
+    series.tooltip.label.minHeight = 40;
+    series.tooltip.label.textAlign = "middle";
+    series.tooltip.label.textValign = "middle";
+    // Make bullets grow on hover
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    // var range = valueAxis.createSeriesRange(series);
+    // range.value = 35;
+    // range.endValue = 100;
+    // range.contents.stroke = am4core.color("#ff0000");
+    // range.contents.fill = range.contents.stroke;
+
+
+    // chart.scrollbarY = new am4core.Scrollbar();
+    // chart.scrollbarX = new am4core.Scrollbar();
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    // Add cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.snapToSeries = series;
+
+};

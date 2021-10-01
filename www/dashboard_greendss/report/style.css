@@ -21,7 +21,7 @@
 }
 
 .layer{
-  height: 1260px;
+  height: fit-content;
 }
 
 .hchart{
@@ -184,9 +184,10 @@ justify-content: space-between;
   }
 
 }
+
 .cookie{
   margin: auto;
-  width: max-content;
+  width: fit-content;
   max-width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
@@ -195,8 +196,13 @@ justify-content: space-between;
 .dcookie{
   display: flex;
   flex-direction: row;
-  
+  justify-content: center;
 }
+.w-fit{
+  width: fit-content;
+  max-width: 100%;
+}
+
 @media (max-width:769px) {
   .dcookie{
     display: flex;

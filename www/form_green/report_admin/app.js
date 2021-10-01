@@ -11,47 +11,120 @@ const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
 let latlng = {
-    lat: 16.820378,
-    lng: 100.265787
+    lat: 13.196768,
+    lng: 101.364720
 }
 let map = L.map('map', {
     center: latlng,
-    zoom: 13
+    zoom: 9
 });
 
 let fc = L.featureGroup();
+const mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1
+});
 
-function loadMap() {
-    var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1
-    });
+const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
 
-    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
+const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__03_tambon_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 18,
+    // minZoom: 14,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 
-    var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
-        layers: 'th:province_4326',
-        format: 'image/png',
-        transparent: true
-    });
-    var baseMap = {
-        "Mapbox": mapbox.addTo(map),
-        "google Hybrid": ghyb
-    }
-    var overlayMap = {
-        "ขอบเขตจังหวัด": pro,
-        "พื้นที่สีเขียว": fc.addTo(map)
-    }
-    L.control.layers(baseMap, overlayMap).addTo(map);
+const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__02_amphoe_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 14,
+    // minZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: "eec:a__01_prov_eec",
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+const greenmuni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__52_gsus_muni',
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+const municiple = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__04_municiple',
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
+
+var baseMaps = {
+    "Mapbox": mapbox.addTo(map),
+    "google Hybrid": ghyb
 }
+const overlayMaps = {
+    "ขอบเขตจังหวัด": pro.addTo(map),
+    "ขอบเขตอำเภอ": amp,
+    "ขอบเขตตำบล": tam,
+    "ขอบเขตเทศบาล": municiple,
+    "พื้นที่สีเขียว": fc.addTo(map),
+    "พื้นที่สีเขียวยั่งยืนในเขตเทศบาล": greenmuni,
+
+}
+
+const lyrControl = L.control.layers(baseMaps, overlayMaps, {
+    collapsed: true
+}).addTo(map);
+
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #FFFFFF; border-color: #987db7; border-style: solid; border-width: 2px;"></i><span>ขอบเขตเทศบาล</span><br>';
+        div.innerHTML += '<i style="background: #0c9953; border-color: #038a5a; border-style: solid; border-width: 1.5px;"></i><span>พื้นที่สีเขียว</span><br>';
+        div.innerHTML += '<i style="background: #74e19e; border-radius: 1%;"></i><span>พื้นที่สีเขียวยั่งยืนในเขตเทศบาล</span><br>';
+        div.innerHTML += '<i style="background: #ff5100; border-radius: 50%;"></i><span>จุดความร้อน</span><br>';
+        return div;
+    };
+    legend.addTo(map);
+}
+
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 let datArr = [];
 
@@ -95,7 +168,7 @@ let getChart = (ws_id) => {
         ws_id: ws_id
     }
     axios.post(url + "/ws-api/getone", obj).then((r) => {
-        console.log(r);
+        // console.log(r);
         $("#staname").text(r.data.data[0].ws_station)
         $("#charttitle").show()
         for (const [key, value] of Object.entries(r.data.data[0])) {
@@ -114,7 +187,7 @@ let getChart = (ws_id) => {
 }
 
 fc.on("click", (e) => {
-    console.log(e.layer.toGeoJSON());
+    // console.log(e.layer.toGeoJSON());
 });
 
 let removeLayer = () => {
@@ -139,10 +212,31 @@ let getDataForMap = (data) => {
     data.map(i => {
         let json = L.geoJSON(JSON.parse(i.geojson), { name: "json", style: style });
         json.addTo(fc);
+        json.bindPopup(`<p style="font-family: 'Kanit';font-size: 15px;"><span id="grname"><b>${i.gr_name}</b></span>
+                <br>ประเภทพื้นที่สีเขียว: ${i.type} 
+                <br>เนื้อที่ : ${i.rai} ไร่
+                <br>ที่ตั้ง: ${i.tam_nam_t} ${i.amphoe_t} ${i.prov_nam_t}
+                <br> <label><a href="http://thaigreenurban.onep.go.th/frmTassaban.aspx" target="_blank"
+                rel="noopener noreferrer">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a></label>
+                <br><button class="btn btn-margin btn-outline-success" onclick="getDetail(${i.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button></p>`).addTo(map);
+
+        // console.log(i.lon, i.lat)
+        // json.on('popupopen', function () {
+        //     var name = $("#grname").text()
+        //     console.log(name);
+        //     table.search(name).draw();
+        //     map.setView([i.lat, i.lon], 25);
+        // })
 
     })
     map.fitBounds(fc.getBounds());
 }
+
+// map.on('popupopen', function () {
+//     var name = $("#grname").text()
+//     console.log(name);
+//     table.search(name).draw();
+// })
 
 let showAreaChart = (data) => {
     // Themes begin
@@ -199,6 +293,20 @@ let showAreaChart = (data) => {
     // chart.legend.itemContainers.template.paddingLeft = 15;
 
     chart.data = data;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let showCountChart = (data) => {
@@ -253,6 +361,20 @@ let showCountChart = (data) => {
 
     // Cursor
     chart.cursor = new am4charts.XYCursor();
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let getDataForChart = (data) => {
@@ -308,9 +430,28 @@ let getDataForChart = (data) => {
     showCountChart(cnt)
 }
 
-
+let table
 let loadTable = () => {
-    let table = $('#myTable').DataTable({
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
+    table = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
             async: true,
@@ -330,7 +471,7 @@ let loadTable = () => {
             {
                 data: '',
                 render: (data, type, row) => {
-                    return `${row.amphoe_t} ${row.prov_nam_t} `
+                    return `${row.tam_nam_t} ${row.amphoe_t} ${row.prov_nam_t} `
                 }
             },
             {
@@ -365,6 +506,9 @@ let loadTable = () => {
                 },
                 width: "25%"
             }
+        ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 3, 4, 5, 6] },
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
@@ -429,6 +573,20 @@ let geneChart = (arr, div, tt, unit) => {
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let pieChart = () => {
@@ -473,19 +631,128 @@ let pieChart = () => {
     series.hiddenState.properties.endAngle = -90;
 
     chart.legend = new am4charts.Legend();
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 $(document).ready(() => {
     loadTable();
-    loadMap();
+    // loadMap();
+    loadHotspot()
 });
+let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
+let onEachFeature = (feature, layer) => {
+    if (feature.properties) {
+        const time = feature.properties.acq_time;
+        const hr = Number(time.slice(0, 2));
+        const mn = Number(time.slice(2, 4));
+        layer.bindPopup(
+            `<h6><b>ตำแหน่งจุดความร้อน</b></h6>
+        <span class="kanit">lat: ${feature.properties.latitude}</span>
+        <span class="kanit">lon: ${feature.properties.longitude} </span>
+        <br/><span class="kanit">satellite: ${feature.properties.satellite} </span>
+        <br/><span class="kanit">วันที่: ${feature.properties.acq_date} </span>
+        <br/><span class="kanit">เวลา: ${hr}:${mn}</span>`
+        );
+    }
+}
+let loadHotspot = async () => {
+    let hp = await hpData;
+    // console.log(hp);
+    const fs = hp.data.data.features;
 
+    var geojsonMarkerOptions = {
+        radius: 6,
+        fillColor: "#ff5100",
+        color: "#a60b00",
+        weight: 0,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
 
+    const marker = await L.geoJSON(fs, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        onEachFeature: onEachFeature
+    })
+    // .addTo(map);
 
+    lyrControl.addOverlay(marker, "จุดความร้อน");
+}
+$('#prov').on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
 
+    let pro = $("#prov").children("option:selected").text()
+    if (pro !== "ทุกจังหวัด") {
+        table.search(pro).draw();
+    } else {
+        table.search('').draw();
+    }
+})
+$('#amp').on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
 
+    let amp = $("#amp").children("option:selected").text()
+    table.search(amp).draw();
+})
+$('#tam').on("change", function () {
+    zoomExtent("tam", this.value)
 
+    let tam = $("#tam").children("option:selected").text()
+    table.search(tam).draw();
+})
 
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
 
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
 
-
+map.on("click", async (e) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+})

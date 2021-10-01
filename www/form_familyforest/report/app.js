@@ -49,8 +49,8 @@ function loadMap() {
         layers: "eec:a__03_tambon_eec",
         format: "image/png",
         transparent: true,
-        maxZoom: 18,
-        minZoom: 14,
+        // maxZoom: 18,
+        // minZoom: 14,
         // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
 
@@ -58,8 +58,8 @@ function loadMap() {
         layers: "eec:a__02_amphoe_eec",
         format: "image/png",
         transparent: true,
-        maxZoom: 14,
-        minZoom: 10,
+        // maxZoom: 14,
+        // minZoom: 10,
         // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
 
@@ -67,7 +67,7 @@ function loadMap() {
         layers: "eec:a__01_prov_eec",
         format: "image/png",
         transparent: true,
-        maxZoom: 10,
+        // maxZoom: 10,
         // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
     });
     var baseMap = {
@@ -76,21 +76,40 @@ function loadMap() {
     }
     var overlayMap = {
         "ขอบเขตจังหวัด": pro.addTo(map),
-        "ขอบเขตอำเภอ": amp.addTo(map),
-        "ขอบเขตตำบล": tam.addTo(map),
+        "ขอบเขตอำเภอ": amp,
+        "ขอบเขตตำบล": tam,
     }
     L.control.layers(baseMap, overlayMap).addTo(map);
-    var legend = L.control({ position: "bottomright" });
+
+}
+var legend = L.control({ position: "bottomleft" });
+function showLegend() {
     legend.onAdd = function (map) {
         var div = L.DomUtil.create("div", "legend");
-        div.innerHTML += "<h4>สัญลักษณ์</h4>";
+        div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
+      <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button><br>`;
         div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 3px;"></i><span>ขอบเขตจังหวัด</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
+        div.innerHTML += '<i style="background: #feff17; border-color: #28a745; border-style: dotted; border-width: 2.5px;"></i><span>ป่าครอบครัว</span><br>';
         return div;
     };
     legend.addTo(map);
 }
+function hideLegend() {
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += `<button class="btn btn-sm" onClick="showLegend()">
+        <small class="prompt"><span class="kanit">แสดงสัญลักษณ์</span></small> 
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </button>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+
+hideLegend()
 
 let fc = L.featureGroup().addTo(map);
 
@@ -100,8 +119,13 @@ var now = new Date();
 var day = ("0" + now.getDate()).slice(-2);
 var month = ("0" + (now.getMonth() + 1)).slice(-2);
 var today = now.getFullYear() + "-" + (month) + "-" + (day);
-
-axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
+var urlmap
+// if (eecauth == 'admin') {
+//     urlmap = url + "/ff-api/getparcelall";
+// } else {
+//     urlmap = url + "/ff-api/getparcel/uid";
+// }
+axios.post(url + "/ff-api/getparcel/uid", { usrid: urid }).then(r => {
     r.data.data.map(i => {
         if (i.geom) {
             let dat = {
@@ -123,7 +147,7 @@ axios.post(url + "/ff-api/getparcelall", { usrid: urid }).then(r => {
 });
 
 fc.on("click", (e) => {
-    console.log(e.layer.toGeoJSON());
+    // console.log(e.layer.toGeoJSON());
 });
 
 let getData = async (data) => {
@@ -178,6 +202,19 @@ let showChart = (dataArr) => {
 
     series.hiddenState.properties.endAngle = -90;
     chart.legend = new am4charts.Legend();
+    chart.exporting.menu = new am4core.ExportMenu();
+    // chart.exporting.menu.align = "left";
+    // chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 $(document).ready(function () {
     $.extend(true, $.fn.dataTable.defaults, {
@@ -245,6 +282,9 @@ $(document).ready(function () {
                 // width: "15%"
             }
         ],
+        columnDefs: [
+            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6] },
+        ],
         searching: true,
         scrollX: true,
         dom: 'Bfrtip',
@@ -261,7 +301,8 @@ $(document).ready(function () {
 })
 let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id);
-    $("#projName").text(prj_name);
+    if (prj_name !== 'null') { $("#projName").text(prj_name); }
+    if (tbType !== 'null') { $("#projTime").text(`วันที่ ${tbType}`); }
     $("#tbType").val(tbType);
     $("#deleteModal").modal("show");
 }
@@ -270,6 +311,7 @@ let closeModal = () => {
     $('#editModal').modal('hide');
     $('#deleteModal').modal('hide');
     $('#myTable').DataTable().ajax.reload();
+    window.location.reload();
 }
 
 let confirmAdd = () => {
@@ -284,6 +326,7 @@ let deleteValue = () => {
         if (r.data.data == "success") {
             $('#deleteModal').modal('hide')
             $('#myTable').DataTable().ajax.reload();
+            window.location.reload();
         }
     })
 }
