@@ -1,12 +1,13 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_familyforest = sessionStorage.getItem('f_familyforest');
 
-if (eecauth !== "admin" && eecauth !== "user") {
+if (f_familyforest == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
+
+$("#usrname").text(urname);
 
 $(document).ready(() => {
     loadMap();

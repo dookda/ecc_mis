@@ -1,6 +1,12 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
+let f_organic = sessionStorage.getItem('f_organic');
+
+if (f_organic == 'true') {
+    location.href = "./../../form_register/login/index.html";
+}
+
 $("#usrname").text(urname);
 // urid ? null : location.href = "./../../form_register/login/index.html";
 
@@ -11,25 +17,6 @@ const url = "https://eec-onep.online:3700";
 
 let userid;
 
-let main = async () => {
-    await liff.init({ liffId: "1655648770-JLXzogag" })
-    if (liff.isLoggedIn()) {
-        getUserProfile()
-    } else {
-        liff.login()
-    }
-}
-
-// main()
-
-let getUserProfile = async () => {
-    const profile = await liff.getProfile();
-    $('#profile').attr('src', await profile.pictureUrl);
-    $('#userId').text(profile.userId);
-    $('#statusMessage').text(await profile.statusMessage);
-    $('#displayName').text(await profile.displayName);
-    userid = profile.userId;
-}
 let dataurl
 if (eecauth == "admin") {
     dataurl = url + "/insee-api/getgeom";

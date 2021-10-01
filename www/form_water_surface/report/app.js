@@ -1,12 +1,14 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_water_surface = sessionStorage.getItem('f_water_surface');
 
-if (eecauth !== "admin" && eecauth !== "office") {
+if (f_water_surface == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
+
+$("#usrname").text(urname);
+
 var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
 var L58 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__58_water_mnre&maxFeatures=50&outputFormat=application%2Fjson'
 var L59 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__59_water_onep&maxFeatures=50&outputFormat=application%2Fjson'

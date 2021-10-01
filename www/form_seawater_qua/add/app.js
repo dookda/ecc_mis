@@ -1,12 +1,13 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_seawater_qua = sessionStorage.getItem('f_seawater_qua');
 
-if (eecauth !== "admin" && eecauth !== "office") {
+if (f_seawater_qua == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
+
+$("#usrname").text(urname);
 
 // if (eecauth !== "admin" && eecauth !== "user") {
 //     location.href = "./../../form_register/login/index.html";

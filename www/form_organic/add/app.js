@@ -1,12 +1,14 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_organic = sessionStorage.getItem('f_organic');
 
-if (eecauth !== "admin" && eecauth !== "user") {
+if (f_organic == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
+
+$("#usrname").text(urname);
+
 let userid;
 
 let main = async () => {

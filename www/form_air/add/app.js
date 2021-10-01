@@ -1,31 +1,16 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_air = sessionStorage.getItem('f_air');
 
-if (eecauth !== "admin" && eecauth !== "office" && eecauth !== "user") {
+if (f_air == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
-let userid;
-// main()
-let main = async () => {
-    await liff.init({ liffId: "1655648770-JLXzogag" })
-    if (liff.isLoggedIn()) {
-        getUserProfile()
-    } else {
-        liff.login()
-    }
-}
 
-let getUserProfile = async () => {
-    const profile = await liff.getProfile();
-    $('#profile').attr('src', await profile.pictureUrl);
-    $('#userId').text(profile.userId);
-    $('#statusMessage').text(await profile.statusMessage);
-    $('#displayName').text(await profile.displayName);
-    userid = profile.userId;
-}
+$("#usrname").text(urname);
+
+let userid;
+
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3000';

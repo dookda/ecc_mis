@@ -1,12 +1,13 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
-$("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+let f_wastewater = sessionStorage.getItem('f_wastewater');
 
-if (eecauth !== "admin" && eecauth !== "office") {
+if (f_wastewater == 'true') {
     location.href = "./../../form_register/login/index.html";
 }
+
+$("#usrname").text(urname);
 
 let w_id = sessionStorage.getItem('w_id');
 let fromAdmin = sessionStorage.getItem('w_from_admin');
