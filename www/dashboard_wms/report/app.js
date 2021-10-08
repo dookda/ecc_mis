@@ -882,9 +882,14 @@ let base = {
     gter: gter
 }
 
-
+$("#spiner").hide()
+var table;
 let callAttribute = (lyr) => {
-    // console.log(cp_ryg);
+    $("#spiner").show()
+    if (table) {
+        table.destroy();
+        $('#attrib').empty();
+    }
     let geojson = "https://eec-onep.online:8443/geoserver/eec/ows?service=WFS" +
         "&version=1.0.0" +
         "&request=GetFeature" +
@@ -904,23 +909,15 @@ let callAttribute = (lyr) => {
             dat.push(Object.values(obj))
         })
 
-        // console.log(col, dat);
-
-        $(document).ready(function () {
-            $('#attrib').DataTable({
-                dom: "Bfrtip",
-                data: dat,
-                columns: col
-            });
+        table = $('#attrib').DataTable({
+            dom: "Bfrtip",
+            data: dat,
+            columns: col
         });
+        $("#spiner").hide()
     })
-
 }
-// callAttribute()
 
-let selectLyr = () => {
-    console.log("ffff");
-}
 
 // L.control.layers(baseMap, overlayMap).addTo(map);
 let refreshPage = () => {
