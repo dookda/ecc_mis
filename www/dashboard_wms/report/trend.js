@@ -1,3 +1,563 @@
+let datall_pop = []
+let datregister_pop = []
+let datdisguise_pop = []
+let datacity_pop = []
+
+let datall_pop_covid = []
+let datregister_pop_covid = []
+let datdisguise_pop_covid = []
+
+let datwaste = [];
+
+let datgarbage = [];
+
+let datuse_water_all = [];
+let datuse_water_prov60 = [];
+let datuse_water_prov70 = [];
+let datuse_water_prov80 = [];
+let datuse_water_Yagri = [];
+let datuse_water_Yconsume = [];
+let datuse_water_Yindustry = [];
+let datuse_water_Yindustry1 = [];
+let datuse_water_Yindustry2 = [];
+let datuse_water_prapa = [];
+
+let UW_industry = [];
+let UW_prapa = [];
+let UW_sum = [];
+
+let datelec_demand = [];
+let datelec_genelec_insys = [];
+let datelec_genelec_afsys = [];
+
+let datecon_tourist = [];
+let datecon_agri = [];
+let datecon_industry = [];
+let datecon_sevice = [];
+
+let datlabor_minwage = [];
+let datlabor_employ = [];
+let datlabor_exert = [];
+let datlabor_edulevel_all = [];
+
+let datlabor_edulevel_M3 = [];
+let datlabor_edulevel_M3s = [];
+let datlabor_edulevel_M6 = [];
+let datlabor_edulevel_profession = [];
+let datlabor_edulevel_Bachelor = [];
+let datlabor_edulevel_MoreBachelor = [];
+
+let dataforecast_eec = () => {
+    let url = "https://eec-onep.online:3700";
+    axios.post(url + "/forecast_eec/getdata/").then(async (r) => {
+        let eec24_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "24")
+        let eec20_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "20")
+        let eec21_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "21")
+        let eec_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "eec")
+        datall_pop.push(
+            { category: 'ปี 2559', first: Number(eec24_all[0].f2559), second: Number(eec20_all[0].f2559), third: Number(eec21_all[0].f2559), four: Number(eec_all[0].f2559), },
+            { category: 'ปี 2560', first: Number(eec24_all[0].f2560), second: Number(eec20_all[0].f2560), third: Number(eec21_all[0].f2560), four: Number(eec_all[0].f2560), },
+            { category: 'ปี 2561', first: Number(eec24_all[0].f2561), second: Number(eec20_all[0].f2561), third: Number(eec21_all[0].f2561), four: Number(eec_all[0].f2561), },
+            { category: 'ปี 2562', first: Number(eec24_all[0].f2562), second: Number(eec20_all[0].f2562), third: Number(eec21_all[0].f2562), four: Number(eec_all[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_all[0].f2563), second: Number(eec20_all[0].f2563), third: Number(eec21_all[0].f2563), four: Number(eec_all[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_all[0].f2564), second: Number(eec20_all[0].f2564), third: Number(eec21_all[0].f2564), four: Number(eec_all[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_all[0].f2565), second: Number(eec20_all[0].f2565), third: Number(eec21_all[0].f2565), four: Number(eec_all[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_all[0].f2566), second: Number(eec20_all[0].f2566), third: Number(eec21_all[0].f2566), four: Number(eec_all[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_all[0].f2567), second: Number(eec20_all[0].f2567), third: Number(eec21_all[0].f2567), four: Number(eec_all[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_all[0].f2568), second: Number(eec20_all[0].f2568), third: Number(eec21_all[0].f2568), four: Number(eec_all[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_all[0].f2569), second: Number(eec20_all[0].f2569), third: Number(eec21_all[0].f2569), four: Number(eec_all[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_all[0].f2570), second: Number(eec20_all[0].f2570), third: Number(eec21_all[0].f2570), four: Number(eec_all[0].f2570), }
+        )
+
+        let eec24_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "24")
+        let eec20_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "20")
+        let eec21_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "21")
+        let eec_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "eec")
+        datregister_pop.push(
+            { category: 'ปี 2559', first: Number(eec24_house[0].f2559), second: Number(eec20_house[0].f2559), third: Number(eec21_house[0].f2559), four: Number(eec_house[0].f2559), },
+            { category: 'ปี 2560', first: Number(eec24_house[0].f2560), second: Number(eec20_house[0].f2560), third: Number(eec21_house[0].f2560), four: Number(eec_house[0].f2560), },
+            { category: 'ปี 2561', first: Number(eec24_house[0].f2561), second: Number(eec20_house[0].f2561), third: Number(eec21_house[0].f2561), four: Number(eec_house[0].f2561), },
+            { category: 'ปี 2562', first: Number(eec24_house[0].f2562), second: Number(eec20_house[0].f2562), third: Number(eec21_house[0].f2562), four: Number(eec_house[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_house[0].f2563), second: Number(eec20_house[0].f2563), third: Number(eec21_house[0].f2563), four: Number(eec_house[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_house[0].f2564), second: Number(eec20_house[0].f2564), third: Number(eec21_house[0].f2564), four: Number(eec_house[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_house[0].f2565), second: Number(eec20_house[0].f2565), third: Number(eec21_house[0].f2565), four: Number(eec_house[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_house[0].f2566), second: Number(eec20_house[0].f2566), third: Number(eec21_house[0].f2566), four: Number(eec_house[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_house[0].f2567), second: Number(eec20_house[0].f2567), third: Number(eec21_house[0].f2567), four: Number(eec_house[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_house[0].f2568), second: Number(eec20_house[0].f2568), third: Number(eec21_house[0].f2568), four: Number(eec_house[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_house[0].f2569), second: Number(eec20_house[0].f2569), third: Number(eec21_house[0].f2569), four: Number(eec_house[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_house[0].f2570), second: Number(eec20_house[0].f2570), third: Number(eec21_house[0].f2570), four: Number(eec_house[0].f2570), }
+        )
+
+        let eec24_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "24")
+        let eec20_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "20")
+        let eec21_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "21")
+        let eec_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "eec")
+        datdisguise_pop.push(
+            { category: 'ปี 2559', first: Number(eec24_hide[0].f2559), second: Number(eec20_hide[0].f2559), third: Number(eec21_hide[0].f2559), four: Number(eec_hide[0].f2559), },
+            { category: 'ปี 2560', first: Number(eec24_hide[0].f2560), second: Number(eec20_hide[0].f2560), third: Number(eec21_hide[0].f2560), four: Number(eec_hide[0].f2560), },
+            { category: 'ปี 2561', first: Number(eec24_hide[0].f2561), second: Number(eec20_hide[0].f2561), third: Number(eec21_hide[0].f2561), four: Number(eec_hide[0].f2561), },
+            { category: 'ปี 2562', first: Number(eec24_hide[0].f2562), second: Number(eec20_hide[0].f2562), third: Number(eec21_hide[0].f2562), four: Number(eec_hide[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_hide[0].f2563), second: Number(eec20_hide[0].f2563), third: Number(eec21_hide[0].f2563), four: Number(eec_hide[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_hide[0].f2564), second: Number(eec20_hide[0].f2564), third: Number(eec21_hide[0].f2564), four: Number(eec_hide[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_hide[0].f2565), second: Number(eec20_hide[0].f2565), third: Number(eec21_hide[0].f2565), four: Number(eec_hide[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_hide[0].f2566), second: Number(eec20_hide[0].f2566), third: Number(eec21_hide[0].f2566), four: Number(eec_hide[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_hide[0].f2567), second: Number(eec20_hide[0].f2567), third: Number(eec21_hide[0].f2567), four: Number(eec_hide[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_hide[0].f2568), second: Number(eec20_hide[0].f2568), third: Number(eec21_hide[0].f2568), four: Number(eec_hide[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_hide[0].f2569), second: Number(eec20_hide[0].f2569), third: Number(eec21_hide[0].f2569), four: Number(eec_hide[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_hide[0].f2570), second: Number(eec20_hide[0].f2570), third: Number(eec21_hide[0].f2570), four: Number(eec_hide[0].f2570), }
+        )
+
+        let eec24_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "24")
+        let eec20_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "20")
+        let eec21_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "21")
+        datacity_pop.push(
+            { category: 'ปี 2565', first: Number(eec24_city[0].f2565), second: Number(eec20_city[0].f2565), third: Number(eec21_city[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_city[0].f2566), second: Number(eec20_city[0].f2566), third: Number(eec21_city[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_city[0].f2567), second: Number(eec20_city[0].f2567), third: Number(eec21_city[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_city[0].f2568), second: Number(eec20_city[0].f2568), third: Number(eec21_city[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_city[0].f2569), second: Number(eec20_city[0].f2569), third: Number(eec21_city[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_city[0].f2570), second: Number(eec20_city[0].f2570), third: Number(eec21_city[0].f2570), },
+            { category: 'ปี 2571', first: Number(eec24_city[0].f2571), second: Number(eec20_city[0].f2571), third: Number(eec21_city[0].f2571), },
+            { category: 'ปี 2572', first: Number(eec24_city[0].f2572), second: Number(eec20_city[0].f2572), third: Number(eec21_city[0].f2572), },
+            { category: 'ปี 2573', first: Number(eec24_city[0].f2573), second: Number(eec20_city[0].f2573), third: Number(eec21_city[0].f2573), },
+            { category: 'ปี 2574', first: Number(eec24_city[0].f2574), second: Number(eec20_city[0].f2574), third: Number(eec21_city[0].f2574), },
+            { category: 'ปี 2575', first: Number(eec24_city[0].f2575), second: Number(eec20_city[0].f2575), third: Number(eec21_city[0].f2575), },
+            { category: 'ปี 2576', first: Number(eec24_city[0].f2576), second: Number(eec20_city[0].f2576), third: Number(eec21_city[0].f2576), },
+            { category: 'ปี 2577', first: Number(eec24_city[0].f2577), second: Number(eec20_city[0].f2577), third: Number(eec21_city[0].f2577), },
+            { category: 'ปี 2578', first: Number(eec24_city[0].f2578), second: Number(eec20_city[0].f2578), third: Number(eec21_city[0].f2578), },
+            { category: 'ปี 2579', first: Number(eec24_city[0].f2579), second: Number(eec20_city[0].f2579), third: Number(eec21_city[0].f2579), },
+            { category: 'ปี 2580', first: Number(eec24_city[0].f2580), second: Number(eec20_city[0].f2580), third: Number(eec21_city[0].f2580), }
+        )
+        ///pop_covid
+        let eec24_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "24")
+        let eec20_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "20")
+        let eec21_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "21")
+        let eec_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "eec")
+        datall_pop_covid.push(
+            { category: 'ปี 2562', first: Number(eec24_all_covid[0].f2562), second: Number(eec20_all_covid[0].f2562), third: Number(eec21_all_covid[0].f2562), four: Number(eec_all_covid[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_all_covid[0].f2563), second: Number(eec20_all_covid[0].f2563), third: Number(eec21_all_covid[0].f2563), four: Number(eec_all_covid[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_all_covid[0].f2564), second: Number(eec20_all_covid[0].f2564), third: Number(eec21_all_covid[0].f2564), four: Number(eec_all_covid[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_all_covid[0].f2565), second: Number(eec20_all_covid[0].f2565), third: Number(eec21_all_covid[0].f2565), four: Number(eec_all_covid[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_all_covid[0].f2566), second: Number(eec20_all_covid[0].f2566), third: Number(eec21_all_covid[0].f2566), four: Number(eec_all_covid[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_all_covid[0].f2567), second: Number(eec20_all_covid[0].f2567), third: Number(eec21_all_covid[0].f2567), four: Number(eec_all_covid[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_all_covid[0].f2568), second: Number(eec20_all_covid[0].f2568), third: Number(eec21_all_covid[0].f2568), four: Number(eec_all_covid[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_all_covid[0].f2569), second: Number(eec20_all_covid[0].f2569), third: Number(eec21_all_covid[0].f2569), four: Number(eec_all_covid[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_all_covid[0].f2570), second: Number(eec20_all_covid[0].f2570), third: Number(eec21_all_covid[0].f2570), four: Number(eec_all_covid[0].f2570), }
+        )
+
+        let eec24_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "24")
+        let eec20_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "20")
+        let eec21_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "21")
+        let eec_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "eec")
+        datregister_pop_covid.push(
+            { category: 'ปี 2562', first: Number(eec24_house_covid[0].f2562), second: Number(eec20_house_covid[0].f2562), third: Number(eec21_house_covid[0].f2562), four: Number(eec_house_covid[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_house_covid[0].f2563), second: Number(eec20_house_covid[0].f2563), third: Number(eec21_house_covid[0].f2563), four: Number(eec_house_covid[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_house_covid[0].f2564), second: Number(eec20_house_covid[0].f2564), third: Number(eec21_house_covid[0].f2564), four: Number(eec_house_covid[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_house_covid[0].f2565), second: Number(eec20_house_covid[0].f2565), third: Number(eec21_house_covid[0].f2565), four: Number(eec_house_covid[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_house_covid[0].f2566), second: Number(eec20_house_covid[0].f2566), third: Number(eec21_house_covid[0].f2566), four: Number(eec_house_covid[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_house_covid[0].f2567), second: Number(eec20_house_covid[0].f2567), third: Number(eec21_house_covid[0].f2567), four: Number(eec_house_covid[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_house_covid[0].f2568), second: Number(eec20_house_covid[0].f2568), third: Number(eec21_house_covid[0].f2568), four: Number(eec_house_covid[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_house_covid[0].f2569), second: Number(eec20_house_covid[0].f2569), third: Number(eec21_house_covid[0].f2569), four: Number(eec_house_covid[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_house_covid[0].f2570), second: Number(eec20_house_covid[0].f2570), third: Number(eec21_house_covid[0].f2570), four: Number(eec_house_covid[0].f2570), }
+        )
+
+        let eec24_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "24")
+        let eec20_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "20")
+        let eec21_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "21")
+        let eec_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "eec")
+        datdisguise_pop_covid.push(
+            { category: 'ปี 2562', first: Number(eec24_hide_covid[0].f2562), second: Number(eec20_hide_covid[0].f2562), third: Number(eec21_hide_covid[0].f2562), four: Number(eec_hide_covid[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec24_hide_covid[0].f2563), second: Number(eec20_hide_covid[0].f2563), third: Number(eec21_hide_covid[0].f2563), four: Number(eec_hide_covid[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec24_hide_covid[0].f2564), second: Number(eec20_hide_covid[0].f2564), third: Number(eec21_hide_covid[0].f2564), four: Number(eec_hide_covid[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_hide_covid[0].f2565), second: Number(eec20_hide_covid[0].f2565), third: Number(eec21_hide_covid[0].f2565), four: Number(eec_hide_covid[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_hide_covid[0].f2566), second: Number(eec20_hide_covid[0].f2566), third: Number(eec21_hide_covid[0].f2566), four: Number(eec_hide_covid[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_hide_covid[0].f2567), second: Number(eec20_hide_covid[0].f2567), third: Number(eec21_hide_covid[0].f2567), four: Number(eec_hide_covid[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_hide_covid[0].f2568), second: Number(eec20_hide_covid[0].f2568), third: Number(eec21_hide_covid[0].f2568), four: Number(eec_hide_covid[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_hide_covid[0].f2569), second: Number(eec20_hide_covid[0].f2569), third: Number(eec21_hide_covid[0].f2569), four: Number(eec_hide_covid[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_hide_covid[0].f2570), second: Number(eec20_hide_covid[0].f2570), third: Number(eec21_hide_covid[0].f2570), four: Number(eec_hide_covid[0].f2570), }
+        )
+        ///wastewaters
+        let eec24_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "24")
+        let eec20_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "20")
+        let eec21_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "21")
+        let eec_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "eec")
+        datwaste.push(
+            { category: 'ปี 2564', first: Number(eec24_waste[0].f2564), second: Number(eec20_waste[0].f2564), third: Number(eec21_waste[0].f2564), four: Number(eec_waste[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_waste[0].f2565), second: Number(eec20_waste[0].f2565), third: Number(eec21_waste[0].f2565), four: Number(eec_waste[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_waste[0].f2566), second: Number(eec20_waste[0].f2566), third: Number(eec21_waste[0].f2566), four: Number(eec_waste[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_waste[0].f2567), second: Number(eec20_waste[0].f2567), third: Number(eec21_waste[0].f2567), four: Number(eec_waste[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_waste[0].f2568), second: Number(eec20_waste[0].f2568), third: Number(eec21_waste[0].f2568), four: Number(eec_waste[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_waste[0].f2569), second: Number(eec20_waste[0].f2569), third: Number(eec21_waste[0].f2569), four: Number(eec_waste[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_waste[0].f2570), second: Number(eec20_waste[0].f2570), third: Number(eec21_waste[0].f2570), four: Number(eec_waste[0].f2570), }
+        )
+        ///garbages
+        let eec24_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "24")
+        let eec20_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "20")
+        let eec21_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "21")
+        let eec_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "eec")
+        datgarbage.push(
+            { category: 'ปี 2564', first: Number(eec24_garbage[0].f2564), second: Number(eec20_garbage[0].f2564), third: Number(eec21_garbage[0].f2564), four: Number(eec_garbage[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec24_garbage[0].f2565), second: Number(eec20_garbage[0].f2565), third: Number(eec21_garbage[0].f2565), four: Number(eec_garbage[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_garbage[0].f2566), second: Number(eec20_garbage[0].f2566), third: Number(eec21_garbage[0].f2566), four: Number(eec_garbage[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_garbage[0].f2567), second: Number(eec20_garbage[0].f2567), third: Number(eec21_garbage[0].f2567), four: Number(eec_garbage[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_garbage[0].f2568), second: Number(eec20_garbage[0].f2568), third: Number(eec21_garbage[0].f2568), four: Number(eec_garbage[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_garbage[0].f2569), second: Number(eec20_garbage[0].f2569), third: Number(eec21_garbage[0].f2569), four: Number(eec_garbage[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_garbage[0].f2570), second: Number(eec20_garbage[0].f2570), third: Number(eec21_garbage[0].f2570), four: Number(eec_garbage[0].f2570), }
+        )
+        ///usewaters
+        let eec24_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "24")
+        let eec20_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "20")
+        let eec21_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "21")
+        let eec_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "eec")
+        datuse_water_all.push(
+            { category: 'ปี 2560', first: Number(eec24_WD[0].f2560), second: Number(eec20_WD[0].f2560), third: Number(eec21_WD[0].f2560), four: Number(eec_WD[0].f2560), },
+            { category: 'ปี 2570', first: Number(eec24_WD[0].f2570), second: Number(eec20_WD[0].f2570), third: Number(eec21_WD[0].f2570), four: Number(eec_WD[0].f2570), },
+            { category: 'ปี 2580', first: Number(eec24_WD[0].f2580), second: Number(eec20_WD[0].f2580), third: Number(eec21_WD[0].f2580), four: Number(eec_WD[0].f2580), },
+        )
+
+        let eec24_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "24")
+        let eec20_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "20")
+        let eec21_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "21")
+        let eec_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "eec")
+        datuse_water_Yconsume.push(
+            { category: 'ปี 2560', first: Number(eec24_WD_consumer[0].f2560), second: Number(eec20_WD_consumer[0].f2560), third: Number(eec21_WD_consumer[0].f2560), four: Number(eec_WD_consumer[0].f2560), },
+            { category: 'ปี 2570', first: Number(eec24_WD_consumer[0].f2570), second: Number(eec20_WD_consumer[0].f2570), third: Number(eec21_WD_consumer[0].f2570), four: Number(eec_WD_consumer[0].f2570), },
+            { category: 'ปี 2580', first: Number(eec24_WD_consumer[0].f2580), second: Number(eec20_WD_consumer[0].f2580), third: Number(eec21_WD_consumer[0].f2580), four: Number(eec_WD_consumer[0].f2580), },
+        )
+
+        let eec24_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "24")
+        let eec20_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "20")
+        let eec21_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "21")
+        let eec_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "eec")
+        datuse_water_Yagri.push(
+            { category: 'ปี 2560', first: Number(eec24_WD_agri[0].f2560), second: Number(eec20_WD_agri[0].f2560), third: Number(eec21_WD_agri[0].f2560), four: Number(eec_WD_agri[0].f2560), },
+            { category: 'ปี 2570', first: Number(eec24_WD_agri[0].f2570), second: Number(eec20_WD_agri[0].f2570), third: Number(eec21_WD_agri[0].f2570), four: Number(eec_WD_agri[0].f2570), },
+            { category: 'ปี 2580', first: Number(eec24_WD_agri[0].f2580), second: Number(eec20_WD_agri[0].f2580), third: Number(eec21_WD_agri[0].f2580), four: Number(eec_WD_agri[0].f2580), },
+        )
+
+        let eec24_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "24")
+        let eec20_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "20")
+        let eec21_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "21")
+        let eec_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "eec")
+        datuse_water_Yindustry.push(
+            { category: 'ปี 2560', first: Number(eec24_WD_industry[0].f2560), second: Number(eec20_WD_industry[0].f2560), third: Number(eec21_WD_industry[0].f2560), four: Number(eec_WD_industry[0].f2560), },
+            { category: 'ปี 2570', first: Number(eec24_WD_industry[0].f2570), second: Number(eec20_WD_industry[0].f2570), third: Number(eec21_WD_industry[0].f2570), four: Number(eec_WD_industry[0].f2570), },
+            { category: 'ปี 2580', first: Number(eec24_WD_industry[0].f2580), second: Number(eec20_WD_industry[0].f2580), third: Number(eec21_WD_industry[0].f2580), four: Number(eec_WD_industry[0].f2580), },
+        )
+
+        let eec_WD_industry1 = r.data.data.filter(e => e.list_code == "WD_industry1" && e.t_code == "eec")
+        datuse_water_Yindustry1.push(
+            { category: 'ปี 2559', four: Number(eec_WD_industry1[0].f2559), },
+            { category: 'ปี 2566', four: Number(eec_WD_industry1[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_WD_industry1[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_WD_industry1[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_WD_industry1[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_WD_industry1[0].f2584), },
+        )
+        let eec_WD_industry2 = r.data.data.filter(e => e.list_code == "WD_industry2" && e.t_code == "eec")
+        datuse_water_Yindustry2.push(
+            { category: 'ปี 2566', four: Number(eec_WD_industry2[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_WD_industry2[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_WD_industry2[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_WD_industry2[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_WD_industry2[0].f2584), },
+        )
+
+        let eec24_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "24")
+        let eec20_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "20")
+        let eec21_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "21")
+        let eec_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "eec")
+        datuse_water_prapa.push(
+            { category: 'ปี 2559', first: Number(eec24_WD_prapa[0].f2559), second: Number(eec20_WD_prapa[0].f2559), third: Number(eec21_WD_prapa[0].f2559), four: Number(eec_WD_prapa[0].f2559), },
+            { category: 'ปี 2566', first: Number(eec24_WD_prapa[0].f2566), second: Number(eec20_WD_prapa[0].f2566), third: Number(eec21_WD_prapa[0].f2566), four: Number(eec_WD_prapa[0].f2566), },
+            { category: 'ปี 2569', first: Number(eec24_WD_prapa[0].f2569), second: Number(eec20_WD_prapa[0].f2569), third: Number(eec21_WD_prapa[0].f2569), four: Number(eec_WD_prapa[0].f2569), },
+            { category: 'ปี 2574', first: Number(eec24_WD_prapa[0].f2574), second: Number(eec20_WD_prapa[0].f2574), third: Number(eec21_WD_prapa[0].f2574), four: Number(eec_WD_prapa[0].f2574), },
+            { category: 'ปี 2579', first: Number(eec24_WD_prapa[0].f2579), second: Number(eec20_WD_prapa[0].f2579), third: Number(eec21_WD_prapa[0].f2579), four: Number(eec_WD_prapa[0].f2579), },
+            { category: 'ปี 2584', first: Number(eec24_WD_prapa[0].f2584), second: Number(eec20_WD_prapa[0].f2584), third: Number(eec21_WD_prapa[0].f2584), four: Number(eec_WD_prapa[0].f2584), },
+        )
+        datuse_water_prov60.push(
+            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2560, second: eec20_WD_consumer[0].f2560, third: eec21_WD_consumer[0].f2560, four: eec_WD_consumer[0].f2560 },
+            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2560, second: eec20_WD_industry[0].f2560, third: eec21_WD_industry[0].f2560, four: eec_WD_industry[0].f2560 },
+            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2560, second: eec20_WD_agri[0].f2560, third: eec21_WD_agri[0].f2560, four: eec_WD_agri[0].f2560 },
+        )
+        datuse_water_prov70.push(
+            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2570, second: eec20_WD_consumer[0].f2570, third: eec21_WD_consumer[0].f2570, four: eec_WD_consumer[0].f2570 },
+            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2570, second: eec20_WD_industry[0].f2570, third: eec21_WD_industry[0].f2570, four: eec_WD_industry[0].f2570 },
+            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2570, second: eec20_WD_agri[0].f2570, third: eec21_WD_agri[0].f2570, four: eec_WD_agri[0].f2570 },
+        )
+        datuse_water_prov80.push(
+            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2580, second: eec20_WD_consumer[0].f2580, third: eec21_WD_consumer[0].f2580, four: eec_WD_consumer[0].f2580 },
+            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2580, second: eec20_WD_industry[0].f2580, third: eec21_WD_industry[0].f2580, four: eec_WD_industry[0].f2580 },
+            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2580, second: eec20_WD_agri[0].f2580, third: eec21_WD_agri[0].f2580, four: eec_WD_agri[0].f2580 },
+        )
+
+        ///untreatedwater
+        let eec_UW_industry = r.data.data.filter(e => e.list_code == "UW_industry" && e.t_code == "eec")
+        let eec_UW_prapa = r.data.data.filter(e => e.list_code == "UW_prapa" && e.t_code == "eec")
+        let eec_UW_sum = r.data.data.filter(e => e.list_code == "UW_sum" && e.t_code == "eec")
+
+        UW_industry.push(
+            { category: 'ปี 2559', four: Number(eec_UW_industry[0].f2559), },
+            { category: 'ปี 2566', four: Number(eec_UW_industry[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_UW_industry[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_UW_industry[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_UW_industry[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_UW_industry[0].f2579), }
+        )
+        UW_prapa.push(
+            { category: 'ปี 2559', four: Number(eec_UW_prapa[0].f2559), },
+            { category: 'ปี 2566', four: Number(eec_UW_prapa[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_UW_prapa[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_UW_prapa[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_UW_prapa[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_UW_prapa[0].f2579), }
+        )
+        UW_sum.push(
+            { category: 'ปี 2559', four: Number(eec_UW_sum[0].f2559), },
+            { category: 'ปี 2566', four: Number(eec_UW_sum[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_UW_sum[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_UW_sum[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_UW_sum[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_UW_sum[0].f2579), }
+        )
+        ///elec_demand
+        let eec24_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "24")
+        let eec20_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "20")
+        let eec21_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "21")
+        let eec_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "eec")
+        datelec_demand.push(
+            { category: 'ปี 2566', first: Number(eec24_elec_demand[0].f2566), second: Number(eec20_elec_demand[0].f2566), third: Number(eec21_elec_demand[0].f2566), four: Number(eec_elec_demand[0].f2566), },
+            { category: 'ปี 2569', first: Number(eec24_elec_demand[0].f2569), second: Number(eec20_elec_demand[0].f2569), third: Number(eec21_elec_demand[0].f2569), four: Number(eec_elec_demand[0].f2569), },
+            { category: 'ปี 2574', first: Number(eec24_elec_demand[0].f2574), second: Number(eec20_elec_demand[0].f2574), third: Number(eec21_elec_demand[0].f2574), four: Number(eec_elec_demand[0].f2574), },
+            { category: 'ปี 2579', first: Number(eec24_elec_demand[0].f2579), second: Number(eec20_elec_demand[0].f2579), third: Number(eec21_elec_demand[0].f2579), four: Number(eec_elec_demand[0].f2579), },
+            { category: 'ปี 2584', first: Number(eec24_elec_demand[0].f2584), second: Number(eec20_elec_demand[0].f2584), third: Number(eec21_elec_demand[0].f2584), four: Number(eec_elec_demand[0].f2584), },
+        )
+        let eec_genelec_insys = r.data.data.filter(e => e.list_code == "genelec_insys" && e.t_code == "eec")
+        datelec_genelec_insys.push(
+            { category: 'ปี 2566', four: Number(eec_genelec_insys[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_genelec_insys[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_genelec_insys[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_genelec_insys[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_genelec_insys[0].f2584), },
+        )
+        let eec_genelec_afsys = r.data.data.filter(e => e.list_code == "genelec_afsys" && e.t_code == "eec")
+        datelec_genelec_afsys.push(
+            { category: 'ปี 2566', four: Number(eec_genelec_afsys[0].f2566), },
+            { category: 'ปี 2569', four: Number(eec_genelec_afsys[0].f2569), },
+            { category: 'ปี 2574', four: Number(eec_genelec_afsys[0].f2574), },
+            { category: 'ปี 2579', four: Number(eec_genelec_afsys[0].f2579), },
+            { category: 'ปี 2584', four: Number(eec_genelec_afsys[0].f2584), }
+        )
+        ///econ
+        let eec24_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "24")
+        let eec20_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "20")
+        let eec21_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "21")
+        let eec_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "eec")
+        datecon_tourist.push(
+            { category: 'ปี 2565', first: Number(eec24_econ_tourist[0].f2565), second: Number(eec20_econ_tourist[0].f2565), third: Number(eec21_econ_tourist[0].f2565), four: Number(eec_econ_tourist[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_econ_tourist[0].f2566), second: Number(eec20_econ_tourist[0].f2566), third: Number(eec21_econ_tourist[0].f2566), four: Number(eec_econ_tourist[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_econ_tourist[0].f2567), second: Number(eec20_econ_tourist[0].f2567), third: Number(eec21_econ_tourist[0].f2567), four: Number(eec_econ_tourist[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_econ_tourist[0].f2568), second: Number(eec20_econ_tourist[0].f2568), third: Number(eec21_econ_tourist[0].f2568), four: Number(eec_econ_tourist[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_econ_tourist[0].f2569), second: Number(eec20_econ_tourist[0].f2569), third: Number(eec21_econ_tourist[0].f2569), four: Number(eec_econ_tourist[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_econ_tourist[0].f2570), second: Number(eec20_econ_tourist[0].f2570), third: Number(eec21_econ_tourist[0].f2570), four: Number(eec_econ_tourist[0].f2570), },
+            { category: 'ปี 2571', first: Number(eec24_econ_tourist[0].f2571), second: Number(eec20_econ_tourist[0].f2571), third: Number(eec21_econ_tourist[0].f2571), four: Number(eec_econ_tourist[0].f2571), },
+            { category: 'ปี 2572', first: Number(eec24_econ_tourist[0].f2572), second: Number(eec20_econ_tourist[0].f2572), third: Number(eec21_econ_tourist[0].f2572), four: Number(eec_econ_tourist[0].f2572), },
+            { category: 'ปี 2573', first: Number(eec24_econ_tourist[0].f2573), second: Number(eec20_econ_tourist[0].f2573), third: Number(eec21_econ_tourist[0].f2573), four: Number(eec_econ_tourist[0].f2573), },
+            { category: 'ปี 2574', first: Number(eec24_econ_tourist[0].f2574), second: Number(eec20_econ_tourist[0].f2574), third: Number(eec21_econ_tourist[0].f2574), four: Number(eec_econ_tourist[0].f2574), },
+            { category: 'ปี 2575', first: Number(eec24_econ_tourist[0].f2575), second: Number(eec20_econ_tourist[0].f2575), third: Number(eec21_econ_tourist[0].f2575), four: Number(eec_econ_tourist[0].f2575), },
+            { category: 'ปี 2576', first: Number(eec24_econ_tourist[0].f2576), second: Number(eec20_econ_tourist[0].f2576), third: Number(eec21_econ_tourist[0].f2576), four: Number(eec_econ_tourist[0].f2576), },
+            { category: 'ปี 2577', first: Number(eec24_econ_tourist[0].f2577), second: Number(eec20_econ_tourist[0].f2577), third: Number(eec21_econ_tourist[0].f2577), four: Number(eec_econ_tourist[0].f2577), },
+            { category: 'ปี 2578', first: Number(eec24_econ_tourist[0].f2578), second: Number(eec20_econ_tourist[0].f2578), third: Number(eec21_econ_tourist[0].f2578), four: Number(eec_econ_tourist[0].f2578), },
+            { category: 'ปี 2579', first: Number(eec24_econ_tourist[0].f2579), second: Number(eec20_econ_tourist[0].f2579), third: Number(eec21_econ_tourist[0].f2579), four: Number(eec_econ_tourist[0].f2579), },
+            { category: 'ปี 2580', first: Number(eec24_econ_tourist[0].f2580), second: Number(eec20_econ_tourist[0].f2580), third: Number(eec21_econ_tourist[0].f2580), four: Number(eec_econ_tourist[0].f2580), },
+        )
+        let eec_econ_agri = r.data.data.filter(e => e.list_code == "econ_agri" && e.t_code == "eec")
+        let eec_econ_industry = r.data.data.filter(e => e.list_code == "econ_industry" && e.t_code == "eec")
+        let eec_econ_sevice = r.data.data.filter(e => e.list_code == "econ_sevice" && e.t_code == "eec")
+
+        datecon_agri.push(
+            { category: 'ปี 2562', four: Number(eec_econ_agri[0].f2562), },
+            { category: 'ปี 2563', four: Number(eec_econ_agri[0].f2563), },
+            { category: 'ปี 2564', four: Number(eec_econ_agri[0].f2564), },
+            { category: 'ปี 2565', four: Number(eec_econ_agri[0].f2565), },
+            { category: 'ปี 2566', four: Number(eec_econ_agri[0].f2566), },
+            { category: 'ปี 2567', four: Number(eec_econ_agri[0].f2567), },
+            { category: 'ปี 2568', four: Number(eec_econ_agri[0].f2568), },
+            { category: 'ปี 2569', four: Number(eec_econ_agri[0].f2569), },
+            { category: 'ปี 2570', four: Number(eec_econ_agri[0].f2570), }
+        )
+        datecon_industry.push(
+            { category: 'ปี 2562', four: Number(eec_econ_industry[0].f2562), },
+            { category: 'ปี 2563', four: Number(eec_econ_industry[0].f2563), },
+            { category: 'ปี 2564', four: Number(eec_econ_industry[0].f2564), },
+            { category: 'ปี 2565', four: Number(eec_econ_industry[0].f2565), },
+            { category: 'ปี 2566', four: Number(eec_econ_industry[0].f2566), },
+            { category: 'ปี 2567', four: Number(eec_econ_industry[0].f2567), },
+            { category: 'ปี 2568', four: Number(eec_econ_industry[0].f2568), },
+            { category: 'ปี 2569', four: Number(eec_econ_industry[0].f2569), },
+            { category: 'ปี 2570', four: Number(eec_econ_industry[0].f2570), }
+        )
+        datecon_sevice.push(
+            { category: 'ปี 2562', four: Number(eec_econ_sevice[0].f2562), },
+            { category: 'ปี 2563', four: Number(eec_econ_sevice[0].f2563), },
+            { category: 'ปี 2564', four: Number(eec_econ_sevice[0].f2564), },
+            { category: 'ปี 2565', four: Number(eec_econ_sevice[0].f2565), },
+            { category: 'ปี 2566', four: Number(eec_econ_sevice[0].f2566), },
+            { category: 'ปี 2567', four: Number(eec_econ_sevice[0].f2567), },
+            { category: 'ปี 2568', four: Number(eec_econ_sevice[0].f2568), },
+            { category: 'ปี 2569', four: Number(eec_econ_sevice[0].f2569), },
+            { category: 'ปี 2570', four: Number(eec_econ_sevice[0].f2570), }
+        )
+        ///labor
+        let eec24_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "24")
+        let eec20_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "20")
+        let eec21_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "21")
+        datlabor_minwage.push(
+            { category: 'ปี 2565', first: Number(eec24_labor_minwage[0].f2565), second: Number(eec20_labor_minwage[0].f2565), third: Number(eec21_labor_minwage[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_labor_minwage[0].f2566), second: Number(eec20_labor_minwage[0].f2566), third: Number(eec21_labor_minwage[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_labor_minwage[0].f2567), second: Number(eec20_labor_minwage[0].f2567), third: Number(eec21_labor_minwage[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_labor_minwage[0].f2568), second: Number(eec20_labor_minwage[0].f2568), third: Number(eec21_labor_minwage[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_labor_minwage[0].f2569), second: Number(eec20_labor_minwage[0].f2569), third: Number(eec21_labor_minwage[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_labor_minwage[0].f2570), second: Number(eec20_labor_minwage[0].f2570), third: Number(eec21_labor_minwage[0].f2570), },
+            { category: 'ปี 2571', first: Number(eec24_labor_minwage[0].f2571), second: Number(eec20_labor_minwage[0].f2571), third: Number(eec21_labor_minwage[0].f2571), },
+            { category: 'ปี 2572', first: Number(eec24_labor_minwage[0].f2572), second: Number(eec20_labor_minwage[0].f2572), third: Number(eec21_labor_minwage[0].f2572), },
+            { category: 'ปี 2573', first: Number(eec24_labor_minwage[0].f2573), second: Number(eec20_labor_minwage[0].f2573), third: Number(eec21_labor_minwage[0].f2573), },
+            { category: 'ปี 2574', first: Number(eec24_labor_minwage[0].f2574), second: Number(eec20_labor_minwage[0].f2574), third: Number(eec21_labor_minwage[0].f2574), },
+            { category: 'ปี 2575', first: Number(eec24_labor_minwage[0].f2575), second: Number(eec20_labor_minwage[0].f2575), third: Number(eec21_labor_minwage[0].f2575), },
+            { category: 'ปี 2576', first: Number(eec24_labor_minwage[0].f2576), second: Number(eec20_labor_minwage[0].f2576), third: Number(eec21_labor_minwage[0].f2576), },
+            { category: 'ปี 2577', first: Number(eec24_labor_minwage[0].f2577), second: Number(eec20_labor_minwage[0].f2577), third: Number(eec21_labor_minwage[0].f2577), },
+            { category: 'ปี 2578', first: Number(eec24_labor_minwage[0].f2578), second: Number(eec20_labor_minwage[0].f2578), third: Number(eec21_labor_minwage[0].f2578), },
+            { category: 'ปี 2579', first: Number(eec24_labor_minwage[0].f2579), second: Number(eec20_labor_minwage[0].f2579), third: Number(eec21_labor_minwage[0].f2579), },
+            { category: 'ปี 2580', first: Number(eec24_labor_minwage[0].f2580), second: Number(eec20_labor_minwage[0].f2580), third: Number(eec21_labor_minwage[0].f2580), },
+        )
+
+        let eec24_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "24")
+        let eec20_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "20")
+        let eec21_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "21")
+        let eec_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "eec")
+        datlabor_employ.push(
+            { category: 'ปี 2565', first: Number(eec24_labor_employ[0].f2565), second: Number(eec20_labor_employ[0].f2565), third: Number(eec21_labor_employ[0].f2565), four: Number(eec_labor_employ[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_labor_employ[0].f2566), second: Number(eec20_labor_employ[0].f2566), third: Number(eec21_labor_employ[0].f2566), four: Number(eec_labor_employ[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_labor_employ[0].f2567), second: Number(eec20_labor_employ[0].f2567), third: Number(eec21_labor_employ[0].f2567), four: Number(eec_labor_employ[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_labor_employ[0].f2568), second: Number(eec20_labor_employ[0].f2568), third: Number(eec21_labor_employ[0].f2568), four: Number(eec_labor_employ[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_labor_employ[0].f2569), second: Number(eec20_labor_employ[0].f2569), third: Number(eec21_labor_employ[0].f2569), four: Number(eec_labor_employ[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_labor_employ[0].f2570), second: Number(eec20_labor_employ[0].f2570), third: Number(eec21_labor_employ[0].f2570), four: Number(eec_labor_employ[0].f2570), },
+            { category: 'ปี 2571', first: Number(eec24_labor_employ[0].f2571), second: Number(eec20_labor_employ[0].f2571), third: Number(eec21_labor_employ[0].f2571), four: Number(eec_labor_employ[0].f2571), },
+            { category: 'ปี 2572', first: Number(eec24_labor_employ[0].f2572), second: Number(eec20_labor_employ[0].f2572), third: Number(eec21_labor_employ[0].f2572), four: Number(eec_labor_employ[0].f2572), },
+            { category: 'ปี 2573', first: Number(eec24_labor_employ[0].f2573), second: Number(eec20_labor_employ[0].f2573), third: Number(eec21_labor_employ[0].f2573), four: Number(eec_labor_employ[0].f2573), },
+            { category: 'ปี 2574', first: Number(eec24_labor_employ[0].f2574), second: Number(eec20_labor_employ[0].f2574), third: Number(eec21_labor_employ[0].f2574), four: Number(eec_labor_employ[0].f2574), },
+            { category: 'ปี 2575', first: Number(eec24_labor_employ[0].f2575), second: Number(eec20_labor_employ[0].f2575), third: Number(eec21_labor_employ[0].f2575), four: Number(eec_labor_employ[0].f2575), },
+            { category: 'ปี 2576', first: Number(eec24_labor_employ[0].f2576), second: Number(eec20_labor_employ[0].f2576), third: Number(eec21_labor_employ[0].f2576), four: Number(eec_labor_employ[0].f2576), },
+            { category: 'ปี 2577', first: Number(eec24_labor_employ[0].f2577), second: Number(eec20_labor_employ[0].f2577), third: Number(eec21_labor_employ[0].f2577), four: Number(eec_labor_employ[0].f2577), },
+            { category: 'ปี 2578', first: Number(eec24_labor_employ[0].f2578), second: Number(eec20_labor_employ[0].f2578), third: Number(eec21_labor_employ[0].f2578), four: Number(eec_labor_employ[0].f2578), },
+            { category: 'ปี 2579', first: Number(eec24_labor_employ[0].f2579), second: Number(eec20_labor_employ[0].f2579), third: Number(eec21_labor_employ[0].f2579), four: Number(eec_labor_employ[0].f2579), },
+            { category: 'ปี 2580', first: Number(eec24_labor_employ[0].f2580), second: Number(eec20_labor_employ[0].f2580), third: Number(eec21_labor_employ[0].f2580), four: Number(eec_labor_employ[0].f2580), },
+        )
+
+        let eec24_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "24")
+        let eec20_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "20")
+        let eec21_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "21")
+        let eec_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "eec")
+        datlabor_exert.push(
+            { category: 'ปี 2565', first: Number(eec24_labor_exert[0].f2565), second: Number(eec20_labor_exert[0].f2565), third: Number(eec21_labor_exert[0].f2565), four: Number(eec_labor_exert[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec24_labor_exert[0].f2566), second: Number(eec20_labor_exert[0].f2566), third: Number(eec21_labor_exert[0].f2566), four: Number(eec_labor_exert[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec24_labor_exert[0].f2567), second: Number(eec20_labor_exert[0].f2567), third: Number(eec21_labor_exert[0].f2567), four: Number(eec_labor_exert[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec24_labor_exert[0].f2568), second: Number(eec20_labor_exert[0].f2568), third: Number(eec21_labor_exert[0].f2568), four: Number(eec_labor_exert[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec24_labor_exert[0].f2569), second: Number(eec20_labor_exert[0].f2569), third: Number(eec21_labor_exert[0].f2569), four: Number(eec_labor_exert[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec24_labor_exert[0].f2570), second: Number(eec20_labor_exert[0].f2570), third: Number(eec21_labor_exert[0].f2570), four: Number(eec_labor_exert[0].f2570), },
+            { category: 'ปี 2571', first: Number(eec24_labor_exert[0].f2571), second: Number(eec20_labor_exert[0].f2571), third: Number(eec21_labor_exert[0].f2571), four: Number(eec_labor_exert[0].f2571), },
+            { category: 'ปี 2572', first: Number(eec24_labor_exert[0].f2572), second: Number(eec20_labor_exert[0].f2572), third: Number(eec21_labor_exert[0].f2572), four: Number(eec_labor_exert[0].f2572), },
+            { category: 'ปี 2573', first: Number(eec24_labor_exert[0].f2573), second: Number(eec20_labor_exert[0].f2573), third: Number(eec21_labor_exert[0].f2573), four: Number(eec_labor_exert[0].f2573), },
+            { category: 'ปี 2574', first: Number(eec24_labor_exert[0].f2574), second: Number(eec20_labor_exert[0].f2574), third: Number(eec21_labor_exert[0].f2574), four: Number(eec_labor_exert[0].f2574), },
+            { category: 'ปี 2575', first: Number(eec24_labor_exert[0].f2575), second: Number(eec20_labor_exert[0].f2575), third: Number(eec21_labor_exert[0].f2575), four: Number(eec_labor_exert[0].f2575), },
+            { category: 'ปี 2576', first: Number(eec24_labor_exert[0].f2576), second: Number(eec20_labor_exert[0].f2576), third: Number(eec21_labor_exert[0].f2576), four: Number(eec_labor_exert[0].f2576), },
+            { category: 'ปี 2577', first: Number(eec24_labor_exert[0].f2577), second: Number(eec20_labor_exert[0].f2577), third: Number(eec21_labor_exert[0].f2577), four: Number(eec_labor_exert[0].f2577), },
+            { category: 'ปี 2578', first: Number(eec24_labor_exert[0].f2578), second: Number(eec20_labor_exert[0].f2578), third: Number(eec21_labor_exert[0].f2578), four: Number(eec_labor_exert[0].f2578), },
+            { category: 'ปี 2579', first: Number(eec24_labor_exert[0].f2579), second: Number(eec20_labor_exert[0].f2579), third: Number(eec21_labor_exert[0].f2579), four: Number(eec_labor_exert[0].f2579), },
+            { category: 'ปี 2580', first: Number(eec24_labor_exert[0].f2580), second: Number(eec20_labor_exert[0].f2580), third: Number(eec21_labor_exert[0].f2580), four: Number(eec_labor_exert[0].f2580), },
+        )
+
+        let eec_labor_M3 = r.data.data.filter(e => e.list_code == "labor_M3" && e.t_code == "eec")
+        let eec_labor_M6 = r.data.data.filter(e => e.list_code == "labor_M6" && e.t_code == "eec")
+        let eec_labor_profession = r.data.data.filter(e => e.list_code == "labor_profession" && e.t_code == "eec")
+        let eec_labor_Bachelor = r.data.data.filter(e => e.list_code == "labor_Bachelor" && e.t_code == "eec")
+        let eec_labor_MoreBachelor = r.data.data.filter(e => e.list_code == "labor_MoreBachelor" && e.t_code == "eec")
+        datlabor_edulevel_all.push(
+            { category: 'ปี 2561', first: Number(eec_labor_M3[0].f2561), second: Number(eec_labor_M6[0].f2561), third: Number(eec_labor_profession[0].f2561), four: Number(eec_labor_Bachelor[0].f2561), fifth: Number(eec_labor_MoreBachelor[0].f2561), },
+            { category: 'ปี 2562', first: Number(eec_labor_M3[0].f2562), second: Number(eec_labor_M6[0].f2562), third: Number(eec_labor_profession[0].f2562), four: Number(eec_labor_Bachelor[0].f2562), fifth: Number(eec_labor_MoreBachelor[0].f2562), },
+            { category: 'ปี 2563', first: Number(eec_labor_M3[0].f2563), second: Number(eec_labor_M6[0].f2563), third: Number(eec_labor_profession[0].f2563), four: Number(eec_labor_Bachelor[0].f2563), fifth: Number(eec_labor_MoreBachelor[0].f2563), },
+            { category: 'ปี 2564', first: Number(eec_labor_M3[0].f2564), second: Number(eec_labor_M6[0].f2564), third: Number(eec_labor_profession[0].f2564), four: Number(eec_labor_Bachelor[0].f2564), fifth: Number(eec_labor_MoreBachelor[0].f2564), },
+            { category: 'ปี 2565', first: Number(eec_labor_M3[0].f2565), second: Number(eec_labor_M6[0].f2565), third: Number(eec_labor_profession[0].f2565), four: Number(eec_labor_Bachelor[0].f2565), fifth: Number(eec_labor_MoreBachelor[0].f2565), },
+            { category: 'ปี 2566', first: Number(eec_labor_M3[0].f2566), second: Number(eec_labor_M6[0].f2566), third: Number(eec_labor_profession[0].f2566), four: Number(eec_labor_Bachelor[0].f2566), fifth: Number(eec_labor_MoreBachelor[0].f2566), },
+            { category: 'ปี 2567', first: Number(eec_labor_M3[0].f2567), second: Number(eec_labor_M6[0].f2567), third: Number(eec_labor_profession[0].f2567), four: Number(eec_labor_Bachelor[0].f2567), fifth: Number(eec_labor_MoreBachelor[0].f2567), },
+            { category: 'ปี 2568', first: Number(eec_labor_M3[0].f2568), second: Number(eec_labor_M6[0].f2568), third: Number(eec_labor_profession[0].f2568), four: Number(eec_labor_Bachelor[0].f2568), fifth: Number(eec_labor_MoreBachelor[0].f2568), },
+            { category: 'ปี 2569', first: Number(eec_labor_M3[0].f2569), second: Number(eec_labor_M6[0].f2569), third: Number(eec_labor_profession[0].f2569), four: Number(eec_labor_Bachelor[0].f2569), fifth: Number(eec_labor_MoreBachelor[0].f2569), },
+            { category: 'ปี 2570', first: Number(eec_labor_M3[0].f2570), second: Number(eec_labor_M6[0].f2570), third: Number(eec_labor_profession[0].f2570), four: Number(eec_labor_Bachelor[0].f2570), fifth: Number(eec_labor_MoreBachelor[0].f2570), },
+        )
+
+        datlabor_edulevel_M3.push(
+            { year: '2018', value: Number(eec_labor_M3[0].f2561), },
+            { year: '2019', value: Number(eec_labor_M3[0].f2562), },
+            { year: '2020', value: Number(eec_labor_M3[0].f2563), },
+            { year: '2021', value: Number(eec_labor_M3[0].f2564), },
+            { year: '2022', value: Number(eec_labor_M3[0].f2565), },
+            { year: '2023', value: Number(eec_labor_M3[0].f2566), },
+            { year: '2024', value: Number(eec_labor_M3[0].f2567), },
+            { year: '2025', value: Number(eec_labor_M3[0].f2568), },
+            { year: '2026', value: Number(eec_labor_M3[0].f2569), },
+            { year: '2027', value: Number(eec_labor_M3[0].f2570), },
+        )
+        datlabor_edulevel_M6.push(
+            { year: '2018', value: Number(eec_labor_M6[0].f2561), },
+            { year: '2019', value: Number(eec_labor_M6[0].f2562), },
+            { year: '2020', value: Number(eec_labor_M6[0].f2563), },
+            { year: '2021', value: Number(eec_labor_M6[0].f2564), },
+            { year: '2022', value: Number(eec_labor_M6[0].f2565), },
+            { year: '2023', value: Number(eec_labor_M6[0].f2566), },
+            { year: '2024', value: Number(eec_labor_M6[0].f2567), },
+            { year: '2025', value: Number(eec_labor_M6[0].f2568), },
+            { year: '2026', value: Number(eec_labor_M6[0].f2569), },
+            { year: '2027', value: Number(eec_labor_M6[0].f2570), },
+        )
+        datlabor_edulevel_profession.push(
+            { year: '2018', value: Number(eec_labor_profession[0].f2561), },
+            { year: '2019', value: Number(eec_labor_profession[0].f2562), },
+            { year: '2020', value: Number(eec_labor_profession[0].f2563), },
+            { year: '2021', value: Number(eec_labor_profession[0].f2564), },
+            { year: '2022', value: Number(eec_labor_profession[0].f2565), },
+            { year: '2023', value: Number(eec_labor_profession[0].f2566), },
+            { year: '2024', value: Number(eec_labor_profession[0].f2567), },
+            { year: '2025', value: Number(eec_labor_profession[0].f2568), },
+            { year: '2026', value: Number(eec_labor_profession[0].f2569), },
+            { year: '2027', value: Number(eec_labor_profession[0].f2570), },
+        )
+        datlabor_edulevel_Bachelor.push(
+            { year: '2018', value: Number(eec_labor_Bachelor[0].f2561), },
+            { year: '2019', value: Number(eec_labor_Bachelor[0].f2562), },
+            { year: '2020', value: Number(eec_labor_Bachelor[0].f2563), },
+            { year: '2021', value: Number(eec_labor_Bachelor[0].f2564), },
+            { year: '2022', value: Number(eec_labor_Bachelor[0].f2565), },
+            { year: '2023', value: Number(eec_labor_Bachelor[0].f2566), },
+            { year: '2024', value: Number(eec_labor_Bachelor[0].f2567), },
+            { year: '2025', value: Number(eec_labor_Bachelor[0].f2568), },
+            { year: '2026', value: Number(eec_labor_Bachelor[0].f2569), },
+            { year: '2027', value: Number(eec_labor_Bachelor[0].f2570), },
+        )
+        datlabor_edulevel_MoreBachelor.push(
+            { year: '2018', value: Number(eec_labor_MoreBachelor[0].f2561), },
+            { year: '2019', value: Number(eec_labor_MoreBachelor[0].f2562), },
+            { year: '2020', value: Number(eec_labor_MoreBachelor[0].f2563), },
+            { year: '2021', value: Number(eec_labor_MoreBachelor[0].f2564), },
+            { year: '2022', value: Number(eec_labor_MoreBachelor[0].f2565), },
+            { year: '2023', value: Number(eec_labor_MoreBachelor[0].f2566), },
+            { year: '2024', value: Number(eec_labor_MoreBachelor[0].f2567), },
+            { year: '2025', value: Number(eec_labor_MoreBachelor[0].f2568), },
+            { year: '2026', value: Number(eec_labor_MoreBachelor[0].f2569), },
+            { year: '2027', value: Number(eec_labor_MoreBachelor[0].f2570), },
+        )
+    })
+}
+dataforecast_eec()
 
 let chart_all = (data, umit, divchart, color1, color2) => {
     // Themes begin
@@ -5,7 +565,7 @@ let chart_all = (data, umit, divchart, color1, color2) => {
     // Themes end
     var chart = am4core.create(divchart, am4charts.XYChart)
     chart.colors.step = 2;
-    chart.numberFormatter.numberFormat = "#,###,###,###as" + ` ${umit}` + "'";
+    chart.numberFormatter.numberFormat = "#,###,###,###.##as" + ` ${umit}` + "'";
 
     chart.legend = new am4charts.Legend()
     chart.legend.position = 'top'
@@ -87,6 +647,7 @@ let chart_all = (data, umit, divchart, color1, color2) => {
             }
         }
     }
+    chart.cursor = new am4charts.XYCursor()
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
@@ -106,7 +667,7 @@ let chart_by_prov = (data, umit, divchart) => {
     // Themes end
     var chart = am4core.create(divchart, am4charts.XYChart)
     chart.colors.step = 2;
-    chart.numberFormatter.numberFormat = "##,###,###,###as" + ` ${umit}` + "'";
+    chart.numberFormatter.numberFormat = "##,###,###,###.##as" + ` ${umit}` + "'";
 
     chart.legend = new am4charts.Legend()
     chart.legend.position = 'top'
@@ -192,6 +753,7 @@ let chart_by_prov = (data, umit, divchart) => {
             }
         }
     }
+    chart.cursor = new am4charts.XYCursor()
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.adapter.add("data", function (data, target) {
         var data = [];
@@ -204,58 +766,222 @@ let chart_by_prov = (data, umit, divchart) => {
         return { data: data };
     });
 }
-//การคาดการณ์ปริมาณน้ำเสียชุมชนในกรณีที่มีการพัฒนาพื้นที่เขตพัฒนาพิเศษ ภาคตะวันออก ปี พ.ศ. ๒๕๖๔ – ๒๕๗๐
-let datwaste = [
-    {
-        category: 'ปี 2564',
-        first: 129832,
-        second: 401727,
-        third: 179416,
-        four: 710975
-    },
-    {
-        category: 'ปี 2565',
-        first: 132700,
-        second: 418802,
-        third: 189952,
-        four: 741454
-    },
-    {
-        category: 'ปี 2566',
-        first: 135700,
-        second: 434595,
-        third: 203047,
-        four: 773342
-    },
-    {
-        category: 'ปี 2567',
-        first: 138813,
-        second: 449089,
-        third: 218183,
-        four: 806085
-    },
-    {
-        category: 'ปี 2568',
-        first: 142035,
-        second: 461059,
-        third: 235216,
-        four: 838310
-    },
-    {
-        category: 'ปี 2569',
-        first: 145444,
-        second: 474128,
-        third: 254519,
-        four: 874091
-    },
-    {
-        category: 'ปี 2570',
-        first: 149064,
-        second: 487566,
-        third: 276993,
-        four: 913623
+let chart_edu = (data, name, umit) => {
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv10", am4charts.XYChart);
+    chart.numberFormatter.numberFormat = "#,###,###' " + umit + "'";
+
+    chart.legend = new am4charts.Legend()
+    chart.legend.position = 'top'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 95
+    // Add data
+    chart.data = data
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.minGridDistance = 50;
+    dateAxis.renderer.grid.template.location = 0.5;
+    dateAxis.baseInterval = {
+        count: 1,
+        timeUnit: "year"
     }
-]
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "year";
+    series.name = name
+    series.strokeWidth = 3;
+    series.connect = false;
+    series.tensionX = 0.8;
+    series.fillOpacity = 0.2;
+    series.stroke = am4core.color("#77dddd")
+    series.fill = am4core.color("#77dddd")
+    // series.tooltip.getFillFromObject = false;
+    // series.tooltip.background.fill = am4core.color("#77dddd");
+    // series.tooltipText = "ปี {dateX.formatDate('yyyy')} : [bold]{valueY} คน[/]";
+
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.stroke = new am4core.InterfaceColorSet().getFor("background");
+    bullet.strokeWidth = 2;
+    bullet.tooltipText = "ปี {dateX.formatDate('yyyy')} : [bold]{valueY}[/]";
+    bullet.circle.radius = 4;
+    bullet.adapter.add("fill", function (fill, target) {
+        if (target.dataItem.valueY < 0) {
+            return am4core.color("#ce3a3a");
+        }
+        return fill;
+    })
+
+    var range = valueAxis.createSeriesRange(series);
+    range.value = 0;
+    range.endValue = -999999;
+    range.contents.stroke = am4core.color("#ce3a3a");
+    range.contents.fill = range.contents.stroke;
+    range.contents.fillOpacity = 0.2;
+
+    // chart.scrollbarX = new am4core.Scrollbar();
+    chart.cursor = new am4charts.XYCursor()
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+
+}
+$('#laboredu').on('change', function () {
+    var type = $('#laboredu').val()
+    if (type == 'M3') {
+        chart_edu(datlabor_edulevel_M3, "ระดับการศึกษา ม.3 หรือต่ำกว่า", ' คน')
+    }
+    else if (type == 'M6') {
+        chart_edu(datlabor_edulevel_M6, "ระดับการศึกษา ม.6", 'คน')
+    }
+    else if (type == 'profession') {
+        chart_edu(datlabor_edulevel_profession, "ระดับการศึกษาวิชาชีพ", ' คน')
+    }
+    else if (type == 'Bachelor') {
+        chart_edu(datlabor_edulevel_Bachelor, "ระดับการศึกษาปรีญญาตรี", ' คน')
+    }
+    else if (type == 'MoreBachelor') {
+        chart_edu(datlabor_edulevel_MoreBachelor, "ระดับการศึกษาสูงกว่าปรีญญาตรี", ' คน')
+    }
+})
+$('#labor_Demploy').on('change', function () {
+    var type = $('#labor_Demploy').val()
+    if (type == "eec") {
+        chart_all(datlabor_employ, 'คน', 'chartdiv10', '#77AADD', '#77AADD')
+    } else if (type == "byprov") {
+        chart_by_prov(datlabor_employ, 'คน', 'chartdiv10')
+    }
+})
+$('#labor_Dexert').on('change', function () {
+    var type = $('#labor_Dexert').val()
+    if (type == "eec") {
+        chart_all(datlabor_exert, 'คน', 'chartdiv10', '#40B2BF', '#40B2BF')
+    } else if (type == "byprov") {
+        chart_by_prov(datlabor_exert, 'คน', 'chartdiv10')
+    }
+
+})
+$('#labortype').on('change', function () {
+    var type = $('#labortype').val()
+    if (type == 'exert') {
+        $('#hchart10').html('การคาดการณ์กําลังแรงงานไทยในเขตพัฒนาพิเศษภาคตะวันออก (EEC)')
+        $('#d_exert').show()
+        $('#d_employ').hide()
+        $('#d_edu').hide()
+        chart_all(datlabor_exert, 'คน', 'chartdiv10', '#40B2BF', '#40B2BF')
+    }
+    else if (type == 'employ') {
+        $('#hchart10').html('การคาดการณ์การจ้างแรงงานไทยในเขตพัฒนาพิเศษภาคตะวันออก (EEC)')
+        $('#d_exert').hide()
+        $('#d_employ').show()
+        $('#d_edu').hide()
+        chart_all(datlabor_employ, 'คน', 'chartdiv10', '#359ECA', '#359ECA')
+    }
+    else if (type == 'minwage') {
+        $('#hchart10').html('การคาดการณ์อัตราค่าแรงขั้นต่ำของแรงงานไทยในเขตพัฒนาพิเศษภาคตะวันออก (EEC)')
+        $('#d_exert').hide()
+        $('#d_employ').hide()
+        $('#d_edu').hide()
+        chart_by_prov(datlabor_minwage, 'คน', 'chartdiv10')
+    }
+    else if (type == 'edu') {
+        $('#hchart10').html(`การคาดการณ์ความต้องการจำนวนแรงงานไทย แยกตามระดับการศึกษาในเขตพัฒนาพิเศษภาคตะวันออก (EEC)<br>จำแนกตามระดับการศึกษา`)
+        $('#d_exert').hide()
+        $('#d_employ').hide()
+        $('#d_edu').show()
+        chart_edu(datlabor_edulevel_M3, "ระดับการศึกษา ม.3 หรือต่ำกว่า", ' คน')
+    }
+})
+$('#cardlabor').hide();
+$('#d_exert').hide()
+$('#d_employ').hide()
+$('#d_edu').hide()
+$('#trendlabor').click(function () {
+    if (this.checked) {
+        $('#hchart10').html('การคาดการณ์แรงงานไทยในเขตพัฒนาพิเศษภาคตะวันออก (EEC)')
+        $('#cardlabor').slideDown();
+        $('#labortype').prop('selectedIndex', 0);
+
+        $('#d_exert').show()
+        $('#d_employ').hide()
+        $('#d_edu').hide()
+        chart_all(datlabor_employ, 'คน', 'chartdiv10', '#359ECA', '#359ECA')
+
+    } else {
+        $('#hchart10').html('')
+        $('#cardlabor').slideUp();
+    }
+})
+
+$('#econtype').on('change', function () {
+    var type = $('#econtype').val()
+    if (type == 'eec') { chart_all(datecon_tourist, 'คน', 'chartdiv9', '#77AADD', '#77AADD') }
+    else if (type == 'byprov') { chart_by_prov(datecon_tourist, 'คน', 'chartdiv9') }
+    else if (type == 'agri') { chart_all(datecon_agri, 'ล้านบาท', 'chartdiv9', '#aadd77', '#aadd77') }
+    else if (type == 'industry') { chart_all(datecon_industry, 'ล้านบาท', 'chartdiv9', '#7777dd', '#7777dd') }
+    else if (type == 'sevice') { chart_all(datecon_sevice, 'ล้านบาท', 'chartdiv9', '#77dddd', '#77dddd') }
+})
+$('#cardecon').hide();
+$('#trendecon').click(function () {
+    if (this.checked) {
+        $('#cardecon').slideDown();
+        $('#econtype').prop('selectedIndex', 0);
+        chart_all(datecon_tourist, 'คน', 'chartdiv9', '#77AADD', '#77AADD')
+    } else {
+        $('#cardecon').slideUp();
+    }
+})
+
+$('#UWtype').on('change', function () {
+    var type = $('#UWtype').val()
+    if (type == 'sum') { chart_all(UW_sum, 'ล้าน ลบ.ม.', 'chartdiv8', '#20DFC1', '#1CC8AD') }
+    else if (type == 'prapa') { chart_all(UW_prapa, 'ล้าน ลบ.ม.', 'chartdiv8', '#20DFC1', '#1CC8AD') }
+    else if (type == 'industry') { chart_all(UW_industry, 'ล้าน ลบ.ม.', 'chartdiv8', '#20DFC1', '#1CC8AD') }
+})
+$('#cardUW').hide();
+$('#trendUW').click(function () {
+    if (this.checked) {
+        $('#cardUW').slideDown();
+        $('#UWtype').prop('selectedIndex', 0);
+        chart_all(UW_sum, 'ล้าน ลบ.ม.', 'chartdiv8', '#20DFC1', '#1CC8AD')
+    } else {
+        $('#cardUW').slideUp();
+    }
+})
+
+$('#electype').on('change', function () {
+    var type = $('#electype').val()
+    if (type == 'eec') { chart_all(datelec_demand, 'MW', 'chartdiv7', '#FFD166', '#E5BC5B') }
+    else if (type == 'byprov') { chart_by_prov(datelec_demand, 'MW', 'chartdiv7') }
+    else if (type == 'insys') { chart_all(datelec_genelec_insys, 'MW', 'chartdiv7', '#FFD166', '#E5BC5B') }
+    else if (type == 'afsys') { chart_all(datelec_genelec_afsys, 'MW', 'chartdiv7', '#FFD166', '#E5BC5B') }
+})
+$('#cardelec').hide();
+$('#trendelec').click(function () {
+    if (this.checked) {
+        $('#cardelec').slideDown();
+        $('#electype').prop('selectedIndex', 0);
+        chart_all(datelec_demand, 'MW', 'chartdiv7', '#FFD166', '#E5BC5B')
+    } else {
+        $('#cardelec').slideUp();
+    }
+})
+//การคาดการณ์ปริมาณน้ำเสียชุมชนในกรณีที่มีการพัฒนาพื้นที่เขตพัฒนาพิเศษ ภาคตะวันออก ปี พ.ศ. ๒๕๖๔ – ๒๕๗๐
 $('#wastetype').on('change', function () {
     var type = $('#wastetype').val()
     if (type == 'byprov') {
@@ -307,57 +1033,6 @@ let offwaste = () => {
 }
 
 //การคาดการณ์ปริมาณขยะมูลฝอยในพื้นที่เขตเศรษฐกิจพิเศษภาคตะวันออก พ.ศ. ๒๕๖๔ - ๒๕๖๙
-let datgarbage = [
-    {
-        category: 'ปี 2564',
-        first: 1013,
-        second: 3133,
-        third: 1399,
-        four: 5546
-    },
-    {
-        category: 'ปี 2565',
-        first: 1035,
-        second: 3267,
-        third: 1482,
-        four: 5783
-    },
-    {
-        category: 'ปี 2566',
-        first: 1058,
-        second: 3390,
-        third: 1584,
-        four: 6032
-    },
-    {
-        category: 'ปี 2567',
-        first: 1083,
-        second: 3503,
-        third: 1702,
-        four: 6287
-    },
-    {
-        category: 'ปี 2568',
-        first: 1108,
-        second: 3596,
-        third: 1835,
-        four: 6539
-    },
-    {
-        category: 'ปี 2569',
-        first: 1134,
-        second: 3698,
-        third: 1985,
-        four: 6818
-    },
-    {
-        category: 'ปี 2570',
-        first: 1163,
-        second: 3803,
-        third: 2161,
-        four: 7126
-    }
-]
 $('#garbagetype').on('change', function () {
     var type = $('#garbagetype').val()
     if (type == 'byprov') {
@@ -712,167 +1387,7 @@ let chartUW_by_year = (data, umit, divchart) => {
         return { data: data };
     });
 }
-let datuse_water_all = [
-    {
-        category: 'ปี 2560',
-        first: 252,
-        second: 606,
-        third: 1562,
-        four: 2420
-    },
-    {
-        category: 'ปี 2570',
-        first: 309,
-        second: 748,
-        third: 1831,
-        four: 2888
-    },
-    {
-        category: 'ปี 2580',
-        first: 392,
-        second: 865,
-        third: 1832,
-        four: 3089
-    }
-]
-let datuse_water_prov60 = [
-    {
-        category: 'อุปโภค',
-        first: 42,
-        second: 148,
-        third: 62,
-        four: 252
-    },
-    {
-        category: 'อุตสาหกรรม',
-        first: 109,
-        second: 204,
-        third: 293,
-        four: 606
-    },
-    {
-        category: 'เกษตรกรรม',
-        first: 1305,
-        second: 118,
-        third: 139,
-        four: 1562
-    }
-]
-let datuse_water_prov70 = [
-    {
-        category: 'อุปโภค',
-        first: 52,
-        second: 177,
-        third: 80,
-        four: 309
-    },
-    {
-        category: 'อุตสาหกรรม',
-        first: 134,
-        second: 265,
-        third: 349,
-        four: 748
-    },
-    {
-        category: 'เกษตรกรรม',
-        first: 1397,
-        second: 181,
-        third: 253,
-        four: 1831
-    }
-]
-let datuse_water_prov80 = [
-    {
-        category: 'อุปโภค',
-        first: 75,
-        second: 208,
-        third: 109,
-        four: 392
-    },
-    {
-        category: 'อุตสาหกรรม',
-        first: 165,
-        second: 314,
-        third: 387,
-        four: 865
-    },
-    {
-        category: 'เกษตรกรรม',
-        first: 1398,
-        second: 181,
-        third: 253,
-        four: 1832
-    }
-]
-let datuse_water_Yconsume = [
-    {
-        category: 'จังหวัดฉะเชิงเทรา',
-        first: 42,
-        second: 52,
-        third: 75,
-        four: 169
-    },
-    {
-        category: 'จังหวัดชลบุรี',
-        first: 148,
-        second: 177,
-        third: 208,
-        four: 533
-    },
-    {
-        category: 'จังหวัดระยอง',
-        first: 252,
-        second: 309,
-        third: 392,
-        four: 251
-    }
-]
-let datuse_water_Yindustry = [
-    {
-        category: 'จังหวัดฉะเชิงเทรา',
-        first: 109,
-        second: 134,
-        third: 165,
-        four: 408
-    },
-    {
-        category: 'จังหวัดชลบุรี',
-        first: 204,
-        second: 265,
-        third: 314,
-        four: 783
-    },
-    {
-        category: 'จังหวัดระยอง',
-        first: 293,
-        second: 349,
-        third: 387,
-        four: 1029
-    }
-]
-let datuse_water_Yagri = [
-    {
-        category: 'จังหวัดฉะเชิงเทรา',
-        first: 1305,
-        second: 1397,
-        third: 1398,
-        four: 4100
-    },
-    {
-        category: 'จังหวัดชลบุรี',
-        first: 118,
-        second: 181,
-        third: 181,
-        four: 480
-    },
-    {
-        category: 'จังหวัดระยอง',
-        first: 139,
-        second: 253,
-        third: 253,
-        four: 645
-    }
-]
+///cardusewater
 $('#cardusewater').hide();
 $('#trendusewater').click(function () {
     if (this.checked) {
@@ -928,288 +1443,7 @@ $('#usewateyear').on('change', function () {
         chartUW_by_prov(datuse_water_prov80, 'ล้าน ลบ.ม./ปี', 'chartdiv4')
     }
 })
-
-let datall_pop = [
-    {
-        category: 'ปี 2559',
-        first: 797109,
-        second: 2187650,
-        third: 954826,
-        four: 3939585
-    },
-    {
-        category: 'ปี 2560',
-        first: 803442,
-        second: 2297660,
-        third: 981362,
-        four: 4082463
-    },
-    {
-        category: 'ปี 2561',
-        first: 813805,
-        second: 2373314,
-        third: 1022255,
-        four: 4209374
-    }, {
-        category: 'ปี 2562',
-        first: 829202,
-        second: 2467148,
-        third: 1073324,
-        four: 4369674
-    },
-    {
-        category: 'ปี 2563',
-        first: 846603,
-        second: 2570650,
-        third: 1131853,
-        four: 4549106
-    },
-    {
-        category: 'ปี 2564',
-        first: 865545,
-        second: 2678180,
-        third: 1196104,
-        four: 4739829
-    },
-    {
-        category: 'ปี 2565',
-        first: 884668,
-        second: 2792016,
-        third: 1266346,
-        four: 4943029
-    },
-    {
-        category: 'ปี 2566',
-        first: 904666,
-        second: 2897298,
-        third: 1353644,
-        four: 5155607
-    },
-    {
-        category: 'ปี 2567',
-        first: 925422,
-        second: 2993926,
-        third: 1454552,
-        four: 5373900
-    },
-    {
-        category: 'ปี 2568',
-        first: 946898,
-        second: 3073729,
-        third: 1568104,
-        four: 5588731
-    },
-    {
-        category: 'ปี 2569',
-        first: 969627,
-        second: 3160855,
-        third: 1696795,
-        four: 5827276
-    },
-    {
-        category: 'ปี 2570',
-        first: 993762,
-        second: 3250442,
-        third: 1846620,
-        four: 6090824
-    }
-]
-let datregister_pop = [
-    {
-        category: 'ปี 2559',
-        first: 704399,
-        second: 1483049,
-        third: 700223,
-        four: 2887671
-    },
-    {
-        category: 'ปี 2560',
-        first: 709794,
-        second: 1554682,
-        third: 717358,
-        four: 2981835
-    },
-    {
-        category: 'ปี 2561',
-        first: 716715,
-        second: 1572894,
-        third: 728603,
-        four: 3018212
-    },
-    {
-        category: 'ปี 2562',
-        first: 727408,
-        second: 1599299,
-        third: 744190,
-        four: 3070898
-    },
-
-    {
-        category: 'ปี 2563',
-        first: 739337,
-        second: 1628023,
-        third: 761703,
-        four: 3129063
-    },
-
-    {
-        category: 'ปี 2564',
-        first: 751531,
-        second: 1655469,
-        third: 779617,
-        four: 3186618
-    },
-
-    {
-        category: 'ปี 2565',
-        first: 763675,
-        second: 1682721,
-        third: 797596,
-        four: 3243993
-    },
-
-    {
-        category: 'ปี 2566',
-        first: 775702,
-        second: 1704591,
-        third: 813047,
-        four: 3293340
-    },
-
-    {
-        category: 'ปี 2567',
-        first: 787397,
-        second: 1721924,
-        third: 828127,
-        four: 3337448
-    },
-
-    {
-        category: 'ปี 2568',
-        first: 798863,
-        second: 1730425,
-        third: 840380,
-        four: 3369668
-    },
-
-    {
-        category: 'ปี 2569',
-        first: 810267,
-        second: 1738640,
-        third: 852574,
-        four: 3401481
-    },
-
-    {
-        category: 'ปี 2570',
-        first: 821637,
-        second: 1746620,
-        third: 864739,
-        four: 3432996
-    },
-
-]
-let datdisguise_pop = [
-    {
-        category: 'ปี 2559',
-        first: 92710,
-        second: 704601,
-        third: 254603,
-        four: 1051914
-    },
-
-    {
-        category: 'ปี 2560',
-        first: 93647,
-        second: 742977,
-        third: 264004,
-        four: 1100628
-    },
-
-    {
-        category: 'ปี 2561',
-        first: 97091,
-        second: 800421,
-        third: 293652,
-        four: 1191163
-    },
-
-    {
-        category: 'ปี 2562',
-        first: 101794,
-        second: 867849,
-        third: 329133,
-        four: 1298776
-    },
-
-
-    {
-        category: 'ปี 2563',
-        first: 107266,
-        second: 942627,
-        third: 370150,
-        four: 1420043
-    },
-
-
-    {
-        category: 'ปี 2564',
-        first: 114014,
-        second: 1022711,
-        third: 416486,
-        four: 1553211
-    },
-
-
-    {
-        category: 'ปี 2565',
-        first: 120992,
-        second: 1109295,
-        third: 468749,
-        four: 1699037
-    },
-
-    {
-        category: 'ปี 2566',
-        first: 128964,
-        second: 1192707,
-        third: 540597,
-        four: 1862268
-    },
-
-    {
-        category: 'ปี 2567',
-        first: 138025,
-        second: 1272002,
-        third: 626425,
-        four: 2036452
-    },
-
-    {
-        category: 'ปี 2568',
-        first: 148035,
-        second: 1343304,
-        third: 727724,
-        four: 2219063
-    },
-
-    {
-        category: 'ปี 2569',
-        first: 172125,
-        second: 1503822,
-        third: 981881,
-        four: 2657828
-    },
-
-    {
-        category: 'ปี 2570',
-        first: 172125,
-        second: 1503822,
-        third: 981881,
-        four: 2657828
-    },
-
-]
+///cardpopnormal
 $('#cardpopnormal').hide()
 $('#trendpopnormal').click(function () {
     if (this.checked) {
@@ -1220,242 +1454,34 @@ $('#trendpopnormal').click(function () {
         $('#cardpopnormal').slideUp();
     }
 })
+$('#Hpopincity').hide();
+$('#Hpop2').hide();
 $('#popnormaltype').on('change', function () {
     var type = $('#popnormaltype').val()
     if (type == 'all') {
+        $('#Hpopincity').hide();
+        $('#Hpop').show();
+        $('#Hpop2').hide();
         chart_by_prov(datall_pop, 'คน', 'chartdiv5')
     } else if (type == 'register') {
+        $('#Hpopincity').hide();
+        $('#Hpop').show();
+        $('#Hpop2').hide();
         chart_by_prov(datregister_pop, 'คน', 'chartdiv5')
+    } else if (type == 'popincity') {
+        $('#Hpopincity').show();
+        $('#Hpop').hide();
+        $('#Hpop2').hide();
+        chart_by_prov(datacity_pop, '', 'chartdiv5')
+
     } else {
+        $('#Hpopincity').hide();
+        $('#Hpop').hide();
+        $('#Hpop2').show();
         chart_by_prov(datdisguise_pop, 'คน', 'chartdiv5')
     }
 })
-let datall_pop_covid = [
-    {
-        category: 'ปี 2562',
-        first: 924399,
-        second: 2096301,
-        third: 1135132,
-        four: 4155832
-    },
-
-    {
-        category: 'ปี 2563',
-        first: 949868,
-        second: 2179085,
-        third: 1187881,
-        four: 4316835
-    },
-
-    {
-        category: 'ปี 2564',
-        first: 954945,
-        second: 2208609,
-        third: 1200812,
-        four: 4364366
-    },
-
-    {
-        category: 'ปี 2565',
-        first: 937585,
-        second: 2179502,
-        third: 1169925,
-        four: 4287012
-    },
-
-    {
-        category: 'ปี 2566',
-        first: 932620,
-        second: 2183503,
-        third: 1163489,
-        four: 4279612
-    },
-
-    {
-        category: 'ปี 2567',
-        first: 937803,
-        second: 2214704,
-        third: 1177104,
-        four: 4329611
-    },
-
-    {
-        category: 'ปี 2568',
-        first: 952630,
-        second: 2271786,
-        third: 1209781,
-        four: 4434196
-    },
-
-    {
-        category: 'ปี 2569',
-        first: 973016,
-        second: 2344006,
-        third: 1253524,
-        four: 4570546
-    },
-
-    {
-        category: 'ปี 2570',
-        first: 999996,
-        second: 2434095,
-        third: 1310360,
-        four: 4744451
-    },
-
-]
-let datregister_pop_covid = [
-    {
-        category: 'ปี 2562',
-        first: 720113,
-        second: 1558301,
-        third: 734753,
-        four: 3013167
-    },
-
-    {
-        category: 'ปี 2563',
-        first: 725154,
-        second: 1587285,
-        third: 747464,
-        four: 3059903
-    },
-
-
-    {
-        category: 'ปี 2564',
-        first: 730230,
-        second: 1616809,
-        third: 760395,
-        four: 3107434
-    },
-
-    {
-        category: 'ปี 2565',
-        first: 735341,
-        second: 1646882,
-        third: 773550,
-        four: 3155773
-    },
-
-
-    {
-        category: 'ปี 2566',
-        first: 740489,
-        second: 1677514,
-        third: 786933,
-        four: 3204935
-    },
-
-    {
-        category: 'ปี 2567',
-        first: 745672,
-        second: 1708715,
-        third: 800547,
-        four: 3254934
-    },
-
-    {
-        category: 'ปี 2568',
-        first: 750892,
-        second: 1740497,
-        third: 814396,
-        four: 3305785
-    },
-
-    {
-        category: 'ปี 2569',
-        first: 756148,
-        second: 1772871,
-        third: 828485,
-        four: 3357504
-    },
-
-    {
-        category: 'ปี 2570',
-        first: 761441,
-        second: 1805846,
-        third: 842818,
-        four: 3410105
-    },
-
-
-]
-let datdisguise_pop_covid = [
-    {
-        category: 'ปี 2562',
-        first: 204286,
-        second: 538000,
-        third: 400379,
-        four: 1142665
-    },
-
-    {
-        category: 'ปี 2563',
-        first: 224715,
-        second: 591800,
-        third: 440417,
-        four: 1256932
-    },
-
-    {
-        category: 'ปี 2564',
-        first: 224715,
-        second: 591800,
-        third: 440417,
-        four: 1256932
-    },
-
-    {
-        category: 'ปี 2565',
-        first: 202244,
-        second: 532620,
-        third: 396375,
-        four: 1131239
-    },
-
-    {
-        category: 'ปี 2566',
-        first: 192131,
-        second: 505989,
-        third: 376557,
-        four: 1074677
-    },
-
-    {
-        category: 'ปี 2567',
-        first: 138025,
-        second: 1272002,
-        third: 626425,
-        four: 2036452
-    },
-
-    {
-        category: 'ปี 2568',
-        first: 201738,
-        second: 531288,
-        third: 395385,
-        four: 1128411
-    },
-
-    {
-        category: 'ปี 2569',
-        first: 216868,
-        second: 571135,
-        third: 425039,
-        four: 1213042
-    },
-
-    {
-        category: 'ปี 2570',
-        first: 238555,
-        second: 628249,
-        third: 467543,
-        four: 1334346
-    },
-
-
-]
+///cardpopcovid
 $('#cardpopcovid').hide()
 $('#trendpopcovid').click(function () {
     if (this.checked) {
@@ -1476,116 +1502,6 @@ $('#popcovidtype').on('change', function () {
         chart_by_prov(datdisguise_pop_covid, 'คน', 'chartdiv6')
     }
 })
-
-// let chartUW_all = () => {
-//     // Themes begin
-//     am4core.useTheme(am4themes_animated);
-//     // Themes end
-
-//     var chart = am4core.create("chartdiv4", am4charts.XYChart);
-//     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-//     chart.data = [
-//         {
-//             category: 'ปี 2560',
-//             value1: 252,
-//             value2: 606,
-//             value3: 1562,
-//             value4: 2420
-//         },
-//         {
-//             category: 'ปี 2570',
-//             value1: 309,
-//             value2: 748,
-//             value3: 1831,
-//             value4: 2888
-//         },
-//         {
-//             category: 'ปี 2580',
-//             value1: 392,
-//             value2: 865,
-//             value3: 1832,
-//             value4: 3089
-//         }
-//     ];
-
-//     chart.colors.step = 2;
-//     chart.padding(30, 30, 10, 30);
-//     chart.legend = new am4charts.Legend();
-//     chart.legend.position = 'top'
-//     chart.legend.paddingBottom = 20
-//     chart.legend.labels.template.maxWidth = 95
-
-//     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-//     categoryAxis.dataFields.category = "category";
-//     categoryAxis.renderer.grid.template.location = 0;
-
-//     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-//     valueAxis.min = 0;
-//     valueAxis.max = 100;
-//     valueAxis.strictMinMax = true;
-//     valueAxis.calculateTotals = true;
-//     valueAxis.renderer.minWidth = 50;
-
-//     // #B9F65D #77E0F8 #F6E554 #F7D271
-//     var series1 = chart.series.push(new am4charts.ColumnSeries());
-//     series1.columns.template.width = am4core.percent(80);
-//     series1.columns.template.tooltipText =
-//         "{name}: [bold]{valueY.formatNumber('###,###,###.##')} ล้าน ลบ.ม./ปี[/]";
-//     series1.name = "อุปโภคบริโภค";
-//     series1.dataFields.categoryX = "category";
-//     series1.dataFields.valueY = "value1";
-//     series1.dataFields.valueYShow = "totalPercent";
-//     series1.dataItems.template.locations.categoryX = 0.5;
-//     series1.stacked = true;
-//     series1.tooltip.pointerOrientation = "vertical";
-
-//     var bullet1 = series1.bullets.push(new am4charts.LabelBullet());
-//     bullet1.interactionsEnabled = false;
-//     bullet1.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-//     bullet1.label.fill = am4core.color("#ffffff");
-//     bullet1.locationY = 0.5;
-
-//     var series2 = chart.series.push(new am4charts.ColumnSeries());
-//     series2.columns.template.width = am4core.percent(80);
-//     series2.columns.template.tooltipText =
-//         "{name}: [bold]{valueY.formatNumber('###,###,###.##')} ล้าน ลบ.ม./ปี[/]";
-//     series2.name = "อุสตสาหกรรม";
-//     series2.dataFields.categoryX = "category";
-//     series2.dataFields.valueY = "value2";
-//     series2.dataFields.valueYShow = "totalPercent";
-//     series2.dataItems.template.locations.categoryX = 0.5;
-//     series2.stacked = true;
-//     series2.tooltip.pointerOrientation = "vertical";
-
-//     var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
-//     bullet2.interactionsEnabled = false;
-//     bullet2.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-//     bullet2.locationY = 0.5;
-//     bullet2.label.fill = am4core.color("#ffffff");
-
-//     var series3 = chart.series.push(new am4charts.ColumnSeries());
-//     series3.columns.template.width = am4core.percent(80);
-//     series3.columns.template.tooltipText =
-//         "{name}: [bold]{valueY.formatNumber('###,###,###.##')} ล้าน ลบ.ม./ปี[/]";
-//     series3.name = "เกษตรกรรม";
-//     series3.dataFields.categoryX = "category";
-//     series3.dataFields.valueY = "value3";
-//     series3.dataFields.valueYShow = "totalPercent";
-//     series3.dataItems.template.locations.categoryX = 0.5;
-//     series3.stacked = true;
-//     series3.tooltip.pointerOrientation = "vertical";
-
-//     var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
-//     bullet3.interactionsEnabled = false;
-//     bullet3.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-//     bullet3.locationY = 0.5;
-//     bullet3.label.fill = am4core.color("#ffffff");
-
-//     // chart.scrollbarX = new am4core.Scrollbar();
-
-// }
-
 let chartUW_all = () => {
     // $("#chartdiv4").removeAttr("style").css({ "width": "1200px", "height": "520px" })
     // Themes begin
@@ -1693,3 +1609,45 @@ let chartUW_all = () => {
         return { data: data };
     });
 }
+
+$('#btn_prapa_down').hide();
+$('#prapa').hide();
+let op_forecate_prapa = () => {
+    $('#btn_prapa_down').show();
+    $('#btn_prapa_up').hide();
+    $('#prapa').slideDown();
+    $('#prapa_type').prop('selectedIndex', 0);
+    chart_all(datall_pop_covid, 'ล้าน ลบ.ม./ปี', 'chartprapa', '#3f80e1', '#3f80e1')
+}
+let close_forecate_prapa = () => {
+    $('#btn_prapa_down').hide();
+    $('#btn_prapa_up').show();
+    $('#prapa').slideUp();
+    $('#prapa_type').prop('selectedIndex', 0);
+}
+$('#prapa_type').on('change', function () {
+    var type = $('#prapa_type').val()
+    if (type == 'eec') {
+        chart_all(datall_pop_covid, 'ล้าน ลบ.ม./ปี', 'chartprapa', '#3f80e1', '#3f80e1')
+    } else if (type == 'byprov') {
+        chart_by_prov(datuse_water_prapa, 'ล้าน ลบ.ม./ปี', 'chartprapa')
+    }
+})
+$('#P_industry2').hide();
+$('#T_industry').on('change', function () {
+    if (this.value == "industry2") {
+        chart_all(datuse_water_Yindustry2, 'ล้าน ลบ.ม./ปี', 'chartUW_industry', '#3f80e1', '#3f80e1')
+        $('#P_industry1').hide();
+        $('#P_industry2').show();
+    }
+    else {
+        $('#Y_industry_1').hide();
+        $('#Y_industry_2').hide();
+        $('#Y_industry_3').hide();
+
+        $('#P2_industry_1').hide();
+        $('#P2_industry_2').hide();
+        $('#C_industry_1').hide();
+        $('#P_industry2').hide();
+    }
+})

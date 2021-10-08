@@ -637,11 +637,14 @@ let op_preditct_indust = () => {
     $('#btn_uwindustry_down').show();
     $('#btn_uwindustry_up').hide();
     $('#uwindustry').slideDown();
+    $('#T_industry').prop('selectedIndex', 0);
+    UW_prov_all("eec")
 }
 let close_preditct_indust = () => {
     $('#btn_uwindustry_down').hide();
     $('#btn_uwindustry_up').show();
     $('#uwindustry').slideUp();
+    $('#T_industry').prop('selectedIndex', 0);
 }
 
 $('#P2_industry_1').hide();
@@ -650,7 +653,7 @@ $('#C_industry_1').hide();
 $('#Y_industry_1').hide();
 $('#Y_industry_2').hide();
 $('#Y_industry_3').hide();
-UW_prov_all("eec")
+// UW_prov_all("eec")
 $('#T_industry').on('change', function () {
     if (this.value == "eec") {
         $('#Y_industry_1').hide();
@@ -659,6 +662,8 @@ $('#T_industry').on('change', function () {
         $('#P2_industry_1').hide();
         $('#P2_industry_2').hide();
         $('#C_industry_1').hide();
+
+        $('#P_industry1').show();
         UW_prov_all("eec")
     } else if (this.value == "year") {
         $('#Y_industry_1').show();
@@ -669,6 +674,8 @@ $('#T_industry').on('change', function () {
         $('#P2_industry_2').hide();
         $('#C_industry_1').hide();
 
+        $('#P_industry1').show();
+
     } else if (this.value == "prov") {
         $('#Y_industry_1').hide();
         $('#Y_industry_2').hide();
@@ -678,6 +685,7 @@ $('#T_industry').on('change', function () {
         $('#P2_industry_2').show();
 
         $('#C_industry_1').hide();
+        $('#P_industry1').show();
 
         UW_industrybyprov_all()
     } else if (this.value == "category") {
@@ -689,7 +697,7 @@ $('#T_industry').on('change', function () {
         $('#P2_industry_2').hide();
 
         $('#C_industry_1').show();
-
+        $('#P_industry1').show();
         UW_industrybycate("eec")
     } else {
         $('#Y_industry_1').hide();

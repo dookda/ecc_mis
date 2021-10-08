@@ -872,7 +872,6 @@ let lyr = {
     cp_cco: cp_cco,
     cp_cbi: cp_cbi,
     cp_ryg: cp_ryg
-
 }
 
 let base = {
@@ -881,6 +880,46 @@ let base = {
     ghyb: ghyb,
     grod: grod,
     gter: gter
+}
+
+
+let callAttribute = (lyr) => {
+    // console.log(cp_ryg);
+    let geojson = "https://eec-onep.online:8443/geoserver/eec/ows?service=WFS" +
+        "&version=1.0.0" +
+        "&request=GetFeature" +
+        "&typeName=eec%3A" + lyr +
+        "&maxFeatures=140000&outputFormat=application%2Fjson";
+    axios.get(geojson).then(r => {
+        let col = [];
+        let dat = [];
+        let obj = r.data.features[0].properties;
+
+        for (let prop in obj) {
+            col.push({ title: prop })
+        }
+
+        r.data.features.map(i => {
+            let obj = i.properties
+            dat.push(Object.values(obj))
+        })
+
+        // console.log(col, dat);
+
+        $(document).ready(function () {
+            $('#attrib').DataTable({
+                dom: "Bfrtip",
+                data: dat,
+                columns: col
+            });
+        });
+    })
+
+}
+// callAttribute()
+
+let selectLyr = () => {
+    console.log("ffff");
 }
 
 // L.control.layers(baseMap, overlayMap).addTo(map);

@@ -55,7 +55,7 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
 
@@ -129,21 +129,28 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="trendpopnormal">
                                                 <label class="form-check-label">
-                                                    ประชากร ปี 2559-2570
+                                                    ประชากร
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="trendpopcovid">
                                                 <label class="form-check-label">
-                                                    ประชากร ปี 2559-2570 (จากผลกระทบของโรคโควิด-19)
+                                                    ประชากร (จากผลกระทบของโรคโควิด-19)
                                                 </label>
                                             </div>
+
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="trendusewater">
                                                 <label class="form-check-label">
                                                     ความต้องการใช้น้ำ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendelec">
+                                                <label class="form-check-label">
+                                                    ความต้องการใช้ไฟฟ้า
                                                 </label>
                                             </div>
                                             <div class="form-check">
@@ -160,6 +167,25 @@
                                                     ปริมาณขยะมูลฝอย
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendUW">
+                                                <label class="form-check-label">
+                                                    ปริมาณน้ำดิบ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendecon">
+                                                <label class="form-check-label">
+                                                    เศรษฐกิจ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendlabor">
+                                                <label class="form-check-label">
+                                                    แรงงานไทย
+                                                </label>
+                                            </div>
                                         </div>
                                         <hr>
                                         <div class="group-check">
@@ -170,6 +196,8 @@
                                                 <label class="form-check-label">
                                                     ขอบเขตจังหวัด
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="proLegend">
                                             </div>
@@ -180,6 +208,8 @@
                                                 <label class="form-check-label">
                                                     ขอบเขตอำเภอ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="ampLegend">
                                             </div>
@@ -190,6 +220,8 @@
                                                 <label class="form-check-label">
                                                     ขอบเขตตำบล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="tamLegend">
                                             </div>
@@ -199,6 +231,8 @@
                                                 <label class="form-check-label">
                                                     ขอบเขตเทศบาล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="munLegend">
                                             </div>
@@ -208,6 +242,8 @@
                                                 <label class="form-check-label">
                                                     หมู่บ้าน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="villLegend">
                                             </div>
@@ -218,6 +254,8 @@
                                                 <label class="form-check-label">
                                                     เส้นทางคมนาคมสายหลัก
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="maintranLegend">
                                             </div>
@@ -227,6 +265,8 @@
                                                 <label class="form-check-label">
                                                     เส้นทางคมนาคม
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="tranLegend">
                                             </div>
@@ -237,6 +277,8 @@
                                                 <label class="form-check-label">
                                                     เส้นทางหลวงแผ่นดิน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="highwayLegend">
                                             </div>
@@ -247,6 +289,8 @@
                                                 <label class="form-check-label">
                                                     เส้นทางรถไฟ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="trainLegend">
                                             </div>
@@ -257,6 +301,8 @@
                                                 <label class="form-check-label">
                                                     สถานที่สำคัญในเขตเทศบาล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="munilandmarkLegend">
                                             </div>
@@ -267,6 +313,8 @@
                                                 <label class="form-check-label">
                                                     สถานที่สำคัญ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="landmarkLegend">
                                             </div>
@@ -277,6 +325,8 @@
                                                 <label class="form-check-label">
                                                     แหล่งศิลปกรรม
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="artsourceLegend">
                                             </div>
@@ -287,6 +337,8 @@
                                                 <label class="form-check-label">
                                                     เส้นชั้นความสูง
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="countourLegend">
                                             </div>
@@ -301,6 +353,8 @@
                                                 <label class="form-check-label">
                                                     เส้นทางน้ำ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="waterpathLegend">
                                             </div>
@@ -311,6 +365,8 @@
                                                 <label class="form-check-label">
                                                     แหล่งน้ำ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="wbodyLegend">
                                             </div>
@@ -321,6 +377,8 @@
                                                 <label class="form-check-label">
                                                     ชั้นคุณภาพลุ่มน้ำ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="basinqualityLegend">
                                             </div>
@@ -331,6 +389,8 @@
                                                 <label class="form-check-label">
                                                     ลุ่มน้ำหลัก
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="mainbasinLegend">
                                             </div>
@@ -341,6 +401,8 @@
                                                 <label class="form-check-label">
                                                     ลุ่มน้ำย่อย
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="subbasinLegend">
                                             </div>
@@ -351,6 +413,8 @@
                                                 <label class="form-check-label">
                                                     อุทกธรณีวิทยา
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="hydrogeologyLegend">
                                             </div>
@@ -398,6 +462,8 @@
                                                 <label class="form-check-label">
                                                     สถานีตรวจวัดระดับน้ำ(สถานีอุทกวิทยา)
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="waterlevel_saLegend">
                                             </div>
@@ -408,6 +474,8 @@
                                                 <label class="form-check-label">
                                                     จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="water_mnreLegend">
                                             </div>
@@ -418,6 +486,8 @@
                                                 <label class="form-check-label">
                                                     จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="water_onepLegend">
                                             </div>
@@ -437,6 +507,8 @@
                                                 <label class="form-check-label">
                                                     จุดวัดคุณภาพน้ำทะเล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="seaLegend">
                                             </div>
@@ -447,6 +519,8 @@
                                                 <label class="form-check-label">
                                                     ท่อส่งน้ำการประปา
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="wsup_pipeLegend">
                                             </div>
@@ -457,6 +531,8 @@
                                                 <label class="form-check-label">
                                                     ท่อผันน้ำกรมชลประทาน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="wdiv_pipeLegend">
                                             </div>
@@ -467,6 +543,8 @@
                                                 <label class="form-check-label">
                                                     สำนักงานชลประทานที่ 9
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="locarid9Legend">
                                             </div>
@@ -477,6 +555,8 @@
                                                 <label class="form-check-label">
                                                     เขื่อนทดน้ำบางปะกง
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="dambpkLegend">
                                             </div>
@@ -487,6 +567,8 @@
                                                 <label class="form-check-label">
                                                     แม่น้ำสายหลักสปช.9
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="mainriver9Legend">
                                             </div>
@@ -497,6 +579,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่โครงการสปช.9
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="pjarea_rid9Legend">
                                             </div>
@@ -507,6 +591,8 @@
                                                 <label class="form-check-label">
                                                     ที่ตั้งโครงการสปช.9
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="pjloca_rid9Legend">
                                             </div>
@@ -520,6 +606,8 @@
                                                 <label class="form-check-label">
                                                     จุดตรวจวัดเสียง
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="soundpointLegend">
                                             </div>
@@ -530,6 +618,8 @@
                                                 <label class="form-check-label">
                                                     แหล่งกำเนิดมลพิษ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="polluLegend">
                                             </div>
@@ -540,6 +630,8 @@
                                                 <label class="form-check-label">
                                                     เขตพื้นที่คุ้มครองและเขตควบคุมมลพิษ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="ProtecPolluLegend">
                                             </div>
@@ -569,6 +661,8 @@
                                                 <label class="form-check-label">
                                                     จุดตรวจวัดคุณภาพน้ำบาดาล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="gwLegend" width="30px">
                                             </div>
@@ -579,6 +673,8 @@
                                                 <label class="form-check-label">
                                                     สถานีตรวจวัดคุณภาพน้ำอัตโนมัติ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="waterstationLegend">
                                             </div>
@@ -589,6 +685,8 @@
                                                 <label class="form-check-label">
                                                     บ่อบำบัดน้ำเสีย
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="wastewaterLegend">
                                             </div>
@@ -599,6 +697,8 @@
                                                 <label class="form-check-label">
                                                     บ่อขยะ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="garbageLegend">
                                             </div>
@@ -608,6 +708,8 @@
                                             <label class="form-check-label">
                                                 เรื่องร้องเรียนมลพิษ จังหวัดฉะเชิงเทรา
                                             </label>
+                                            <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
                                             <br>
                                             <img id="cp_ccoLegend">
                                         </div>
@@ -616,6 +718,8 @@
                                             <label class="form-check-label">
                                                 เรื่องร้องเรียนมลพิษ จังหวัดชลบุรี
                                             </label>
+                                            <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
                                             <br>
                                             <img id="cp_cbiLegend">
                                         </div>
@@ -624,6 +728,8 @@
                                             <label class="form-check-label">
                                                 เรื่องร้องเรียนมลพิษ จังหวัดระยอง
                                             </label>
+                                            <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
                                             <br>
                                             <img id="cp_rygLegend">
                                         </div>
@@ -637,6 +743,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่เสี่ยงภัยน้ำท่วม
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="floodLegend">
                                             </div>
@@ -647,6 +755,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่เสี่ยงแผ่นดินไหว
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="earthquakeLegend">
                                             </div>
@@ -657,6 +767,8 @@
                                                 <label class="form-check-label">
                                                     ตำแหน่งพื้นที่เสี่ยงดินถล่ม
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="landslideLegend">
                                             </div>
@@ -666,6 +778,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่เสี่ยงภัยหลุมยุบ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="holeLegend">
                                             </div>
@@ -676,6 +790,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่เสี่ยงภัยแล้ง
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="droughtLegend">
                                             </div>
@@ -689,6 +805,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่สีเขียวสาธารณะ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="grparkLegend">
                                             </div>
@@ -699,6 +817,8 @@
                                                 <label class="form-check-label">
                                                     ป่าสงวนแห่งชาติ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="f_reservedLegend">
                                             </div>
@@ -709,6 +829,8 @@
                                                 <label class="form-check-label">
                                                     อุทยานแห่งชาติ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="nationalparkLegend">
                                             </div>
@@ -718,6 +840,8 @@
                                                 <label class="form-check-label">
                                                     วนอุทยาน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="parkLegend">
                                             </div>
@@ -728,6 +852,8 @@
                                                 <label class="form-check-label">
                                                     เขตรักษาพันธุ์สัตว์ป่า
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="wildlifeLegend">
                                             </div>
@@ -738,6 +864,8 @@
                                                 <label class="form-check-label">
                                                     เขตห้ามล่าสัตว์ป่า
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="non_huntingLegend">
                                             </div>
@@ -748,6 +876,8 @@
                                                 <label class="form-check-label">
                                                     ประเภทป่าไม้ปีพ.ศ.2563
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="f_type63Legend">
                                             </div>
@@ -758,6 +888,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่ปลูกป่า
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="afforestaLegend">
                                             </div>
@@ -768,6 +900,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่สปก.
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="alroareaLegend">
                                             </div>
@@ -778,6 +912,8 @@
                                                 <label class="form-check-label">
                                                     ป่าชุมชน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="commu_forestLegend">
                                             </div>
@@ -788,6 +924,8 @@
                                                 <label class="form-check-label">
                                                     ธรณีวิทยา
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="geologyLegend">
                                             </div>
@@ -798,6 +936,8 @@
                                                 <label class="form-check-label">
                                                     ทรัพยากรแร่
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="mineralLegend">
                                             </div>
@@ -808,6 +948,8 @@
                                                 <label class="form-check-label">
                                                     แหล่งอนุรักษ์ทางธรณีวิทยา
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="geoconserLegend">
                                             </div>
@@ -818,6 +960,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่จำแนกเขตพัฒนาทรัพยากรแร่
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="minerdevLegend">
                                             </div>
@@ -828,6 +972,8 @@
                                                 <label class="form-check-label">
                                                     ข้อมูลธรณีและแหล่งทรัพยากรแร่
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="geominerLegend">
                                             </div>
@@ -838,6 +984,8 @@
                                                 <label class="form-check-label">
                                                     ประทานบัตร
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="oremineLegend">
                                             </div>
@@ -847,6 +995,8 @@
                                                 <label class="form-check-label">
                                                     แผนที่ดิน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="soilLegend">
                                             </div>
@@ -856,6 +1006,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดิน ปีพ.ศ.2556
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="lu56Legend">
                                             </div>
@@ -865,6 +1017,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดิน ปีพ.ศ.2559
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="lu59Legend">
                                             </div>
@@ -874,6 +1028,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="lu61Legend">
                                             </div>
@@ -884,6 +1040,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดินพื้นที่จังหวัดชลบุรี ปีพ.ศ.2563
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="lucbi63Legend">
                                             </div>
@@ -894,6 +1052,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดินพื้นที่จังหวัดระยอง ปีพ.ศ.2563
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="luryg63Legend">
                                             </div>
@@ -904,6 +1064,8 @@
                                                 <label class="form-check-label">
                                                     ภูมินิเวศ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="landscapeLegend">
                                             </div>
@@ -913,6 +1075,8 @@
                                                 <label class="form-check-label">
                                                     พื้นที่เกษตรกรรมประเภทเพาะเลี้ยงสัตว์น้ำ
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="a9Legend">
                                             </div>
@@ -923,6 +1087,8 @@
                                                 <label class="form-check-label">
                                                     เขตป่าชายเลนตามมติคณะรัฐมนตรี
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="mang_forestLegend">
                                             </div>
@@ -933,6 +1099,8 @@
                                                 <label class="form-check-label">
                                                     การใช้ประโยชน์ที่ดินในป่าชายเลน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="MangLULegend">
                                             </div>
@@ -943,6 +1111,8 @@
                                                 <label class="form-check-label">
                                                     เขตที่ดินชายฝั่งทะเล
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="CoastalLegend">
                                             </div>
@@ -953,6 +1123,8 @@
                                                 <label class="form-check-label">
                                                     โบราณสถาน
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="ancientLegend">
                                             </div>
@@ -963,6 +1135,8 @@
                                                 <label class="form-check-label">
                                                     ย่านชุมชนเก่า
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="oldcommuLegend">
                                             </div>
@@ -973,6 +1147,8 @@
                                                 <label class="form-check-label">
                                                     เขตเมืองเก่า จังหวัดฉะเชิงเทรา
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="oldtown_ccoLegend">
                                             </div>
@@ -983,6 +1159,8 @@
                                                 <label class="form-check-label">
                                                     เขตเมืองเก่า จังหวัดระยอง
                                                 </label>
+                                                <a class="attrib" onclick="selectLyr()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
                                                 <br>
                                                 <img id="oldtown_rygLegend">
                                             </div>
@@ -1203,15 +1381,23 @@
                             <div class="card w-100 mw-100" id="cardpopnormal">
                                 <div class="d-flex  flex-column justify-content-center p-4 text-center"
                                     style="margin-bottom: -20px;">
-                                    <h5> <span
+                                    <h5 id="Hpop"><span
                                             id="hchart5">การคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)
                                             <br>ปีพ.ศ. 2559-2570</span></h5>
+                                    <h5 id="Hpop2"><span
+                                            id="hchart5_2">การคาดการณ์ประชากรแฝงจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)
+                                            <br>ปีพ.ศ. 2559-2580</span></h5>
+                                    <h5 id="Hpopincity"><span id="hchart5_2">อัตราการเติบโตของประชากรในเขตเมือง ปีพ.ศ.
+                                            2565-2580</span></h5>
                                     <div class="form-group m-auto w-25 mw-100" id="">
                                         <!-- <label for="">จังหวัด</label> -->
                                         <select class="form-control " id="popnormaltype">
                                             <option value="all">ภาพรวม</option>
                                             <option value="register">ประชากรในทะเบียนบ้าน</option>
                                             <option value="disguise">ประชากรแฝง</option>
+                                            <option value="popincity">ประชากรในเขตเมือง</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1221,6 +1407,7 @@
                                         สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
                                     </p>
                                 </div>
+
                             </div>
                             <div class="card w-100 mw-100" id="cardpopcovid">
                                 <div class="d-flex  flex-column justify-content-center p-4 text-center"
@@ -1253,7 +1440,8 @@
                                     style="margin-bottom: -20px;">
                                     <h5> <span
                                             id="hchart4">การคาดการณ์ความต้องการใช้น้ำแต่ละภาคส่วนในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
-                                            ปีพ.ศ. 2564 - 2569</span></h5>
+                                            (EEC)
+                                        </span></h5>
                                     <div class="form-group d-flex flex-row m-auto w-25 mw-100" id="">
                                         <!-- <label for="">จังหวัด</label> -->
                                         <select class="form-control mr-2" id="usewatecat">
@@ -1284,7 +1472,7 @@
                                 <button type="submit" class="btn btn-primary" id="btn_uwindustry_down"
                                     onClick="close_preditct_indust()">การใช้น้ำอุตสาหกรรมในพื้นที่ EEC ในช่วงที่ผ่านมา
                                     &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
-                                <div class="form-group p-4" id="uwindustry">
+                                <div class="form-group card-body" id="uwindustry">
                                     <h6 class="text-center"><b>การใช้น้ำอุตสาหกรรมในพื้นที่ EEC ในช่วงที่ผ่านมา
                                             (ล้านลบ.ม./ปี)</b></h6>
                                     <div class="d-flex flex-column">
@@ -1296,6 +1484,7 @@
                                                     <option value="year">รายปี</option>
                                                     <option value="prov">รายจังหวัด</option>
                                                     <option value="category">ประเภทอุตสาหกรรม</option>
+                                                    <option value="industry2">อุตสาหกรรมใหม่ตามแผน กนอ.</option>
                                                 </select>
                                             </div>
 
@@ -1358,8 +1547,63 @@
                                         </div>
                                         <div class="w-100 mw-100" style="height: 350px;" id="chartUW_industry"></div>
                                     </div>
-                                    <p><b>ที่มา :</b> สถาบันน้ำและสิ่งแวดล้อมเพื่อความยั่งยืน
+                                    <p id="P_industry1"><b>ที่มา :</b> สถาบันน้ำและสิ่งแวดล้อมเพื่อความยั่งยืน
                                         สภาอุตสาหกรรมแห่งประเทศไทย (2562)
+                                    </p>
+                                    <p id="P_industry2"><b>ที่มา :</b> แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน
+                                        รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                                <!-- //////////////น้ำประปา////////// -->
+                                <button type="submit" class="btn btn-primary" id="btn_prapa_up"
+                                    onClick="op_forecate_prapa()">การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC ในอนาคต
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btn_prapa_down"
+                                    onClick="close_forecate_prapa()">การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC
+                                    ในอนาคต
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                                <div class="card-body" id="prapa">
+                                    <h6 class="text-center"><b>การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC ในอนาคต
+                                            (ล้านลบ.ม./ปี)</b></h6>
+                                    <div class="d-flex flex-column text-center">
+                                        <div class="form-group m-auto w-25 mw-100">
+                                            <!-- <label for="">รายการข้อมูล :</label> -->
+                                            <select class="form-control " id="prapa_type">
+                                                <option value="eec">ภาพรวม</option>
+                                                <option value="byprov">รายจังหวัด</option>
+                                            </select>
+                                        </div>
+                                        <div class="w-100 mw-100" style="height: 350px;" id="chartprapa"></div>
+                                    </div>
+                                    <p><b>ที่มา :</b> แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน
+                                        รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardelec">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5><span
+                                            id="hchart7">การคาดการณ์ความต้องการใช้พลังงานไฟฟ้าในเขตพื้นที่เศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="electype">
+                                            <option value="eec">ภาพรวม</option>
+                                            <option value="byprov">รายจังหวัด</option>
+                                            <option value="insys">กำลังการผลิตไฟฟ้าในระบบ</option>
+                                            <option value="afsys">กำลังการผลิตไฟฟ้าที่เหลือในระบบ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv7"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
                                     </p>
                                 </div>
                             </div>
@@ -1368,7 +1612,7 @@
                                     style="margin-bottom: -20px;">
                                     <h5> <span
                                             id="hchart2">การคาดการณ์ปริมาณน้ำเสียชุมชนในกรณีที่มีการพัฒนาพื้นที่เขตพัฒนาพิเศษ
-                                            ภาคตะวันออก ปีพ.ศ. 2564 – 2570</span></h5>
+                                            ภาคตะวันออก (EEC) ปีพ.ศ. 2564 – 2570</span></h5>
                                     <div class="form-group m-auto w-25 mw-100" id="">
                                         <!-- <label for="">จังหวัด</label> -->
                                         <select class="form-control " id="wastetype">
@@ -1430,7 +1674,8 @@
                                     style="margin-bottom: -20px;">
                                     <h5> <span
                                             id="hchart2">การคาดการณ์ปริมาณขยะมูลฝอยในพื้นที่เขตเศรษฐกิจพิเศษภาคตะวันออก
-                                            ปีพ.ศ. 2564 - 2569</span></h5>
+                                            (EEC)
+                                            ปีพ.ศ. 2564 - 2570</span></h5>
                                     <div class="form-group m-auto w-25 mw-100" id="">
                                         <!-- <label for="">จังหวัด</label> -->
                                         <select class="form-control " id="garbagetype">
@@ -1484,10 +1729,127 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card w-100 mw-100" id="cardUW">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart8">การคาดการณ์ปริมาณน้ำดิบในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="UWtype">
+                                            <option value="sum">น้ำดิบจำหน่ายรวม</option>
+                                            <option value="prapa">การประปาส่วนภูมิภาค</option>
+                                            <option value="industry">ภาคอุตสาหกรรม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv8"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardecon">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart9">การพยากรณ์เศรษฐกิจในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="econtype">
+                                            <option value="eec">จำนวนนักท่องเที่ยว (ภาพรวม)</option>
+                                            <option value="byprov">จำนวนนักท่องเที่ยว (รายจังหวัด)</option>
+                                            <option value="agri">ภาคเกษตร</option>
+                                            <option value="industry">ภาคอุตสาหกรรม</option>
+                                            <option value="sevice">ภาคบริการ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv9"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardlabor">
+                                <div class="d-flex  flex-column justify-content-center p-4"
+                                    style="margin-bottom: -20px;">
+                                    <h5 class="text-center"><span id="hchart10"></span>
+                                    </h5>
+                                    <div class="form-group m-auto w-100 mw-100" id="">
+                                        <div class="row d-flex align-items-end ">
+                                            <div class="col-sm-4">
+                                                <label for="">รายการข้อมูล :</label>
+                                                <select class="form-control " id="labortype">
+                                                    <option value="employ">การจ้างงาน</option>
+                                                    <option value="exert">กําลังแรงงาน</option>
+                                                    <option value="minwage">อัตราค่าแรงขั้นต่ำ</option>
+                                                    <option value="edu">ระดับการศึกษา</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_exert">
+                                                <!-- <label for="">รายการข้อมูล :</label> -->
+                                                <select class="form-control" id="labor_Dexert">
+                                                    <option value="eec">ภาพรวม</option>
+                                                    <option value="byprov">รายจังหวัด</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_employ">
+                                                <!-- <label for="">รายการข้อมูล :</label> -->
+                                                <select class="form-control" id="labor_Demploy">
+                                                    <option value="eec">ภาพรวม</option>
+                                                    <option value="byprov">รายจังหวัด</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_edu">
+                                                <label for="">ระดับการศึกษา :</label>
+                                                <select class="form-control " id="laboredu">
+                                                    <option value="M3">ม.3 หรือต่ำกว่า</option>
+                                                    <option value="M6">ม.6</option>
+                                                    <option value="profession">วิชาชีพ</option>
+                                                    <option value="Bachelor">ปริญญาตรี</option>
+                                                    <option value="MoreBachelor">สูงกว่าปริญญาตรี</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv10"></div>
+                                <div class="card-body">
+                                    <!-- <p><b>หมายเหตุ</b></p>
+                                    <ul style="line-height:100%">
+                                        <li>ปริมาณขยะที่จะเกิดขึ้นในอนาคตคำนวณมาจาก จำนวนประชากรจากการคาดการณ์ (คน)
+                                            คูณด้วยอัตราการเกิดขยะมูลฝอย ซึ่งเป็นค่าคงที่ 1.17 กิโลกรัมต่อวัน
+                                            อ้างอิงจากกรมส่งเสริมคุณภาพสิ่งแวดล้อม กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                        </li>
+                                        <li> จำนวนประชากรที่คาดการณ์เป็นการคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            พ.ศ. 2564-2570</li>
+                                    </ul> -->
+                                    <p><b>ที่มา :</b>
+                                        รายงานการศึกษาวิเคราะห์ฐานข้อมูลแรงงานและประมาณการความต้องการแรงงาน โดย
+                                        กระทรวงแรงงาน สำนักงานปลัดกระทรวง กองเศรษฐกิจการแรงงาน (2560)
+                                    </p>
+                                </div>
+                            </div>
 
                             <div class="card">
                                 <div id="map"></div>
                             </div>
+
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="attrib" class="display table table-striped table-bordered"
+                                        cellspacing="0" width="100%"></table>
+                                </div><!-- /col-sm-12 -->
+                            </div>
+
                         </div>
                     </div>
                 </div>
