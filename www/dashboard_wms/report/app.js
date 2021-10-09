@@ -912,7 +912,8 @@ let callAttribute = (lyr) => {
         table = $('#attrib').DataTable({
             dom: "Bfrtip",
             data: dat,
-            columns: col
+            columns: col,
+            scrollX: true
         });
         $("#spiner").hide()
     })
