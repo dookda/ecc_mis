@@ -1,25 +1,65 @@
-let uid = sessionStorage.getItem('key');
-let typ = sessionStorage.getItem('typ');
-let org = sessionStorage.getItem('org');
+// let uid = sessionStorage.getItem('key');
+// let typ = sessionStorage.getItem('typ');
+// let org = sessionStorage.getItem('org');
 
 let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-// console.log(uid, org);
-uid && org ? null : logout();
-$("#aut").html(`${org}`)
 
-if (typ == "admin") {
-    $("#isadmin").show()
-    $("#isadmin2").show()
-} else {
-    $("#isadmin").hide()
-    $("#isadmin2").hide()
-}
-// const url = "https://eec-onep.online:3700";
-const url = "http://localhost:3700";
-// const url = 
+// uid && org ? null : logout();
+// $("#aut").html(`${org}`)
+
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+let typ = 'admin'
+let org = 'user'
+
+$(document).ready(function () {
+    let table = $('#myTable').DataTable({
+        ajax: {
+            type: "POST",
+            url: url + '/projmon-api/getdata',
+            data: { org: org, typ: typ },
+            dataSrc: 'data'
+        },
+        columns: [
+            { data: 'prj_order' },
+            {
+                data: '',
+                render: (data, type, row) => {
+                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
+                    // return `${row.prj_name}`
+                }
+            },
+            { data: 'prj_operat' },
+            { data: 'budget' },
+            // { data: 'proc_stat' },
+            { data: 'opert_stat' },
+            // {
+            //     data: null,
+            //     render: function (data, type, row, meta) {
+            //         return `
+            //            <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไข</a>
+            //            <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+            //     }
+            // }
+        ],
+        searching: true,
+        scrollX: true
+    });
+
+    table.on('search.dt', function () {
+        let data = table.rows({ search: 'applied' }).data()
+        getProc_stat(data);
+        getOpert_stat(data);
+        getPrj_cate(data);
+        getBudget(data);
+        getMap(data)
+    });
+
+    loadMap();
+})
 
 let latlng;
 
@@ -80,70 +120,11 @@ let loadMap = () => {
     L.control.layers(baseMap, overlayMap).addTo(map);
 }
 
-let loadTable = () => {
-    let table = $('#myTable').DataTable({
-        ajax: {
-            type: "POST",
-            url: url + '/projmon-api/getdata',
-            data: { org: org, typ: typ },
-            dataSrc: 'data'
-        },
-        columns: [
-            // { data: 'prj_order' },
-            // { data: 'prj_cate' },
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    return `${meta.row + 1}`
-                }
-            },
-            {
-                data: '',
-                render: (data, type, row) => {
-                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
-                    // return `${row.prj_name}`
-                }
-            },
-            { data: 'prj_operat' },
-            { data: 'budget' },
-            // { data: 'proc_stat' },
-            { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `
-                       <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
-                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'prj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "15%"
-            }
-        ],
-        searching: true,
-        scrollX: false,
-        // order: [2, 'asc'],
-    });
-
-    // table.column(2).visible(false);
-
-    table.on('search.dt', function () {
-        let data = table.rows({ search: 'applied' }).data()
-        getProc_stat(data);
-        getOpert_stat(data);
-        getPrj_cate(data);
-        getBudget(data);
-        getMap(data)
-    });
-    loadMap();
-}
-
-loadTable()
-
 // map.addLayer(drawnItems);
 
-let confirmDelete = (prj_id, prj_name, tbType) => {
+let confirmDelete = (prj_id, prj_name) => {
     $("#projId").val(prj_id)
     $("#projName").text(prj_name)
-    $("#tbType").val(tbType)
     $("#deleteModal").modal("show")
 }
 
@@ -156,26 +137,9 @@ let closeModal = () => {
 let deleteValue = () => {
     // console.log($("#projId").val());
     let prj_id = $("#projId").val()
-    if ($("#tbType").val() == "prj") {
-        axios.post(url + "/projmon-api/deletedata", { prj_id: prj_id }).then(r => {
-            if (r.data.data == "success") {
-                $('#editModal').modal('hide')
-                $('#deleteModal').modal('hide')
-                $('#myTable').DataTable().ajax.reload();
-            }
-        })
-    }
-
-    if ($("#tbType").val() == "nonprj") {
-        axios.post(url + "/projmon-api/deletedatanonprj", { prj_id: prj_id }).then(r => {
-            if (r.data.data == "success") {
-                $('#editModal').modal('hide')
-                $('#deleteModal').modal('hide')
-                $('#mTable').DataTable().ajax.reload();
-            }
-        })
-    }
-
+    axios.post(url + "/projmon-api/deletedata", { prj_id: prj_id }).then(r => {
+        r.data.data == "success" ? closeModal() : null
+    })
 }
 
 let getMap = (x) => {
@@ -243,16 +207,15 @@ let getPrj_cate = async (x) => {
         cat: e,
         val: ev
     }]
-    barChart(dat, "chart1", "จำนวนโครงการ")
+    barChart(dat, "chart1", "โครงการ")
 }
 
 let getBudget = async (x) => {
-    let a = "งบประมาณประจำปี 2561";
-    let b = "งบประมาณประจำปี 2562";
-    let c = "งบประมาณประจำปี 2563";
-    let d = "งบประมาณประจำปี 2564";
-    let e = "งบประมาณประจำปี 2565";
-    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
+    let a = "งบประมาณประจำปี 2561"
+    let b = "งบประมาณประจำปี 2562"
+    let c = "งบประมาณประจำปี 2563"
+    let d = "งบประมาณประจำปี 2564"
+    let av = 0, bv = 0, cv = 0, dv = 0
 
     await x.map(i => {
 
@@ -264,8 +227,6 @@ let getBudget = async (x) => {
             cv += Number(i.budg_63)
         } else if (i.budg_64) {
             dv += Number(i.budg_64)
-        } else if (i.budg_65) {
-            ev += Number(i.budg_65)
         }
     })
     let dat = [{
@@ -280,9 +241,6 @@ let getBudget = async (x) => {
     }, {
         cat: d,
         val: dv
-    }, {
-        cat: e,
-        val: ev
     }]
 
     // console.log(dat);
@@ -315,7 +273,7 @@ let getProc_stat = async (x) => {
         cat: c,
         val: cv
     }]
-    barChart(dat, "chart3", "จำนวนโครงการ")
+    barChart(dat, "chart3", "โครงการ")
 }
 
 let getOpert_stat = async (x) => {
@@ -326,7 +284,7 @@ let getOpert_stat = async (x) => {
     let e = "ดำเนินการเรียบร้อยแล้ว"
     let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
 
-    await x.map((i, k) => {
+    await x.map(i => {
         // console.log(i);
         if (i.opert_stat == a) {
             av++
@@ -339,7 +297,6 @@ let getOpert_stat = async (x) => {
         } else if (i.opert_stat == e) {
             ev++
         }
-        $("#projtotal").text(k + 1)
     })
     let dat = [{
         cat: "อยู่ระหว่างการศึกษาความเหมาะสมฯ",
@@ -357,65 +314,7 @@ let getOpert_stat = async (x) => {
         cat: e,
         val: ev
     }]
-    // barChart(dat, "chart4", "จำนวนโครงการ");
-    ratioChart(dat, "chart5", "จำนวนโครงการ");
-}
-
-let ratioChart = (dat, div, label) => {
-    // Themes begin
-    am4core.useTheme(am4themes_animated);
-    // Themes end
-
-    // Create chart instance
-    var chart = am4core.create(div, am4charts.PieChart);
-
-    // Add and configure Series
-    var pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = "val";
-    pieSeries.dataFields.category = "cat";
-
-    // Let's cut a hole in our Pie chart the size of 30% the radius
-    chart.innerRadius = am4core.percent(30);
-
-    // Put a thick white border around each Slice
-    pieSeries.slices.template.stroke = am4core.color("#fff");
-    pieSeries.slices.template.strokeWidth = 2;
-    pieSeries.slices.template.strokeOpacity = 1;
-    pieSeries.slices.template.cursorOverStyle = [
-        {
-            "property": "cursor",
-            "value": "pointer"
-        }
-    ];
-
-    pieSeries.alignLabels = false;
-    pieSeries.labels.template.bent = true;
-    pieSeries.labels.template.radius = 3;
-    pieSeries.labels.template.padding(0, 0, 0, 0);
-
-    pieSeries.labels.template.disabled = true;
-    pieSeries.ticks.template.disabled = true;
-
-    // Create a base filter effect (as if it's not there) for the hover to return to
-    var shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
-    shadow.opacity = 0;
-
-    // Create hover state
-    var hoverState = pieSeries.slices.template.states.getKey("hover"); // normally we have to create the hover state, in this case it already exists
-
-    // Slightly shift the shadow and make it more prominent on hover
-    var hoverShadow = hoverState.filters.push(new am4core.DropShadowFilter);
-    hoverShadow.opacity = 0.7;
-    hoverShadow.blur = 5;
-
-    // Add a legend
-    chart.legend = new am4charts.Legend();
-    chart.legend.position = "right";
-    chart.legend.fontSize = "12px";
-    // chart.legend.valueLabels.template.align = "left"
-    // chart.legend.valueLabels.template.textAlign = "start"
-
-    chart.data = dat;
+    barChart(dat, "chart4", "โครงการ")
 }
 
 let barChart = (datarr, chartdiv, unit) => {
@@ -455,6 +354,8 @@ let barChart = (datarr, chartdiv, unit) => {
     // categoryAxis.sortBySeries = series;
     chart.data = datarr
 }
+
+
 
 
 
