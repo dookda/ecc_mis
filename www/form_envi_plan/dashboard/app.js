@@ -21,191 +21,32 @@ if (typ == "admin") {
 const url = "http://localhost:3700";
 // const url = 
 
-let latlng;
-
-let map = L.map('map', {
-    center: { lat: 13.305567, lng: 101.383101 },
-    zoom: 9
-});
-
 let drawnItems = new L.FeatureGroup();
 
-let loadMap = () => {
-    let mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/light-v9',
-        tileSize: 512,
-        zoomOffset: -1
-    });
-
-    let ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
-
-    const tam = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: "th:tambon_4326",
-        format: "image/png",
-        transparent: true,
-        CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
-
-    const amp = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: "th:amphoe_4326",
-        format: "image/png",
-        transparent: true,
-        CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
-
-    const pro = L.tileLayer.wms("https://rti2dss.com:8443/geoserver/th/wms?", {
-        layers: "th:province_4326",
-        format: "image/png",
-        transparent: true,
-        CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-    });
-
-    let baseMap = {
-        "Mapbox": mapbox.addTo(map),
-        "google Hybrid": ghyb
-    }
-    let overlayMap = {
-        "ขอบเขตตำบล": tam.addTo(map),
-        "ขอบเขตอำเภอ": amp.addTo(map),
-        "ขอบเขตจังหวัด": pro.addTo(map),
-        "พื้นที่ดำเนินโครงการ": drawnItems.addTo(map)
-    }
-    L.control.layers(baseMap, overlayMap).addTo(map);
-}
-
 let loadTable = () => {
-    let table = $('#myTable').DataTable({
-        ajax: {
-            type: "POST",
-            url: url + '/projmon-api/getdata',
-            data: { org: org, typ: typ },
-            dataSrc: 'data'
-        },
-        columns: [
-            // { data: 'prj_order' },
-            // { data: 'prj_cate' },
-            {
-                data: '',
-                render: (data, type, row, meta) => {
-                    return `${meta.row + 1}`
-                }
-            },
-            {
-                data: '',
-                render: (data, type, row) => {
-                    return `${row.prj_name} <span class="badge bg-info text-white">${row.prj_cate}</span>`
-                    // return `${row.prj_name}`
-                }
-            },
-            { data: 'prj_operat' },
-            { data: 'budget' },
-            // { data: 'proc_stat' },
-            { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `
-                       <a type="button" class="btn btn-margin btn-info" href="./../edit/index.html?id=${row.prj_id}"><i class="bi bi-gear-fill"></i>&nbsp;รายละเอียด</a>
-                       <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.prj_id},'${row.prj_name}', 'prj')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "15%"
-            }
-        ],
-        searching: true,
-        scrollX: false,
-        // order: [2, 'asc'],
+    axios.post(url + '/projmon-api/getdata', { org: org, typ: typ }).then(r => {
+        let dat = r.data.data
+        getProc_stat(dat, "chart1");
+        getOpert_stat(dat, "chart2");
+        getPrj_cate(dat, "chart3");
+        getBudget(dat, "chart5");
     });
+}
 
-    // table.column(2).visible(false);
-
-    table.on('search.dt', function () {
-        let data = table.rows({ search: 'applied' }).data()
-        getProc_stat(data);
-        getOpert_stat(data);
-        getPrj_cate(data);
-        getBudget(data);
-        getMap(data)
+let loadTable2 = () => {
+    axios.post(url + '/projmon2-api/getallproj', { org: org, typ: typ }).then(r => {
+        let dat = r.data.data
+        getProc_stat(dat, "chart21");
+        getOpert_stat(dat, "chart22");
+        getPrj_cate(dat, "chart23");
+        getBudget(dat, "chart25");
     });
-    loadMap();
 }
 
-loadTable()
+loadTable();
+loadTable2();
 
-// map.addLayer(drawnItems);
-
-let confirmDelete = (prj_id, prj_name, tbType) => {
-    $("#projId").val(prj_id)
-    $("#projName").text(prj_name)
-    $("#tbType").val(tbType)
-    $("#deleteModal").modal("show")
-}
-
-let closeModal = () => {
-    $('#editModal').modal('hide')
-    $('#deleteModal').modal('hide')
-    $('#myTable').DataTable().ajax.reload();
-}
-
-let deleteValue = () => {
-    // console.log($("#projId").val());
-    let prj_id = $("#projId").val()
-    if ($("#tbType").val() == "prj") {
-        axios.post(url + "/projmon-api/deletedata", { prj_id: prj_id }).then(r => {
-            if (r.data.data == "success") {
-                $('#editModal').modal('hide')
-                $('#deleteModal').modal('hide')
-                $('#myTable').DataTable().ajax.reload();
-            }
-        })
-    }
-
-    if ($("#tbType").val() == "nonprj") {
-        axios.post(url + "/projmon-api/deletedatanonprj", { prj_id: prj_id }).then(r => {
-            if (r.data.data == "success") {
-                $('#editModal').modal('hide')
-                $('#deleteModal').modal('hide')
-                $('#mTable').DataTable().ajax.reload();
-            }
-        })
-    }
-
-}
-
-let getMap = (x) => {
-    // console.log(x);
-    map.eachLayer((lyr) => {
-        if (lyr.options.name == 'geojson') {
-            map.removeLayer(lyr);
-        }
-    });
-    var style = {
-        "color": "#ff7800",
-        "weight": 2,
-        "opacity": 0.65
-    };
-    x.map(i => {
-        if (i.geojson) {
-            // console.log(i.geojson);
-            let geojson = L.geoJSON(JSON.parse(i.geojson), {
-                style: style,
-                name: "geojson",
-                onEachFeature: function (feature, layer) {
-                    drawnItems.addLayer(layer);
-                }
-            })
-            geojson.addTo(map);
-        }
-    })
-}
-
-let getPrj_cate = async (x) => {
+let getPrj_cate = async (x, div) => {
     let a = "Flagship"
     let b = "ยุทธศาสตร์ที่ 1"
     let c = "ยุทธศาสตร์ที่ 2"
@@ -243,10 +84,10 @@ let getPrj_cate = async (x) => {
         cat: e,
         val: ev
     }]
-    barChart(dat, "chart1", "จำนวนโครงการ")
+    barChart(dat, div, "จำนวนโครงการ")
 }
 
-let getBudget = async (x) => {
+let getBudget = async (x, div) => {
     let a = "งบประมาณประจำปี 2561";
     let b = "งบประมาณประจำปี 2562";
     let c = "งบประมาณประจำปี 2563";
@@ -284,12 +125,11 @@ let getBudget = async (x) => {
         cat: e,
         val: ev
     }]
-
     // console.log(dat);
-    barChart(dat, "chart2", "ล้านบาท")
+    barChart(dat, div, "ล้านบาท")
 }
 
-let getProc_stat = async (x) => {
+let getProc_stat = async (x, div) => {
     let a = "ได้รับงบประมาณแล้ว";
     let b = "ไม่ได้รับงบประมาณ";
     let c = "ยังไม่ยื่นของบประมาณ";
@@ -315,10 +155,10 @@ let getProc_stat = async (x) => {
         cat: c,
         val: cv
     }]
-    barChart(dat, "chart3", "จำนวนโครงการ")
+    barChart(dat, div, "จำนวนโครงการ")
 }
 
-let getOpert_stat = async (x) => {
+let getOpert_stat = async (x, div) => {
     let a = "อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด"
     let b = "อยู่ระหว่างตั้งของบประมาณ"
     let c = "อยู่ระหว่างดำเนินการ/ก่อสร้าง"
@@ -358,7 +198,7 @@ let getOpert_stat = async (x) => {
         val: ev
     }]
     // barChart(dat, "chart4", "จำนวนโครงการ");
-    ratioChart(dat, "chart5", "จำนวนโครงการ");
+    ratioChart(dat, div, "จำนวนโครงการ");
 }
 
 let ratioChart = (dat, div, label) => {
