@@ -15,7 +15,7 @@ $("#aut").html(`${org}`)
 
 let refreshPage = () => {
     // location.reload(true);
-    window.open("./../report/index.html", "_self");
+    window.open("./../p1_report/index.html", "_self");
 }
 
 const url = "https://eec-onep.online:3700";

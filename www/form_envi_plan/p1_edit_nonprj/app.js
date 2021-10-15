@@ -26,7 +26,7 @@ $("#prj_measure").change(i => {
 
 let refreshPage = () => {
     // location.reload(true);
-    window.open("./../report/index.html", "_self");
+    window.open("./../p1_report/index.html", "_self");
 }
 
 let getActivity = (prj_measure) => {

@@ -78,7 +78,7 @@ drawnItems.on('pm:edit', e => {
 
 let refreshPage = () => {
     // location.reload(true);
-    window.open("./../report/index.html", "_self");
+    window.open("./../p1_report/index.html", "_self");
 }
 
 // tinymce.init({
