@@ -78,7 +78,7 @@ map.on('pm:create', e => {
 
 let refreshPage = () => {
     // location.reload(true);
-    window.open("./../report/index.html", "_self");
+    window.open("./../p2_report/index.html", "_self");
 }
 
 let getPrjcate = () => {

@@ -23,7 +23,7 @@ if (typ == "admin") {
 let searchParams = new URLSearchParams(window.location.search)
 let id = searchParams.get('id')
 
-console.log(id)
+// console.log(id)
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -47,7 +47,7 @@ let getActivity = (prj_measure) => {
             if (x.data.data[0].prj_measure == prj_measure) {
                 r.data.data.map((i, k) => {
 
-                    console.log(x);
+                    // console.log(x);
                     if (k + 1 == 1) {
                         $("#list_measure").append(`<li>${i.prj_detail}</li>
                         <b>การดำเนินงานที่สอดคล้องกับแนวทางการปฏิบัติ</b>
@@ -118,7 +118,7 @@ let getActivity = (prj_measure) => {
 
 let getValue = (id) => {
     axios.post(url + "/projmon-api/getonenonproj", { prj_id: id }).then(async (r) => {
-        console.log(r.data.data[0]);
+        // console.log(r.data.data[0]);
         $('#prj_id').val(r.data.data[0].prj_id)
         $('#prj_measure').val(r.data.data[0].prj_measure)
         $('#prj_cate').val(r.data.data[0].prj_cate)
