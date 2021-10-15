@@ -12,7 +12,17 @@ let logout = () => {
 }
 // uid && typ == "admin" ? null : logout();
 uid && org ? null : logout();
-$("#aut").html(`${org}`);
+
+if (typ == "admin") {
+    $("#usermenu").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="./../admin/index.html">
+            <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
+        </div>`)
+} else {
+    $("#usermenu").append(`<a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a>`)
+}
 
 let latlng = {
     lat: 13.305567,

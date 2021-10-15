@@ -3,6 +3,29 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
+
+app.post("/projmon2-api/getdata", (req, res) => {
+    const { org, typ } = req.body;
+    // console.log(org, typ);
+    if (typ == 'admin') {
+        const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+        FROM eecprj_mon_phase2 ORDER BY prj_cate ASC`
+        eec.query(sql).then(r => {
+            res.status(200).json({
+                data: r.rows
+            })
+        })
+    } else if (typ == 'editor') {
+        const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+        FROM eecprj_mon_phase2 WHERE prj_operat='${org}' ORDER BY prj_cate ASC`
+        eec.query(sql).then(r => {
+            res.status(200).json({
+                data: r.rows
+            })
+        })
+    }
+})
+
 app.post("/projmon2-api/prj_cate", (req, res) => {
     const sql = `SELECT DISTINCT prj_cate FROM eecprj_mon_phase2`
     eec.query(sql).then(r => {

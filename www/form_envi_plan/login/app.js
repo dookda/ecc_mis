@@ -13,13 +13,13 @@ let gotoDashboard = () => {
 let gotoPage = (id) => {
     if (id.auth == "admin") {
         // console.log(id);
-        location.href = "./../report/index.html";
+        location.href = "./../dashboard/index.html";
         sessionStorage.setItem('key', id.uid);
         sessionStorage.setItem('typ', id.auth);
         sessionStorage.setItem('org', id.organize);
     } else {
         // console.log(id);
-        location.href = "./../report/index.html";
+        location.href = "./../dashboard/index.html";
         sessionStorage.setItem('key', id.uid);
         sessionStorage.setItem('typ', id.auth);
         sessionStorage.setItem('org', id.organize);

@@ -8,7 +8,17 @@ let logout = () => {
 }
 // uid && typ == "admin" ? null : logout();
 uid && org ? null : logout();
-$("#aut").html(`${org}`);
+
+if (typ == "admin") {
+    $("#usermenu").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="./../admin/index.html">
+            <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
+        </div>`)
+} else {
+    $("#usermenu").append(`<a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a>`)
+}
 
 let latlng = {
     lat: 13.305567,
@@ -20,8 +30,8 @@ let map = L.map('map', {
     zoom: 9
 });
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
