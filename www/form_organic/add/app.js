@@ -3,7 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_organic = sessionStorage.getItem('f_organic');
 
-if (f_organic == 'true') {
+if (f_organic == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 
