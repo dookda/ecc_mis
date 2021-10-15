@@ -408,4 +408,18 @@ app.post("/eec-api/get-geomarea", async (req, res) => {
     // });
 })
 
+app.get("/eec-api/gettambylatlon/:lat/:lon", (req, res) => {
+    const lat = req.params.lat;
+    const lon = req.params.lon;
+    const sql = `SELECT tam_nam_t, amphoe_t, prov_nam_t 
+                FROM _03_tambon_eec a
+                WHERE ST_Within(ST_GeomFromText('POINT(${lon} ${lat})', 4326), 
+                     ST_TransForm(a.geom, 4326)) = true`;
+    geo.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+})
+
 module.exports = app;
