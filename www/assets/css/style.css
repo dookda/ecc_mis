@@ -11,6 +11,7 @@
 body {
   font-family: "Kanit", sans-serif;
   color: #444444;
+
 }
 
 a {
@@ -333,6 +334,19 @@ body {
     content: "\ea9d";
   }
 }
+@media (max-width:1180px) {
+  .nav-menu > ul > li {
+    position: relative;
+    white-space: nowrap;
+    padding: 4px 0 4px 12px;
+  }
+  .nav-menu a {
+    font-size: 12px;
+  }
+  .header-social-links{
+    margin-left: -15px;
+  }
+}
 
 /* Mobile Navigation */
 .mobile-nav-toggle {
@@ -352,6 +366,8 @@ body {
 
 .mobile-nav-toggle i {
   color: #34b7a7;
+  margin-top: -15%;
+  display: flex;
 }
 
 .mobile-nav {

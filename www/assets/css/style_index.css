@@ -64,7 +64,7 @@ section{
     background-image: url(assets/img/BG2.jpg);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 50% 100%;
+    background-size: contain;
   }
   section{
     display: flex;
@@ -142,6 +142,21 @@ section{
     display: block;
       transition: all 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.14s;
       transform: translateX(-80px);
+ }
+
+ @media (max-width: 1023px) {
+  .row-content{
+    /* margin-top: -20px; */
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;}
+ }
+ .card-home{
+   margin: auto;
+   margin-bottom: 20px;
  }
  
 .canvas_copy_details button{
@@ -270,3 +285,42 @@ section{
   border: 3px solid #eee;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.11), 0 4px 14px rgba(0, 0, 0, 0.04);
 }
+
+.cookie{
+  margin: auto;
+  width: fit-content;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  
+}
+.dcookie{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.w-fit{
+  width: fit-content;
+  max-width: 100%;
+}
+
+@media (max-width:769px) {
+  .dcookie{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+}
+
+/* @media (max-width: 1024px) {
+  .nav-menu > ul > li {
+    position: relative;
+    white-space: nowrap;
+    padding: 8px 0 8px 18px;
+  }
+  .nav-menu a {
+    font-size: 13px;
+  }
+} */

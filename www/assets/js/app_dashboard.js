@@ -1,9 +1,21 @@
 let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
+let Accept = sessionStorage.getItem('accept');
 // urid ? null : location.href = "./../../form_register/login/index.html";
 $("#usr1").hide()
 $("#usr2").hide()
+
+if (Accept || eecauth) {
+    $('.toast').toast('hide')
+} else {
+    $('.toast').toast('show')
+}
+let setAccept
+$('#btnAccept').click(() => {
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+})
 
 if (urname !== null) {
     $("#usr1").show();
@@ -69,70 +81,70 @@ $('#tabmenu').mouseleave(function () {
 //     $('#cardother').css({ "pointer-events": "none", "filter": "grayscale(100%)", "opacity": "0.3" });
 //     $('#cardother2').css("pointer-events", "none");
 // }
- //โมดูลปริมาณน้ำ
- $('#cardwc2').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_wastewater/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='./form_wastewater/report_user/index.html'
-    } else{ window.location.href = "./../../form_register/login/index.html"}
+//โมดูลปริมาณน้ำ
+$('#cardwc2').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_wastewater/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_wastewater/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
 //โมดูลคุณภาพน้ำ
-$('#cardqc1').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_water_surface/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='./form_water_surface/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardqc1').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_water_surface/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_water_surface/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
-$('#cardqc2').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_water_qua/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='./form_water_qua/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardqc2').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_water_qua/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_water_qua/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
-$('#cardqc3').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_seawater_qua/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='./form_seawater_qua/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardqc3').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_seawater_qua/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_seawater_qua/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
- //โมดูลชีวภาพ 
-$('#cardbio1').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_green/report_admin/index.html'
-    }else if(eecauth == 'user'   || eecauth == "office"){
-        window.location.href='./form_green/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+//โมดูลชีวภาพ 
+$('#cardbio1').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_green/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_green/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
-$('#cardbio2').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='/form_biodiversity/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='/form_biodiversity/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardbio2').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = '/form_biodiversity/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = '/form_biodiversity/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
-$('#cardbio3').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_familyforest/report_admin/index.html'
-    }else if(eecauth == 'user'  || eecauth == "office"){
-        window.location.href='./form_familyforest/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardbio3').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_familyforest/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_familyforest/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
 //โมดูลอื่นๆ
-$('#cardother1').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_garbage/report_admin/index.html'
-    }else if(eecauth == 'user' || eecauth == "office" ){
-        window.location.href='./form_garbage/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardother1').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_garbage/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_garbage/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })
-$('#cardother2').on('click',function(){
-    if (eecauth == 'admin'){
-        window.location.href='./form_notice/report_admin/index.html'
-    }else if(eecauth == 'user' || eecauth == "office" ){
-        window.location.href='./form_notice/report_user/index.html'
-    }else{ window.location.href = "./../../form_register/login/index.html"}
+$('#cardother2').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_notice/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        window.location.href = './form_notice/report_user/index.html'
+    } else { window.location.href = "./../../form_register/login/index.html" }
 })

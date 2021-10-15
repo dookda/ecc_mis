@@ -62,8 +62,9 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
-                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
@@ -102,71 +103,117 @@
                     <div class="card">
                         <div class="card-body">
                             <span id="userId"></span>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ชื่อ-นามสกุล:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="user_name">
-                                </div>
-                            </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">เบอร์โทรศัพท์:</label>
+                                <label for="" class="col-sm-2 col-form-label">ชื่อสำหรับใช้งานระบบ (Account): <label
+                                        style="color: red;" for="">*</label></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="tele">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">รหัสผ่าน:</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="password">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">รหัสผ่าน:</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="password2">
+                                    <input type="text" class="form-control" id="tele"
+                                        aria-describedby="inputGroupPrepend" required>
                                     <span class="badge bg-warning text-dark"
-                                        id="passcheck">โปรดกรอกรหัสผ่านไห้เหมือนกัน</span>
+                                        id="accountcheck">ชื่อนี้ถูกใช้งานแล้ว</span>
+                                    <div class="invalid-feedback">
+                                        *ระบุชื่อเข้าใช้งานระบบ
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">อีเมล์:</label>
+                                <label for="" class="col-sm-2 col-form-label">รหัสผ่าน:<label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="email">
+                                    <input type="password" class="form-control" id="password"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        *ระบุรหัสผ่าน
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ที่อยู่:</label>
+                                <label for="" class="col-sm-2 col-form-label">รหัสผ่าน: <label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="address">
+                                    <input type="password" class="form-control" id="password2"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <span class="badge bg-warning text-dark"
+                                        id="passcheck">โปรดกรอกรหัสผ่านให้เหมือนกัน</span>
+                                    <div class="invalid-feedback">
+                                        *ระบุรหัสผ่าน
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">จังหวัด:</label>
+                                <label for="" class="col-sm-2 col-form-label">ชื่อ-นามสกุล: <label style="color: red;"
+                                        for="">*</label></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="user_name"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        *ระบุชื่อ-นามสกุล
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">อีเมล์: <label style="color: red;"
+                                        for="">*</label></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="email"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        *ระบุอีเมล
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">ที่อยู่: <label style="color: red;"
+                                        for="">*</label></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="address"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        *ระบุที่อยู่
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">จังหวัด: <label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="pro" onchange="getAmp(this.value)">
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุจังหวัด
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">อำเภอ:</label>
+                                <label for="" class="col-sm-2 col-form-label">อำเภอ: <label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="amp" onchange="getTam(this.value)">
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุอำเภอ
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">ตำบล:</label>
+                                <label for="" class="col-sm-2 col-form-label">ตำบล: <label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="tam" onchange="getTamOne(this.value)">
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุตำบล
+                                    </div>
                                 </div>
                             </div>
 
@@ -175,7 +222,8 @@
                             <input type="hidden" id="tam_name">
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">กลุ่มอาชีพและองค์กร:</label>
+                                <label for="" class="col-sm-2 col-form-label">กลุ่มอาชีพและองค์กร: <label
+                                        style="color: red;" for="">*</label></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="ocup">
                                         <option value="สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม">
@@ -192,17 +240,24 @@
                                         <option value="กรมควบคุมมลพิษ">กรมควบคุมมลพิษ (คพ.)</option>
                                         <option value="ประชาชน">ประชาชน</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุกลุ่มอาชีพและองค์กร
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">เพศ:</label>
+                                <label for="" class="col-sm-2 col-form-label">เพศ: <label style="color: red;"
+                                        for="">*</label></label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="sex">
                                         <option value="ชาย" selected>ชาย</option>
                                         <option value="หญิง">หญิง</option>
                                         <option value="ไม่ระบุ">ไม่ระบุ</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุเพศ
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -242,36 +297,65 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
-
-    <div class="modal fade" id="okmodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="okmodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>เพิ่มข้อมูลสำเร็จ
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoLogin()">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="gotoLogin()">ยืนยัน</button>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="errormodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+
+    <div class="modal" id="errormodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    กรุณาระบุ<span id="detail"></span>ของท่าน
-                    <!-- <p>กรุณากรอกชื่อของท่าน</p> -->
-                    <p></p <p>
-                    </p>
-                    </p>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
+
             </div>
         </div>
     </div>
+
 
     <!-- Vendor JS Files -->
     <script src="./../../assets/vendor/jquery/jquery.min.js"></script>

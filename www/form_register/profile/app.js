@@ -2,14 +2,21 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let fromadmin = sessionStorage.getItem('fromadmin');
-$("#usrname").text(urname);
+// $("#usrname").text(urname);
 
 urid ? null : location.href = "./../../form_register/login/index.html";
 
 if (eecauth == 'admin') {
-    $("#btnid").append(` <button type="button" class="btn btn-light" id="refresh" onclick="gotoAdmin()">
-        <span><i class="bi bi-arrow-clockwise"></i>&nbsp;จัดการผู้ใช้</span>
-    </button>`);
+    $("#usrname").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+    <i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span></a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="./../admin/index.html">
+        <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
+    </div>`)
+} else {
+    $("#usrname").append(`<a href="./../../form_register/profile/index.html">
+        <i class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+    </a>`)
 }
 
 // var url = 'http://localhost:3700';

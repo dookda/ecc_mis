@@ -22,6 +22,16 @@ app.post("/profile-api/register", async (req, res) => {
     });
 });
 
+app.post("/profile-api/chkuser", (req, res) => {
+    const { user } = req.body;
+    const sql = `SELECT count(gid) FROM register WHERE tel = '${user}'`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/profile-api/getuser", (req, res) => {
     const { regid } = req.body;
     const sql = `SELECT * FROM register`
@@ -30,7 +40,6 @@ app.post("/profile-api/getuser", (req, res) => {
             data: r.rows
         })
     })
-
 })
 
 app.post("/profile-api/getprofile", (req, res) => {

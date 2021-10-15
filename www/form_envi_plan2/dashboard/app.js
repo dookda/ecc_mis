@@ -8,15 +8,18 @@ let logout = () => {
 }
 // console.log(uid, org);
 uid && org ? null : logout();
-$("#aut").html(`${org}`)
 
 if (typ == "admin") {
-    $("#isadmin").show()
-    $("#isadmin2").show()
+    $("#usermenu").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="./../admin/index.html">
+            <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
+        </div>`)
 } else {
-    $("#isadmin").hide()
-    $("#isadmin2").hide()
+    $("#usermenu").append(`<a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a>`)
 }
+
 const url = "https://eec-onep.online:3700";
 // const url = "http://localhost:3700";
 // const url = 
