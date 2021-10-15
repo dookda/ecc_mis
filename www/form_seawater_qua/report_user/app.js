@@ -1,4 +1,6 @@
 let urid = 'user';
+$("#usr1").hide()
+$("#usr2").hide()
 
 $("#tbdata").hide();
 

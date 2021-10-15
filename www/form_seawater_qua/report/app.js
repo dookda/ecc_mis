@@ -3,7 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_seawater_qua = sessionStorage.getItem('f_seawater_qua');
 
-if (f_seawater_qua == 'true') {
+if (f_seawater_qua == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 
@@ -262,16 +262,16 @@ function getChart(sq_id) {
     axios.post(url + "/sq-api/getone", obj).then((r) => {
         $("#chartdiv").show()
         // console.log(r.data.data[0]);
-        geneChart([{ "cat": "ค่าดีโอ", "val": r.data.data[0].sq_do }], "sq_do", "ค่าดีโอ", "mg/L");
-        geneChart([{ "cat": "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "val": r.data.data[0].sq_tcb }], "sq_tcb", "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "MPN/100ml");
-        geneChart([{ "cat": "ฟอสเฟต-ฟอสฟอรัส", "val": r.data.data[0].sq_po43p }], "sq_po43p", "ฟอสเฟต-ฟอสฟอรัส", "μg-P/l");
-        geneChart([{ "cat": "ไนเตรท-ไนโตรเจน", "val": r.data.data[0].sq_no3n }], "sq_no3n", "ไนเตรท-ไนโตรเจน", "μg-N/l");
-        geneChart([{ "cat": "อุณหภูมิ", "val": r.data.data[0].sq_temp }], "sq_temp", "อุณหภูมิ", "ºC");
-        geneChart([{ "cat": "สารแขวนลอย", "val": r.data.data[0].sq_ss }], "sq_ss", "สารแขวนลอย", "");
-        geneChart([{ "cat": "ค่าความเป็นกรด-ด่าง", "val": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH");
-        geneChart([{ "cat": "ปริมาณแอมโมเนีย", "val": r.data.data[0].sq_nh3 }], "sq_nh3", "ปริมาณแอมโมเนีย", "μg-N/l");
-        geneChart([{ "cat": "ค่ามาตรฐานคุณภาพน้ำทะเล", "val": r.data.data[0].sq_mwqi }], "sq_mwqi", "ค่ามาตรฐานคุณภาพน้ำทะเล", "");
-        geneChart([{ "cat": "ปริมาณสารตะกั่ว", "val": r.data.data[0].sq_pb }], "sq_pb", "ปริมาณสารตะกั่ว", "μg/l");
+        geneChart([{ "cat": "ค่าดีโอ", "value": r.data.data[0].sq_do }], "sq_do", "ค่าดีโอ", "mg/L", 4, 10);
+        geneChart([{ "cat": "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "value": r.data.data[0].sq_tcb }], "sq_tcb", "ปริมาณแบคทีเรียกลุ่มโคลิฟอร์มทั้งหมด", "MPN/100ml", 0, 1000,);
+        geneChart([{ "cat": "ฟอสเฟต-ฟอสฟอรัส", "value": r.data.data[0].sq_po43p }], "sq_po43p", "ฟอสเฟต-ฟอสฟอรัส", "μg-P/l", 0, 45);
+        geneChart([{ "cat": "ไนเตรท-ไนโตรเจน", "value": r.data.data[0].sq_no3n }], "sq_no3n", "ไนเตรท-ไนโตรเจน", "μg-N/l", 0, 60);
+        geneChart([{ "cat": "อุณหภูมิ", "value": r.data.data[0].sq_temp }], "sq_temp", "อุณหภูมิ", "ºC", 0, 100);
+        geneChart([{ "cat": "สารแขวนลอย", "value": r.data.data[0].sq_ss }], "sq_ss", "สารแขวนลอย", "", 0, 1000);
+        geneChart([{ "cat": "ค่าความเป็นกรด-ด่าง", "value": r.data.data[0].sq_ph }], "sq_ph", "ค่าความเป็นกรด ด่าง", "pH", 7, 8.5);
+        geneChart([{ "cat": "ปริมาณแอมโมเนีย", "value": r.data.data[0].sq_nh3 }], "sq_nh3", "ปริมาณแอมโมเนีย", "μg-N/l", 0, 0.5);
+        geneChart([{ "cat": "ค่ามาตรฐานคุณภาพน้ำทะเล", "value": r.data.data[0].sq_mwqi }], "sq_mwqi", "ค่ามาตรฐานคุณภาพน้ำทะเล", "", 0, 100);
+        geneChart([{ "cat": "ปริมาณสารตะกั่ว", "value": r.data.data[0].sq_pb }], "sq_pb", "ปริมาณสารตะกั่ว", "μg/l", 0, 8.5);
     })
 }
 let dataurl
@@ -389,15 +389,16 @@ let getMarker = (d) => {
 }
 
 let getDetail = (e) => {
-    sessionStorage.setItem('sq_id', e);
+    sessionStorage.setItem('sq_gid', e);
     location.href = "./../detail/index.html";
 }
 
-let geneChart = (arr, div, tt, unit) => {
+let geneChart = (arr, div, tt, unit, min, max, value) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
 
     chart.data = arr
+    // console.log(arr)
 
     var title = chart.titles.create();
     title.text = tt;
@@ -421,21 +422,43 @@ let geneChart = (arr, div, tt, unit) => {
     axis.title.dy = 40;
 
     // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = "val";
-    series.dataFields.categoryX = "cat";
-    // series.name = "Visits";
-    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = .8;
+    function createSeries(field, name) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueY = field;
+        series.dataFields.categoryX = "cat";
+        series.name = name;
+        series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]";
+        series.columns.template.fillOpacity = .8;
 
-    var columnTemplate = series.columns.template;
-    columnTemplate.strokeWidth = 2;
-    columnTemplate.strokeOpacity = 1;
+        var columnTemplate = series.columns.template;
+        columnTemplate.strokeWidth = 2;
+        columnTemplate.strokeOpacity = 1;
+
+        if (field == "value") {
+            if (arr[0].value > max) {
+                series.stroke = am4core.color("#e53935");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#e53935");
+                series.columns.template.stroke = am4core.color("#e53935");
+                series.columns.template.fill = am4core.color("#e53935");
+            }
+
+            else if (arr[0].value < max) {
+                series.stroke = am4core.color("#00bcd4");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#00bcd4");
+                series.columns.template.stroke = am4core.color("#00bcd4");
+                series.columns.template.fill = am4core.color("#00bcd4");
+            }
+        }
+    }
+    createSeries("value", "คุณภาพน้ำทะเล");
 
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.menu.align = "left";
     chart.exporting.menu.verticalAlign = "top";
     chart.exporting.adapter.add("data", function (data, target) {
+
         var data = [];
         chart.series.each(function (series) {
             for (var i = 0; i < series.data.length; i++) {
@@ -461,14 +484,29 @@ let getDataByPro = (sq_pro) => {
             sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
         });
 
-        lineChart("csq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
-        lineChart("csq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
-        lineChart("csq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
-        lineChart("csq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
+        if (parameter == "MWQI") {
+            lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
+        }
+        else if (parameter == "PH") {
+            lineChart("divchart", sq_ph, "ความเป็นกรด ด่าง", "pH", 0, 7, 8.5, 20);
+        }
+        else if (parameter == "NN") {
+            lineChart("divchart", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l", 0, 0, 60, 500);
+        }
+        else if (parameter == "FF") {
+            lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
+        }
     })
 }
 
-let lineChart = (div, data, label, unit) => {
+//         lineChart("csq_po43p", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l");
+//         lineChart("csq_no3n", sq_no3n, "ไนเตรด ไนโตรเจน", "ug - N/l");
+//         lineChart("csq_ph", sq_ph, "ความเป็นกรด ด่าง", "pH");
+//         lineChart("csq_mwqi", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI");
+//     })
+// }
+
+let lineChart = (div, data, label, unit, min1, max1, min2, max2) => {
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -487,22 +525,59 @@ let lineChart = (div, data, label, unit) => {
     valueAxis.title.text = unit;
 
     // Create series
+
     var series = chart.series.push(new am4charts.LineSeries());
     series.dataFields.valueY = "dat";
     series.dataFields.dateX = "cat";
     series.strokeWidth = 2;
     series.name = label;
     series.minBulletDistance = 10;
-    series.tooltipText = "{valueY}";
+    // series.tooltipText = "{valueY}";
     series.showOnInit = true;
+    series.stroke = am4core.color("#00bcd4");
 
     var bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.circle.strokeWidth = 2;
+    bullet.circle.strokeWidth = 3;
     bullet.circle.radius = 4;
     bullet.circle.fill = am4core.color("#fff");
+    // bullet.circle.stroke = am4core.color("#00bcd4");
+    bullet.adapter.add("stroke", function (fill, target) {
+        if (target.dataItem.valueY > min2) {
+            return am4core.color("#e53935");
+        }
+        else if (target.dataItem.valueY < max1) {
+            return am4core.color("#e53935");
+        } return fill;
+
+    })
+
+    var bullet2 = series.bullets.push(new am4charts.Bullet());
+    bullet2.tooltipText = `{dateX} : [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
+    bullet2.adapter.add("fill", function (fill, target) {
+        if (target.dataItem.valueY > min2) {
+            return am4core.color("#e53935");
+        }
+        else if (target.dataItem.valueY < max1) {
+            return am4core.color("#e53935");
+        } return am4core.color("#00bcd4");
+    })
+
 
     var bullethover = bullet.states.create("hover");
     bullethover.properties.scale = 1.3;
+
+    var range = valueAxis.createSeriesRange(series);
+    range.value = min1;
+    range.endValue = max1;
+    range.contents.stroke = am4core.color("#e53935");
+    range.contents.fill = range.contents.stroke;
+
+    var range2 = valueAxis.createSeriesRange(series);
+    range2.value = min2;
+    range2.endValue = max2;
+    range2.contents.stroke = am4core.color("#e53935");
+    range2.contents.fill = range.contents.stroke;
+
 
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.fullWidthLineX = true;
@@ -512,6 +587,7 @@ let lineChart = (div, data, label, unit) => {
     chart.cursor.lineX.fillOpacity = 0.1;
 
     chart.legend = new am4charts.Legend();
+
 
     // Create a horizontal scrollbar with previe and place it underneath the date axis
     chart.scrollbarX = new am4charts.XYChartScrollbar();
@@ -531,10 +607,11 @@ let lineChart = (div, data, label, unit) => {
         });
         return { data: data };
     });
-
-    dateAxis.start = 0.50;
-    dateAxis.keepSelection = true;
 }
+
+// dateAxis.start = 0.50;
+// dateAxis.keepSelection = true;
+
 
 getDataByPro("ชลบุรี");
 
@@ -556,7 +633,7 @@ let getStation = () => {
     })
 }
 getStation()
-
+$("#chartall").hide();
 let callChart = () => {
     let sq_sta = $("#sta").children("option:selected").text()
     let parameter = $('#parameter').val()
@@ -603,7 +680,7 @@ let callChart = () => {
                 sq_ph.push({ cat: i.sq_date, dat: i.sq_ph ? Number(i.sq_ph) : null });
                 sq_mwqi.push({ cat: i.sq_date, dat: i.sq_mwqi ? Number(i.sq_mwqi) : null });
             });
-            console.log(sq_mwqi)
+            // console.log(sq_mwqi)
             if (parameter == "MWQI") {
                 lineChart("divchart", sq_mwqi, "ค่ามาตรฐานคุณภาพน้ำทะเล", "MWQI", 0, 0, 100, 500);
             }
@@ -639,7 +716,7 @@ let Dsq_ph = [];
 let Dsq_mwqi = [];
 let setall_dat = () => {
     axios.post(url + "/sq-api/getstation/uid", { usrid: urid }).then(r => {
-        console.log(r.data.data);
+        // console.log(r.data.data);
         r.data.data.map(i =>
             axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
                 r.data.data.map(i => {

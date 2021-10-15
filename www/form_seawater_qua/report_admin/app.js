@@ -668,7 +668,7 @@ let callChart = () => {
         $("#chartall").show();
         $('#staname').html(` ${parameter_n} ของจังหวัด${sq_pro} `)
         axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
-            console.log(r.data.data)
+            // console.log(r.data.data)
             await r.data.data.map(i => {
                 sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
                 sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
@@ -712,6 +712,8 @@ let callChart = () => {
                 lineChart("divchart", sq_po43p, "ฟอสเฟต ฟอสฟอรัส", "ug - P/l", 0, 0, 45, 500);
             }
         })
+    } else if (sta_n == "ทุกสถานีตรวจวัดค่า" && sq_pro == "ทุกจังหวัด") {
+        alert("กรุณาเลือกข้อมูลจังหวัด");
     }
 }
 let zoomExtent = (lyr, code) => {
@@ -726,140 +728,6 @@ let zoomExtent = (lyr, code) => {
         var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
         map.fitBounds(polygon.getBounds());
     })
-}
-
-// let Dsq_po43p = [];
-// let Dsq_no3n = [];
-// let Dsq_ph = [];
-// let Dsq_mwqi = [];
-let setall_dat = (prov) => {
-    let Dsq_po43p = [];
-    let Dsq_no3n = [];
-    let Dsq_ph = [];
-    let Dsq_mwqi = [];
-    var provnam = prov
-    if (provnam !== "ทุกจังหวัด") {
-        axios.post(url + "/sq-api/getstation", { prov: provnam }).then(r => {
-            var data = r.data.data.filter(e => e.sta_loc !== null);
-            data.map(i => {
-                axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
-                    r.data.data.map(i => {
-                        var data = r.data.data
-                        var length = data.length - 1
-                        Dsq_po43p.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_po43p) });
-                        Dsq_no3n.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_no3n) });
-                        Dsq_ph.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_ph) });
-                        Dsq_mwqi.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_mwqi) });
-                    })
-                    console.log(Dsq_mwqi)
-                    console.log(Dsq_ph)
-                    console.log(Dsq_po43p)
-                    console.log(Dsq_no3n)
-                })
-            })
-        })
-    } else {
-        // axios.post(url + '/sq-api/getdata', {}).then(r => {
-        //     var data = r.data.data.filter(e => e.sta_loc !== null);
-        //     data.map(i => {
-        //         axios.post(url + "/sq-api/getdatabysta", { sta: i.sta_loc }).then((r) => {
-        //             r.data.data.map(i => {
-        //                 var data = r.data.data
-        //                 var length = data.length - 1
-        //                 Dsq_po43p.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_po43p) });
-        //                 Dsq_no3n.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_no3n) });
-        //                 Dsq_ph.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_ph) });
-        //                 Dsq_mwqi.push({ "sta": data[length].sta_loc, "value": Number(data[length].sq_mwqi) });
-        //             })
-        //             console.log(Dsq_mwqi)
-        //             console.log(Dsq_ph)
-        //             console.log(Dsq_po43p)
-        //             console.log(Dsq_no3n)
-        //         })
-        //     })
-        // })
-
-    }
-}
-
-setall_dat("ชลบุรี")
-
-let chartstaall = () => {
-    // var sta = data
-    // console.log(sta)
-    var parameter = $("#parameter").val();
-
-    if (parameter == "MWQI") {
-        chartall(Dsq_mwqi, "MWQI", "MWQI")
-    } else if (parameter == "NN") {
-        chartall(Dsq_no3n, "ไนเตรท-ไนโตรเจน", "mg/l")
-    } else if (parameter == "DO") {
-        chartall(Dsq_ph, "ค่า pH", "pH")
-    } else if (parameter == "FCB") {
-        chartall(Dsq_po43p, "ฟอสเฟต-ฟอสฟอรัส", "mg/l")
-    }
-}
-let chartall = (data, label, unit) => {
-    // Themes begin
-    am4core.useTheme(am4themes_animated);
-    // Themes end
-
-    // Create chart instance
-    var chart = am4core.create("chartdiv", am4charts.XYChart);
-
-    // Add percent sign to all numbers
-    chart.numberFormatter.numberFormat = "#,###,###.##";
-    chart.legend = new am4charts.Legend()
-    // chart.legend.position = 'bottom'
-    // chart.legend.paddingBottom = 20
-    // chart.legend.labels.template.maxWidth = 95
-
-    // Add data
-    chart.data = data
-    // Create axes
-    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = "sta";
-    // categoryAxis.renderer.inside = true;
-    // categoryAxis.renderer.labels.template.valign = "top";
-    categoryAxis.renderer.labels.template.fontSize = 14;
-    // categoryAxis.renderer.grid.template.location = 0;
-    // categoryAxis.renderer.minGridDistance = 30;
-
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.title.text = label + " " + "(" + unit + ")";
-    valueAxis.title.fontWeight = 800;
-
-    // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = "value";
-    series.dataFields.categoryX = "sta";
-    series.clustered = false;
-    series.name = 'สถานีตรวจวัด'
-    series.tooltipText = `สถานีตรวจวัด {categoryX}: [bold]{valueY}[/] ${unit}`;
-    series.stroke = am4core.color('#5AD6F4');
-    series.tooltip.getFillFromObject = false;
-    series.tooltip.background.fill = am4core.color('#5AD6F4');
-    series.columns.template.stroke = am4core.color('#5AD6F4');
-    series.columns.template.fill = am4core.color('#5AD6F4');
-
-    chart.cursor = new am4charts.XYCursor();
-    chart.cursor.lineX.disabled = true;
-    chart.cursor.lineY.disabled = true;
-
-    chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.menu.align = "left";
-    chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-
-        return { data: data };
-    });
 }
 
 var m61, ms61

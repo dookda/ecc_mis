@@ -3,7 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_water_lev = sessionStorage.getItem('f_water_lev');
 
-if (f_water_lev == 'true') {
+if (f_water_lev == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 

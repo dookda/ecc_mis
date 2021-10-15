@@ -3,7 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_water_qua = sessionStorage.getItem('f_water_qua');
 
-if (f_water_qua == 'true') {
+if (f_water_qua == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 
@@ -207,24 +207,25 @@ function getChart(wq_id) {
         $("#chartdiv").show()
         $("#chartModal").modal("show");
         // console.log(r.data.data[0]);
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_bod }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_bod }], "wq_bod", "ค่าบีโอดี (BOD)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_cod }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_cod }], "wq_cod", "ค่าซีโอดี (COD)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_cond }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_cond }], "wq_cond", "ความนำไฟฟ้า (Conductivity)", "μs/cm")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_do }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_do }], "wq_do", "ออกซิเจนละลายในน้ำ (dissolved oxygen, DO)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_fcb }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_fcb }], "wq_fcb", "แบคทีเรียกลุ่มฟีคอลโคลิฟอร์ม (Fecal Coliform Bacteria, FCB)", "MPN /100 ml")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_og }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_og }], "wq_og", "น้ำมันและไขมัน (Oil&Grease)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_ph }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_ph }], "wq_ph", "ความเป็นกรด-ด่าง (pH)", "pH")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_sal }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_sal }], "wq_sal", "ความเค็ม (Salinity)", "PPT")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_ses }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_ses }], "wq_ses", "ค่าตะกอนหนัก (Settleable Solids: SeS)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_ss }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_ss }], "wq_ss", "ของแข็งแขวนลอย (Suspended Solids: SS)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_tcb }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_tcb }], "wq_tcb", "โคลิฟอร์มแบคทีเรียทั้งหมด (Total Coliform Bacteria, TCB)", "MPN /100 ml")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_tds }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_tds }], "wq_tds", "ของแข็งละลายน้ำ (Total Dissolved Solids, TDS)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_temp }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_temp }], "wq_temp", "Temperature ", "Celsius")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_tkn }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_tkn }], "wq_tkn", "ไนโตรเจนในรูปทีเคเอ็น (TKN)", "mg/L")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_tn }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_tn }], "wq_tn", "ไนโตรเจนทั้งหมด (TN)", "mg–N/l")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_tp }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_tp }], "wq_tp", "ฟอสฟอรัสทั้งหมด (TP)", "mg–P/l")
-        geneChart([{ "cat": "ก่อนบำบัด", "val": r.data.data[0].bf_wq_turb }, { "cat": "หลังบำบัด", "val": r.data.data[0].af_wq_turb }], "wq_turb", "ความขุ่น (Turbidity)", "NTU")
+        geneChart([{ "cat": "BOD", "value1": r.data.data[0].bf_wq_bod, "value2": r.data.data[0].af_wq_bod }], "wq_bod", "ค่าบีโอดี (BOD)", "mg/L", 0, 20)
+        geneChart([{ "cat": "COD", "value1": r.data.data[0].bf_wq_cod, "value2": r.data.data[0].af_wq_cod }], "wq_cod", "ค่าซีโอดี (COD)", "mg/L", 0, 120)
+        geneChart([{ "cat": "Conductivity", "value1": r.data.data[0].bf_wq_cond, "value2": r.data.data[0].af_wq_cond }], "wq_cond", "ความนำไฟฟ้า (Conductivity)", "μs/cm", 0, 9999)
+        geneChart([{ "cat": "DO", "value1": r.data.data[0].bf_wq_do, "value2": r.data.data[0].af_wq_do }], "wq_do", "ออกซิเจนละลายในน้ำ (dissolved oxygen, DO)", "mg/L", 4, 10)
+        geneChart([{ "cat": "FCB", "value1": r.data.data[0].bf_wq_fcb, "value2": r.data.data[0].af_wq_fcb }], "wq_fcb", "แบคทีเรียกลุ่มฟีคอลโคลิฟอร์ม (Fecal Coliform Bacteria, FCB)", "MPN /100 ml", 0, 4000)
+        geneChart([{ "cat": "Oil&Grease", "value1": r.data.data[0].bf_wq_og, "value2": r.data.data[0].af_wq_og }], "wq_og", "น้ำมันและไขมัน (Oil&Grease)", "mg/L", 0, 5)
+        geneChart([{ "cat": "pH", "value1": r.data.data[0].bf_wq_ph, "value2": r.data.data[0].af_wq_ph }], "wq_ph", "ความเป็นกรด-ด่าง (pH)", "pH", 5.5, 9)
+        geneChart([{ "cat": "Salinity", "value1": r.data.data[0].bf_wq_sal, "value2": r.data.data[0].af_wq_sal }], "wq_sal", "ความเค็ม (Salinity)", "PPT", 0, 100)
+        geneChart([{ "cat": "SeS", "value1": r.data.data[0].bf_wq_ses, "value2": r.data.data[0].af_wq_ses }], "wq_ses", "ค่าตะกอนหนัก (Settleable Solids: SeS)", "mg/L", 0, 0.5)
+        geneChart([{ "cat": "SS", "value1": r.data.data[0].bf_wq_ss, "value2": r.data.data[0].af_wq_ss }], "wq_ss", "ของแข็งแขวนลอย (Suspended Solids: SS)", "mg/L", 0, 50)
+        geneChart([{ "cat": "TCB", "value1": r.data.data[0].bf_wq_tcb, "value2": r.data.data[0].af_wq_tcb }], "wq_tcb", "โคลิฟอร์มแบคทีเรียทั้งหมด (Total Coliform Bacteria, TCB)", "MPN /100 ml", 0, 20000)
+        geneChart([{ "cat": "TDS", "value1": r.data.data[0].bf_wq_tds, "value2": r.data.data[0].af_wq_tds }], "wq_tds", "ของแข็งละลายน้ำ (Total Dissolved Solids, TDS)", "mg/L", 0, 500)
+        geneChart([{ "cat": "Temperature", "value1": r.data.data[0].bf_wq_temp, "value2": r.data.data[0].af_wq_temp }], "wq_temp", " อุณหภูมิ (Temperature) ", "Celsius", 20, 40)
+        geneChart([{ "cat": "TKN", "value1": r.data.data[0].bf_wq_tkn, "value2": r.data.data[0].af_wq_tkn }], "wq_tkn", "ไนโตรเจนในรูปทีเคเอ็น (TKN)", "mg/L", 0, 40)
+        geneChart([{ "cat": "TN", "value1": r.data.data[0].bf_wq_tn, "value2": r.data.data[0].af_wq_tn }], "wq_tn", "ไนโตรเจนทั้งหมด (TN)", "mg–N/l", 0, 1000)
+        geneChart([{ "cat": "TP", "value1": r.data.data[0].bf_wq_tp, "value2": r.data.data[0].af_wq_tp }], "wq_tp", "ฟอสฟอรัสทั้งหมด (TP)", "mg–P/l", 0, 1000)
+        geneChart([{ "cat": "Turbidity", "value1": r.data.data[0].bf_wq_turb, "value2": r.data.data[0].af_wq_turb }], "wq_turb", "ความขุ่น (Turbidity)", "NTU", 0, 1000)
     })
+
 }
 let dtable
 let loadTable = () => {
@@ -371,15 +372,20 @@ let getMarker = (d) => {
     lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
 }
 
-let geneChart = (arr, div, tt, unit) => {
+let geneChart = (arr, div, tt, unit, min, max, value) => {
     am4core.useTheme(am4themes_animated);
     // Themes end
 
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
+    chart.legend = new am4charts.Legend()
+    chart.legend.position = 'bottom'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 95
 
     // Add data
     chart.data = arr
+    // console.log(arr)
 
     var title = chart.titles.create();
     title.text = tt;
@@ -404,16 +410,57 @@ let geneChart = (arr, div, tt, unit) => {
     axis.title.dy = 20;
 
     // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = "val";
-    series.dataFields.categoryX = "cat";
-    // series.name = "Visits";
-    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = .8;
+    function createSeries(field, name) {
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueY = field;
+        series.dataFields.categoryX = "cat";
+        series.name = name;
+        series.columns.template.tooltipText = "{name}: [bold]{valueY.formatNumber('###,###,###.##')}[/]";
+        series.columns.template.fillOpacity = .8;
 
-    var columnTemplate = series.columns.template;
-    columnTemplate.strokeWidth = 2;
-    columnTemplate.strokeOpacity = 1;
+        var columnTemplate = series.columns.template;
+        columnTemplate.strokeWidth = 2;
+        columnTemplate.strokeOpacity = 1;
+
+        if (field == "value1") {
+            if (arr[0].value1 > max) {
+                series.stroke = am4core.color("#d32f2f");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#d32f2f");
+                series.columns.template.stroke = am4core.color("#d32f2f");
+                series.columns.template.fill = am4core.color("#d32f2f");
+            }
+
+
+            else if (arr[0].value1 <= max) {
+                series.stroke = am4core.color("#7e57c2");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#7e57c2");
+                series.columns.template.stroke = am4core.color("#7e57c2");
+                series.columns.template.fill = am4core.color("#7e57c2");
+            }
+        }
+        else if (field == "value2") {
+            if (arr[0].value2 > max) {
+                series.stroke = am4core.color("#d32f2f");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#d32f2f");
+                series.columns.template.stroke = am4core.color("#d32f2f");
+                series.columns.template.fill = am4core.color("#d32f2f");
+            }
+            else if (arr[0].value2 <= max) {
+                series.stroke = am4core.color("#7e57c2");
+                series.tooltip.getFillFromObject = false;
+                series.tooltip.background.fill = am4core.color("#7e57c2");
+                series.columns.template.stroke = am4core.color("#7e57c2");
+                series.columns.template.fill = am4core.color("#7e57c2");
+            }
+        }
+    }
+
+    createSeries("value1", "ก่อนบำบัด");
+    createSeries("value2", "หลังบำบัด");
+
 
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.menu.align = "left";
@@ -626,7 +673,11 @@ let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
 
 $("#sta").on("change", function () {
     // getStation(this.value)
-    dtable.search(this.value).draw();
+    if (this.value == "ทุกสถานีตรวจวัดค่า") {
+        dtable.search('').draw();
+    } else {
+        dtable.search(this.value).draw();
+    }
 });
 
 // getStation("ทม.แสนสุข (เหนือ)");
@@ -674,12 +725,13 @@ let layermark = (Url, Nlayer) => {
 
 $("#chartall").hide()
 let callChart = () => {
-    $("#chartall").show();
+    // $("#chartall").show();
     var syst = $("#sta").val();
     var staname = $("#sta").children("option:selected").text()
     var parameter = $("#parameter").val();
 
     if (syst == "ทุกสถานีตรวจวัดค่า") {
+        alert("โปรดเลือดสถานีตรวจวัดค่าที่ท่านสนใจ");
         // if (prov_n !== "ทุกจังหวัด") {
         //     $('#staname').html(` ${parameter} ของจังหวัด${prov_n} ${staname} `)
         // } else {
@@ -695,6 +747,7 @@ let callChart = () => {
         //     chartstaall(syst_n)
         // })
     } else {
+        $("#chartall").show();
         $('#staname').html(` ${parameter} ของสถานี ${staname} `)
         axios.post(url + "/wq-api/getdata/chartbystation", { syst: syst }).then(async (r) => {
             let cbod = [];

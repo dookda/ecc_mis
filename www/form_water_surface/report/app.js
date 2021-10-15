@@ -3,12 +3,11 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_water_surface = sessionStorage.getItem('f_water_surface');
 
-if (f_water_surface == 'true') {
+if (f_water_surface == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 
 $("#usrname").text(urname);
-
 var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
 var L58 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__58_water_mnre&maxFeatures=50&outputFormat=application%2Fjson'
 var L59 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__59_water_onep&maxFeatures=50&outputFormat=application%2Fjson'
@@ -243,7 +242,31 @@ let getChart = (ws_id) => {
                     else if (key == "ws_wqi") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 61, 100, value); }
                     else if (key == "ws_nh3n") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.5, value); }
                     else if (key == "ws_tcb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 20000, value); }
-                    else if (key == "ws_tp") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0, value); }
+                    else if (key == "ws_tp") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1000, value); }
+                    else if (key == "ws_ts") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1000, value); }
+                    else if (key == "ws_ss") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1000, value); }
+                    else if (key == "ws_temp") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 40, value); }
+                    else if (key == "ws_ph") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 5, 9, value); }
+                    else if (key == "ws_no3") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 5, value); }
+                    else if (key == "ws_phenols") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.005, value); }
+                    else if (key == "ws_cu") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.1, value); }
+                    else if (key == "ws_ni") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.1, value); }
+                    else if (key == "ws_mn") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1, value); }
+                    else if (key == "ws_zn") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1, value); }
+                    else if (key == "ws_cd") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.005, value); }
+                    else if (key == "ws_crhex") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.05, value); }
+                    else if (key == "ws_pb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.05, value); }
+                    else if (key == "ws_totalhg") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.002, value); }
+                    else if (key == "ws_as") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.01, value); }
+                    else if (key == "ws_cyanide") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.005, value); }
+                    else if (key == "ws_radioa") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.1, value); }
+                    else if (key == "ws_top") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.05, value); }
+                    else if (key == "ws_ddt") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 1, value); }
+                    else if (key == "ws_alphsb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.02, value); }
+                    else if (key == "ws_dield") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.1, value); }
+                    else if (key == "ws_aldrin") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.1, value); }
+                    else if (key == "ws_hepta") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.2, value); }
+                    else if (key == "ws_endrin") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 500000, value); }
                     else {
                         geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 999999, value);
                     }
