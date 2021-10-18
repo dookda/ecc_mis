@@ -10,8 +10,9 @@ if (f_wastewater == 'false') {
 $("#usrname").text(urname);
 
 var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
+
 $(document).ready(() => {
-    loadTable()
+    loadTable({ prov: 'ทุกจังหวัด' });
     // loadMap()
     layermark(L62, 62)
 });
@@ -70,6 +71,11 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
+const wsystemeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+    layers: 'eec:a__62_w_system_eec',
+    format: 'image/png',
+    transparent: true
+});
 const wpipeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: 'eec:a__63_w_pipe_eec',
     format: 'image/png',
@@ -86,14 +92,12 @@ const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wm
     transparent: true,
 });
 
-
 let lyrs = L.featureGroup().addTo(map)
 
 var baseMap = {
     "Mapbox": mapbox.addTo(map),
     "google Hybrid": ghyb
 }
-
 const overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
     "ขอบเขตอำเภอ": amp,
@@ -102,6 +106,7 @@ const overlayMap = {
     // "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wsystemeec.addTo(map),
     "เส้นท่อระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wpipeeec.addTo(map),
     "ขอบเขตระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": wscopeeec.addTo(map),
+
 }
 // L.control.layers(baseMap, overlayMap).addTo(map);
 const lyrControl = L.control.layers(baseMap, overlayMap, {
@@ -109,6 +114,7 @@ const lyrControl = L.control.layers(baseMap, overlayMap, {
 }).addTo(map);
 
 var legend = L.control({ position: "bottomleft" });
+
 function showLegend() {
     legend.onAdd = function (map) {
         var div = L.DomUtil.create("div", "legend");
@@ -123,8 +129,8 @@ function showLegend() {
         div.innerHTML += '<img src="./img/linescope.png" width="10px"><span>ขอบเขตระบบบำบัดน้ำเสีย</span><br>';
         div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
         div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
-    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
-  </button>`
+        <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+      </button>`
         div.innerHTML += `<div id='PU'></div>`
         return div;
     };
@@ -176,7 +182,6 @@ let confirmDelete = (w_id, prj_name, prj_prov, prj_time) => {
     if (prj_time !== null) { $("#projTime").html(`วันที่ ${prj_time}`) }
     $("#deleteModal").modal("show")
 }
-
 let closeModal = () => {
     $('#editModal').modal('hide')
     $('#deleteModal').modal('hide')
@@ -237,60 +242,39 @@ let getChart = (w_id) => {
             r.data.data[0].insti
         );
 
-        pieChart(r.data.data[0].insti, [
-            {
-                cat: "อาคารชุด/บ้านพัก",
-                val: r.data.data[0].no_house ? r.data.data[0].no_house : 0
-            }, {
-                cat: "โรงแรม",
-                val: r.data.data[0].no_hotel ? r.data.data[0].no_hotel : 0
-            }, {
-                cat: "หอพัก",
-                val: r.data.data[0].no_dorm ? r.data.data[0].no_dorm : 0
-            }, {
-                cat: "บ้านจัดสรร",
-                val: r.data.data[0].no_vhouse ? r.data.data[0].no_vhouse : 0
-            }, {
-                cat: "สถานบริการ",
-                val: r.data.data[0].no_serv ? r.data.data[0].no_serv : 0
-            }, {
-                cat: "โรงพยาบาล",
-                val: r.data.data[0].no_hospi ? r.data.data[0].no_hospi : 0
-            }, {
-                cat: "ร้านอาหาร",
-                val: r.data.data[0].no_restur ? r.data.data[0].no_restur : 0
-            }, {
-                cat: "ตลาด",
-                val: r.data.data[0].no_market ? r.data.data[0].no_market : 0
-            }, {
-                cat: "ห้างสรรพสินค้า",
-                val: r.data.data[0].no_mall ? r.data.data[0].no_mall : 0
-            }, {
-                cat: "สำนักงาน",
-                val: r.data.data[0].no_office ? r.data.data[0].no_office : 0
-            }, {
-                cat: "โรงเรียน",
-                val: r.data.data[0].no_school ? r.data.data[0].no_school : 0
-            }, {
-                cat: "สถานีบริการน้ำมัน",
-                val: r.data.data[0].no_gassta ? r.data.data[0].no_gassta : 0
-            }, {
-                cat: "วัด",
-                val: r.data.data[0].no_temple ? r.data.data[0].no_temple : 0
-            }, {
-                cat: "ศูนย์ราชการ",
-                val: r.data.data[0].no_govcent ? r.data.data[0].no_govcent : 0
-            }, {
-                cat: "คลินิก",
-                val: r.data.data[0].no_clinic ? r.data.data[0].no_clinic : 0
+        let dat = [];
+
+        Object.entries(r.data.data[0]).forEach(([key, val]) => {
+            if (val && val > 0 && key != "gid" && key != "gid" && key != "w_id" && key != "insti" && key != "wdate" && key != "quantity" && key != "geom" && key != "prov" && key != "usrname" && key != "usrid" && key != "geojson" && key != "date") {
+                // console.log(`${key} ${val}`);
+                let cat;
+                key == "no_house" ? cat = "อาคารชุด/บ้านพัก" : null;
+                key == "no_hotel" ? cat = "โรงแรม" : null;
+                key == "no_dorm" ? cat = "หอพัก" : null;
+                key == "no_vhouse" ? cat = "บ้านจัดสรร" : null;
+                key == "no_serv" ? cat = "สถานบริการ" : null;
+                key == "no_hospi" ? cat = "โรงพยาบาล" : null;
+                key == "no_restur" ? cat = "ร้านอาหาร" : null;
+                key == "no_market" ? cat = "ตลาด" : null;
+                key == "no_mall" ? cat = "ห้างสรรพสินค้า" : null;
+                key == "no_office" ? cat = "สำนักงาน" : null;
+                key == "no_school" ? cat = "โรงเรียน" : null;
+                key == "no_gassta" ? cat = "สถานีบริการน้ำมัน" : null;
+                key == "no_temple" ? cat = "วัด" : null;
+                key == "no_govcent" ? cat = "ศูนย์ราชการ" : null;
+                key == "no_clinic" ? cat = "คลินิก" : null;
+
+                dat.push({ cat, val })
             }
-        ]);
+        });
+
+        pieChart(r.data.data[0].insti, dat)
     })
 }
 
 getChart(129953.638292806);
 
-let loadTable = () => {
+let loadTable = (prov) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -313,11 +297,21 @@ let loadTable = () => {
     let table = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/waste-api/getownerdata',
-            data: { usrid: urid },
+            url: url + '/waste-api/getdata',
+            data: prov,
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                       <button class="btn btn-margin btn-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;แก้ไขข้อมูล</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -332,7 +326,6 @@ let loadTable = () => {
             {
                 data: 'date'
             },
-
             { data: 'no_house' },
             { data: 'no_hotel' },
             { data: 'no_dorm' },
@@ -349,21 +342,11 @@ let loadTable = () => {
             { data: 'no_govcent' },
             { data: 'no_clinic' },
             // { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
-                }
-            }
+
         ],
         columnDefs: [
             { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
         ],
-
         order: [2, 'dasc'],
         searching: true,
         scrollX: true,
@@ -372,13 +355,15 @@ let loadTable = () => {
             'excel', 'print'
         ],
     });
+
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
-        getDatatable(data);
-        getMarker(data)
+        // console.log(data);
+        // getDatatable(data);
+        getMarker(data);
     });
-}
 
+}
 var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
@@ -395,7 +380,6 @@ let getMarker = (d) => {
             // .addTo(map)
             mg.addLayer(mk);
         }
-
     });
     mg.addTo(map)
     lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
@@ -403,8 +387,8 @@ let getMarker = (d) => {
 
 let getDetail = (e) => {
     sessionStorage.setItem('w_id', e);
+    sessionStorage.setItem('w_from_admin', 'yes');
     location.href = "./../detail/index.html";
-    // console.log(e)
 }
 
 let geneChart = (arr, div, tt, unit, place) => {
@@ -500,17 +484,29 @@ let pieChart = (place, arr) => {
     });
 }
 
+let no_hospi = [];
+let no_hotel = [];
+let no_house = [];
+let no_market = [];
+let no_office = [];
+let no_restur = [];
+let no_mall = [];
+let no_vhouse = [];
+let no_dorm = [];
+let no_serv = [];
+
 let getDatatable = async (data) => {
-    let no_hospi = [];
-    let no_hotel = [];
-    let no_house = [];
-    let no_market = [];
-    let no_office = [];
-    let no_restur = [];
-    let no_mall = [];
-    let no_vhouse = [];
-    let no_dorm = [];
-    let no_serv = [];
+    // console.log('da');
+    no_hospi = [];
+    no_hotel = [];
+    no_house = [];
+    no_market = [];
+    no_office = [];
+    no_restur = [];
+    no_mall = [];
+    no_vhouse = [];
+    no_dorm = [];
+    no_serv = [];
 
     await data.map(i => {
         no_house.push({ "cat": i.insti, "val": i.no_house ? Number(i.no_house) * 500 : 0 });
@@ -524,89 +520,87 @@ let getDatatable = async (data) => {
         no_mall.push({ "cat": i.insti, "val": i.no_mall ? Number(i.no_mall) * 5 : 0 });
         no_office.push({ "cat": i.insti, "val": i.no_office ? Number(i.no_office) * 3 : 0 });
     })
-
-    compareWasteWater("no_house", no_house);
-    compareWasteWater("no_hotel", no_hotel);
-    compareWasteWater("no_dorm", no_dorm);
-    compareWasteWater("no_serv", no_serv);
-    compareWasteWater("no_vhouse", no_vhouse);
-    compareWasteWater("no_restur", no_restur);
-    compareWasteWater("no_hospi", no_hospi);
-    compareWasteWater("no_market", no_market);
-    compareWasteWater("no_mall", no_mall);
-    compareWasteWater("no_office", no_office);
 }
 
-let compareWasteWater = (div, data) => {
-    am4core.ready(function () {
 
-        // Themes begin
-        am4core.useTheme(am4themes_animated);
-        // Themes end
+let compareWasteWater = (dat) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
 
-        // Create chart instance
-        var chart = am4core.create(div, am4charts.XYChart);
-        // chart.scrollbarX = new am4core.Scrollbar();
+    // Create chart instance
+    var chart = am4core.create("no_house", am4charts.XYChart);
+    // chart.scrollbarX = new am4core.Scrollbar();
 
-        // Add data
-        chart.data = data;
+    // Add data
+    chart.data = dat;
 
-        // Create axes
-        var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "cat";
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.minGridDistance = 30;
-        categoryAxis.renderer.labels.template.horizontalCenter = "right";
-        categoryAxis.renderer.labels.template.verticalCenter = "middle";
-        categoryAxis.renderer.labels.template.rotation = 270;
-        categoryAxis.tooltip.disabled = true;
-        categoryAxis.renderer.minHeight = 110;
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "cat";
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 30;
+    categoryAxis.renderer.labels.template.horizontalCenter = "right";
+    categoryAxis.renderer.labels.template.verticalCenter = "middle";
+    categoryAxis.renderer.labels.template.rotation = 270;
+    categoryAxis.tooltip.disabled = true;
+    categoryAxis.renderer.minHeight = 110;
 
-        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        valueAxis.renderer.minWidth = 50;
-        valueAxis.title.text = "ลิตร/วัน";
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.minWidth = 50;
 
-        // Create series
-        var series = chart.series.push(new am4charts.ColumnSeries());
-        series.sequencedInterpolation = true;
-        series.dataFields.valueY = "val";
-        series.dataFields.categoryX = "cat";
-        series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
-        series.columns.template.strokeWidth = 0;
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.sequencedInterpolation = true;
+    series.dataFields.valueY = "val";
+    series.dataFields.categoryX = "cat";
+    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    series.columns.template.strokeWidth = 0;
 
-        series.tooltip.pointerOrientation = "vertical";
+    series.tooltip.pointerOrientation = "vertical";
 
-        series.columns.template.column.cornerRadiusTopLeft = 10;
-        series.columns.template.column.cornerRadiusTopRight = 10;
-        series.columns.template.column.fillOpacity = 0.8;
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.fillOpacity = 0.8;
 
-        // on hover, make corner radiuses bigger
-        var hoverState = series.columns.template.column.states.create("hover");
-        hoverState.properties.cornerRadiusTopLeft = 0;
-        hoverState.properties.cornerRadiusTopRight = 0;
-        hoverState.properties.fillOpacity = 1;
+    // on hover, make corner radiuses bigger
+    var hoverState = series.columns.template.column.states.create("hover");
+    hoverState.properties.cornerRadiusTopLeft = 0;
+    hoverState.properties.cornerRadiusTopRight = 0;
+    hoverState.properties.fillOpacity = 1;
 
-        series.columns.template.adapter.add("fill", function (fill, target) {
-            return chart.colors.getIndex(target.dataItem.index);
-        });
-
-        // Cursor
-        chart.cursor = new am4charts.XYCursor();
-
-        chart.exporting.menu = new am4core.ExportMenu();
-        chart.exporting.adapter.add("data", function (data, target) {
-            var data = [];
-            chart.series.each(function (series) {
-                for (var i = 0; i < series.data.length; i++) {
-                    series.data[i].name = series.name;
-                    data.push(series.data[i]);
-                }
-            });
-            return { data: data };
-        });
-
+    series.columns.template.adapter.add("fill", function (fill, target) {
+        return chart.colors.getIndex(target.dataItem.index);
     });
+
+    // Cursor
+    chart.cursor = new am4charts.XYCursor();
 }
+
+let callChart = (insti) => {
+    console.log(insti);
+    // let build = document.getElementById("buildlist").value;
+    // document.getElementById("sourcename").innerHTML = insti;
+    axios.post(url + '/waste-api/getdatabymun', { insti: insti }).then(r => {
+        let dat = [];
+        let i = r.data.data[0];
+        console.log(i);
+        dat.push({ "cat": "อาคารชุด/บ้านพัก", "val": i.no_house ? Number(i.no_house) * 500 : 0 });
+        dat.push({ "cat": "โรงแรม", "val": i.no_hotel ? Number(i.no_hotel) * 1000 : 0 });
+        dat.push({ "cat": "หอพัก", "val": i.no_dorm ? Number(i.no_dorm) * 80 : 0 });
+        dat.push({ "cat": "บ้านจัดสรร", "val": i.no_serv ? Number(i.no_serv) * 400 : 0 });
+        dat.push({ "cat": "สถานบริการ", "val": i.no_vhouse ? Number(i.no_vhouse) * 180 : 0 });
+        dat.push({ "cat": "โรงพยาบาล", "val": i.no_restur ? Number(i.no_restur) * 800 : 0 });
+        dat.push({ "cat": "ร้านอาหาร", "val": i.no_hospi ? Number(i.no_hospi) * 25 : 0 });
+        dat.push({ "cat": "ตลาด", "val": i.no_market ? Number(i.no_market) * 70 : 0 });
+        dat.push({ "cat": "ห้างสรรพสินค้า", "val": i.no_mall ? Number(i.no_mall) * 5 : 0 });
+        dat.push({ "cat": "สำนักงาน", "val": i.no_office ? Number(i.no_office) * 3 : 0 });
+        document.getElementById("sourcename").innerHTML = `ปริมาณน้ำเสียของ ${i.insti} (${i.date}) (หน่วย: ลบ.ม.)`;
+
+        compareWasteWater(dat)
+    })
+}
+
 var m62, ms62
 let layermark = (Url, Nlayer) => {
     var MIcon1 = L.icon({
@@ -633,5 +627,33 @@ let layermark = (Url, Nlayer) => {
             lyrControl.addOverlay(ms62, "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก")
         });
     }
-
 }
+
+let getMunlist = (muni) => {
+    $("#urbanlist").empty();
+    $("#urbanlist").append(`<option></option>`)
+    axios.get(url + "/waste-api/getmun/" + muni).then(r => {
+        // console.log(r);
+        r.data.data.map(i => $("#urbanlist").append(`<option value="${i.insti}">${i.insti}</option>`));
+    })
+}
+
+$("#pro").on("change", function () {
+    getMunlist(this.value)
+
+    console.log(this.value);
+
+    $("#myTable").dataTable().fnDestroy();
+    loadTable({ prov: this.value });
+})
+
+$("#chartarea").hide()
+$("#urbanlist").on("change", function () {
+    callChart(this.value)
+    $("#chartarea").show()
+})
+
+
+getMunlist("ทุกจังหวัด")
+
+

@@ -16,14 +16,29 @@ app.post("/waste-api/getone", (req, res) => {
     })
 })
 
-app.post("/waste-api/getdata", (req, res) => {
-    const { urname } = req.body;
+app.get("/waste-api/getmun/:prov", (req, res) => {
+    const prov = req.params.prov;
     let sql;
-    // console.log(urname);
-    if (urname == 'ทุกเทศบาล') {
+    if (prov == "ทุกจังหวัด") {
+        sql = `SELECT DISTINCT insti FROM wastewat`
+    } else {
+        sql = `SELECT DISTINCT insti FROM wastewat WHERE prov='${prov}'`
+    }
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/waste-api/getdata", (req, res) => {
+    const { prov } = req.body;
+    let sql;
+    // console.log(prov);
+    if (prov == 'ทุกจังหวัด') {
         sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat`
     } else {
-        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE insti='${urname}'`
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE prov='${prov}'`
     }
 
     eec.query(sql).then(r => {
@@ -33,11 +48,23 @@ app.post("/waste-api/getdata", (req, res) => {
     })
 })
 
+app.post("/waste-api/getdatabymun", (req, res) => {
+    const { insti } = req.body;
+    let sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date 
+                FROM wastewat WHERE insti='${insti}' ORDER BY wdate DESC`
+
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
 app.post("/waste-api/getownerdata", (req, res) => {
-    const { usrid } = req.body;
+    const { prov, usrid } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
                 TO_CHAR(wdate, 'DD-MM-YYYY') as date 
-            FROM wastewat WHERE usrid='${usrid}'`
+            FROM wastewat WHERE usrid='${usrid}' AND prov='${prov}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
