@@ -1,4 +1,4 @@
-const url = 'https://eec-onep.online/:3700';
+const url = 'https://eec-onep.online:3700';
 
 let refreshPage = () => {
     console.log("sdfghj");
