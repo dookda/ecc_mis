@@ -28,8 +28,8 @@ $("#usrname").text(urname);
 //     userid = profile.userId;
 // }
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -107,6 +107,7 @@ let onLocationFound = (e) => {
 
     $("#lat").val(e.latlng.lat);
     $("#lon").val(e.latlng.lng);
+    getAtp(e.latlng.lat, e.latlng.lng)
 }
 
 map.on("locationfound", onLocationFound);
@@ -124,6 +125,7 @@ map.on('click', (e) => {
 
     $("#lat").val(e.latlng.lat);
     $("#lon").val(e.latlng.lng);
+    getAtp(e.latlng.lat, e.latlng.lng)
 });
 
 let waterlevel;
@@ -155,6 +157,15 @@ $('#placename').on("input", function () {
     }
 })
 
+let getAtp = (lat, lon) => {
+    axios.get(`${url}/eec-api/gettambylatlon/${lat}/${lon}`).then(r => {
+        // console.log(r);
+        $("#tam").val(r.data.data[0].tam_name)
+        $("#amp").val(r.data.data[0].amp_name)
+        $("#pro").val(r.data.data[0].pro_name)
+    })
+}
+
 let sendData = () => {
     // console.log(geom[0]);
     if ($('#watername').val() == "" || $('#placename').val() == "") {
@@ -172,6 +183,9 @@ let sendData = () => {
                 usrname: urname,
                 placename: $('#placename').val(),
                 watername: $('#watername').val(),
+                tam: $('#tam').val(),
+                amp: $('#amp').val(),
+                pro: $('#pro').val(),
                 waterlevel: waterlevel,
                 img: dataurl ? dataurl : dataurl = "",
                 geom: geom == "" ? "" : geom.toGeoJSON()

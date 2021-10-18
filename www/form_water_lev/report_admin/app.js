@@ -8,12 +8,8 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
-$(document).ready(() => {
-    loadTable()
-});
-
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -106,7 +102,7 @@ let deleteValue = () => {
     })
 }
 
-let loadTable = () => {
+let loadTable = (btype, bcode) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -132,7 +128,7 @@ let loadTable = () => {
             async: true,
             type: "POST",
             url: url + '/waterlevel-api/getalldata',
-            data: { usrid: urid },
+            data: { usrid: urid, btype: btype, bcode: bcode },
             dataSrc: 'data'
         },
         columns: [
@@ -220,30 +216,25 @@ let getMarker = (d) => {
 }
 
 let loadChartData = async (d) => {
-    // console.log(d);
     let dat = [];
-    // await d.map(i => {
+    // var result = await d.reduce(function (r, e) {
+    //     r[e.ndate] = (r[e.ndate] || 0) + +(r[e.ndate] || 1)
+    //     return r;
+    // }, {})
+
+    // for (const [key, value] of Object.entries(result)) {
+    //     // console.log(`${key}: ${value}`);
     //     dat.push({
-    //         date: i.ndate,
-    //         value: i.waterlevel
+    //         date: key,
+    //         value: value
     //     })
-    // })
-
-    var result = await d.reduce(function (r, e) {
-        r[e.ndate] = (r[e.ndate] || 0) + +(r[e.ndate] || 1)
-        return r;
-    }, {})
-
-    for (const [key, value] of Object.entries(result)) {
-        // console.log(`${key}: ${value}`);
+    // }
+    await d.map(i => {
         dat.push({
-            date: key,
-            value: value
+            date: i.ndate,
+            value: i.waterlevel
         })
-    }
-
-    // console.log(result);
-
+    });
     timeLine("timeline", dat);
 }
 
@@ -310,6 +301,66 @@ let timeLine = (div, val) => {
 }
 
 
+$("#pro").on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
+});
+
+$("#amp").on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+});
+
+$("#tam").on("change", function () {
+    zoomExtent("tam", this.value)
+});
+
+
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+
+        console.log(lyr, code);
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable(lyr, code);
+
+        map.fitBounds(polygon.getBounds());
+    })
+}
+
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        $("#amp").append(`<option></option>`);
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        $("#tam").append(`<option></option>`);
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
+
+$(document).ready(() => {
+    loadTable('pro', "ทุกจังหวัด")
+});
 
 
 

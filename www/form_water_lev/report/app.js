@@ -9,12 +9,9 @@ if (f_water_lev == 'false') {
 
 $("#usrname").text(urname);
 
-$(document).ready(() => {
-    loadTable()
-});
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -136,7 +133,7 @@ let deleteValue = () => {
     })
 }
 
-let loadTable = () => {
+let loadTable = (btype, bcode) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -162,7 +159,7 @@ let loadTable = () => {
             async: true,
             type: "POST",
             url: url + '/waterlevel-api/getownerdata',
-            data: { usrid: urid },
+            data: { usrid: urid, btype: btype, bcode: bcode },
             dataSrc: 'data'
         },
         columns: [
@@ -257,7 +254,7 @@ let loadChartData = async (d) => {
             date: i.ndate,
             value: i.waterlevel
         })
-    })
+    });
 
     timeLine("timeline", dat);
 }
@@ -325,7 +322,66 @@ let timeLine = (div, val) => {
 }
 
 
+$("#pro").on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
+});
 
+$("#amp").on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+});
+
+$("#tam").on("change", function () {
+    zoomExtent("tam", this.value)
+});
+
+
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+
+        console.log(lyr, code);
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable(lyr, code);
+
+        map.fitBounds(polygon.getBounds());
+    })
+}
+
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        $("#amp").append(`<option></option>`);
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        $("#tam").append(`<option></option>`);
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
+
+$(document).ready(() => {
+    loadTable('pro', "ทุกจังหวัด")
+});
 
 
 

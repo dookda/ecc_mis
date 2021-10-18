@@ -4,11 +4,19 @@ const con = require("./db");
 const eec = con.eec;
 
 app.post("/waterlevel-api/getownerdata", (req, res) => {
-    const { usrid } = req.body;
-    const sql = `SELECT gid, proj_id, watername, placename, waterlevel,
+    const { usrid, btype, bcode } = req.body;
+    let sql
+    if (bcode == "ทุกจังหวัด") {
+        sql = `SELECT gid, proj_id, watername, placename, waterlevel,
             ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
             ST_AsGeojson(geom) as geojson  
         FROM waterlevel WHERE usrid='${usrid}' ORDER BY ndate ASC`;
+    } else {
+        sql = `SELECT gid, proj_id, watername, placename, waterlevel,
+            ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
+            ST_AsGeojson(geom) as geojson  
+        FROM waterlevel WHERE usrid='${usrid}' AND ${btype}='${bcode}' ORDER BY ndate ASC`;
+    }
 
     eec.query(sql).then(r => {
         res.status(200).json({
@@ -18,11 +26,21 @@ app.post("/waterlevel-api/getownerdata", (req, res) => {
 })
 
 app.post("/waterlevel-api/getalldata", (req, res) => {
-    const { usrid } = req.body;
-    const sql = `SELECT gid, proj_id, watername, placename, waterlevel,
+    const { usrid, btype, bcode } = req.body;
+    let sql
+    if (bcode == "ทุกจังหวัด") {
+        sql = `SELECT gid, proj_id, watername, placename, waterlevel,
             ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
             ST_AsGeojson(geom) as geojson  
         FROM waterlevel ORDER BY ndate ASC`;
+        // console.log(sql);
+    } else {
+        sql = `SELECT gid, proj_id, watername, placename, waterlevel,
+            ST_X(geom) as lon, ST_Y(geom) as lat, TO_CHAR(ndate, 'DD-MM-YYYY') as ndate, img,   
+            ST_AsGeojson(geom) as geojson  
+        FROM waterlevel WHERE ${btype}='${bcode}' ORDER BY ndate ASC`;
+    }
+
 
     eec.query(sql).then(r => {
         res.status(200).json({
