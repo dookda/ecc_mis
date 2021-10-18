@@ -100,7 +100,7 @@ $("#accountcheck").hide()
 $('#tele').on("keyup", function () {
     let user = $("#tele").val()
     axios.post(url + "/profile-api/chkuser", { user }).then(r => {
-        console.log(r);
+        // console.log(r);
         r.data.data[0].count !== '0' ? $("#accountcheck").show() : $("#accountcheck").hide()
     })
 })
@@ -275,8 +275,15 @@ let gotoLogin = () => {
     location.href = "./../login/index.html";
 }
 
-$("#passcheck").hide()
+$("#passcheck").hide();
+$("#passlengthcheck").hide();
+$("#password").on("change", function () {
+    let pss = $("#password").val();
+    pss.length < 8 ? $("#passlengthcheck").show() : $("#passlengthcheck").hide();
+    console.log(pss.length);
+});
+
 $("#password2").on("change", function () {
     $("#password2").val() == $("#password").val() ? $("#passcheck").hide() : $("#passcheck").show();
-})
+});
 
