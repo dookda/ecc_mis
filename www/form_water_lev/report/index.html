@@ -126,7 +126,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <label for="">รายงานปริมาณน้ำของท่าน</label>
+                            <label for="">ระดับน้ำที่รายงาน</label>
                             <div class="chart" id="timeline"></div>
                         </div>
                     </div>
@@ -148,12 +148,12 @@
                                 style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>ลำดับ</th>
                                         <th>ชื่อแหล่งน้ำ</th>
                                         <th>สถานที่</th>
                                         <th>ระดับน้ำ</th>
                                         <th>วันที่รายงาน</th>
-                                        <th>แก้ไข</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -183,27 +183,35 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
-
-    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
             <div class="modal-content">
-                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                <!-- Modal Header -->
+                <div class="modal-header">
                     <h4 class="modal-title">
-                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
-                        ยืนยันการลบข้อมูล
+                        <i class="bi bi-file-earmark-check-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการลบข้อมูล
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div class="modal-body text-center mx-auto">
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
                     <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
                         <b><span id="projName"></span><br><span id="projTime"></span>
                         </b> ใช่หรือไม่?
                     </p>
                     <input type="hidden" id="projId">
                 </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                 </div>
+
             </div>
         </div>
     </div>

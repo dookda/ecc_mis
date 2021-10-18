@@ -62,7 +62,6 @@ let sendData = () => {
                 let usrname = r.data.data[0].usrname;
                 let auth = r.data.data[0].auth;
 
-
                 let f_water_lev = r.data.data[0].f_water_lev;
                 let f_wastewater = r.data.data[0].f_wastewater;
                 let f_water_surface = r.data.data[0].f_water_surface;

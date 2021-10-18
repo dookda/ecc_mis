@@ -136,29 +136,59 @@ function getLv(a) {
     a == 4 ? $("#a4").addClass("green") : $("#a4").removeClass("green");
 }
 
+$('#watername').on("input", function () {
+    if (this.value == '') {
+        $("#watername").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#watername").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#placename').on("input", function () {
+    if (this.value == '') {
+        $("#placename").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#placename").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
 let sendData = () => {
     // console.log(geom[0]);
-    const obj = {
-        data: {
-            usrid: urid,
-            usrname: urname,
-            placename: $('#placename').val(),
-            watername: $('#watername').val(),
-            waterlevel: waterlevel,
-            img: dataurl ? dataurl : dataurl = "",
-            geom: geom == "" ? "" : geom.toGeoJSON()
+    if ($('#watername').val() == "" || $('#placename').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#watername').val() == "") {
+            $("#watername").addClass("is-invalid")
         }
+        if ($('#placename').val() == "") {
+            $("#placename").addClass("is-invalid")
+        }
+    } else if ($('#watername').val() !== "" || $('#placename').val() !== "") {
+        const obj = {
+            data: {
+                usrid: urid,
+                usrname: urname,
+                placename: $('#placename').val(),
+                watername: $('#watername').val(),
+                waterlevel: waterlevel,
+                img: dataurl ? dataurl : dataurl = "",
+                geom: geom == "" ? "" : geom.toGeoJSON()
+            }
+        }
+
+        // console.log(obj);
+        if (geom != "") {
+            axios.post(url + "/waterlevel-api/insert", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
     }
-
-    // console.log(obj);
-
-    axios.post(url + "/waterlevel-api/insert", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
-    })
-
-    return false;
 }
-
 let gotoList = () => {
     location.href = "./../report/index.html";
 }

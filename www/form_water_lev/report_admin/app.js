@@ -137,6 +137,15 @@ let loadTable = () => {
         },
         columns: [
             {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(row);
+                    return `<button class="btn m btn-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
+                            <button class="btn m btn-danger" onclick="confirmDelete('${row.proj_id}','${row.placename}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "30%"
+            },
+            {
                 data: '',
                 render: (data, type, row, meta) => {
                     // console.log(meta);
@@ -152,15 +161,6 @@ let loadTable = () => {
                 }
             },
             { data: 'ndate' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(row);
-                    return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
-                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.placename}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "30%"
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 3, 4] },
@@ -296,9 +296,9 @@ let timeLine = (div, val) => {
     chart.cursor.snapToSeries = series;
 
     // Create vertical scrollbar and place it before the value axis
-    chart.scrollbarY = new am4core.Scrollbar();
-    chart.scrollbarY.parent = chart.leftAxesContainer;
-    chart.scrollbarY.toBack();
+    // chart.scrollbarY = new am4core.Scrollbar();
+    // chart.scrollbarY.parent = chart.leftAxesContainer;
+    // chart.scrollbarY.toBack();
 
     // Create a horizontal scrollbar with previe and place it underneath the date axis
     chart.scrollbarX = new am4charts.XYChartScrollbar();
