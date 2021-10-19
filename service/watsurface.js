@@ -3,8 +3,21 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
-app.get("/ws-api/getstation", (req, res) => {
-    const sql = `SELECT DISTINCT ws_station, ws_river FROM surwater ORDER BY ws_station`
+app.post("/ws-api/getstation", (req, res) => {
+    const { prov } = req.body;
+    // console.log(prov);
+    let sql;
+    if (prov == "ทุกจังหวัด") {
+        sql = `SELECT DISTINCT ws_station, ws_river 
+        FROM surwater 
+        ORDER BY ws_station`
+    } else {
+        sql = `SELECT DISTINCT ws_station, ws_river 
+        FROM surwater 
+        WHERE ws_province='${prov}'
+        ORDER BY ws_station`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -38,10 +51,28 @@ app.post("/ws-api/getone", (req, res) => {
 })
 
 app.post("/ws-api/getdata", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+    const { dat, type } = req.body;
+    let sql;
+
+    if (type == "prov") {
+        console.log(dat);
+        if (dat == "ทุกจังหวัด") {
+            sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
             TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
             FROM surwater`
+        } else {
+            sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+            TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+            FROM surwater WHERE ws_province='${dat}'`
+        }
+    }
+
+    if (type == "station") {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+        TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+        FROM surwater WHERE ws_station='${dat}'`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -50,11 +81,28 @@ app.post("/ws-api/getdata", (req, res) => {
 })
 
 app.post("/ws-api/getownerdata", (req, res) => {
-    const { usrid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+    const { usrid, dat, type } = req.body;
+    let sql;
+
+    if (type == "prov") {
+        console.log(dat);
+        if (dat == "ทุกจังหวัด") {
+            sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
             TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
-            FROM surwater
-            WHERE usrid='${usrid}'`
+            FROM surwater WHERE usrid='${usrid}'`
+        } else {
+            sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+            TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+            FROM surwater WHERE ws_province='${dat}' AND usrid='${usrid}'`
+        }
+    }
+
+    if (type == "station") {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+        TO_CHAR(ws_date, 'DD-MM-YYYY') as date 
+        FROM surwater WHERE ws_station='${dat}' AND usrid='${usrid}'`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

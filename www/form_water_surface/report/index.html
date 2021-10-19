@@ -101,19 +101,6 @@
                 </div>
 
                 <!-- ใส่แผนที่ -->
-                <div class="container">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <!-- รับค่า ID Line -->
-                                <div id="card">
-                                    <img alt="" id="profile">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
 
             </div>
             <!-- ฟอร์มนำเข้า -->
@@ -122,16 +109,28 @@
                     <div class="card-body">
                         รายงานข้อมูลคุณภาพน้ำผิวดิน
                         <hr>
+
                         <div class="row d-flex align-items-end">
+                            <div class="col-sm-4 form-group">
+                                <label for="sel1">จังหวัด:</label>
+                                <select class="form-control" id="pro">
+                                    <option value="eec">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
+
+                                </select>
+                            </div>
+
                             <div class="col-sm-4 form-group">
                                 <label for="sta">เลือกสถานีเพื่อดูค่าการตรวจวัดที่ผ่านมา :</label>
                                 <select class="form-control" id="sta">
-                                    <option value="ทุกสถานีตรวจวัดค่า">ข้อมูลทั้งหมด</option>
                                 </select>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="">เลือกค่าการตรวจวัด :</label>
                                 <select class="form-control" id="parameter">
+                                    <option>เลือก</option>
                                     <option value="WQI">WQI</option>
                                     <option value="DO">DO</option>
                                     <option value="BOD">BOD</option>
@@ -140,18 +139,13 @@
                                     <option value="TCB">Total Coliform Bacteria</option>
                                 </select>
                             </div>
-                            <div class="col-sm-4 form-group">
-                                <button class="btn btn-success" onclick="callChart()"><i
-                                        class="bi bi-clipboard-data"></i>
-                                    แสดงผลกราฟของข้อมูลที่เลือก</button>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="p-1 w-100" id="chartall">
                     <div class="card">
                         <div class="card-body">
-                            <label>ค่าการตรวจวัด<span id="staname"></span>ที่ผ่านมา</label>
+                            <label>ค่าการตรวจวัดที่ผ่านมา</label>
                             <div style="width: 100%; height: 400px;" id="chartdiv"></div>
                         </div>
                         <div class="row" style="margin-left: 1%; color: darkgrey;">
@@ -176,6 +170,7 @@
                         <table id="myTable" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th>จัดการข้อมูล</th>
                                     <th>รหัสสถานี</th>
                                     <th>สถานที่</th>
                                     <th>ชื่อแหล่งน้ำ</th>
@@ -187,7 +182,6 @@
                                     <th>แอมโมเนีย (mg/l)</th>
                                     <th>ค่ามาตรฐานคุณภาพน้ำ</th>
                                     <th>ฟอสฟอรัสทั้งหมด</th>
-                                    <th>จัดการข้อมูล</th>
                                 </tr>
                             </thead>
                         </table>
@@ -205,6 +199,7 @@
                     <div class="row" id="chartd"></div>
                     <div id=referlink></div>
                 </div>
+                <br>
             </div>
             <div class="container">
                 <div class="row" style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
@@ -213,8 +208,8 @@
 
                 </div>
                 <!-- <div class="row" style="margin-left: 1%;">
-                    อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
-                        href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
+                อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
+                    href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
             </div>
         </section><!-- End Services Section -->
 
