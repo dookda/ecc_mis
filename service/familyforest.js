@@ -75,14 +75,25 @@ app.post("/ff-api/getdaily", (req, res) => {
 })
 
 app.post("/ff-api/getalldaily", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT a.*, 
-	TO_CHAR(a.dt, 'DD-MM-YYYY') as date ,
-	ST_AsGeoJson(b.geom) as geom
-	FROM familyforest_daily a
-	LEFT JOIN familyforest_user b
-	ON a.ffid = b.ffid
-	ORDER BY a.dt DESC`;
+    const { pro, userid } = req.body;
+    let sql;
+    if (pro == 'ทุกจังหวัด') {
+        sql = `SELECT a.*, TO_CHAR(a.dt, 'DD-MM-YYYY') as date ,
+            ST_AsGeoJson(b.geom) as geom, b.pro
+            FROM familyforest_daily a
+            LEFT JOIN familyforest_user b
+            ON a.ffid = b.ffid
+            ORDER BY a.dt DESC`;
+    } else {
+        sql = `SELECT a.*, TO_CHAR(a.dt, 'DD-MM-YYYY') as date ,
+            ST_AsGeoJson(b.geom) as geom, b.pro
+            FROM familyforest_daily a
+            LEFT JOIN familyforest_user b
+            ON a.ffid = b.ffid
+            WHERE b.pro = '${pro}'
+            ORDER BY a.dt DESC`;
+    }
+    // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

@@ -135,12 +135,16 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <h6>ชื่อพื้นที่สีเขียว</h6>
-                                <input type="text" class="form-control" id="gr_name" required>
+                                <label>ชื่อพื้นที่สีเขียว</label><label style="color: red;" for="sel1">*</label>
+                                <input type="text" class="form-control" id="gr_name"
+                                    aria-describedby="inputGroupPrepend" required>
+                                <div class="invalid-feedback">
+                                    *ระบุชื่อพื้นที่สีเขียว
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>จังหวัด</label>
+                                <label>จังหวัด</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="pro" onchange="getAmp(this.value)">
                                     <option value=""></option>
                                     <!-- <option value="22">จันทบุรี</option> -->
@@ -152,16 +156,25 @@
                                     <option value="21">ระยอง</option>
                                     <!-- <option value="27">สระแก้ว</option> -->
                                 </select>
+                                <div class="invalid-feedback">
+                                    *ระบุจังหวัด
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>อำเภอ</label>
+                                <label>อำเภอ</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="amp" onchange="getTam(this.value)"></select>
+                                <div class="invalid-feedback">
+                                    *ระบุอำเภอ
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>ตำบล</label>
+                                <label>ตำบล</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="tam" onchange="getTamOne(this.value)"></select>
+                                <div class="invalid-feedback">
+                                    *ระบุตำบล
+                                </div>
                             </div>
 
                             <input type="hidden" id="pro_name">
@@ -181,10 +194,12 @@
                             <div class="card-body">
 
                                 <div class="form-group">
-                                    <label for="type">ประเภทพื้นที่สีเขียว &nbsp;(<a
+                                    <label for="type">ประเภทพื้นที่สีเขียว <label style="color: red;"
+                                            for="sel1">*</label> &nbsp;(<a
                                             href="http://thaigreenurban.onep.go.th/frmTassaban.aspx" target="_blank"
                                             rel="noopener noreferrer">คลิ๊กดูรายละเอียดของพื้นที่สีเขียวแต่ละประเภท</a>)</label>
-                                    <select class="form-control" id="type" required>
+                                    <select class="form-control" id="type" aria-describedby="inputGroupPrepend"
+                                        required>
                                         <option value=""></option>
                                         <option value="ประเภทที่1">พื้นที่สีเขียวเพื่อการบริการ สาธารณะ</option>
                                         <option value="ประเภทที่2">พื้นที่สีเขียวเพื่ออรรถประโยชน์</option>
@@ -196,6 +211,9 @@
                                             พื้นที่สีเขียวที่ยังไม่มีการใช้ประโยชน์หรือรอการพัฒนา
                                         </option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        *ระบุประเภทพื้นที่สีเขียว
+                                    </div>
 
                                 </div>
 
@@ -210,8 +228,18 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>หน่วยงานที่รับผิดชอบดูแล</label>
-                                    <input type="text" class="form-control" id="agency">
+                                    <label>ชื่อต้นไม้ที่พบ</label>
+                                    <input type="text" class="form-control" id="tree_name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>หน่วยงานที่รับผิดชอบดูแล</label><label style="color: red;"
+                                        for="sel1">*</label>
+                                    <input type="text" class="form-control" id="agency"
+                                        aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        *ระบุหน่วยงานที่รับผิดชอบดูแล
+                                    </div>
                                 </div>
                                 <hr>
                                 <div class="mt-1">
@@ -249,31 +277,87 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
-
-    <div class="modal fade" id="okmodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="okmodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>เพิ่มข้อมูลสำเร็จ
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoList()">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="gotoList()">ยืนยัน</button>
                 </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="NOdatamodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>กรุณาวาดแปลงพื้นที่สีเขียว</p>
-                    <p></p>
-                    <p></p>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาวาดแปลงพื้นที่สีเขียว</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
                 </div>
+
             </div>
         </div>
     </div>

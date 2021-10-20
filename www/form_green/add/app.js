@@ -151,36 +151,116 @@ map.on('pm:create', e => {
     geom = e.layer.toGeoJSON();
 });
 
+$('#gr_name').on("input", function () {
+    if (this.value == '') {
+        $("#gr_name").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#gr_name").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#type').on("input", function () {
+    if (this.value == '') {
+        $("#type").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#type").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#agency').on("input", function () {
+    if (this.value == '') {
+        $("#agency").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#agency").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#pro').on("input", function () {
+    if (this.value == '') {
+        $("#pro").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#pro").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+$('#amp').on("input", function () {
+    if (this.value == '') {
+        $("#amp").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#amp").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+$('#tam').on("input", function () {
+    if (this.value == '') {
+        $("#tam").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#tam").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+
 let sendData = () => {
     // console.log(geom[0]);
-    const obj = {
-        data: {
-            usrid: urid,
-            usrname: urname,
-            gr_name: $('#gr_name').val(),
-            prov_nam_t: $('#pro_name').val(),
-            amphoe_t: $('#amp_name').val(),
-            tam_nam_t: $('#tam_name').val(),
-            prov_code: $('#pro').val(),
-            amphoe_idn: $('#amp').val(),
-            tambon_idn: $('#tam').val(),
-            type: $('#type').val(),
-            rai: $('#rai').val(),
-            tree: $('#tree').val(),
-            agency: $('#agency').val(),
-            img: dataurl ? dataurl : dataurl = "",
-            geom: geom == "" ? "" : geom
+    if ($('#gr_name').val() == "" || $('#type').val() == "" || $('#agency').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#gr_name').val() == "") {
+            $("#gr_name").addClass("is-invalid")
         }
-    }
+        if ($('#type').val() == "") {
+            $("#type").addClass("is-invalid")
+        }
+        if ($('#agency').val() == "") {
+            $("#agency").addClass("is-invalid")
+        }
+        if ($('#pro').val() == "") {
+            $("#pro").addClass("is-invalid")
+        }
+        if ($('#amp').val() == "") {
+            $("#amp").addClass("is-invalid")
+        }
+        if ($('#tam').val() == "") {
+            $("#tam").addClass("is-invalid")
+        }
+    } else if ($('#gr_name').val() !== "" || $('#type').val() !== "" || $('#agency').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        const obj = {
+            data: {
+                usrid: urid,
+                usrname: urname,
+                gr_name: $('#gr_name').val(),
+                prov_nam_t: $('#pro_name').val(),
+                amphoe_t: $('#amp_name').val(),
+                tam_nam_t: $('#tam_name').val(),
+                prov_code: $('#pro').val(),
+                amphoe_idn: $('#amp').val(),
+                tambon_idn: $('#tam').val(),
+                type: $('#type').val(),
+                rai: $('#rai').val(),
+                tree: $('#tree').val(),
+                agency: $('#agency').val(),
+                img: dataurl ? dataurl : dataurl = "",
+                geom: geom == "" ? "" : geom
+            }
+        }
 
-    if (geom != "") {
-        axios.post(url + "/green-api/insert", obj).then((r) => {
-            r.data.data == "success" ? $("#okmodal").modal("show") : null
-        })
-    } else {
-        $("#modal").modal("show");
+        if (geom != "") {
+            axios.post(url + "/green-api/insert", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
     }
-    return false;
 }
 
 let gotoList = () => {

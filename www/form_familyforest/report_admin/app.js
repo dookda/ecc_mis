@@ -199,7 +199,7 @@ let getData = async (data) => {
     let herb = 0;
     let econ = 0;
     await data.map(i => {
-        // console.log(i);
+        console.log(i);
         eat += Number(i.eat);
         use += Number(i.use);
         econ += Number(i.econ);
@@ -230,7 +230,7 @@ let getData = async (data) => {
     showParcel(data);
 }
 
-let showChart = (dataArr) => {
+let showChart2 = (dataArr) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("chartType", am4charts.PieChart);
     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
@@ -260,7 +260,70 @@ let showChart = (dataArr) => {
         return { data: data };
     });
 }
-$(document).ready(function () {
+
+let showChart = (dataArr) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    var chart = am4core.create("chartType", am4charts.XYChart);
+
+    chart.data = dataArr;
+
+    chart.padding(40, 40, 40, 40);
+
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.dataFields.category = "cat";
+    categoryAxis.renderer.minGridDistance = 60;
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.disabled = true;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.min = 0;
+    valueAxis.extraMax = 0.1;
+    //valueAxis.rangeChangeEasing = am4core.ease.linear;
+    //valueAxis.rangeChangeDuration = 1500;
+
+    // var axis = chart.yAxes.push(new am4charts.ValueAxis());
+    // axis.renderer.grid.template.disabled = false;
+
+    // Set up axis title
+    valueAxis.title.text = 'ผลผลิต (กิโลกรัม)';
+
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.categoryX = "cat";
+    series.dataFields.valueY = "val";
+    series.tooltipText = "{valueY.value}"
+    series.columns.template.strokeOpacity = 0;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    //series.interpolationDuration = 1500;
+    //series.interpolationEasing = am4core.ease.linear;
+    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+    labelBullet.label.verticalCenter = "bottom";
+    labelBullet.label.dy = -10;
+    labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
+
+    chart.zoomOutButton.disabled = true;
+
+    // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
+    series.columns.template.adapter.add("fill", function (fill, target) {
+        return chart.colors.getIndex(target.dataItem.index);
+    });
+
+    // setInterval(function () {
+    //     am4core.array.each(chart.data, function (item) {
+    //         item.visits += Math.round(Math.random() * 200 - 100);
+    //         item.visits = Math.abs(item.visits);
+    //     })
+    //     chart.invalidateRawData();
+    // }, 2000)
+
+    categoryAxis.sortBySeries = series;
+}
+
+let loadTable = (dat) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -284,10 +347,19 @@ $(document).ready(function () {
         ajax: {
             type: "POST",
             url: urltable,
-            data: { usrid: urid },
+            data: dat,
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${row.geom})'><i class="bi bi-zoom-in"></i>ซูม</button>
+                <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -317,14 +389,6 @@ $(document).ready(function () {
                 render: (data, type, row, meta) => {
                     return `${row.econ}  ${row.econ_unit}`
                 }
-            }, {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `
-                    <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${row.geom})'><i class="bi bi-zoom-in"></i>ซูม</button>
-                    <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "15%"
             }
         ],
         columnDefs: [
@@ -345,7 +409,7 @@ $(document).ready(function () {
         // getMarker(data)
         // console.log(data)
     });
-})
+}
 
 let confirmDelete = (prj_id, prj_name, tbType) => {
     $("#projId").val(prj_id);
@@ -385,6 +449,15 @@ let deleteValue = () => {
 }
 
 $('#prov').on("change", function () {
+    console.log(this.value);
+    let pro;
+    this.value == 'eec' ? pro = "ทุกจังหวัด" : null;
+    this.value == '24' ? pro = "ฉะเชิงเทรา" : null;
+    this.value == '20' ? pro = "ชลบุรี" : null;
+    this.value == '21' ? pro = "ระยอง" : null;
+
+    $("#myTable").dataTable().fnDestroy();
+    loadTable({ usrid: urid, pro: pro })
     getPro(this.value)
     zoomExtent("pro", this.value)
 })
@@ -428,24 +501,4 @@ let getAmp = (ampcode) => {
     })
 }
 
-// let getMarker = (d) => {
-//     map.eachLayer(i => {
-//         i.options.name == "marker" ? map.removeLayer(i) : null;
-//     });
-//     console.log(d)
-//     d.map(i => {
-//         if (i.geom) {
-//             let dat = {
-//                 "type": "Feature",
-//                 "geometry": JSON.parse(i.geom),
-//                 "properties": {
-//                     "name": i.ffid
-//                 }
-//             }
-
-//             let json = L.geoJSON(dat);
-//             json
-//             // .bindPopup(`<h6><b>ชื่อพืช :</b> ${i.typeag}</h6><h6><b>วันที่รายงาน :</b> ${i.repor_date}</h6>`)
-//             .addTo(map);}
-//     })
-// }
+loadTable({ usrid: urid, pro: 'ทุกจังหวัด' })

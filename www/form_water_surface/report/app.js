@@ -9,8 +9,8 @@ if (f_water_surface == 'false') {
 
 $("#usrname").text(urname);
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
