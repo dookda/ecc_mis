@@ -40,8 +40,20 @@ app.post("/wq-api/getownerdata", (req, res) => {
 })
 
 app.post("/wq-api/getdatabystation", (req, res) => {
-    const { syst } = req.body;
+    const { syst, usrid } = req.body;
+
     const sql = `SELECT v.* FROM v_watquality v WHERE syst='${syst}' ORDER BY v.bf_date`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/wq-api/getownerdatabystation", (req, res) => {
+    const { syst, usrid } = req.body;
+
+    const sql = `SELECT v.* FROM v_watquality v WHERE syst='${syst}' AND usrid='${usrid}' ORDER BY v.bf_date`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

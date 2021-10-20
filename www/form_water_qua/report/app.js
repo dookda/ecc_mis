@@ -10,11 +10,6 @@ if (f_water_qua == 'false') {
 $("#usrname").text(urname);
 
 var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
-$(document).ready(() => {
-    loadTable()
-    // loadMap()
-    layermark(L62, 62)
-});
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -84,14 +79,13 @@ const wpipeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms
 const wscopeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: 'eec:a__64_w_scope_eec',
     format: 'image/png',
-    transparent: true
+    transparent: true,
 });
 const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: 'eec:a__81_pollution_group',
     format: 'image/png',
     transparent: true,
 });
-
 let lyrs = L.featureGroup().addTo(map)
 
 var baseMap = {
@@ -131,7 +125,6 @@ function showLegend() {
         <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
       </button>`
         div.innerHTML += `<div id='PU'></div>`
-
         return div;
     };
     legend.addTo(map);
@@ -149,6 +142,7 @@ function hideLegend() {
     legend.addTo(map);
 }
 hideLegend()
+
 function Puop() {
     $('#PUOP').hide()
     $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
@@ -227,8 +221,8 @@ function getChart(wq_id) {
     })
 
 }
-let dtable
-let loadTable = () => {
+
+let loadTable = (daturl, dattype) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -248,15 +242,26 @@ let loadTable = () => {
             }
         }
     });
-    dtable = $('#myTable').DataTable({
+    let dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/wq-api/getownerdata',
-            data: { usrid: urid },
+            url: daturl,
+            data: dattype,
             dataSrc: 'data'
         },
         columns: [
             // { data: 'prj_name' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                       <button class="btn btn-margin btn-info" onclick="getBF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลก่อนบำบัด</button>
+                       <button class="btn btn-margin btn-info" onclick="getAF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลหลังบำบัด</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-success" onclick="getChart(${row.wq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูกราฟ</button>`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row) => {
@@ -265,8 +270,9 @@ let loadTable = () => {
             },
             { data: 'prov' },
             { data: 'syst' },
-            { data: 'bf_date' },
-
+            {
+                data: 'bf_date'
+            },
 
             {
                 data: null,
@@ -309,21 +315,10 @@ let loadTable = () => {
                 data: null,
                 "render": function (data, type, row) { return Number(data.af_wq_temp).toFixed(2) }
             },
-
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                    <button class="btn btn-margin btn-outline-info" onclick="getBF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;ก่อนบำบัด</button>
-                    <button class="btn btn-margin btn-outline-info" onclick="getAF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;หลังบำบัด</button>
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.wq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
-                }
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] },
+
         ],
         order: [[4, "desc"]],
         searching: true,
@@ -336,40 +331,42 @@ let loadTable = () => {
 
     dtable.on('search.dt', function () {
         let data = dtable.rows({ search: 'applied' }).data()
+        // console.log(data)
         getMarker(data);
     });
 }
 let getBF = (e) => {
     sessionStorage.setItem('wq_id', e);
-    sessionStorage.setItem('wq_report', 'normal');
+    sessionStorage.setItem('wq_report', 'admin');
     location.href = `./../edit_bf/index.html?id=${e}`;
 }
 let getAF = (e) => {
     sessionStorage.setItem('wq_id', e);
-    sessionStorage.setItem('wq_report', 'normal');
+    sessionStorage.setItem('wq_report', 'admin');
     location.href = `./../edit_af/index.html?id=${e}`;
 }
-
 var mk, mg
 let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-    mg = L.layerGroup();
-    d.map(i => {
-        if (i.geojson) {
-            let json = JSON.parse(i.geojson);
-            mk = L.geoJson(json, {
-                name: "marker"
-            })
-                .bindPopup(`<h6><b>ระบบ :</b> ${i.syst}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.bf_date}</h6>`)
-            // .addTo(map)
-            mg.addLayer(mk);
-        }
-
-    });
-    mg.addTo(map)
-    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    // console.log(d)  
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
+                let json = JSON.parse(i.geojson);
+                mk = L.geoJson(json, {
+                    name: "marker"
+                })
+                    .bindPopup(`<h6><b>ระบบ :</b> ${i.syst}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.bf_date}</h6>`)
+                // .addTo(map)
+                mg.addLayer(mk);
+            }
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let geneChart = (arr, div, tt, unit, min, max, value) => {
@@ -432,7 +429,7 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
             }
 
 
-            else if (arr[0].value1 <= max) {
+            else if (arr[0].value1 < max) {
                 series.stroke = am4core.color("#7e57c2");
                 series.tooltip.getFillFromObject = false;
                 series.tooltip.background.fill = am4core.color("#7e57c2");
@@ -448,7 +445,7 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
                 series.columns.template.stroke = am4core.color("#d32f2f");
                 series.columns.template.fill = am4core.color("#d32f2f");
             }
-            else if (arr[0].value2 <= max) {
+            else if (arr[0].value2 < max) {
                 series.stroke = am4core.color("#7e57c2");
                 series.tooltip.getFillFromObject = false;
                 series.tooltip.background.fill = am4core.color("#7e57c2");
@@ -476,38 +473,16 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
         return { data: data };
     });
 }
-
-let getStation = (syst) => {
-    axios.post(url + "/wq-api/getdata/chartbystation", { syst: syst }).then(async (r) => {
-        console.log(r.data.data);
-        let cbod = [];
-        let ccod = [];
-        let cdo = [];
-        let cph = [];
-        let css = [];
-        let ctemp = [];
-        await r.data.data.map(i => {
-            // var b = i.bf_date.split("-");
-            // var bf_date = `${b[2]}-${b[1]}-${b[0]}`
-            // console.log(bf_date)
-
-            cbod.push({ date: i.bf_date, value1: i.bf_wq_bod, value2: i.af_wq_bod });
-            ccod.push({ date: i.bf_date, value1: i.bf_wq_cod, value2: i.af_wq_cod });
-            cdo.push({ date: i.bf_date, value1: i.bf_wq_do, value2: i.af_wq_do });
-            cph.push({ date: i.bf_date, value1: i.bf_wq_ph, value2: i.af_wq_ph });
-            css.push({ date: i.bf_date, value1: i.bf_wq_ss, value2: i.af_wq_ss });
-            ctemp.push({ date: i.bf_date, value1: i.bf_wq_temp, value2: i.af_wq_temp });
-        });
-        console.log(cbod)
-        compareChart("c_bod", cbod, "BOD", "(mg/L)");
-        compareChart("c_cod", ccod, "COD", "(mg/L)");
-        compareChart("c_do", cdo, "DO", "(mg/L)");
-        compareChart("c_ph", cph, "pH", "(pH)");
-        compareChart("c_ss", css, "SS", "(mg/L)");
-        compareChart("c_temp", ctemp, "Temperature", "(°C)");
+let provStation = (prov) => {
+    var provnam = prov
+    axios.post(url + "/wq-api/stationbyprov", { prov: provnam }).then(r => {
+        var data = r.data.data.filter(e => e.syst !== null);
+        data.map(i => {
+            $("#sta").append(`<option value="${i.syst}">${i.syst}</option>`)
+        })
     })
 }
-
+provStation();
 
 let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
     // Themes begin
@@ -672,82 +647,79 @@ let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
 }
 
 $("#sta").on("change", function () {
-    // getStation(this.value)
-    if (this.value == "ทุกสถานีตรวจวัดค่า") {
-        dtable.search('').draw();
+    // console.log(this.value)
+    var sta_n = $("#sta").children("option:selected").text()
+    if (this.value !== "ทุกสถานีตรวจวัดค่า") {
+        $("#myTable").dataTable().fnDestroy();
+        loadTable(url + '/wq-api/getownerdatabystation', { syst: sta_n, usrid: urid })
     } else {
-        dtable.search(this.value).draw();
+        var prov_n = $("#prov").children("option:selected").text()
+        if (prov_n !== "ทุกจังหวัด") {
+            $("#myTable").dataTable().fnDestroy();
+            loadTable(url + '/wq-api/getdatabyprov', { prov: prov_n, usrid: urid })
+        } else {
+            $("#myTable").dataTable().fnDestroy();
+            loadTable(url + 'wq-api/getownerdata', { usrid: urid })
+        }
+    }
+    zoomsta(sta_n)
+
+    $("#parameter").empty()
+    $("#parameter").append(`
+        <option>เลือก</option>
+        <option value="BOD">BOD</option>
+        <option value="COD">COD</option>
+        <option value="DO">DO</option>
+        <option value="PH">pH</option>
+        <option value="SS">SS</option>
+        <option value="TEMP">TEMP</option>
+    `)
+
+});
+$("#prov").on("change", function () {
+    var prov_n = $("#prov").children("option:selected").text()
+    $("#sta").empty().append('<option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>');
+    if (this.value == "ทุกจังหวัด") {
+        $('#chartall').hide();
+        provStation(prov_n);
+        zoomExtent("pro", "eec")
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable(url + '/wq-api/getdata', {})
+    } else {
+        // $("#sta").empty()
+        provStation(prov_n);
+        zoomExtent("pro", this.value)
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable(url + '/wq-api/getdatabyprov', { prov: prov_n })
     }
 });
 
-// getStation("ทม.แสนสุข (เหนือ)");
-
-let provStation = () => {
-    axios.post(url + '/wq-api/getsyst', { usrid: urid }).then(r => {
-        var data = r.data.data.filter(e => e.syst !== null);
-        data.map(i => {
-            $("#sta").append(`<option value="${i.syst}">${i.syst}</option>`)
-        })
-        getStation(data[0].syst)
-    })
-}
-provStation();
-
-
-var m62, ms62
-let layermark = (Url, Nlayer) => {
-    var MIcon1 = L.icon({
-        iconUrl: './img/arrowup.png',
-        iconSize: [18, 18],
-        iconAnchor: [10, 5],
-        // popupAnchor: [10, 0]
-    });
-
-    if (Nlayer == 62) {
-        axios.get(Url).then((r) => {
-            var d = r.data.features
-            // console.log(r.data.features);
-            ms62 = L.layerGroup()
-            d.map(i => {
-                if (i.properties) {
-                    m62 = L.marker([i.geometry.coordinates[1], i.geometry.coordinates[0]], { icon: MIcon1 })
-                        .bindPopup(`<h6><b>ระบบบำบัดน้ำเสีย :</b> ${i.properties.system}</h6>`)
-                    // .addTo(map);
-                }
-                ms62.addLayer(m62);
-            })
-            ms62.addTo(map)
-            lyrControl.addOverlay(ms62, "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก")
-        });
-    }
-
-}
-
 $("#chartall").hide()
 let callChart = () => {
-    // $("#chartall").show();
+    $("#chartall").show();
     var syst = $("#sta").val();
     var staname = $("#sta").children("option:selected").text()
+    var prov_n = $("#prov").children("option:selected").text()
     var parameter = $("#parameter").val();
 
     if (syst == "ทุกสถานีตรวจวัดค่า") {
-        alert("โปรดเลือดสถานีตรวจวัดค่าที่ท่านสนใจ");
-        // if (prov_n !== "ทุกจังหวัด") {
-        //     $('#staname').html(` ${parameter} ของจังหวัด${prov_n} ${staname} `)
-        // } else {
-        //     $('#staname').html(` ${parameter} ของ${prov_n} ${staname} `)
-        // }
-        // var syst_n = []
-        // var provnam = prov_n
-        // axios.post(url + "/wq-api/stationbyprov", { prov: provnam }).then(r => {
-        //     var data = r.data.data.filter(e => e.syst !== null);
-        //     data.map(i => {
-        //         syst_n.push({ syst_n: i.syst })
-        //     })
-        //     chartstaall(syst_n)
-        // })
+        if (prov_n !== "ทุกจังหวัด") {
+            $('#staname').html(` ${parameter} ของจังหวัด${prov_n} ${staname} `)
+        } else {
+            $('#staname').html(` ${parameter} ของ${prov_n} ${staname} `)
+        }
+        var syst_n = []
+        var provnam = prov_n
+        axios.post(url + "/wq-api/stationbyprov", { prov: provnam }).then(r => {
+            var data = r.data.data.filter(e => e.syst !== null);
+            data.map(i => {
+                syst_n.push({ syst_n: i.syst })
+            })
+            chartstaall(syst_n)
+        })
     } else {
-        $("#chartall").show();
         $('#staname').html(` ${parameter} ของสถานี ${staname} `)
         axios.post(url + "/wq-api/getdata/chartbystation", { syst: syst }).then(async (r) => {
             let cbod = [];
@@ -790,5 +762,195 @@ let callChart = () => {
         })
     }
 }
+let chartstaall = (data) => {
+    var sta = data
+    var parameter = $("#parameter").val();
+    var setDatBOD = [];
+    var setDatCOD = [];
+    var setDatDO = [];
+    var setDatPH = [];
+    var setDatSS = [];
+    var setDatTEMP = [];
+
+    let a = sta.map(i => {
+        axios.post(url + '/wq-api/getdatabystation', { syst: i.syst_n }).then(r => {
+            var data = r.data.data
+            var length = data.length - 1
+            setDatBOD.push({ category: data[length].syst, first: data[length].af_wq_bod, second: data[length].bf_wq_bod });
+            setDatCOD.push({ category: data[length].syst, first: data[length].af_wq_cod, second: data[length].bf_wq_cod });
+            setDatDO.push({ category: data[length].syst, first: data[length].af_wq_do, second: data[length].bf_wq_do });
+            setDatPH.push({ category: data[length].syst, first: data[length].af_wq_ph, second: data[length].bf_wq_ph });
+            setDatSS.push({ category: data[length].syst, first: data[length].af_wq_ss, second: data[length].bf_wq_ss });
+            setDatTEMP.push({ category: data[length].syst, first: data[length].af_wq_temp, second: data[length].bf_wq_temp });
+
+            if (parameter == "BOD") {
+                chartall(setDatBOD, "BOD", "(mg/L)")
+            } else if (parameter == "COD") {
+                chartall(setDatCOD, "COD", "(mg/L)")
+            } else if (parameter == "DO") {
+                chartall(setDatDO, "DO", "(mg/L)")
+            } else if (parameter == "PH") {
+                chartall(setDatPH, "pH", "(pH)")
+            } else if (parameter == "SS") {
+                chartall(setDatSS, "SS", "(mg/L)")
+            } else if (parameter == "TEMP") {
+                chartall(setDatTEMP, "Temperature", "(°C)")
+            }
+        })
+    })
+}
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let chartall = (data, label, unit) => {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("divchart", am4charts.XYChart);
+
+    // Add percent sign to all numbers
+    chart.numberFormatter.numberFormat = "#.#";
+    chart.legend = new am4charts.Legend()
+    // chart.legend.position = 'bottom'
+    // chart.legend.paddingBottom = 20
+    // chart.legend.labels.template.maxWidth = 95
+
+    // Add data
+    chart.data = data
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "category";
+    // categoryAxis.renderer.inside = true;
+    // categoryAxis.renderer.labels.template.valign = "top";
+    categoryAxis.renderer.labels.template.fontSize = 14;
+    // categoryAxis.renderer.grid.template.location = 0;
+    // categoryAxis.renderer.minGridDistance = 30;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = label + " " + "(" + unit + ")";
+    valueAxis.title.fontWeight = 800;
+
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = "second";
+    series.dataFields.categoryX = "category";
+    series.clustered = false;
+    series.name = 'ก่อนบำบัด'
+    series.tooltipText = `ก่อนบำบัด {categoryX}: [bold]{valueY}[/] ${unit}`;
+    series.stroke = am4core.color('#7e57c2');
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.background.fill = am4core.color('#7e57c2');
+    series.columns.template.stroke = am4core.color('#7e57c2');
+    series.columns.template.fill = am4core.color('#7e57c2');
+
+    var series2 = chart.series.push(new am4charts.ColumnSeries());
+    series2.dataFields.valueY = "first";
+    series2.dataFields.categoryX = "category";
+    series2.clustered = false;
+    series2.name = 'หลังบำบัด'
+    series2.columns.template.width = am4core.percent(50);
+    series2.tooltipText = `หลังบำบัด {categoryX}: [bold]{valueY}[/] ${unit}`;
+    series2.stroke = am4core.color('#4fc3f7');
+    series2.tooltip.getFillFromObject = false;
+    series2.tooltip.background.fill = am4core.color('#4fc3f7');
+    series2.columns.template.stroke = am4core.color('#4fc3f7');
+    series2.columns.template.fill = am4core.color('#4fc3f7');
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.disabled = true;
+    chart.cursor.lineY.disabled = true;
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+}
+
+var m62, ms62
+let layermark = (Url, Nlayer) => {
+    var MIcon1 = L.icon({
+        iconUrl: './img/arrowup.png',
+        iconSize: [18, 18],
+        iconAnchor: [10, 5],
+        // popupAnchor: [10, 0]
+    });
+
+    if (Nlayer == 62) {
+        axios.get(Url).then((r) => {
+            var d = r.data.features
+            // console.log(r.data.features);
+            ms62 = L.layerGroup()
+            d.map(i => {
+                if (i.properties) {
+                    m62 = L.marker([i.geometry.coordinates[1], i.geometry.coordinates[0]], { icon: MIcon1 })
+                        .bindPopup(`<h6><b>ระบบบำบัดน้ำเสีย :</b> ${i.properties.system}</h6>`)
+                    // .addTo(map);
+                }
+                ms62.addLayer(m62);
+            })
+            ms62.addTo(map)
+            lyrControl.addOverlay(ms62, "ระบบบำบัดน้ำเสียในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก")
+        });
+    }
+
+}
+
+let zoomsta = (sta) => {
+    axios.get(L62).then((r) => {
+        var d = r.data.features
+        d.map(i => {
+            if (i.properties.system == sta) {
+                var popup = L.popup()
+                    .setLatLng([i.geometry.coordinates[1], i.geometry.coordinates[0]])
+                    .setContent(`<h6><b>ระบบบำบัดน้ำเสีย :</b> ${i.properties.system}</h6>`)
+                    .openOn(map);
+                map.setView([i.geometry.coordinates[1], i.geometry.coordinates[0]], 12);
+                // console.log(i.properties.station_n)
+            } else {
+                // zoommap2(sta)
+            }
+        })
+    })
+
+    if (sta == "ทุกสถานีตรวจวัดค่า") {
+        map.closePopup();
+        var code = $('#prov').val()
+        console.log(code)
+        if (code == "ทุกจังหวัด") {
+            zoomExtent("pro", "eec")
+        } else {
+            zoomExtent("pro", code)
+        }
+    }
+}
+
+$("#parameter").on("change", function () {
+    callChart()
+})
 
 
+$(document).ready(() => {
+    loadTable(url + '/wq-api/getdata', {})
+    layermark(L62, 62)
+});

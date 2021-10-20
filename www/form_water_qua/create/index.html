@@ -120,18 +120,26 @@
             <!-- ฟอร์มนำเข้า -->
             <div class="container">
                 <div class="form-group">
-                    <label>ชื่อรายงาน:</label>
+                    <label>ชื่อรายงาน:</label><label style="color: red;" for="sel1">*</label>
                     <input type="text" class="form-control" id="report_n">
+                    <div class="invalid-feedback">
+                        *ระบุชื่อรายงาน
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>ระบบบำบัดน้ำเสีย (Wastewater treatment system):</label>
+                    <label>ระบบบำบัดน้ำเสีย (Wastewater treatment system):</label><label style="color: red;"
+                        for="sel1">*</label>
                     <input type="text" class="form-control" id="syst">
+                    <div class="invalid-feedback">
+                        *ระบุระบบบำบัดน้ำเสีย
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>ชนิดของระบบบำบัด:</label>
                     <input type="text" class="form-control" id="systype">
+
                 </div>
 
                 <div class="form-group">
@@ -141,7 +149,7 @@
 
                 <div class="form-group">
                     <!-- หน่วยงาน: insti -->
-                    <label for="insti">ชื่อหน่วยงานที่รับผิดชอบ</label>
+                    <label for="insti">ชื่อหน่วยงานที่รับผิดชอบ</label><label style="color: red;" for="sel1">*</label>
                     <select class="form-control" id="insti">
                         <option>เทศบาลตําบลบางเสร่</option>
                         <option>เทศบาลเมืองชลบุรี</option>
@@ -159,22 +167,30 @@
                         <option>เทศบาลเมืองมาบตาพุด</option>
                         <option>เทศบาลเมืองขลุง</option>
                     </select>
+                    <div class="invalid-feedback">
+                        *ระบุชื่อหน่วยงานที่รับผิดชอบ
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <!-- จังหวัด: pro -->
-                    <label for="pro">จังหวัด:</label>
+                    <label for="pro">จังหวัด:</label><label style="color: red;" for="sel1">*</label>
                     <select class="form-control" id="prov">
                         <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
                         <option value="ชลบุรี">ชลบุรี</option>
                         <option value="ระยอง">ระยอง</option>
-
                     </select>
+                    <div class="invalid-feedback">
+                        *ระบุจังหวัด
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>วันที่รายงาน :</label>
+                    <label>วันที่รายงาน :</label><label style="color: red;" for="sel1">*</label>
                     <input type="date" class="form-control" id="date">
+                    <div class="invalid-feedback">
+                        *ระบุวันที่รายงาน
+                    </div>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -216,6 +232,34 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
+    <div class="modal" id="NOdatamodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>

@@ -111,38 +111,84 @@ map.on('click', (e) => {
     $("#lon").val(e.latlng.lng);
 });
 
-let sendData = () => {
-    const obj = {
-        data: {
-            usrid: urid,
-            usrname: urname,
-            // sq_spname: $('#sq_spname').val(),
-            sq_date: $('#sq_date').val(),
-            sq_time: $('#sq_time').val(),
-            sq_order: $('#sq_order').val(),
-            sta_loc: $('#sta_loc').val(),
-            // pro: $('#pro').val(),
-            // amp: $('#amp').val(),
-            // tam: $('#tam').val(),
-            sq_do: $('#sq_do').val(),
-            sq_tcb: $('#sq_tcb').val(),
-            sq_po43p: $('#sq_po43p').val(),
-            sq_no3n: $('#sq_no3n').val(),
-            sq_temp: $('#sq_temp').val(),
-            sq_ss: $('#sq_ss').val(),
-            sq_ph: $('#sq_ph').val(),
-            sq_nh3: $('#sq_nh3').val(),
-            sq_mwqi: $('#sq_mwqi').val(),
-            sq_pb: $('#sq_pb').val(),
-            img: dataurl ? dataurl : dataurl = '',
-            geom: geom == "" ? "" : geom.toGeoJSON()
-        }
+$('#sq_date').on("input", function () {
+    if (this.value == '') {
+        $("#sq_date").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sq_date").removeClass("is-invalid")
+        console.log("true")
     }
-    // console.log(obj.data);
-    axios.post(url + "/sq-api/insert", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
-    })
-    return false;
+})
+$('#sq_time').on("input", function () {
+    if (this.value == '') {
+        $("#sq_time").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sq_time").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#sta_loc').on("input", function () {
+    if (this.value == '') {
+        $("#sta_loc").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sta_loc").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+let sendData = () => {
+    if ($('#sq_date').val() == "" || $('#sq_time').val() == "" || $('#sta_loc').val() == "") {
+        $("#errormodal").modal("show")
+        if ($('#sq_date').val() == "") {
+            $("#sq_date").addClass("is-invalid")
+        }
+        if ($('#sq_time').val() == "") {
+            $("#sq_time").addClass("is-invalid")
+        }
+        if ($('#sta_loc').val() == "") {
+            $("#sta_loc").addClass("is-invalid")
+        }
+    } else if ($('#sq_date').val() !== "" || $('#sq_time').val() !== "" || $('#sta_loc').val() !== "") {
+        const obj = {
+            data: {
+                usrid: urid,
+                usrname: urname,
+                // sq_spname: $('#sq_spname').val(),
+                sq_date: $('#sq_date').val(),
+                sq_time: $('#sq_time').val(),
+                sq_order: $('#sq_order').val(),
+                sta_loc: $('#sta_loc').val(),
+                // pro: $('#pro').val(),
+                // amp: $('#amp').val(),
+                // tam: $('#tam').val(),
+                sq_do: $('#sq_do').val(),
+                sq_tcb: $('#sq_tcb').val(),
+                sq_po43p: $('#sq_po43p').val(),
+                sq_no3n: $('#sq_no3n').val(),
+                sq_temp: $('#sq_temp').val(),
+                sq_ss: $('#sq_ss').val(),
+                sq_ph: $('#sq_ph').val(),
+                sq_nh3: $('#sq_nh3').val(),
+                sq_mwqi: $('#sq_mwqi').val(),
+                sq_pb: $('#sq_pb').val(),
+                img: dataurl ? dataurl : dataurl = '',
+                geom: geom == "" ? "" : geom.toGeoJSON()
+            }
+        }
+        // console.log(obj.data);
+
+        if (geom != "") {
+            axios.post(url + "/sq-api/insert", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
+    }
 }
 
 let gotoReport = () => {

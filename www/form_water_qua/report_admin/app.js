@@ -10,12 +10,6 @@ if (eecauth !== "admin" && eecauth !== "office") {
 
 var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
-$(document).ready(() => {
-    loadTable(url + '/wq-api/getdata', {})
-    // loadMap()
-    layermark(L62, 62)
-});
-
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
@@ -257,6 +251,17 @@ let loadTable = (daturl, dattype) => {
         columns: [
             // { data: 'prj_name' },
             {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                       <button class="btn btn-margin btn-info" onclick="getBF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลก่อนบำบัด</button>
+                       <button class="btn btn-margin btn-info" onclick="getAF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลหลังบำบัด</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-success" onclick="getChart(${row.wq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูกราฟ</button>`
+                }
+            },
+            {
                 data: '',
                 render: (data, type, row) => {
                     return ` <span class="badge bg-info text-white">${row.id}</span>`
@@ -309,17 +314,6 @@ let loadTable = (daturl, dattype) => {
                 data: null,
                 "render": function (data, type, row) { return Number(data.af_wq_temp).toFixed(2) }
             },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-info" onclick="getBF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;ก่อนบำบัด</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getAF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;หลังบำบัด</button>
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.wq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูค่าที่ตรวจวัด</button>`
-                }
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] },
@@ -669,6 +663,17 @@ $("#sta").on("change", function () {
     }
     zoomsta(sta_n)
 
+    $("#parameter").empty()
+    $("#parameter").append(`
+        <option>เลือก</option>
+        <option value="BOD">BOD</option>
+        <option value="COD">COD</option>
+        <option value="DO">DO</option>
+        <option value="PH">pH</option>
+        <option value="SS">SS</option>
+        <option value="TEMP">TEMP</option>
+    `)
+
 });
 $("#prov").on("change", function () {
     var prov_n = $("#prov").children("option:selected").text()
@@ -938,21 +943,13 @@ let zoomsta = (sta) => {
         }
     }
 }
-// let zoommap2 = (sta) => {
-//     axios.post(url + '/ws-api/getdata', { staid: sta }).then((r) => {
-//         var dat = r.data.data
-//         dat.map(i => {
-//             if (i.geojson !== null && sta !== "ทุกสถานีตรวจวัดค่า") {
-//                 let json = JSON.parse(i.geojson);
-//                 // console.log(json)
-//                 var popup = L.popup()
-//                     .setLatLng([json.coordinates[1], json.coordinates[0]])
-//                     .setContent(`<h6><b>รหัสสถานี:</b> ${i.ws_station}</h6><h6><b>ชื่อแหล่งน้ำ:</b> ${i.ws_river}</h6><h6><b>สถานที่ตรวจวัด:</b> ${i.ws_location}</h6>
-//                     <h6><b>จังหวัด:</b> ${i.ws_province}</h6><h6><b>ค่า WQI:</b> ${i.ws_wqi}</h6> `)
-//                     .openOn(map);
-//                 map.setView([json.coordinates[1], json.coordinates[0]], 12);
-//             }
 
-//         })
-//     })
-// }
+$("#parameter").on("change", function () {
+    callChart()
+})
+
+
+$(document).ready(() => {
+    loadTable(url + '/wq-api/getdata', {})
+    layermark(L62, 62)
+});
