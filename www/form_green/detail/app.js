@@ -176,6 +176,7 @@ axios.post(url + "/green-api/getgeojson", { gid: green_gid }).then(r => {
     $('#type').val(r.data.data.features[0].properties.type);
     $('#rai').val(r.data.data.features[0].properties.rai);
     $('#tree').val(r.data.data.features[0].properties.tree);
+    $('#tree_name').val(r.data.data.features[0].properties.tree_name);
     $('#agency').val(r.data.data.features[0].properties.agency);
 
     var myStyle = {
@@ -221,6 +222,7 @@ let sendData = () => {
             type: $('#type').val(),
             rai: $('#rai').val(),
             tree: $('#tree').val(),
+            tree_name: $('#tree_name').val(),
             agency: $('#agency').val(),
             // img: dataurl ? dataurl : dataurl = "",
             geom: geom == "" ? "" : geom

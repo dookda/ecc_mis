@@ -278,14 +278,14 @@ let showAreaChart = (data) => {
     chart.data = data;
 }
 
-let showCountChart = (data) => {
+let showCountChart = (data, div, label) => {
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
 
     // Create chart instance
-    var chart = am4core.create("cntChart", am4charts.XYChart);
-    chart.scrollbarX = new am4core.Scrollbar();
+    var chart = am4core.create(div, am4charts.XYChart);
+    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
     chart.data = data;
@@ -303,6 +303,8 @@ let showCountChart = (data) => {
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.minWidth = 50;
+
+    valueAxis.title.text = label;
 
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
@@ -330,6 +332,20 @@ let showCountChart = (data) => {
 
     // Cursor
     chart.cursor = new am4charts.XYCursor();
+
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.menu.align = "left";
+    chart.exporting.menu.verticalAlign = "top";
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
 }
 
 let getDataForChart = (data) => {
@@ -381,11 +397,11 @@ let getDataForChart = (data) => {
     }];
 
     // console.log(cnt);
-    showAreaChart(area);
-    showCountChart(cnt)
+    showCountChart(area, 'areaChart', 'เนื้อที่พื้นที่สีเขียว (ไร่)');
+    showCountChart(cnt, 'cntChart', 'จำนวนสีเขียว (แห่ง)')
 }
 
-
+let table
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -406,7 +422,7 @@ let loadTable = () => {
             }
         }
     });
-    let table = $('#myTable').DataTable({
+    table = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
             async: true,
@@ -416,6 +432,15 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(row);
+                    return `<button class="btn btn-margin btn-success" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไข</button>&nbsp;
+                            <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                width: "25%"
+            },
             {
                 data: null,
                 render: (data, type, row, meta) => {
@@ -451,16 +476,7 @@ let loadTable = () => {
                 }
             },
             { data: 'rai' },
-            { data: 'usrname' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(row);
-                    return `<button class="btn btn-margin btn-outline-success" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>&nbsp;
-                            <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "25%"
-            }
+            { data: 'usrname' }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 3, 4, 5, 6] },
@@ -575,6 +591,71 @@ let loadHotspot = async () => {
     lyrControl.addOverlay(marker, "จุดความร้อน");
 }
 
+$('#prov').on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
 
+    let pro = $("#prov").children("option:selected").text()
+    if (pro !== "ทุกจังหวัด") {
+        table.search(pro).draw();
+    } else {
+        table.search('').draw();
+    }
+})
+$('#amp').on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+
+    let amp = $("#amp").children("option:selected").text()
+    table.search(amp).draw();
+})
+$('#tam').on("change", function () {
+    zoomExtent("tam", this.value)
+
+    let tam = $("#tam").children("option:selected").text()
+    table.search(tam).draw();
+})
+
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        $("#amp").append('<option></option>');
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        $("#tam").append('<option></option>');
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
+
+map.on("click", async (e) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
+})
 
 

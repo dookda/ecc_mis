@@ -246,6 +246,7 @@ let sendData = () => {
                 type: $('#type').val(),
                 rai: $('#rai').val(),
                 tree: $('#tree').val(),
+                tree_name: $('#tree_name').val(),
                 agency: $('#agency').val(),
                 img: dataurl ? dataurl : dataurl = "",
                 geom: geom == "" ? "" : geom

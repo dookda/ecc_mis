@@ -309,14 +309,14 @@ let showAreaChart = (data) => {
     });
 }
 
-let showCountChart = (data) => {
+let showCountChart = (data, div, label) => {
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
 
     // Create chart instance
-    var chart = am4core.create("cntChart", am4charts.XYChart);
-    chart.scrollbarX = new am4core.Scrollbar();
+    var chart = am4core.create(div, am4charts.XYChart);
+    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
     chart.data = data;
@@ -334,6 +334,8 @@ let showCountChart = (data) => {
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.minWidth = 50;
+
+    valueAxis.title.text = label;
 
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
@@ -426,8 +428,8 @@ let getDataForChart = (data) => {
     }];
 
     // console.log(cnt);
-    showAreaChart(area);
-    showCountChart(cnt)
+    showCountChart(area, 'areaChart', 'เนื้อที่พื้นที่สีเขียว (ไร่)');
+    showCountChart(cnt, 'cntChart', 'จำนวนสีเขียว (แห่ง)')
 }
 
 let table
@@ -457,10 +459,19 @@ let loadTable = () => {
             async: true,
             type: "POST",
             url: url + '/green-api/getdata',
-            data: { userid: "sakda" },
+            data: { userid: "admin" },
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(row);
+                    return `<button class="btn btn-margin btn-success" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไข</button>&nbsp;
+                            <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                width: "25%"
+            },
             {
                 data: null,
                 render: (data, type, row, meta) => {
@@ -497,15 +508,6 @@ let loadTable = () => {
             },
             { data: 'rai' },
             { data: 'usrname' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(row);
-                    return `<button class="btn btn-margin btn-outline-success" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>&nbsp;
-                            <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                width: "25%"
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 3, 4, 5, 6] },
@@ -589,63 +591,6 @@ let geneChart = (arr, div, tt, unit) => {
     });
 }
 
-let pieChart = () => {
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("chartdiv", am4charts.PieChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-    chart.data = [
-        {
-            cat: "Lithuania",
-            val: 260
-        },
-        {
-            country: "Czechia",
-            value: 230
-        },
-        {
-            country: "Ireland",
-            value: 200
-        },
-        {
-            country: "Germany",
-            value: 165
-        },
-        {
-            country: "Australia",
-            value: 139
-        },
-        {
-            country: "Austria",
-            value: 128
-        }
-    ];
-
-    var series = chart.series.push(new am4charts.PieSeries());
-    series.dataFields.value = "val";
-    series.dataFields.radiusValue = "val";
-    series.dataFields.category = "cat";
-    series.slices.template.cornerRadius = 6;
-    series.colors.step = 3;
-
-    series.hiddenState.properties.endAngle = -90;
-
-    chart.legend = new am4charts.Legend();
-
-    chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.menu.align = "left";
-    chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
-}
 
 $(document).ready(() => {
     loadTable();
@@ -735,6 +680,7 @@ let getPro = (procode) => {
         // console.log(r.data.data);
         $("#amp").empty();
         $("#tam").empty();
+        $("#amp").append('<option></option>');
         r.data.data.map(i => {
             $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
         })
@@ -743,6 +689,7 @@ let getPro = (procode) => {
 let getAmp = (ampcode) => {
     axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
         $("#tam").empty();
+        $("#tam").append('<option></option>');
         r.data.data.map(i => {
             $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
         })
