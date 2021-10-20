@@ -9,11 +9,6 @@ if (eecauth !== "admin" && eecauth !== "office") {
 }
 
 var L61 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__61_sea_eec&maxFeatures=50&outputFormat=application%2Fjson'
-$(document).ready(() => {
-    loadTable()
-    layermark(L61, 61)
-
-});
 
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
@@ -273,7 +268,7 @@ function getChart(sq_id) {
     })
 }
 let dtable
-let loadTable = () => {
+let loadTable = (type, dat) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -297,7 +292,7 @@ let loadTable = () => {
         ajax: {
             type: "POST",
             url: url + '/sq-api/getdata',
-            data: {},
+            data: { type, dat },
             dataSrc: 'data'
         },
         columns: [
@@ -306,8 +301,8 @@ let loadTable = () => {
                 render: function (data, type, row, meta) {
                     return `
                        <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                        <button class="btn btn-margin btn-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>`
+                    //    <button class="btn btn-margin btn-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                 }
             },
             {
@@ -346,35 +341,35 @@ let loadTable = () => {
 
     dtable.on('search.dt', function () {
         let data = dtable.rows({ search: 'applied' }).data()
+        // console.log(data);
         getMarker(data);
+        stationList(data);
     });
 }
 
-var mk, mg
+
 let getMarker = (d) => {
+    console.log(d)
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-    // console.log(d)
-    if (!mg) {
-        mg = L.layerGroup();
-        d.map(i => {
-            if (i.geojson) {
-                let json = JSON.parse(i.geojson);
-                // console.log(json)
-                mk = L.geoJson(json, {
-                    name: "marker",
-                    // onEachFeature: onEachFeature
-                })
-                    .bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.prov}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
-                // .addTo(map) 
-                mg.addLayer(mk);
-            }
 
-        });
-        mg.addTo(map)
-        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
-    }
+    let mg = L.layerGroup();
+    d.map(i => {
+        console.log(i);
+        if (i.geojson) {
+            let json = JSON.parse(i.geojson);
+            // console.log(json)
+            var mk = L.geoJson(json, {
+                name: "marker",
+                // onEachFeature: onEachFeature
+            }).bindPopup(`<h6><b>สถานี :</b> ${i.sta_loc}</h6><h6><b>จังหวัด :</b> ${i.pro}</h6><h6><b>วันที่รายงาน :</b> ${i.date}</h6>`)
+            mg.addLayer(mk);
+        }
+
+    });
+    mg.addTo(map)
+    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
 }
 
 let getDetail = (e) => {
@@ -460,9 +455,8 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     });
 }
 
-
-
 let getDataByPro = (code) => {
+    console.log(code);
     let sq_pro
     if (code == "20") {
         sq_pro = "ชลบุรี"
@@ -478,7 +472,7 @@ let getDataByPro = (code) => {
     let sq_mwqi = [];
 
     axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
-        // console.log(r.data.data)
+        console.log(r.data.data)
         await r.data.data.map(i => {
             sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
             sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
@@ -607,52 +601,71 @@ let lineChart = (div, data, label, unit, min1, max1, min2, max2,) => {
 
 
 let provStation = (prov) => {
-    var provnam = prov
-    axios.post(url + "/sq-api/getstation", { prov: provnam }).then(r => {
+    axios.post(url + "/sq-api/getstation", { prov }).then(r => {
+        // console.log(r);
         var data = r.data.data.filter(e => e.sta_loc !== null);
+
+        $("#parameter").empty();
+        $("#sta").empty().append('<option value="">เลือก</option>');
         data.map(i => {
             $("#sta").append(`<option value="${i.sta_loc}">${i.sta_loc}</option>`)
         })
     })
 }
-provStation()
+// provStation()
+
+let callData = (val) => {
+    let prov_n = $("#prov").children("option:selected").text()
+    if (val == "eec") {
+        getDataByPro(val);
+        // loadTable(url + '/sq-api/getdatabyprov', { prov: prov_n })
+        // dtable.search(prov_n).draw();
+        // $("#sta").empty()
+
+        zoomExtent("pro", "eec")
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable("ทุกจังหวัด", "ทุกจังหวัด");
+
+        provStation(prov_n)
+    } else {
+        $('#chartall').hide();
+        zoomExtent("pro", val)
+
+        $("#myTable").dataTable().fnDestroy();
+        loadTable("pro", prov_n);
+
+        provStation(prov_n)
+    }
+}
 
 $('#chartall').hide();
 $("#prov").change(function () {
-    let prov_n = $("#prov").children("option:selected").text()
-    // $("#myTable").dataTable().fnDestroy();
-    $("#sta").empty().append('<option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>');
-    if (prov_n !== "ทุกจังหวัด") {
-        // getDataByPro(this.value);
-        // loadTable(url + '/sq-api/getdatabyprov', { prov: prov_n })
-        dtable.search(prov_n).draw();
-        // $("#sta").empty()
-        provStation(prov_n)
-        zoomExtent("pro", this.value)
-    } else {
-        $('#chartall').hide();
-        zoomExtent("pro", "eec")
-        // loadTable(url + '/sq-api/getdata', {})
-        dtable.search('').draw();
-    }
+    callData(this.value)
 })
 $("#sta").change(function () {
     let sta_n = $("#sta").children("option:selected").text()
     let prov_n = $("#prov").children("option:selected").text()
-    // $("#myTable").dataTable().fnDestroy();
     if (sta_n !== "ทุกสถานีตรวจวัดค่า") {
-        // getDataByPro(this.value);
-        // loadTable(url + '/sq-api/getdatabysta', { sta: sta_n })
         dtable.search(sta_n).draw();
     } else {
-        // loadTable(url + '/sq-api/getdatabyprov', { prov: prov_n })
         dtable.search(prov_n).draw();
     }
-    zoomsta(sta_n)
+    // zoomsta(sta_n)
+
+    $("#parameter").empty().append(
+        `<option>เลือก</option>
+        <option value="MWQI">MWQI</option>
+        <option value="NN">ไนเตรท-ไนโตรเจน</option>
+        <option value="PH">ค่า pH</option>
+        <option value="FF">ฟอสเฟต-ฟอสฟอรัส</option>`
+    )
+
 })
 $("#parameter").on("change", function () {
     callChart()
 })
+
 let callChart = () => {
     let sq_pro = $("#prov").children("option:selected").text()
     let sq_sta = $("#sta").children("option:selected").text()
@@ -725,7 +738,9 @@ let zoomExtent = (lyr, code) => {
     })
 
     axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        // console.log(r);
         let geom = JSON.parse(r.data.data[0].geom)
+
         var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
         map.fitBounds(polygon.getBounds());
     })
@@ -788,3 +803,19 @@ let zoomsta = (sta) => {
         zoomExtent("pro", "eec")
     }
 }
+
+let stationList = (data) => {
+    console.log(data);
+    data.map(i => $("#station").append(`<option value="${i.sq_id}">${i.sta_loc} (เลข id:${i.sq_id} วันที่ ${i.date})<option>`))
+}
+
+$("#station").on("change", function () {
+    getChart(this.value)
+})
+
+
+$(document).ready(() => {
+    callData("eec")
+    // loadTable("ทุกจังหวัด", "ทุกจังหวัด");
+    // layermark(L61, 61)
+});

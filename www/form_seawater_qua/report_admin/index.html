@@ -108,7 +108,7 @@
                             <div class="col-sm-4 form-group">
                                 <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
                                 <select class="form-control" id="prov">
-                                    <option value="ทุกจังหวัด">ทุกจังหวัด</option>
+                                    <option value="eec" selected>ทุกจังหวัด</option>
                                     <option value="24">ฉะเชิงเทรา</option>
                                     <option value="20">ชลบุรี</option>
                                     <option value="21">ระยอง</option>
@@ -118,16 +118,11 @@
                             <div class="col-sm-4 form-group">
                                 <label for="sta">เลือกจุดตรวจวัด:</label>
                                 <select class="form-control" name="sta" id="sta">
-                                    <option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>
                                 </select>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="">ค่าการตรวจวัด:</label>
                                 <select class="form-control" name="" id="parameter">
-                                    <option value="MWQI">MWQI</option>
-                                    <option value="NN">ไนเตรท-ไนโตรเจน</option>
-                                    <option value="PH">ค่า pH</option>
-                                    <option value="FF">ฟอสเฟต-ฟอสฟอรัส</option>
                                 </select>
                             </div>
                         </div>
@@ -165,11 +160,10 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>หมายเลขงาน:</th>
+                                    <th>ลำดับ</th>
                                     <th>สถานที่/สถานี</th>
                                     <!-- <th>จังหวัด</th> -->
                                     <th>วันที่รายงาน</th>
-
                                     <th>DO</th>
                                     <th>TCB</th>
                                     <th>ฟอสเฟต-ฟอสฟอรัส</th>
@@ -183,6 +177,13 @@
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label for="">แสดงกราฟรายสถานี</label>
+                        <select class="form-control" id="station"></select>
                     </div>
                 </div>
 

@@ -77,7 +77,7 @@ var overlayMap = {
 
 L.control.layers(baseMap, overlayMap).addTo(map);
 
-let geom = null;
+let geom = "";
 let dataurl = "";
 
 let onLocationFound = (e) => {
@@ -107,50 +107,95 @@ map.on('click', (e) => {
 
 });
 
-function insertData() {
-    const obj = {
-        data: {
-            usrid: urid,
-            usrname: urname,
-            dla: $('#dla').val(),
-            year: $('#year').val(),
-            prov: $('#prov').val(),
-            populace: $('#populace').val(),
-            amt_was: $('#amt_was').val(),
-            dla_ser: $('#dla_ser').val(),
-            was_dla: $('#was_dla').val(),
-            amt_coll: $('#amt_coll').val(),
-            amt_benf: $('#amt_benf').val(),
-            nwas_dla: $('#nwas_dla').val(),
-            was_ncor: $('#was_ncor').val(),
-            was_corr: $('#was_corr').val(),
-            use_benf: $('#use_benf').val(),
-            removal: $('#removal').val(),
-            landfill: $('#landfill').val(),
-            compost: $('#compost').val(),
-            incinrt: $('#incinrt').val(),
-            other: $('#other').val(),
-            dla_nser: $('#dla_nser').val(),
-            was_ndla: $('#was_ndla').val(),
-            was_benf: $('#was_benf').val(),
-            nwas_cor: $('#nwas_cor').val(),
-            all_benf: $('#all_benf').val(),
-            ge_was: $('#ge_was').val(),
-            orga_was: $('#orga_was').val(),
-            recy_was: $('#recy_was').val(),
-            dang_was: $('#dang_was').val(),
-            eat_food: $('#eat_food').val(),
-            was_prod: $('#was_prod').val(),
-            geom: geom ? geom.toGeoJSON() : null
-        }
+$('#dla').on("input", function () {
+    if (this.value == '') {
+        $("#dla").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#dla").removeClass("is-invalid")
+        console.log("true")
     }
-    // console.log(obj.data);
-    axios.post(url + "/gb-api/insert", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
-    })
-    return false;
-}
+})
+$('#year').on("input", function () {
+    if (this.value == '') {
+        $("#year").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#year").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#prov').on("input", function () {
+    if (this.value == '') {
+        $("#prov").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#prov").removeClass("is-invalid")
+        console.log("true")
+    }
+})
 
+function insertData() {
+    if ($('#dla').val() == "" || $('#year').val() == "" || $('#prov').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#dla').val() == "") {
+            $("#dla").addClass("is-invalid")
+        }
+        if ($('#year').val() == "") {
+            $("#year").addClass("is-invalid")
+        }
+        if ($('#prov').val() == "") {
+            $("#prov").addClass("is-invalid")
+        }
+    } else if ($('#dla').val() !== "" || $('#year').val() !== "" || $('#prov').val() !== "") {
+
+        const obj = {
+            data: {
+                usrid: urid,
+                usrname: urname,
+                dla: $('#dla').val(),
+                year: $('#year').val(),
+                prov: $('#prov').val(),
+                populace: $('#populace').val(),
+                amt_was: $('#amt_was').val(),
+                dla_ser: $('#dla_ser').val(),
+                was_dla: $('#was_dla').val(),
+                amt_coll: $('#amt_coll').val(),
+                amt_benf: $('#amt_benf').val(),
+                nwas_dla: $('#nwas_dla').val(),
+                was_ncor: $('#was_ncor').val(),
+                was_corr: $('#was_corr').val(),
+                use_benf: $('#use_benf').val(),
+                removal: $('#removal').val(),
+                landfill: $('#landfill').val(),
+                compost: $('#compost').val(),
+                incinrt: $('#incinrt').val(),
+                other: $('#other').val(),
+                dla_nser: $('#dla_nser').val(),
+                was_ndla: $('#was_ndla').val(),
+                was_benf: $('#was_benf').val(),
+                nwas_cor: $('#nwas_cor').val(),
+                all_benf: $('#all_benf').val(),
+                ge_was: $('#ge_was').val(),
+                orga_was: $('#orga_was').val(),
+                recy_was: $('#recy_was').val(),
+                dang_was: $('#dang_was').val(),
+                eat_food: $('#eat_food').val(),
+                was_prod: $('#was_prod').val(),
+                geom: geom ? geom.toGeoJSON() : null
+            }
+        }
+        // console.log(obj.data);
+        if (geom != "") {
+            axios.post(url + "/gb-api/insert", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
+    }
+}
 function refreshPage() {
     // window.open('./../report/index.html', '_blank');
     $("#gform")[0].reset();

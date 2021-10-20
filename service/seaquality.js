@@ -17,10 +17,18 @@ app.post("/sq-api/getone", (req, res) => {
 })
 
 app.post("/sq-api/getdata", (req, res) => {
-    const { userid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
-            FROM seaquality ORDER BY sq_date DESC`
+    const { type, dat } = req.body;
+    let sql;
+    if (type == "ทุกจังหวัด") {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+        TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+        FROM seaquality ORDER BY sq_date DESC`
+    } else {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+        TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+        FROM seaquality WHERE pro='${dat}'ORDER BY sq_date DESC`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -52,7 +60,7 @@ app.post("/sq-api/getdatabysta", (req, res) => {
 })
 app.post("/sq-api/getstation", (req, res) => {
     const { prov } = req.body;
-    const sql = `SELECT DISTINCT sta_loc FROM seaquality  where sq_pro='${prov}' ORDER BY sta_loc ASC `
+    const sql = `SELECT DISTINCT sta_loc FROM seaquality  where pro='${prov}' ORDER BY sta_loc ASC `
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -70,11 +78,19 @@ app.post("/sq-api/getstation/uid", (req, res) => {
 })
 app.post("/sq-api/getownerdata", (req, res) => {
     const { usrid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+    let sql;
+    if (type == "ทุกจังหวัด") {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
                 TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
-            FROM seaquality 
-            WHERE usrid='${usrid}'
-            ORDER BY sq_date DESC`
+                FROM seaquality ORDER BY sq_date DESC
+                WHERE usrid='${usrid}'`
+    } else {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+                FROM seaquality 
+                WHERE pro='${dat}' & usrid='${usrid}'
+                ORDER BY sq_date DESC`
+    }
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

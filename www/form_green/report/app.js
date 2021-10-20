@@ -436,7 +436,7 @@ let loadTable = () => {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(row);
-                    return `<button class="btn btn-margin btn-success" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไข</button>&nbsp;
+                    return `<button class="btn btn-margin btn-info" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไข</button>&nbsp;
                             <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 width: "25%"
@@ -475,6 +475,7 @@ let loadTable = () => {
                     }
                 }
             },
+            { data: 'tree_name' },
             { data: 'rai' },
             { data: 'usrname' }
         ],
