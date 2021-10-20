@@ -805,7 +805,8 @@ let zoomsta = (sta) => {
 }
 
 let stationList = (data) => {
-    console.log(data);
+    // console.log(data);
+    $("#station").empty()
     data.map(i => $("#station").append(`<option value="${i.sq_id}">${i.sta_loc} (เลข id:${i.sq_id} วันที่ ${i.date})<option>`))
 }
 

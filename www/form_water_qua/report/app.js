@@ -258,8 +258,7 @@ let loadTable = (daturl, dattype) => {
                     return `
                        <button class="btn btn-margin btn-info" onclick="getBF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลก่อนบำบัด</button>
                        <button class="btn btn-margin btn-info" onclick="getAF(${row.wq_id})"><i class="bi bi-gear-fill"></i>&nbsp;แก้ไขข้อมูลหลังบำบัด</button>
-                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-success" onclick="getChart(${row.wq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูกราฟ</button>`
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.wq_id},'${row.syst}','${row.prov}','${row.bf_date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 }
             },
             {
@@ -333,6 +332,7 @@ let loadTable = (daturl, dattype) => {
         let data = dtable.rows({ search: 'applied' }).data()
         // console.log(data)
         getMarker(data);
+        stationList(data)
     });
 }
 let getBF = (e) => {
@@ -947,6 +947,16 @@ let zoomsta = (sta) => {
 
 $("#parameter").on("change", function () {
     callChart()
+})
+
+let stationList = (data) => {
+    // console.log(data);
+    $("#station").empty()
+    data.map(i => $("#station").append(`<option value="${i.wq_id}">${i.syst} (เลข id:${i.wq_id} วันที่ ${i.bf_date})<option>`))
+}
+
+$("#station").on("change", function () {
+    getChart(this.value)
 })
 
 
