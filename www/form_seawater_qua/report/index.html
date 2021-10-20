@@ -106,7 +106,7 @@
                         รายงานข้อมูลคุณภาพน้ำทะเล
                         <hr>
                         <div class="row d-flex align-items-end w-100 mw-100">
-                            <!-- <div class="col-sm-3 form-group">
+                            <div class="col-sm-4 form-group">
                                 <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
                                 <select class="form-control" id="prov">
                                     <option value="ทุกจังหวัด">ทุกจังหวัด</option>
@@ -115,14 +115,14 @@
                                     <option value="21">ระยอง</option>
 
                                 </select>
-                            </div> -->
-                            <div class="col-sm-3 form-group">
+                            </div>
+                            <div class="col-sm-4 form-group">
                                 <label for="sta">เลือกจุดตรวจวัด:</label>
                                 <select class="form-control" name="sta" id="sta">
                                     <option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>
                                 </select>
                             </div>
-                            <div class="col-sm-2 form-group">
+                            <div class="col-sm-4 form-group">
                                 <label for="">ค่าการตรวจวัด:</label>
                                 <select class="form-control" name="" id="parameter">
                                     <option value="MWQI">MWQI</option>
@@ -130,11 +130,6 @@
                                     <option value="PH">ค่า pH</option>
                                     <option value="FF">ฟอสเฟต-ฟอสฟอรัส</option>
                                 </select>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <button class="btn btn-success" onclick="callChart()"><i
-                                        class="bi bi-clipboard-data"></i>
-                                    แสดงผลกราฟของข้อมูลที่เลือก</button>
                             </div>
                         </div>
                     </div>
@@ -156,39 +151,6 @@
                     </div>
                 </div>
 
-                <!--<div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mwqichart" id="csq_mwqi"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mwqichart" id="csq_no3n"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mwqichart" id="csq_ph"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mwqichart" id="csq_po43p"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
                 <h5>ตำแหน่งรายงานคุณภาพน้ำทะเล</h5>
                 <div class="card">
                     <div id="map"></div>
@@ -196,7 +158,6 @@
 
                 <div class="card">
                     <div class="card-body">
-
                         <a class="btn btn-success" href="./../add/index.html"><i
                                 class="bi bi-plus-circle-fill"></i>&nbsp;สร้างรายงานใหม่</a>
                         <hr>
@@ -204,6 +165,7 @@
                         <table id="myTable" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>หมายเลขงาน:</th>
                                     <th>สถานที่/สถานี</th>
                                     <!-- <th>จังหวัด</th> -->
@@ -219,8 +181,6 @@
                                     <th>ปริมาณแอมโมเนีย</th>
                                     <th>ค่ามาตรฐานคุณภาพน้ำทะเล</th>
                                     <th>ปริมาณสารตะกั่ว</th>
-
-                                    <th>เพิ่มข้อมูล</th>
                                 </tr>
                             </thead>
                         </table>
@@ -308,17 +268,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" style="margin-left: 1%; color: darkgrey;">
+                        หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทะเลและชายฝั่งไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                    <div class="row" style="margin-left: 1%;">
+                        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                            href="http://pcd.go.th/info_serv/reg_std_water02.html">กรมควบคุมมลพิษ</a></div>
                 </div>
                 <hr>
                 <div class="container">
                     <div class="row" style="align-items: baseline; margin-left: -2px; margin-bottom: -10px;">
                         <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
                         <P>กรมควบคุมมลพิษและสำนักงานสิ่งแวดล้อมภาคที่ 13 (ชลบุรี) ปี2563</P>
-
                     </div>
-                    <!-- <div class="row" style="margin-left: 1%;">
-                        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพอากาศของประเทศไทย <a
-                            href="http://air4thai.pcd.go.th/webV2/aqi_info.php">กรมควบคุมมลพิษ</a></div> -->
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
                 <!-- <div class="container-fluid mt-3 mb-6">

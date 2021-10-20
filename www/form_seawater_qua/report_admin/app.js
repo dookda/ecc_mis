@@ -301,7 +301,15 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
-            // { data: 'prj_name' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       <button class="btn btn-margin btn-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                       <button class="btn btn-margin btn-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>`
+                }
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -324,16 +332,6 @@ let loadTable = () => {
             { data: 'sq_mwqi' },
             { data: 'sq_pb' },
             // { data: 'opert_stat' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>`
-                }
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
@@ -651,6 +649,9 @@ $("#sta").change(function () {
         dtable.search(prov_n).draw();
     }
     zoomsta(sta_n)
+})
+$("#parameter").on("change", function () {
+    callChart()
 })
 let callChart = () => {
     let sq_pro = $("#prov").children("option:selected").text()

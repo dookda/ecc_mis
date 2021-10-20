@@ -28,6 +28,46 @@ app.post("/sq-api/getdata", (req, res) => {
     })
 })
 
+app.post("/sq-api/getdatabyprov", (req, res) => {
+    const { prov } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+                FROM seaquality WHERE sq_pro='${prov}' ORDER BY sq_date DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/sq-api/getdatabysta", (req, res) => {
+    const { sta } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+                FROM seaquality WHERE sta_loc='${sta}' ORDER BY sq_date DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/sq-api/getstation", (req, res) => {
+    const { prov } = req.body;
+    const sql = `SELECT DISTINCT sta_loc FROM seaquality  where sq_pro='${prov}' ORDER BY sta_loc ASC `
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/sq-api/getstation/uid", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT DISTINCT sta_loc FROM seaquality  where usrid='${usrid}' ORDER BY sta_loc ASC `
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
 app.post("/sq-api/getownerdata", (req, res) => {
     const { usrid } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
@@ -35,6 +75,30 @@ app.post("/sq-api/getownerdata", (req, res) => {
             FROM seaquality 
             WHERE usrid='${usrid}'
             ORDER BY sq_date DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.get('/sq-api/getownerdata/:urid', (req, res) => {
+    const usrid = req.params.urid;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+            FROM seaquality 
+            WHERE usrid='${usrid}'
+            ORDER BY sq_date DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.get("/sq-api/getdata/admin", (req, res) => {
+    const { userid } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
+                TO_CHAR(sq_date, 'DD-MM-YYYY') as date 
+            FROM seaquality ORDER BY sq_date DESC`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

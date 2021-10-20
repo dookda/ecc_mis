@@ -105,7 +105,7 @@
                         รายงานข้อมูลคุณภาพน้ำทะเล
                         <hr>
                         <div class="row d-flex align-items-end w-100 mw-100">
-                            <div class="col-sm-3 form-group">
+                            <div class="col-sm-4 form-group">
                                 <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
                                 <select class="form-control" id="prov">
                                     <option value="ทุกจังหวัด">ทุกจังหวัด</option>
@@ -115,13 +115,13 @@
 
                                 </select>
                             </div>
-                            <div class="col-sm-3 form-group">
+                            <div class="col-sm-4 form-group">
                                 <label for="sta">เลือกจุดตรวจวัด:</label>
                                 <select class="form-control" name="sta" id="sta">
                                     <option value="ทุกสถานีตรวจวัดค่า">ทุกสถานีตรวจวัดค่า</option>
                                 </select>
                             </div>
-                            <div class="col-sm-2 form-group">
+                            <div class="col-sm-4 form-group">
                                 <label for="">ค่าการตรวจวัด:</label>
                                 <select class="form-control" name="" id="parameter">
                                     <option value="MWQI">MWQI</option>
@@ -129,11 +129,6 @@
                                     <option value="PH">ค่า pH</option>
                                     <option value="FF">ฟอสเฟต-ฟอสฟอรัส</option>
                                 </select>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <button class="btn btn-success" onclick="callChart()"><i
-                                        class="bi bi-clipboard-data"></i>
-                                    แสดงผลกราฟของข้อมูลที่เลือก</button>
                             </div>
                         </div>
                     </div>
@@ -169,6 +164,7 @@
                         <table id="myTable" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>หมายเลขงาน:</th>
                                     <th>สถานที่/สถานี</th>
                                     <!-- <th>จังหวัด</th> -->
@@ -184,8 +180,6 @@
                                     <th>ปริมาณแอมโมเนีย</th>
                                     <th>ค่ามาตรฐานคุณภาพน้ำทะเล</th>
                                     <th>ปริมาณสารตะกั่ว</th>
-
-                                    <th>เพิ่มข้อมูล</th>
                                 </tr>
                             </thead>
                         </table>
