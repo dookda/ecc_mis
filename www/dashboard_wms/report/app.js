@@ -1513,6 +1513,8 @@ $("#popcheck").click(function () {
     })
     if (this.checked) {
         $("#cardpop").fadeIn("slow").show();
+        $("#poppresent").show();
+        $("#poppast").hide();
         var a = $('#year').val();
         var b = $('#pro').val();
         var c = $("#gramen").attr('class')
@@ -1520,7 +1522,12 @@ $("#popcheck").click(function () {
         btnpro = 'year'
         presentpop(a, b, c, d)
     } else {
-        $("#cardpop").slideUp("slow")
+        $("#poppresent").fadeOut(300, function () {
+            $("#cardpop").slideUp("slow");
+        })
+        $("#poppast").fadeOut(300, function () {
+            $("#cardpop").slideUp("slow");
+        })
     }
 
 });
@@ -2346,31 +2353,40 @@ let loadWtrl = async () => {
     let sta = [
         {
             staname: "station_01",
-            latlon: [12.8661616, 100.9989804]
+            latlon: [12.8661616, 100.9989804],
+            measure: 275.5
         }, {
             staname: "station_02",
-            latlon: [12.848099999999983, 100.95313000000002]
+            latlon: [12.848099999999983, 100.95313000000002],
+            measure: 244
         }, {
             staname: "station_03",
-            latlon: [12.846510200000028, 100.9376361]
+            latlon: [12.846510200000028, 100.9376361],
+            measure: 298
         }, {
             staname: "station_04",
-            latlon: [12.694406999999996, 101.44470699999997]
+            latlon: [12.694406999999996, 101.44470699999997],
+            measure: 294
         }, {
             staname: "station_05",
-            latlon: [12.703484000000008, 101.468717]
+            latlon: [12.703484000000008, 101.468717],
+            measure: 280
         }, {
             staname: "station_06",
-            latlon: [12.70139960000001, 101.49543049999]
+            latlon: [12.70139960000001, 101.49543049999],
+            measure: 435
         }, {
             staname: "station_07",
-            latlon: [12.985111299999994, 101.6776677]
+            latlon: [12.985111299999994, 101.6776677],
+            measure: 380.6
         }, {
             staname: "station_08",
-            latlon: [12.909515899999995, 101.71460159999998]
+            latlon: [12.909515899999995, 101.71460159999998],
+            measure: 512
         }, {
             staname: "station_09",
-            latlon: [12.836749900000017, 101.73254899999998]
+            latlon: [12.836749900000017, 101.73254899999998],
+            measure: 550.5
         }]
 
     sta.map(async (i) => {
@@ -2382,21 +2398,22 @@ let loadWtrl = async () => {
                 name: 'lyr',
                 // data: dat
             });
-
+            // console.log(i.measure);
             marker.addTo(map)
             marker.bindPopup(`<div style="font-family:'Kanit'"> 
                         ชื่อสถานี : ${i.staname} <br>
-                        ระดับน้ำ : ${Number(d.deep).toFixed(1)} mm.<br>
+                        ระดับน้ำ : ${i.measure - Number(d.deep).toFixed(1) < 1 ? 0 : i.measure - Number(d.deep).toFixed(1)} mm.<br>
                         ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
                         อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
-                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}')"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}', ${i.measure})"><i class="bi bi-file-earmark-bar-graph"></i></span>
                         </div>`
             )
         })
     })
 }
-let wtrlModal = (stname) => {
-    // console.log(stname);
+let wtrlModal = (stname, measure) => {
+    // console.log(measure);
+    // 
     let arrDept = [];
     let arrTemp = [];
     let arrHumi = [];
@@ -2405,7 +2422,7 @@ let wtrlModal = (stname) => {
         r.data.data.map(i => {
             arrDept.push({
                 "date": i.dt,
-                "value": Math.round(i.dept)
+                "value": measure - i.dept < 1 ? 0.0 : Math.round(measure - i.dept)
             });
             arrTemp.push({
                 "date": i.dt,

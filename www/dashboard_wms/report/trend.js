@@ -47,6 +47,21 @@ let datlabor_edulevel_profession = [];
 let datlabor_edulevel_Bachelor = [];
 let datlabor_edulevel_MoreBachelor = [];
 
+let datwaste_industry = [];
+let datwaste_infectious = [];
+let datwaste_garbage = [];
+
+let datgas_all = [];
+let datgas_energy = [];
+let datgas_waste = [];
+let datgas_industry = [];
+let datgas_agri = [];
+
+let datlu_urban = [];
+let datlu_industry = [];
+let datlu_agri = [];
+let datlu_envi = [];
+
 let dataforecast_eec = () => {
     let url = "https://eec-onep.online:3700";
     axios.post(url + "/forecast_eec/getdata/").then(async (r) => {
@@ -555,6 +570,98 @@ let dataforecast_eec = () => {
             { year: '2026', value: Number(eec_labor_MoreBachelor[0].f2569), },
             { year: '2027', value: Number(eec_labor_MoreBachelor[0].f2570), },
         )
+
+
+        let eec_waste_industry = r.data.data.filter(e => e.list_code == "waste_industry" && e.t_code == "eec");
+        let eec_waste_infectious = r.data.data.filter(e => e.list_code == "waste_infectious" && e.t_code == "eec");
+        let eec_waste_garbage = r.data.data.filter(e => e.list_code == "waste_garbage" && e.t_code == "eec");
+        datwaste_industry.push(
+            { category: 'ปี 2562', four: Number(eec_waste_industry[0].f2562) },
+            { category: 'ปี 2565', four: Number(eec_waste_industry[0].f2565) },
+            { category: 'ปี 2570', four: Number(eec_waste_industry[0].f2570) },
+            { category: 'ปี 2575', four: Number(eec_waste_industry[0].f2575) },
+            { category: 'ปี 2580', four: Number(eec_waste_industry[0].f2580) },
+        )
+        datwaste_infectious.push(
+            { category: 'ปี 2562', four: Number(eec_waste_infectious[0].f2562) },
+            { category: 'ปี 2565', four: Number(eec_waste_infectious[0].f2565) },
+            { category: 'ปี 2570', four: Number(eec_waste_infectious[0].f2570) },
+            { category: 'ปี 2575', four: Number(eec_waste_infectious[0].f2575) },
+            { category: 'ปี 2580', four: Number(eec_waste_infectious[0].f2580) },
+        )
+        datwaste_garbage.push(
+            { category: 'ปี 2562', four: Number(eec_waste_garbage[0].f2562) },
+            { category: 'ปี 2565', four: Number(eec_waste_garbage[0].f2565) },
+            { category: 'ปี 2570', four: Number(eec_waste_garbage[0].f2570) },
+            { category: 'ปี 2575', four: Number(eec_waste_garbage[0].f2575) },
+            { category: 'ปี 2580', four: Number(eec_waste_garbage[0].f2580) },
+        )
+
+        let TH_gas_all = r.data.data.filter(e => e.list_code == "gas_sum" && e.t_code == "TH");
+        let TH_gas_energy = r.data.data.filter(e => e.list_code == "gas_energy" && e.t_code == "TH");
+        let TH_gas_waste = r.data.data.filter(e => e.list_code == "gas_waste" && e.t_code == "TH");
+        let TH_gas_industry = r.data.data.filter(e => e.list_code == "gas_industry" && e.t_code == "TH");
+        let TH_gas_agri = r.data.data.filter(e => e.list_code == "gas_agri" && e.t_code == "TH");
+
+        datgas_all.push(
+            { category: 'ปี 2563', four: Number(TH_gas_all[0].f2563) },
+            { category: 'ปี 2568', four: Number(TH_gas_all[0].f2568) },
+            { category: 'ปี 2573', four: Number(TH_gas_all[0].f2573) },
+        )
+        datgas_energy.push(
+            { category: 'ปี 2563', four: Number(TH_gas_energy[0].f2563) },
+            { category: 'ปี 2568', four: Number(TH_gas_energy[0].f2568) },
+            { category: 'ปี 2573', four: Number(TH_gas_energy[0].f2573) },
+        )
+        // console.log(TH_gas_waste)
+        datgas_waste.push(
+            { category: 'ปี 2563', four: Number(TH_gas_waste[0].f2563) },
+            { category: 'ปี 2568', four: Number(TH_gas_waste[0].f2568) },
+            { category: 'ปี 2573', four: Number(TH_gas_waste[0].f2573) },
+        )
+        datgas_industry.push(
+            { category: 'ปี 2563', four: Number(TH_gas_industry[0].f2563) },
+            { category: 'ปี 2568', four: Number(TH_gas_industry[0].f2568) },
+            { category: 'ปี 2573', four: Number(TH_gas_industry[0].f2573) },
+        )
+        datgas_agri.push(
+            { category: 'ปี 2563', four: Number(TH_gas_agri[0].f2563) },
+            { category: 'ปี 2568', four: Number(TH_gas_agri[0].f2568) },
+            { category: 'ปี 2573', four: Number(TH_gas_agri[0].f2573) },
+        )
+
+
+        let eec24_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "24")
+        let eec20_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "20")
+        let eec21_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "21")
+        datlu_urban.push(
+            { category: 'ปี 2560', first: Number(eec24_lu_urban[0].f2560), second: Number(eec20_lu_urban[0].f2560), third: Number(eec21_lu_urban[0].f2560) },
+            { category: 'ปี 2580', first: Number(eec24_lu_urban[0].f2580), second: Number(eec20_lu_urban[0].f2580), third: Number(eec21_lu_urban[0].f2580) },
+        )
+
+        let eec24_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "24")
+        let eec20_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "20")
+        let eec21_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "21")
+        datlu_industry.push(
+            { category: 'ปี 2560', first: Number(eec24_lu_industry[0].f2560), second: Number(eec20_lu_industry[0].f2560), third: Number(eec21_lu_industry[0].f2560) },
+            { category: 'ปี 2580', first: Number(eec24_lu_industry[0].f2580), second: Number(eec20_lu_industry[0].f2580), third: Number(eec21_lu_industry[0].f2580) },
+        )
+
+        let eec24_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "24")
+        let eec20_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "20")
+        let eec21_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "21")
+        datlu_agri.push(
+            { category: 'ปี 2560', first: Number(eec24_lu_agri[0].f2560), second: Number(eec20_lu_agri[0].f2560), third: Number(eec21_lu_agri[0].f2560) },
+            { category: 'ปี 2580', first: Number(eec24_lu_agri[0].f2580), second: Number(eec20_lu_agri[0].f2580), third: Number(eec21_lu_agri[0].f2580) },
+        )
+
+        let eec24_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "24")
+        let eec20_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "20")
+        let eec21_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "21")
+        datlu_envi.push(
+            { category: 'ปี 2560', first: Number(eec24_lu_envi[0].f2560), second: Number(eec20_lu_envi[0].f2560), third: Number(eec21_lu_envi[0].f2560) },
+            { category: 'ปี 2580', first: Number(eec24_lu_envi[0].f2580), second: Number(eec20_lu_envi[0].f2580), third: Number(eec21_lu_envi[0].f2580) },
+        )
     })
 }
 dataforecast_eec()
@@ -608,7 +715,12 @@ let chart_all = (data, umit, divchart, color1, color2) => {
 
     chart.data = data
 
-    createSeries('four', 'ภาพรวมทั้ง 3 จังหวัด', umit, color1, color2);
+    if (divchart == 'chartdiv12') {
+
+        createSeries('four', 'ภาพรวม', umit, color1, color2);
+    } else {
+        createSeries('four', 'ภาพรวมทั้ง 3 จังหวัด', umit, color1, color2);
+    }
 
     function arrangeColumns() {
 
@@ -692,6 +804,10 @@ let chart_by_prov = (data, umit, divchart) => {
 
         series.events.on("hidden", arrangeColumns);
         series.events.on("shown", arrangeColumns);
+
+        series.tooltip.pointerOrientation = "down";
+        series.columns.template.tooltipY = 0;
+        series.tooltip.dy = -5;
 
         series.stroke = am4core.color(color2);
         series.tooltip.getFillFromObject = false;
@@ -1649,5 +1765,73 @@ $('#T_industry').on('change', function () {
         $('#P2_industry_2').hide();
         $('#C_industry_1').hide();
         $('#P_industry2').hide();
+    }
+})
+
+$('#cardraffle').hide();
+$('#trendraffle').click(function () {
+    if (this.checked) {
+        $('#cardraffle').slideDown();
+        $('#raffletype').prop('selectedIndex', 0);
+        chart_all(datwaste_industry, 'ตัน/ปี', 'chartdiv11', '#b09980', '#b09980')
+    } else {
+        $('#cardraffle').slideUp();
+    }
+})
+$('#raffletype').on('change', function () {
+    if (this.value == "industry") {
+        chart_all(datwaste_industry, 'ตัน/ปี', 'chartdiv11', '#b09980', '#b09980')
+    } else if (this.value == "infectious") {
+        chart_all(datwaste_infectious, 'ตัน/ปี', 'chartdiv11', '#D1B3B2', '#B5A1A0')
+    } else if (this.value == "garbage") {
+        chart_all(datwaste_garbage, 'ล้านตัน/ปี', 'chartdiv11', '#F4E9A6', '#D9CAA3')
+    }
+})
+$('#cardgas').hide();
+$('#trendgas').click(function () {
+    if (this.checked) {
+        $('#cardgas').slideDown();
+        $('#green_gastype').prop('selectedIndex', 0);
+        chart_all(datgas_all, 'ktCO2eq', 'chartdiv12', '#b09980', '#b09980')
+    } else {
+        $('#cardgas').slideUp();
+    }
+})
+$('#green_gastype').on('change', function () {
+    if (this.value == "TH") {
+        chart_all(datgas_all, 'ktCO2eq', 'chartdiv12', '#b09980', '#b09980')
+    } else if (this.value == "energy") {
+        chart_all(datgas_energy, 'ktCO2eq', 'chartdiv12', '#fdc81a', '#fdc81a')
+    } else if (this.value == "waste") {
+        chart_all(datgas_waste, 'ktCO2eq', 'chartdiv12', '#f16808', '#f16808')
+    } else if (this.value == "industry") {
+        chart_all(datgas_industry, 'ktCO2eq', 'chartdiv12', '#8a5352', '#8a5352')
+    } else if (this.value == "agri") {
+        chart_all(datgas_agri, 'ktCO2eq', 'chartdiv12', '#36c745', '#36c745')
+    }
+})
+
+$('#cardlu').hide();
+$('#trendlu').click(function () {
+    if (this.checked) {
+        $('#cardlu').slideDown();
+        $('#lutype').prop('selectedIndex', 0);
+        chart_by_prov(datlu_urban, 'ไร่', 'chartdiv13')
+    } else {
+        $('#cardlu').slideUp();
+    }
+})
+$('#lutype').on('change', function () {
+    if (this.value == 'urban') {
+        chart_by_prov(datlu_urban, 'ไร่', 'chartdiv13')
+    }
+    else if (this.value == 'agri') {
+        chart_by_prov(datlu_agri, 'ไร่', 'chartdiv13')
+    }
+    else if (this.value == 'industry') {
+        chart_by_prov(datlu_industry, 'ไร่', 'chartdiv13')
+    }
+    else if (this.value == 'envi') {
+        chart_by_prov(datlu_envi, 'ไร่', 'chartdiv13')
     }
 })

@@ -83,6 +83,10 @@
   height:400px;
   overflow-y: scroll;
 }
+.scroll-sm{
+  height:250px;
+  overflow-y: scroll;
+}
 .scroll-xl{
   height:600px;
   overflow-y: scroll;

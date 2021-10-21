@@ -108,23 +108,17 @@
                         <div class="col-sm-3">
                             <div class="card">
                                 <div class="card-body layer">
-                                    <label><b>ชั้นข้อมูล</b></label>
-                                    <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
+                                    <label><b>ข้อมูลสถิติ</b></label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="checkpop" id="popcheck">
+                                        <label class="form-check-label">
+                                            ข้อมูลประชากร ปี2554-2563
+                                        </label>
+                                    </div>
                                     <hr>
-                                    <div class="scroll">
+                                    <label><b>การคาดการณ์และแนวโน้มสถานการณ์</b></label>
+                                    <div class="scroll-sm">
                                         <div class="group-check">
-                                            <label><b>ข้อมูลสถิติ</b></label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="checkpop"
-                                                    id="popcheck">
-                                                <label class="form-check-label">
-                                                    ข้อมูลประชากร ปี2554-2563
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="group-check">
-                                            <label><b>การคาดการณ์และแนวโน้มสถานการณ์</b></label>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="trendpopnormal">
@@ -168,6 +162,13 @@
                                                 </label>
                                             </div>
                                             <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendraffle">
+                                                <label class="form-check-label">
+                                                    ปริมาณของเสียที่จะเกิดขึ้น
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="trendUW">
                                                 <label class="form-check-label">
                                                     ปริมาณน้ำดิบ
@@ -186,8 +187,26 @@
                                                     แรงงานไทย
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendgas">
+                                                <label class="form-check-label">
+                                                    การปล่อยก๊าซเรือนกระจกในกรณี BAU
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendlu">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน
+                                                </label>
+                                            </div>
+
                                         </div>
-                                        <hr>
+                                    </div>
+                                    <hr>
+                                    <label><b>ชั้นข้อมูล</b></label>
+                                    <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
+                                    <hr>
+                                    <div class="scroll">
                                         <div class="group-check">
                                             <label><b>ขอบเขตการปกครอง</b></label>
                                             <div class="form-check">
@@ -1275,6 +1294,116 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <hr>
+                                    <label for="คู่มือการใช้งาน">
+                                        <b>คู่มือการใช้งานระบบ MIS</b>
+                                    </label>
+                                    <div id="accordion">
+                                        <div class="card-header d-flex align-items-start" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse"
+                                                    data-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    PostgreSQL/PostGIS
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                            data-parent="#accordion">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li class="p-1"><a href="./file/01_Install_postgresql_postgis.pdf"
+                                                            target="_blank">
+                                                            การติดตั้งโปรแกรม PostgreSQL
+                                                            และ PostGIS</a></li>
+
+                                                    <li class="p-1"> <a
+                                                            href="https://drive.google.com/file/d/1RgNz4i-M6qRKW2_m6a3ZFw_5_Jd4Xfin/view?usp=sharing">
+                                                            วิดิโอการติดตั้งโปรแกรม PostgreSQL และ PostGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a href="./file/02_started_postsql.pdf">
+                                                            การเริ่มต้นใช้งาน
+                                                            PostgreSQL</a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1pArhKFIfJmygEqIRX2cS8EqcyDoxdZ08/view?usp=sharing">
+                                                            วิดิโอการเริ่มต้นใช้งาน PostgreSQL
+                                                        </a></li>
+
+                                                    <a href="./file/03_started_postgis.pdf"> การเริ่มต้นใช้งาน
+                                                        PostGIS</a>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1DLWFsno41Pmudu09f6SPZ6-862xfQ9Fb/view?usp=sharing">
+                                                            วิดิโอการเริ่มต้นใช้งาน PostGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a href="./file/04_connect_postgis_qgis.pdf">
+                                                            การเชื่อมต่อโปรแกรม
+                                                            PostGIS
+                                                            ในโปรแกรม QGIS</a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1Hv5p4fiJfZrX-4AAuzJpmRITkJQ9QT38/view?usp=sharing">
+                                                            วิดิโอการติดตั้งโปรแกรม QGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/12CpjeKm575XuOhmx6gsOeUl_5xvb8ljh/view?usp=sharing">
+                                                            วิดิโอการเชื่อมต่อโปรแกรม PostGIS ในโปรแกรม QGIS
+                                                        </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                        data-target="#collapseTwo" aria-expanded="false"
+                                                        aria-controls="collapseTwo">
+                                                        Geoserver
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <ul>
+                                                        <li class="p-1"><a
+                                                                href="https://eec-onep.online:8443/geoserver/web/">
+                                                                เข้าสู่ระบบ
+                                                                Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/05_geoserver.pdf">
+                                                                วิธีการจัดการข้อมูลผ่าน Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/1s3ph16kJ013q4K5-GQT1phHaJPUQVirO/view?usp=sharing">
+                                                                วิดิโอวิธีการจัดการข้อมูลผ่าน Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/06_Using_database.pdf">
+                                                                การใช้งานระบบฐานข้อมูลเชิงพื้นที </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/15NeGJE4QT2MXWGJ_YuX0Nml9V8zjztCW/view?usp=sharing">
+                                                                วิดิโอการใช้งานระบบฐานข้อมูลเชิงพื้นที
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/06_Using_database.pdf">
+                                                                วิธีการนำชั้นข้อมูล WMS/WFS
+                                                                เข้าสู่โปรแกรม QGIS </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/1NCU7k7TfesmAh_bC1NxELAkpXtco7vZq/view?usp=sharing">
+                                                                วิดิโอวิธีการนำชั้นข้อมูล WMS/WFS เข้าสู่โปรแกรม QGIS
+                                                            </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -1749,6 +1878,29 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card w-100 mw-100" id="cardraffle">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart11">การคาดการณ์ปริมาณของเสียที่เกิดขึ้นในพื้นที่เขตเศรษฐกิจพิเศษภาคตะวันออก
+                                        </span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="raffletype">
+                                            <option value="industry">กากอุตสาหกรรมอันตราย</option>
+                                            <option value="infectious">ขยะมูลฝอยติดเชื้อ</option>
+                                            <option value="garbage">ขยะชุมชน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv11"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b> ศูนย์ความเป็นเลิศด้านการจัดการสารและของเสียอันตราย (ศสอ.) HSM
+                                        (อ้างถึงใน <a href="https://bit.ly/3vdfRQ1" target="_blank">ข่าวกรุงเทพธุรกิจ
+                                        </a> 2562)
+                                    </p>
+                                </div>
+                            </div>
                             <div class="card w-100 mw-100" id="cardUW">
                                 <div class="d-flex  flex-column justify-content-center p-4 text-center"
                                     style="margin-bottom: -20px;">
@@ -1857,6 +2009,59 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="card w-100 mw-100" id="cardgas">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart11">การคาดการณ์ปริมาณการปล่อยก๊าซเรือนกระจกในกรณี BAU
+
+                                        </span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="green_gastype">
+                                            <option value="TH">รวมทุกภาคฯ</option>
+                                            <option value="energy">ภาคพลังงาน</option>
+                                            <option value="waste">ภาคของเสีย</option>
+                                            <option value="industry">ภาคกระบวนการอุตสาหกรรมและการใช้ผลิตภัณฑ์</option>
+                                            <option value="agri">ภาคเกษตรกรรม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv12"></div>
+                                <div class="card-body">
+                                    <p><b>หมายเหตุ</b> : ktCO2eq หมายถึง พันตันคาร์บอนไดออกไซต์เทียบเท่า</p>
+                                    <p><b>ที่มา :</b> แผนที่นำทางการลดก๊าซเรือนกระจกของประเทศไทย ปี พ.ศ.2564–2573,
+                                        สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                        กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card w-100 mw-100" id="cardlu">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart13">การคาดการณ์ประเภทการใช้ประโยชน์ที่ดินในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="lutype">
+                                            <option value="urban">พื้นที่พัฒนาเมืองและชุมชน</option>
+                                            <option value="agri">พื้นที่ชนบทและเกษตรกรรม</option>
+                                            <option value="industry">อุตสาหกรรม</option>
+                                            <option value="envi">พื้นที่อนุรักษ์พื้นที่ทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv13"></div>
+                                <div class="card-body">
+                                    <!-- <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p> -->
+                                </div>
+                            </div>
 
                             <div class="card">
                                 <div id="map"></div>
@@ -1891,7 +2096,7 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
-        <div class="fixed-bottom p-2">
+        <!-- <div class="fixed-bottom p-2">
             <div class="toast cookie text-white" role="alert" data-autohide="false">
                 <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
                     <div class="p-2 bd-highlight  text-justify">
@@ -1920,7 +2125,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="container">
             <div class="copyright">
                 <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
