@@ -48,8 +48,8 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
-    //   maxZoom:18,
-    //   minZoom:14,
+    // maxZoom: 18,
+    // minZoom: 14,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -57,8 +57,8 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
-    //   maxZoom:14,
-    //   minZoom:10,
+    // maxZoom: 14,
+    // minZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
@@ -66,7 +66,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
-    //   maxZoom:10,
+    // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 // const specieseec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
@@ -84,6 +84,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
 //     format: 'image/png',
 //     transparent: true
 // });
+
 const forest2563 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     layers: 'eec:a__27_f_type63_eec',
     format: 'image/png',
@@ -96,6 +97,7 @@ var baseMap = {
     "Mapbox": mapbox.addTo(map),
     "google Hybrid": ghyb
 }
+
 let specieseec = L.featureGroup();
 let naturaleec = L.featureGroup();
 let wetlandeec = L.featureGroup();
@@ -109,6 +111,7 @@ const overlayMap = {
     "ตำแหน่งแหล่งธรรมชาติในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก": naturaleec.addTo(map),
     "พื้นที่ชุ่มน้ำ": wetlandeec.addTo(map),
 }
+
 const lyrControl = L.control.layers(baseMap, overlayMap, {
     collapsed: true
 }).addTo(map);
@@ -135,6 +138,7 @@ function showLegend() {
     };
     legend.addTo(map);
 }
+
 function hideLegend() {
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend')
@@ -203,7 +207,7 @@ let deleteValue = () => {
     })
 }
 
-
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -224,7 +228,7 @@ let loadTable = () => {
             }
         }
     });
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         scrollX: true,
         ajax: {
             async: true,
@@ -234,6 +238,16 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(row);
+                    return `<button class="btn m btn-warning" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;ซูม</button>
+                            <button class="btn m btn-info" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>
+                            <button class="btn m btn-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "30%"
+            },
             { data: 'bioname' },
             {
                 data: '',
@@ -242,16 +256,7 @@ let loadTable = () => {
                 }
             },
             { data: 'ndate' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(row);
-                    return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
-                            <button class="btn m btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
-                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "30%"
-            }
+            { data: 'usrname' },
         ],
         columnDefs: [
             { className: 'text-center', targets: [2, 3] },
@@ -280,10 +285,12 @@ let zoomMap = (lat, lon) => {
 let onEachFeature = (feature, layer) => {
     // console.log(feature);
     if (feature.properties) {
-        layer.bindPopup(`<b>${feature.properties.bioname}</b>
+        layer.bindPopup(`<span class="kanit"><b>${feature.properties.bioname}</b>
             <br>${feature.properties.biodetail}
-            <br><img src="${feature.properties.img}" width="240px">`,
-            { maxWidth: 240 });
+            <br><img src="${feature.properties.img}" width="240px"
+            <br><button class="btn m btn-outline-success kanit" onclick="getDetail(${feature.properties.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button></span>`,
+            { maxWidth: 240 }
+        );
     }
 }
 var mk, mg
@@ -291,22 +298,26 @@ let getMarker = (d) => {
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
-    mg = L.layerGroup();
-    d.map(i => {
-        if (i.geojson) {
-            let json = JSON.parse(i.geojson);
-            json.properties = { bioname: i.bioname, biodetail: i.biodetail, img: i.img };
-            mk = L.geoJson(json, {
-                onEachFeature: onEachFeature,
-                name: "marker"
-            })
-            // .addTo(map)
-            mg.addLayer(mk);
-        }
+    if (!mg) {
+        mg = L.layerGroup();
+        d.map(i => {
+            if (i.geojson) {
 
-    });
-    mg.addTo(map)
-    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+                let json = JSON.parse(i.geojson);
+                json.properties = { bioname: i.bioname, biodetail: i.biodetail, img: i.img };
+
+                mk = L.geoJson(json, {
+                    onEachFeature: onEachFeature,
+                    name: "marker"
+                })
+                // .addTo(map)
+                mg.addLayer(mk);
+            }
+
+        });
+        mg.addTo(map)
+        lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+    }
 }
 
 let loadBiotype = async (d) => {
@@ -320,18 +331,21 @@ let loadBiotype = async (d) => {
         i.biotype == "ไม่ทราบ" ? other += 1 : null
     })
 
-    let dat = [{
-        name: "สัตว์",
-        value: zoo
-    }, {
-        name: "พืช",
-        value: plant
-    }, {
-        name: "ไม่ทราบ",
-        value: other
-    }]
+    // let dat = [{
+    //     name: "สัตว์",
+    //     value: zoo
+    // }, {
+    //     name: "พืช",
+    //     value: plant
+    // }, {
+    //     name: "ไม่ทราบ",
+    //     value: other
+    // }]
+    $("#zoo").text(zoo)
+    $("#plant").text(plant)
+    $("#other").text(other)
 
-    pieChart("chartbiotype", dat)
+    // pieChart("chartbiotype", dat)
 }
 
 let loadBiopro = async (d) => {
@@ -354,36 +368,48 @@ let loadBiopro = async (d) => {
         i.pro_name == "สระแก้ว" ? skeaw += 1 : null;
     })
     let dat = [{
-        name: "จันทบุรี",
-        value: chan
-    }, {
-        name: "ฉะเชิงเทรา",
-        value: csao
-    }, {
         name: "ชลบุรี",
         value: chon
-    }, {
-        name: "ตราด",
-        value: trad
-    }, {
-        name: "นครนายก",
-        value: nyok
-    }, {
-        name: "ปราจีนบุรี",
-        value: pchin
     }, {
         name: "ระยอง",
         value: ryong
     }, {
-        name: "สระแก้ว",
-        value: skeaw
-    }];
+        name: "ฉะเชิงเทรา",
+        value: csao
+    }]
+
+    // let dat = [{
+    //     name: "จันทบุรี",
+    //     value: chan
+    // }, {
+    //     name: "ฉะเชิงเทรา",
+    //     value: csao
+    // }, {
+    //     name: "ชลบุรี",
+    //     value: chon
+    // }, {
+    //     name: "ตราด",
+    //     value: trad
+    // }, {
+    //     name: "นครนายก",
+    //     value: nyok
+    // }, {
+    //     name: "ปราจีนบุรี",
+    //     value: pchin
+    // }, {
+    //     name: "ระยอง",
+    //     value: ryong
+    // }, {
+    //     name: "สระแก้ว",
+    //     value: skeaw
+    // }];
 
     chartbiopro("chartbiopro", dat)
 }
 
 let getDetail = (e) => {
     sessionStorage.setItem('biodiversity_proj_gid', e);
+    sessionStorage.setItem('biodiversity_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 
@@ -395,7 +421,7 @@ let chartbiopro = (div, val) => {
 
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
-    chart.scrollbarX = new am4core.Scrollbar();
+    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
     chart.data = val;
@@ -451,6 +477,7 @@ let chartbiopro = (div, val) => {
         });
         return { data: data };
     });
+
 }
 
 let pieChart = (div, val) => {
@@ -587,12 +614,60 @@ let getWetland = () => {
 
 getWetland()
 
+$('#prov').on("change", function () {
+    getPro(this.value)
+    zoomExtent("pro", this.value)
 
+    let pro = $("#prov").children("option:selected").text()
+    if (pro !== "ทุกจังหวัด") {
+        dtable.search(pro).draw();
+    } else {
+        dtable.search('').draw();
+    }
+})
+$('#amp').on("change", function () {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
 
+    let amp = $("#amp").children("option:selected").text()
+    dtable.search(amp).draw();
+})
+$('#tam').on("change", function () {
+    zoomExtent("tam", this.value)
 
+    let tam = $("#tam").children("option:selected").text()
+    dtable.search(tam).draw();
+})
 
+let zoomExtent = (lyr, code) => {
+    map.eachLayer(lyr => {
+        if (lyr.options.name == 'bound') {
+            map.removeLayer(lyr)
+        }
+    })
 
-
-
-
+    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
+        let geom = JSON.parse(r.data.data[0].geom)
+        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    })
+}
+let getPro = (procode) => {
+    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
+        // console.log(r.data.data);
+        $("#amp").empty();
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
+        })
+    })
+}
+let getAmp = (ampcode) => {
+    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
+        $("#tam").empty();
+        r.data.data.map(i => {
+            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
+        })
+    })
+}
 

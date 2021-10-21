@@ -237,6 +237,16 @@ let loadTable = () => {
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(row);
+                    return `<button class="btn m btn-warning" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;ซูม</button>
+                            <button class="btn m btn-info" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>
+                            <button class="btn m btn-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "30%"
+            },
             { data: 'bioname' },
             {
                 data: '',
@@ -246,16 +256,6 @@ let loadTable = () => {
             },
             { data: 'ndate' },
             { data: 'usrname' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(row);
-                    return `<button class="btn m btn-outline-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
-                            <button class="btn m btn-outline-success" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;รายละเอียด</button>
-                            <button class="btn m btn-outline-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "30%"
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [2, 3] },
@@ -330,18 +330,21 @@ let loadBiotype = async (d) => {
         i.biotype == "ไม่ทราบ" ? other += 1 : null
     })
 
-    let dat = [{
-        name: "สัตว์",
-        value: zoo
-    }, {
-        name: "พืช",
-        value: plant
-    }, {
-        name: "ไม่ทราบ",
-        value: other
-    }]
+    // let dat = [{
+    //     name: "สัตว์",
+    //     value: zoo
+    // }, {
+    //     name: "พืช",
+    //     value: plant
+    // }, {
+    //     name: "ไม่ทราบ",
+    //     value: other
+    // }]
+    $("#zoo").text(zoo)
+    $("#plant").text(plant)
+    $("#other").text(other)
 
-    pieChart("chartbiotype", dat)
+    // pieChart("chartbiotype", dat)
 }
 
 let loadBiopro = async (d) => {
@@ -373,6 +376,7 @@ let loadBiopro = async (d) => {
         name: "ฉะเชิงเทรา",
         value: csao
     }]
+
     // let dat = [{
     //     name: "จันทบุรี",
     //     value: chan
@@ -416,7 +420,7 @@ let chartbiopro = (div, val) => {
 
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
-    chart.scrollbarX = new am4core.Scrollbar();
+    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
     chart.data = val;
