@@ -272,7 +272,7 @@ let getChart = (w_id) => {
     })
 }
 
-getChart(129953.638292806);
+// getChart(129953.638292806);
 
 let loadTable = (prov) => {
     $.extend(true, $.fn.dataTable.defaults, {
@@ -297,8 +297,8 @@ let loadTable = (prov) => {
     let table = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/waste-api/getdata',
-            data: prov,
+            url: url + '/waste-api/getownerdata',
+            data: { ...prov, usrid: urid },
             dataSrc: 'data'
         },
         columns: [
@@ -307,7 +307,6 @@ let loadTable = (prov) => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                       <button class="btn btn-margin btn-success" onclick="getChart(${row.w_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                        <button class="btn btn-margin btn-info" onclick="getDetail(${row.w_id})"><i class="bi bi-journal-richtext"></i>&nbsp;แก้ไขข้อมูล</button>
                        <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.w_id},'${row.insti}','${row.prov}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 }
@@ -358,9 +357,10 @@ let loadTable = (prov) => {
 
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
-        // console.log(data);
+        console.log(data);
         // getDatatable(data);
         getMarker(data);
+        stationList(data)
     });
 
 }
@@ -578,7 +578,7 @@ let compareWasteWater = (dat) => {
 }
 
 let callChart = (insti) => {
-    console.log(insti);
+    // console.log(insti);
     // let build = document.getElementById("buildlist").value;
     // document.getElementById("sourcename").innerHTML = insti;
     axios.post(url + '/waste-api/getdatabymun', { insti: insti }).then(r => {
@@ -630,8 +630,7 @@ let layermark = (Url, Nlayer) => {
 }
 
 let getMunlist = (muni) => {
-    $("#urbanlist").empty();
-    $("#urbanlist").append(`<option></option>`)
+    $("#urbanlist").empty().append(`<option value="eec">เลือกเทศบาล</option>`);
     axios.get(url + "/waste-api/getmun/" + muni).then(r => {
         // console.log(r);
         r.data.data.map(i => $("#urbanlist").append(`<option value="${i.insti}">${i.insti}</option>`));
@@ -639,21 +638,51 @@ let getMunlist = (muni) => {
 }
 
 $("#pro").on("change", function () {
+    if (this.value == "ทุกจังหวัด") {
+        $('#chartarea').hide();
+    }
     getMunlist(this.value)
-
-    console.log(this.value);
-
     $("#myTable").dataTable().fnDestroy();
     loadTable({ prov: this.value });
 })
-
-$("#chartarea").hide()
+$('#chartarea').hide();
 $("#urbanlist").on("change", function () {
-    callChart(this.value)
-    $("#chartarea").show()
+    if (this.value !== "eec") {
+        callChart(this.value);
+        $('#chartarea').show();
+    } else {
+        $('#chartarea').hide();
+    }
 })
 
+// callChart("เขตเทศบาลเมืองแสนสุข")
+// getMunlist("ทุกจังหวัด")
 
-getMunlist("ทุกจังหวัด")
+// setTimeout(() => {
+//     $("#urbanlist").val("เขตเทศบาลเมืองแสนสุข")
+//     // $("#urbanlist option : selected").val("เขตเทศบาลเมืองแสนสุข")
+//     console.log("ggg");
+// }, 5000)
 
 
+let stationList = (data) => {
+    // console.log(data);
+    $("#station").empty().append(`<option value="eec">เลือกเทศบาล<option>`);
+    data.map(i => {
+        if (i.location !== null) {
+            $("#station").append(`<option value="${i.w_id}">${i.insti} จ.${i.prov} (วันที่ ${i.date})<option>`)
+        }
+    })
+}
+
+$("#chartdiv").hide();
+$("#station").on("change", function () {
+    if (this.value !== 'eec') {
+        getChart(this.value)
+    } else {
+        $("#chartdiv").hide();
+        // $("#chartd").hide();
+        // $("#spinner").hide();
+        // $("#referlink").hide();
+    }
+})

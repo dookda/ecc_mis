@@ -62,9 +62,14 @@ app.post("/waste-api/getdatabymun", (req, res) => {
 
 app.post("/waste-api/getownerdata", (req, res) => {
     const { prov, usrid } = req.body;
-    const sql = `SELECT *, ST_AsGeojson(geom) as geojson, 
-                TO_CHAR(wdate, 'DD-MM-YYYY') as date 
-            FROM wastewat WHERE usrid='${usrid}' AND prov='${prov}'`
+    // console.log(prov, usrid);
+    let sql;
+    if (prov == 'ทุกจังหวัด') {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE usrid='${usrid}'`
+    } else {
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE usrid='${usrid}' AND prov='${prov}'`
+    }
+
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
