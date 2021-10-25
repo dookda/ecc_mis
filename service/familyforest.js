@@ -123,6 +123,18 @@ app.post("/ff-api/insert", async (req, res) => {
     });
 })
 
+app.post("/ff-api/deleteplant", async (req, res) => {
+    const { ffid, ftype, fplant } = req.body;
+    if (ftype && fplant) {
+        let sql = `DELETE FROM familyforest_regis WHERE ftype = '${ftype}' AND fplant = '${fplant}'`;
+        await eec.query(sql);
+    }
+
+    res.status(200).json({
+        data: "success"
+    });
+})
+
 app.post("/ff-api/insert-regis", async (req, res) => {
     const { ffid, data } = req.body;
     await eec.query(`INSERT INTO familyforest_user(ffid)VALUES('${ffid}')`);

@@ -2302,16 +2302,16 @@ map.on("click", async (e) => {
 
     await axios.get(lyrInfoUrl).then(r => {
         if (r.data.features) {
-            $("#accordion").empty();
+            $("#accordion_info").empty();
             // console.log(r.data.features);
-            r.data.features.map((i, k) => {
+            r.data.features.map(async (i, k) => {
                 // console.log(i, k);
 
                 let lname = i.id.split(".")
                 // console.log(lname[0]);
                 $("#a" + k).empty();
 
-                $("#accordion").append(
+                await $("#accordion_info").append(
                     `<div class="d-flex flex-column card-list">
                         <div id="heading${k}">
                             <h5 class="mb-0">
@@ -2332,7 +2332,6 @@ map.on("click", async (e) => {
                     // console.log(fieldInfo[key]);
                     fieldInfo[key] != undefined ? $("#a" + k).append(`<li><span class="p-2">${fieldInfo[key]}: ${value} </span></li>`) : null;
                 }
-
             })
             $("#infoModal").modal("show")
         }
