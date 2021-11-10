@@ -9,6 +9,11 @@ let logout = () => {
 uid && typ == "admin" ? null : logout();
 $("#aut").html(`${org}`)
 
+if (typ == "admin") {
+    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a></li>
+        <li class="active"><a href="./../admin/index.html"><i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a></li>`)
+}
+
 const url = "https://eec-onep.online:3700";
 // const url = 'http://localhost:3700';
 
@@ -21,18 +26,23 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
-            { data: 'usrname', width: "20%" },
+            { data: 'usrname' },
             { data: 'organize', width: "30%" },
-            { data: 'tel', width: "20%" },
-            { data: 'email', width: "20%" },
+            { data: 'tel' },
+            { data: 'email' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-margin btn-danger" 
+                    return `<button type="button" class="btn btn-margin btn-info" 
+                                onclick="editProfile('${row.uid}')">
+                                <i class="bi bi-tools"></i>&nbsp;แก้ไขข้อมูล
+                            </button>
+                            <button type="button" class="btn btn-margin btn-danger" 
                                 onclick="confirmDelete('${row.uid}','${row.usrname}')">
-                                <i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                                <i class="bi bi-trash"></i>&nbsp;ลบ
+                            </button>`
                 },
-                width: "10%"
+                width: "23%"
             }
         ],
         searching: true,
@@ -57,6 +67,12 @@ let deleteValue = () => {
     axios.post(url + "/login-api/delete", { uid: uid, usrname: usrname }).then(r => {
         r.data.data == "success" ? closeModal() : null
     })
+}
+
+let editProfile = (uid) => {
+    sessionStorage.setItem("pfuid", uid);
+    location.href = "./../profile/index.html"
+
 }
 
 

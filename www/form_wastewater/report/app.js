@@ -3,6 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_wastewater = sessionStorage.getItem('f_wastewater');
 
+urid ? null : location.href = "./../../form_register/login/index.html";
 if (f_wastewater == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
@@ -117,7 +118,7 @@ var legend = L.control({ position: "bottomleft" });
 
 function showLegend() {
     legend.onAdd = function (map) {
-        var div = L.DomUtil.create("div", "legend");
+        var div = L.DomUtil.create("div", "legend").slideDown(3000);
         div.innerHTML += `<button class="btn btn-sm" onClick="hideLegend()">
       <span class="kanit">ซ่อนสัญลักษณ์</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
     </button><br>`;
@@ -129,7 +130,7 @@ function showLegend() {
         div.innerHTML += '<img src="./img/linescope.png" width="10px"><span>ขอบเขตระบบบำบัดน้ำเสีย</span><br>';
         div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
         div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
-        <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i>
       </button>`
         div.innerHTML += `<div id='PU'></div>`
         return div;
@@ -154,7 +155,7 @@ hideLegend()
 function Puop() {
     $('#PUOP').hide()
     $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
-    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i></button><br>
     <i style="background: #ff3769; border-radius: 1%;"></i><span>ตัวเมืองและย่านการค้า</span><br>
     <i style="background: #379eff; border-radius: 1%;"></i><span>ท่าเรือ</span><br>
     <i style="background: #ad71db; border-radius: 1%;"></i><span>นิคมอุตสาหกรรม</span><br>
@@ -164,11 +165,11 @@ function Puop() {
     <i style="background: #7ae3ff; border-radius: 1%;"></i><span>สถานที่เพาะเลี้ยงสัตว์น้ำ</span><br>
     <i style="background: #000988; border-radius: 1%;"></i><span>สถานที่ราชการและสถาบันต่าง ๆ</span><br>
     <i style="background: #f9b310; border-radius: 1%;"></i><span>สถานีบริการน้ำมัน</span><br>
-    <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`)
+    <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`).slideDown();
 }
 function Puclose() {
     $('#PUOP').show()
-    $('#PU').html('')
+    $('#PU').slideUp().html('')
 }
 
 let refreshPage = () => {
@@ -179,7 +180,7 @@ let refreshPage = () => {
 let confirmDelete = (w_id, prj_name, prj_prov, prj_time) => {
     $("#projId").val(w_id)
     $("#projName").html(`${prj_name} จ.${prj_prov}`)
-    if (prj_time !== null) { $("#projTime").html(`วันที่ ${prj_time}`) }
+    $("#projTime").html(`${prj_time !== 'null' ? "วันที่ " + prj_time : ''}`)
     $("#deleteModal").modal("show")
 }
 let closeModal = () => {
@@ -291,7 +292,8 @@ let loadTable = (prov) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     let table = $('#myTable').DataTable({
@@ -344,7 +346,7 @@ let loadTable = (prov) => {
 
         ],
         columnDefs: [
-            { className: 'text-center', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
+            { className: 'text-center', targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
         ],
         order: [2, 'dasc'],
         searching: true,
@@ -357,7 +359,7 @@ let loadTable = (prov) => {
 
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
-        console.log(data);
+        // console.log(data);
         // getDatatable(data);
         getMarker(data);
         stationList(data)
@@ -419,15 +421,15 @@ let geneChart = (arr, div, tt, unit, place) => {
     axis.title.text = unit;
     axis.title.rotation = 270;
     axis.title.align = "center";
-    axis.title.valign = "top";
-    axis.title.dy = 40;
+    // axis.title.valign = "top";
+    // axis.title.dy = 40;
 
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
     series.dataFields.valueY = "val";
     series.dataFields.categoryX = "cat";
     // series.name = "Visits";
-    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+    series.columns.template.tooltipText = `{categoryX}: [bold]{valueY} ${unit}[/]`;
     series.columns.template.fillOpacity = .8;
 
     var columnTemplate = series.columns.template;
@@ -444,6 +446,33 @@ let geneChart = (arr, div, tt, unit, place) => {
             }
         });
         return { data: data };
+    });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่พบข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log(ev.target.data)
+        if (ev.target.data.length == 0) {
+            showIndicator();
+        }
     });
 }
 
@@ -523,7 +552,7 @@ let getDatatable = async (data) => {
 }
 
 
-let compareWasteWater = (dat) => {
+let compareWasteWater = (dat, unit) => {
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -554,7 +583,7 @@ let compareWasteWater = (dat) => {
     series.sequencedInterpolation = true;
     series.dataFields.valueY = "val";
     series.dataFields.categoryX = "cat";
-    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    series.tooltipText = `{categoryX}: [bold]{valueY} ${unit}[/]`;
     series.columns.template.strokeWidth = 0;
 
     series.tooltip.pointerOrientation = "vertical";
@@ -575,8 +604,47 @@ let compareWasteWater = (dat) => {
 
     // Cursor
     chart.cursor = new am4charts.XYCursor();
-}
 
+    chart.exporting.menu = new am4core.ExportMenu();
+    chart.exporting.adapter.add("data", function (data, target) {
+        var data = [];
+        chart.series.each(function (series) {
+            for (var i = 0; i < series.data.length; i++) {
+                series.data[i].name = series.name;
+                data.push(series.data[i]);
+            }
+        });
+        return { data: data };
+    });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่พบข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log(ev.target.data)
+        if (ev.target.data.length == 0) {
+            showIndicator();
+        }
+    });
+
+}
 let callChart = (insti) => {
     // console.log(insti);
     // let build = document.getElementById("buildlist").value;
@@ -584,7 +652,6 @@ let callChart = (insti) => {
     axios.post(url + '/waste-api/getdatabymun', { insti: insti }).then(r => {
         let dat = [];
         let i = r.data.data[0];
-        console.log(i);
         dat.push({ "cat": "อาคารชุด/บ้านพัก", "val": i.no_house ? Number(i.no_house) * 500 : 0 });
         dat.push({ "cat": "โรงแรม", "val": i.no_hotel ? Number(i.no_hotel) * 1000 : 0 });
         dat.push({ "cat": "หอพัก", "val": i.no_dorm ? Number(i.no_dorm) * 80 : 0 });
@@ -595,9 +662,8 @@ let callChart = (insti) => {
         dat.push({ "cat": "ตลาด", "val": i.no_market ? Number(i.no_market) * 70 : 0 });
         dat.push({ "cat": "ห้างสรรพสินค้า", "val": i.no_mall ? Number(i.no_mall) * 5 : 0 });
         dat.push({ "cat": "สำนักงาน", "val": i.no_office ? Number(i.no_office) * 3 : 0 });
-        document.getElementById("sourcename").innerHTML = `ปริมาณน้ำเสียของ ${i.insti} (${i.date}) (หน่วย: ลบ.ม.)`;
-
-        compareWasteWater(dat)
+        document.getElementById("sourcename").innerHTML = `ปริมาณน้ำเสียของ ${i.insti} ${i.date !== null ? "(วันที่" + i.date + ")" : ''}  (หน่วย: ลบ.ม.)`;
+        compareWasteWater(dat, 'ลบ.ม.')
     })
 }
 
@@ -633,14 +699,17 @@ let getMunlist = (muni) => {
     $("#urbanlist").empty().append(`<option value="eec">เลือกเทศบาล</option>`);
     axios.get(url + "/waste-api/getmun/" + muni).then(r => {
         // console.log(r);
-        r.data.data.map(i => $("#urbanlist").append(`<option value="${i.insti}">${i.insti}</option>`));
+        if (muni == 'ทุกจังหวัด') {
+            r.data.data.map(i => $("#urbanlist").append(`<option value="${i.insti}">${i.insti}</option>`));
+        } else {
+            r.data.data.map(i => $("#urbanlist").append(`<option value="${i.insti}">${i.insti} (จ.${muni})</option>`));
+        }
     })
 }
 
 $("#pro").on("change", function () {
-    if (this.value == "ทุกจังหวัด") {
-        $('#chartarea').hide();
-    }
+    $('#chartarea').slideUp();
+    $('#chartdiv').hide();
     getMunlist(this.value)
     $("#myTable").dataTable().fnDestroy();
     loadTable({ prov: this.value });
@@ -656,7 +725,7 @@ $("#urbanlist").on("change", function () {
 })
 
 // callChart("เขตเทศบาลเมืองแสนสุข")
-// getMunlist("ทุกจังหวัด")
+getMunlist("ทุกจังหวัด")
 
 // setTimeout(() => {
 //     $("#urbanlist").val("เขตเทศบาลเมืองแสนสุข")
@@ -667,10 +736,10 @@ $("#urbanlist").on("change", function () {
 
 let stationList = (data) => {
     // console.log(data);
-    $("#station").empty().append(`<option value="eec">เลือกเทศบาล<option>`);
+    $("#station").empty().append(`<option value="eec">เลือกเทศบาล</option>`);
     data.map(i => {
         if (i.location !== null) {
-            $("#station").append(`<option value="${i.w_id}">${i.insti} จ.${i.prov} (วันที่ ${i.date})<option>`)
+            $("#station").append(`<option value="${i.w_id}">${i.insti} จ.${i.prov} (วันที่ ${i.date})</option>`)
         }
     })
 }

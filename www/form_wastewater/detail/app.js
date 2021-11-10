@@ -172,45 +172,86 @@ let sum = () => {
     $("#quantity").val(quant)
 }
 
-function sendData() {
-    const obj = {
-        w_id: w_id,
-        data: {
-            usrid: urid,
-            usrname: urname,
-            insti: $('#insti').val(),
-            prov: $('#prov').val(),
-            wdate: $('#wdate').val(),
-            no_house: $('#no_house').val(),
-            no_hotel: $('#no_hotel').val(),
-            no_dorm: $('#no_dorm').val(),
-            no_serv: $('#no_serv').val(),
-            no_vhouse: $('#no_vhouse').val(),
-            no_hospi: $('#no_hospi').val(),
-            no_restur: $('#no_restur').val(),
-            no_market: $('#no_market').val(),
-            no_mall: $('#no_mall').val(),
-            no_office: $('#no_office').val(),
-            no_school: $('#no_school').val(),
-            no_gassta: $('#no_gassta').val(),
-            no_temple: $('#no_temple').val(),
-            no_govcent: $('#no_govcent').val(),
-            no_clinic: $('#no_clinic').val(),
-            quantity: $('#quantity').val(),
-            wsystem: $('#wsystem').val(),
-            qinput: $('#qinput').val(),
-            qoutput: $('#qoutput').val(),
-
-            img: dataurl ? dataurl : dataurl = '',
-            geom: geom ? geom.toGeoJSON() : null
-        }
+$('#prov').on("input", function () {
+    if (this.value == '') {
+        $("#prov").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#prov").removeClass("is-invalid")
+        console.log("true")
     }
-    // console.log(obj);
-    axios.post(url + "/waste-api/update", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null;
-        sessionStorage.removeItem('w_id');
-    })
-    return false;
+})
+$('#insti').on("input", function () {
+    if (this.value == '') {
+        $("#insti").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#insti").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#wdate').on("input", function () {
+    if (this.value == '') {
+        $("#wdate").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#wdate").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+function sendData() {
+    if ($('#prov').val() == "" || $('#insti').val() == "" || $('#wdate').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#prov').val() == "") {
+            $("#prov").addClass("is-invalid")
+        }
+        if ($('#insti').val() == "") {
+            $("#insti").addClass("is-invalid")
+        }
+        if ($('#wdate').val() == "") {
+            $("#wdate").addClass("is-invalid")
+        }
+    } else if ($('#prov').val() !== "" || $('#insti').val() !== "" || $('#wdate').val() == "") {
+        const obj = {
+            w_id: w_id,
+            data: {
+                usrid: urid,
+                usrname: urname,
+                insti: $('#insti').val(),
+                prov: $('#prov').val(),
+                wdate: $('#wdate').val(),
+                no_house: $('#no_house').val(),
+                no_hotel: $('#no_hotel').val(),
+                no_dorm: $('#no_dorm').val(),
+                no_serv: $('#no_serv').val(),
+                no_vhouse: $('#no_vhouse').val(),
+                no_hospi: $('#no_hospi').val(),
+                no_restur: $('#no_restur').val(),
+                no_market: $('#no_market').val(),
+                no_mall: $('#no_mall').val(),
+                no_office: $('#no_office').val(),
+                no_school: $('#no_school').val(),
+                no_gassta: $('#no_gassta').val(),
+                no_temple: $('#no_temple').val(),
+                no_govcent: $('#no_govcent').val(),
+                no_clinic: $('#no_clinic').val(),
+                quantity: $('#quantity').val(),
+                wsystem: $('#wsystem').val(),
+                qinput: $('#qinput').val(),
+                qoutput: $('#qoutput').val(),
+
+                img: dataurl ? dataurl : dataurl = '',
+                geom: geom ? geom.toGeoJSON() : null
+            }
+        }
+        // console.log(obj);
+        axios.post(url + "/waste-api/update", obj).then((r) => {
+            r.data.data == "success" ? $("#okmodal").modal("show") : null;
+            sessionStorage.removeItem('w_id');
+        })
+        return false;
+    }
 }
 
 let gotoReport = () => {

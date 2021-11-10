@@ -10,14 +10,10 @@ let logout = () => {
 uid && org ? null : logout();
 
 if (typ == "admin") {
-    $("#usermenu").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
-        <i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="./../admin/index.html">
-            <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
-        </div>`)
+    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a></li>
+        <li><a href="./../admin/index.html"><i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a></li>`)
 } else {
-    $("#usermenu").append(`<a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a>`)
+    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a></li>`)
 }
 
 let searchParams = new URLSearchParams(window.location.search)
