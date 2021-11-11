@@ -147,7 +147,7 @@ app.post("/eec-api/get-aqi-bytam", (req, res) => {
     } else {
         sql = `SELECT * FROM v_pcd_aqi_eec_by_tam WHERE tam_code='${val}'`;
     }
-
+    // console.log(sql);
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

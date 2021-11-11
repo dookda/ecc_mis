@@ -44,8 +44,8 @@ let map = L.map("map", {
   zoom: 8
 });
 
-// const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -260,7 +260,7 @@ let zoomExtent = (lyr, code) => {
     let geom = JSON.parse(r.data.data[0].geom)
     var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
 
-    // console.log(lyr, code);
+    console.log(lyr, code);
 
     $("#tab").dataTable().fnDestroy();
     showDataTable({ col: lyr, val: code });
