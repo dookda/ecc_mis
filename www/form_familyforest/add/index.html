@@ -110,7 +110,8 @@
 
                 <hr>
                 <h4>นำเข้าแปลงป่าครอบครัว</h4>
-                <h6>กรุณาวาดแปลงพื้นที่ป่าครอบครัวของท่านลงบนแผนที่ เพื่อนำเข้ารายละเอียดของป่าครอบครัว</h6>
+                <h6>กรุณาวาดแปลงพื้นที่ป่าครอบครัวของท่านลงบนแผนที่ เพื่อนำเข้ารายละเอียดของป่าครอบครัว<label
+                        style="color: red;" for="sel1">*</label></h6>
                 <div class="card mt-1 p-0">
                     <div id="map"></div>
                 </div>
@@ -211,7 +212,7 @@
                                     class="bi bi-save"></i>&nbsp;บันทึกข้อมูลแปลงป่าครอบครัว</button>
                             &nbsp;&nbsp;
                             <button type="button" class="btn btn-default" onclick="gotoDaily()"><i
-                                    class="bi bi-journal-richtext"></i>&nbsp; หน้าบันทึกประจำวัน</button>
+                                    class="bi bi-journal-richtext"></i>&nbsp; กลับหน้าบันทึกประจำวัน</button>
                         </div>
                         <!-- </form> -->
                     </div>
@@ -240,49 +241,83 @@
     </footer><!-- End  Footer -->
     <div id="preloader"></div>
 
-
-    <div class="modal fade" id="chkgeommodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="okmodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>กรุณาเพิ่มข้อมูลแปลงป่าครอบครัว
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="gotoDaily()">ยืนยัน</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="chkfnamemodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="chkgeommodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>กรุณาระบุชื่อเจ้าของแปลงป่าครอบครัว
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาวาดแปลงพื้นที่ป่าครอบครัวของท่าน ลงบนแผนที่</p>
+                </div>
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">ตกลง</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
                 </div>
+
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="okmodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="chkfnamemodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>เพิ่มข้อมูลสำเร็จ
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาระบุชื่อเจ้าของแปลงป่าครอบครัว</p>
+                </div>
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="gotoDaily()">ตกลง</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
                 </div>
+
             </div>
         </div>
     </div>
-
-
-
-
 
     <!-- Vendor JS Files -->
     <!-- Vendor JS Files -->

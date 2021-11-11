@@ -6,17 +6,24 @@ let fromadmin = sessionStorage.getItem('fromadmin');
 
 urid ? null : location.href = "./../../form_register/login/index.html";
 
-if (eecauth == 'admin') {
-    $("#usrname").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
-    <i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span></a>
-    <div class="dropdown-menu">
-        <a class="dropdown-item" href="./../admin/index.html">
-        <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
-    </div>`)
+// if (eecauth == 'admin') {
+//     $("#usrname").append(`<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+//     <i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span></a>
+//     <div class="dropdown-menu">
+//         <a class="dropdown-item" href="./../admin/index.html">
+//         <i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a>
+//     </div>`)
+// } else {
+//     $("#usrname").append(`<a href="./../../form_register/profile/index.html">
+//         <i class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+//     </a>`)
+// }
+
+if (eecauth == "admin") {
+    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span></a></li>
+        <li><a href="./../admin/index.html"><i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a></li>`)
 } else {
-    $("#usrname").append(`<a href="./../../form_register/profile/index.html">
-        <i class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
-    </a>`)
+    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>></a></li>`)
 }
 
 // var url = 'http://localhost:3700';

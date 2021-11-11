@@ -2,9 +2,15 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
 
 if (eecauth !== "admin" && eecauth !== "user") {
+    $("#noauth").modal("show")
+    // location.href = "./../../form_register/login/index.html";
+}
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 

@@ -3,6 +3,7 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_familyforest = sessionStorage.getItem('f_familyforest');
 
+urid ? null : location.href = "./../../form_register/login/index.html";
 if (f_familyforest == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
@@ -188,35 +189,79 @@ let getData = async (data) => {
 }
 
 let showChart = (dataArr) => {
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("chartType", am4charts.PieChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+    function am4themes_myTheme(target) {
+        if (target instanceof am4core.ColorSet) {
+            target.list = [
+                am4core.color("#7FC8A9"),
+                am4core.color("#D5EEBB"),
+                am4core.color("#5F7A61"),
+                am4core.color("#093824"),
+            ];
+        }
+    }
+    am4core.useTheme(am4themes_myTheme)
+
+    // Themes begin
+    // am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    var chart = am4core.create("chartType", am4charts.XYChart);
 
     chart.data = dataArr;
 
-    var series = chart.series.push(new am4charts.PieSeries());
-    series.dataFields.value = "val";
-    series.dataFields.radiusValue = "val";
-    series.dataFields.category = "cat";
-    series.slices.template.cornerRadius = 6;
-    series.colors.step = 3;
+    chart.padding(40, 40, 40, 40);
 
-    series.hiddenState.properties.endAngle = -90;
-    chart.legend = new am4charts.Legend();
-    chart.exporting.menu = new am4core.ExportMenu();
-    // chart.exporting.menu.align = "left";
-    // chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.dataFields.category = "cat";
+    categoryAxis.renderer.minGridDistance = 60;
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.disabled = true;
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.min = 0;
+    valueAxis.extraMax = 0.1;
+    //valueAxis.rangeChangeEasing = am4core.ease.linear;
+    //valueAxis.rangeChangeDuration = 1500;
+
+    // var axis = chart.yAxes.push(new am4charts.ValueAxis());
+    // axis.renderer.grid.template.disabled = false;
+
+    // Set up axis title
+    valueAxis.title.text = 'ผลผลิต (กิโลกรัม)';
+
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.categoryX = "cat";
+    series.dataFields.valueY = "val";
+    series.tooltipText = "{valueY.value}"
+    series.columns.template.strokeOpacity = 0;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    //series.interpolationDuration = 1500;
+    //series.interpolationEasing = am4core.ease.linear;
+    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+    labelBullet.label.verticalCenter = "bottom";
+    labelBullet.label.dy = -10;
+    labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
+
+    chart.zoomOutButton.disabled = true;
+
+    // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
+    series.columns.template.adapter.add("fill", function (fill, target) {
+        return chart.colors.getIndex(target.dataItem.index);
     });
+
+    // setInterval(function () {
+    //     am4core.array.each(chart.data, function (item) {
+    //         item.visits += Math.round(Math.random() * 200 - 100);
+    //         item.visits = Math.abs(item.visits);
+    //     })
+    //     chart.invalidateRawData();
+    // }, 2000)
+
+    categoryAxis.sortBySeries = series;
 }
+
 $(document).ready(function () {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -234,7 +279,8 @@ $(document).ready(function () {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     let table = $('#myTable').DataTable({
@@ -246,6 +292,12 @@ $(document).ready(function () {
         },
         columns: [
             {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
+                },
+                // width: "15%"
+            }, {
                 data: '',
                 render: (data, type, row, meta) => {
                     // console.log(row);
@@ -275,16 +327,10 @@ $(document).ready(function () {
                 render: (data, type, row, meta) => {
                     return `${row.econ}  ${row.econ_unit}`
                 }
-            }, {
-                data: null,
-                render: function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}', '${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
-                },
-                // width: "15%"
-            }
+            },
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6] },
+            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6] },
         ],
         searching: true,
         scrollX: true,

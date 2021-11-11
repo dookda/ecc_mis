@@ -262,8 +262,20 @@ let showChart2 = (dataArr) => {
 }
 
 let showChart = (dataArr) => {
+    function am4themes_myTheme(target) {
+        if (target instanceof am4core.ColorSet) {
+            target.list = [
+                am4core.color("#7FC8A9"),
+                am4core.color("#D5EEBB"),
+                am4core.color("#5F7A61"),
+                am4core.color("#093824"),
+            ];
+        }
+    }
+    am4core.useTheme(am4themes_myTheme)
+
     // Themes begin
-    am4core.useTheme(am4themes_animated);
+    // am4core.useTheme(am4themes_animated);
     // Themes end
 
     var chart = am4core.create("chartType", am4charts.XYChart);
@@ -340,7 +352,8 @@ let loadTable = (dat) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     let table = $('#myTable').DataTable({
@@ -356,7 +369,7 @@ let loadTable = (dat) => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
-                <button type="button" class="btn btn-margin btn-success" onclick='zoomBound(${row.geom})'><i class="bi bi-zoom-in"></i>ซูม</button>
+                <button type="button" class="btn btn-margin btn-warning" onclick='zoomBound(${row.geom})'><i class="bi bi-zoom-in"></i>&nbsp;ซูม</button>
                 <button type="button" class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gid},'${row.fplant}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
             },
