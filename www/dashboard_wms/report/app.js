@@ -761,6 +761,13 @@ const thaigreen = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
     transparent: true
 });
 
+const temple = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__84_temple",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
 
 let lyrs = L.featureGroup().addTo(map)
 
@@ -882,6 +889,7 @@ let lyr = {
     cp_cbi: cp_cbi,
     cp_ryg: cp_ryg,
     thaigreen: thaigreen,
+    temple: temple,
 }
 
 let base = {
@@ -1492,6 +1500,7 @@ $("#cp_ccoLegend").attr("src", eecUrl + "eec:a__68_complaint_pollu_cco");
 $("#cp_cbiLegend").attr("src", eecUrl + "eec:a__69_complaint_pollu_cbi");
 $("#cp_rygLegend").attr("src", eecUrl + "eec:a__70_complaint_pollu_ryg");
 $("#thaigreenLegend").attr("src", eecUrl + "eec:a__83_thaigreen_eec");
+$("#temple").attr("src", eecUrl + "eec:a__84_temple");
 
 $("#coastalradarLegend").attr("src", gistdaUrl + "coastalradar:recent_gulf");
 
@@ -2173,7 +2182,7 @@ let lyrName = {
     a__69_complaint_pollu_cbi: "เรื่องร้องเรียนมลพิษ จังหวัดชลบุรี",
     a__70_complaint_pollu_ryg: "เรื่องร้องเรียนมลพิษ จังหวัดระยอง",
     a__83_thaigreen_eec: "พื้นที่สีเขียวจาก Thai Green Urban",
-
+    a__84_temple: "วัดและแหล่งศิลปกรรม",
 }
 
 let fieldInfo = {
@@ -2288,7 +2297,8 @@ let fieldInfo = {
     compliantly: "เรื่องร้องเรียน",
     type2: "ประเภทเรื่องร้องเรียน",
     prov: "จังหวัด",
-    greengroup: "ประเภทพื้นที่สีเขียว"
+    greengroup: "ประเภทพื้นที่สีเขียว",
+    temple_name: "ชื่อแหล่งศิปกรรม"
 }
 
 
