@@ -146,17 +146,22 @@
                             <div style="width: 100%; height: 400px;" id="divchart"></div>
                         </div>
                         <div class="row" style="margin-left: 1%; color: darkgrey;">
-                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                            <span>หมายเหตุ: <span style="color: #E53935; font-weight: bold;"> สีแดง </span> หมายถึง
+                                <span id="criterion"></span> </span>
+                        </div>
                         <div class="row" style="margin-left: 1%;">
                             อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
-                                href="http://pcd.go.th/info_serv/reg_std_water04.html">กรมควบคุมมลพิษ</a></div>
+                                href="https://www.pcd.go.th/laws/ประกาศกระทรวงทรัพยากร-56/"
+                                target="_blank">กรมควบคุมมลพิษ</a></div>
                         <br>
                     </div>
                 </div>
                 <br>
-                <h5>ตำแหน่งที่ตรวจวัดคุณภาพน้ำ</h5>
                 <div class="card">
-                    <div class="card-body" id="map"></div>
+                    <div class="card-body">
+                        <h5>ตำแหน่งที่ตรวจวัดคุณภาพน้ำ</h5>
+                        <div id="map"></div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -192,9 +197,12 @@
                 </div>
                 <hr>
                 <div class="card">
-                    <div class="card-body">
-                        <label for="">แสดงกราฟ</label>
-                        <select class="form-control" id="station"></select>
+                    <div class="card-body text-center">
+                        <!-- <h5>ข้อมูล</h5> -->
+                        <label for="">รายละเอียดข้อมูลเพิ่มเติม</label>
+                        <div class="form-group m-auto w-50 mw-10" style="margin-bottom: 12px;">
+                            <select class="form-control" id="station"></select>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -268,9 +276,11 @@
     <div class="modal" id="chartModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <div id="chartdiv">
-                        <label for="">ที่ได้จากการตรวจวัด</label>
+                        <label for=""
+                            style="text-align: center; font-weight: bold; font-size: 18px;">ค่าพารามิเตอร์ต่างๆ
+                            ที่ได้จากการตรวจวัด</label>
                         <div class="row">
                             <div class="col-sm-4 ">
                                 <div class="card">
@@ -369,15 +379,48 @@
                             </div>
                         </div>
                         <div class="row" style="margin-left: 1%; color: darkgrey;">
-                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                            <span>หมายเหตุ: <span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง
+                                ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน</span>
+                        </div>
                         <div class="row" style="margin-left: 1%;">
                             อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
-                                href="http://pcd.go.th/info_serv/reg_std_water04.html">กรมควบคุมมลพิษ</a></div>
+                                href="https://www.pcd.go.th/laws/ประกาศกระทรวงทรัพยากร-56/">กรมควบคุมมลพิษ</a></div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="warningModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-circle-fill text-warning mr-2"
+                            style="font-size: 26px;"></i>แจ้งเตือน
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">กรุณาเลือกขอบเขตพื้นที่ของข้อมูลที่ท่านสนใจ<br> เช่น
+                        สถานี/จุดตรวจวัด
+                    </p>
+                    <input type="hidden" id="projId">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                </div>
+
             </div>
         </div>
     </div>

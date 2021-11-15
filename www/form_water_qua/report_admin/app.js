@@ -238,7 +238,8 @@ let loadTable = (daturl, dattype) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     let dtable = $('#myTable').DataTable({
@@ -386,8 +387,11 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
 
     var title = chart.titles.create();
     title.text = tt;
-    title.fontSize = 18;
-    title.marginBottom = 5;
+    // title.align = "center";
+    title.fontSize = 14;
+    title.marginBottom = 12;
+    title.fontWeight = 600;
+    title.paddingLeft = 50;
 
     // Create axes
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
@@ -403,8 +407,9 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     axis.title.text = unit;
     axis.title.rotation = 270;
     axis.title.align = "center";
-    axis.title.valign = "top";
-    axis.title.dy = 20;
+    // axis.title.valign = "top";
+    // axis.title.dy = 12;
+    axis.title.fontSize = 14;
 
     // Create series
     function createSeries(field, name) {
@@ -472,6 +477,58 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
         });
         return { data: data };
     });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่พบข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    var indicator2;
+    function showIndicator2() {
+        if (indicator2) {
+            indicator2.show();
+        }
+        else {
+            indicator2 = chart.tooltipContainer.createChild(am4core.Container);
+            indicator2.background.fill = am4core.color("#fff");
+            indicator2.background.fillOpacity = 0.8;
+            indicator2.width = am4core.percent(100);
+            indicator2.height = am4core.percent(100);
+
+            var indicatorLabel = indicator2.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log()
+        let data = ev.target.data
+        if (ev.target.data.length == 0) {
+            showIndicator();
+        } else if (ev.target.data.length == 1) {
+            if (data[0].value1 == null && data[0].value2 == null) {
+                showIndicator2();
+            }
+        }
+    });
 }
 let provStation = (prov) => {
     var provnam = prov
@@ -485,6 +542,7 @@ let provStation = (prov) => {
 provStation();
 
 let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
+    $('#chartall').slideDown();
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -492,7 +550,11 @@ let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
 
+
     // Add data
+    data.sort(function (a, b) {
+        return new Date(b.date) - new Date(a.date);
+    });
     chart.data = data;
 
     // Create axes
@@ -644,6 +706,64 @@ let compareChart = (div, data, label, unit, min1, max1, min2, max2) => {
 
     // dateAxis.start = 0.40;
     dateAxis.keepSelection = true;
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่พบข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+    var indicator2;
+    function showIndicator2() {
+        if (indicator2) {
+            indicator2.show();
+        }
+        else {
+            indicator2 = chart.tooltipContainer.createChild(am4core.Container);
+            indicator2.background.fill = am4core.color("#fff");
+            indicator2.background.fillOpacity = 0.8;
+            indicator2.width = am4core.percent(100);
+            indicator2.height = am4core.percent(100);
+
+            var indicatorLabel = indicator2.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log(ev.target.data)
+        let data = ev.target.data
+        if (ev.target.data.length == 0) {
+            showIndicator();
+        } else if (ev.target.data.length > 0) {
+            var nulls = [];
+            data.map(i => {
+                if (i.value1 == null && i.value2 == null) {
+                    nulls.push({ value1: i.value1, value2: i.value2 })
+                }
+            })
+            if (nulls.length == data.length) {
+                showIndicator2();
+            }
+
+        }
+    });
 }
 
 $("#sta").on("change", function () {
@@ -659,11 +779,12 @@ $("#sta").on("change", function () {
             loadTable(url + '/wq-api/getdatabyprov', { prov: prov_n })
         } else {
             $("#myTable").dataTable().fnDestroy();
-            loadTable(url + '/wq-api/getdata', { type: "ทุกจังหวัด" })
+            loadTable(url + '/wq-api/getdata', { type: eecauth, usrid: urid })
         }
     }
     zoomsta(sta_n)
 
+    $('#chartall').slideUp();
     $("#parameter").empty()
     $("#parameter").append(`
         <option>เลือก</option>
@@ -685,8 +806,10 @@ $("#prov").on("change", function () {
         zoomExtent("pro", "eec")
 
         $("#myTable").dataTable().fnDestroy();
-        loadTable(url + '/wq-api/getdata', {})
+        loadTable(url + '/wq-api/getdata', { type: eecauth, usrid: urid })
+        $("#sta").prop("disabled", true);
     } else {
+        $("#sta").prop("disabled", false);
         // $("#sta").empty()
         provStation(prov_n);
         zoomExtent("pro", this.value)
@@ -694,6 +817,8 @@ $("#prov").on("change", function () {
         $("#myTable").dataTable().fnDestroy();
         loadTable(url + '/wq-api/getdatabyprov', { prov: prov_n })
     }
+    $("#parameter").prop("selectedIndex", 0)
+    $('#chartall').slideUp();
 });
 
 $("#chartall").hide()
@@ -743,27 +868,36 @@ let callChart = () => {
             });
             if (parameter == "BOD") {
                 compareChart("divchart", cbod, "BOD", "mg/L", 0, 0, 20, 500);
+                $('#criterion').text('ค่า BOD ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 20')
             }
             else if (parameter == "COD") {
                 compareChart("divchart", ccod, "COD", "mg/L", 0, 0, 120, 1000);
+                $('#criterion').text('ค่า COD ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 120')
             }
             else if (parameter == "DO") {
                 compareChart("divchart", cdo, "DO", "mg/L", 0, 4, 10, 100);
+                $('#criterion').text('ค่า DO ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 4 - 10 ')
             }
             else if (parameter == "PH") {
                 compareChart("divchart", cph, "pH", "pH", 0, 5.5, 9, 9999999);
+                $('#criterion').text('ค่า pH ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 5.5 - 9')
             }
             else if (parameter == "SS") {
                 compareChart("divchart", css, "SS", "mg/L", 0, 0, 50, 1000);
+                $('#criterion').text('ค่า SS ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 50 ')
             }
             else if (parameter == "TEMP") {
                 compareChart("divchart", ctemp, "Temperature", "°C", 0, 20, 40, 100);
+                $('#criterion').text('ค่า Temperature ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 20 - 40')
+            } else {
+                $('#criterion').text('ค่าคุณภาพน้ำทิ้ง/น้ำเสียไม่อยู่ในเกณฑ์มาตรฐาน')
             }
         })
     }
 }
 let chartstaall = (data) => {
     var sta = data
+    // var parameter = F.val();
     var parameter = $("#parameter").val();
     var setDatBOD = [];
     var setDatCOD = [];
@@ -813,6 +947,7 @@ let zoomExtent = (lyr, code) => {
     })
 }
 let chartall = (data, label, unit) => {
+    $('#chartall').slideDown();
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -839,7 +974,7 @@ let chartall = (data, label, unit) => {
     // categoryAxis.renderer.minGridDistance = 30;
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.title.text = label + " " + "(" + unit + ")";
+    valueAxis.title.text = label + " " + unit;
     valueAxis.title.fontWeight = 800;
 
     // Create series
@@ -884,6 +1019,45 @@ let chartall = (data, label, unit) => {
             }
         });
         return { data: data };
+    });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่พบข้อมูล...";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log()
+        let data = ev.target.data;
+        if (ev.target.data.length == 0) {
+            showIndicator();
+        } else if (ev.target.data.length > 0) {
+            var nulls = [];
+            data.map(i => {
+                if (i.first == null && i.second == null) {
+                    nulls.push({ value1: i.second, value2: i.second })
+                }
+            })
+            if (nulls.length == data.length) {
+                showIndicator();
+            }
+
+        }
     });
 }
 
@@ -946,13 +1120,26 @@ let zoomsta = (sta) => {
 }
 
 $("#parameter").on("change", function () {
-    callChart()
+    var prov_n = $("#prov").children("option:selected").text()
+    var parameter = $("#parameter").children("option:selected").text()
+
+    if (prov_n !== 'ทุกจังหวัด' && parameter !== "เลือก") {
+        callChart()
+    } else if (prov_n !== 'ทุกจังหวัด' && parameter == "เลือก") {
+        $('#chartall').slideUp();
+    } else {
+        $("#warningModal").modal("show")
+    }
 })
 
 let stationList = (data) => {
     // console.log(data);
-    $("#station").empty()
-    data.map(i => $("#station").append(`<option value="${i.wq_id}">${i.syst} (เลข id:${i.wq_id} วันที่ ${i.bf_date})</option>`))
+    $("#station").empty().append(`<option value="eec">เลือกจุดตรวจวัด</option>`);
+    data.map(i => {
+        if (i.syst !== null) {
+            $("#station").append(`<option value="${i.wq_id}">${i.syst} (เลข id:${i.wq_id} วันที่ ${i.bf_date})</option>`)
+        }
+    })
 }
 
 $("#station").on("change", function () {
@@ -961,7 +1148,8 @@ $("#station").on("change", function () {
 
 
 $(document).ready(() => {
-    loadTable(url + '/wq-api/getdata', { type: "ทุกจังหวัด" })
+    loadTable(url + '/wq-api/getdata', { type: eecauth, usrid: urid })
     layermark(L62, 62)
+    $("#sta").prop("disabled", true);
 });
 
