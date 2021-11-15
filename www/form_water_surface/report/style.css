@@ -7,6 +7,14 @@
     border-radius: 0.9rem;
 }
 
+#hchart{
+  height: 180px;
+}
+
+.hchart{
+  height: 280px;
+}
+
 .btn-margin{
     margin: 2px;
 }

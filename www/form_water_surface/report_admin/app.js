@@ -63,6 +63,7 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
 });
 
 let lyrs = L.featureGroup().addTo(map)
+let wtrlFc = L.featureGroup()
 
 var baseMap = {
     "Mapbox": mapbox.addTo(map),
@@ -73,6 +74,7 @@ const overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
     "ขอบเขตอำเภอ": amp,
     "ขอบเขตตำบล": tam,
+    "จุดตรวจวัดปริมาณน้ำท่า": wtrlFc,
 }
 
 const lyrControl = L.control.layers(baseMap, overlayMap, {
@@ -264,7 +266,7 @@ let getDetail = (e) => {
 }
 
 let loadTable = (data) => {
-    console.log(data);
+    // console.log(data);
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -281,7 +283,8 @@ let loadTable = (data) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     dtable = $('#myTable').DataTable({
@@ -297,9 +300,10 @@ let loadTable = (data) => {
                 render: function (data, type, row, meta) {
                     // console.log(data);
                     return `
+                       <a class="btn btn-margin btn-info" href="#charttitle" onclick="getDetail(${row.ws_id})"><i class="bi bi-journal-richtext"></i>&nbsp;แก้ไขข้อมูล</a>
                        <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.ws_id}','${row.ws_station}','${row.ws_location}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <a class="btn btn-margin btn-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</a>
-                       <a class="btn btn-margin btn-info" href="#charttitle" onclick="getDetail(${row.ws_id})"><i class="bi bi-journal-richtext"></i>&nbsp;แก้ไขข้อมูล</a>`
+                       `
+                    //    <a class="btn btn-margin btn-success" href="#charttitle" onclick="getChart(${row.ws_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</a>
                 },
                 // width: '30%'
             },
@@ -324,7 +328,7 @@ let loadTable = (data) => {
             { data: 'ws_tp' }
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+            { className: 'text-center', targets: [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
         ],
         searching: true,
         scrollX: true,
@@ -337,6 +341,7 @@ let loadTable = (data) => {
     dtable.on('search.dt', function () {
         let data = dtable.rows({ search: 'applied' }).data()
         // getMarker(data);
+        stationList(data);
     });
 }
 
@@ -371,6 +376,7 @@ let lineChart = (div, label, unit, series, min1, max1, min2, max2) => {
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = label + " " + unit;
+
 
     // Create series
     function createSeries(field, name) {
@@ -445,6 +451,12 @@ let lineChart = (div, label, unit, series, min1, max1, min2, max2) => {
         });
         return { data: data };
     });
+
+
+    chart.events.on('ready', () => {
+        $("#chartall").slideDown();
+    });
+
 }
 
 
@@ -456,8 +468,11 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
 
     var title = chart.titles.create();
     title.text = tt;
+    // title.align = "center";
     title.fontSize = 14;
-    title.marginBottom = 5;
+    title.marginBottom = 12;
+    title.fontWeight = 600;
+    title.paddingLeft = 50;
 
     // Create axes
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
@@ -475,8 +490,8 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     axis.title.text = unit;
     axis.title.rotation = 270;
     axis.title.align = "center";
-    axis.title.valign = "top";
-    axis.title.dy = 12;
+    // axis.title.valign = "top";
+    // axis.title.dy = 12;
     axis.title.fontSize = 14;
 
     // Create series
@@ -518,11 +533,41 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
         });
         return { data: data };
     });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+            indicatorLabel.paddingLeft = 50;
+        }
+    }
+
+
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log()
+        let data = ev.target.data
+        if (data[0].val == null) {
+            showIndicator();
+        }
+    });
 }
 
 let getStation = (prov) => {
-    $("#sta").empty();
-    $("#sta").append(`<option>เลือก</option>`);
+    $("#sta").empty().append(`<option value="eec">เลือกสถานี/จุดตรวจวัด</option>`);
     axios.post(url + "/ws-api/getstation", { prov }).then(r => {
         r.data.data.map(i => $("#sta").append(`<option value="${i.ws_station}">${i.ws_river} (${i.ws_station})</option>`))
     })
@@ -579,7 +624,7 @@ let getChart = (ws_id) => {
             if (v[key] && value) {
                 // console.log(key, value);
                 if (Number(value) < 9999999) {
-                    $("#chartd").append(
+                    $("#chartd").show().append(
                         `<div class="col-sm-4">
                             <div class="card p-1">
                                 <div class="card-body wschart" id="${key}"></div>
@@ -587,7 +632,7 @@ let getChart = (ws_id) => {
                         </div>`
                     )
                     if (key == "ws_do") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 4, 10, value); }
-                    else if (key == "ws_bod") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 2, value); }
+                    else if (key == "ws_bod") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 2, 100, value); }
                     else if (key == "ws_fcb") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 4000, value); }
                     else if (key == "ws_wqi") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 61, 100, value); }
                     else if (key == "ws_nh3n") { geneChart([{ "cat": v[key][0], "val": value }], key, v[key][0], v[key][1], 0, 0.5, value); }
@@ -624,12 +669,13 @@ let getChart = (ws_id) => {
             }
         }
     });
-    $("#referlink").html(
+    $("#referlink").show().html(
         `<div class="row" style="margin-left: 1%; color: darkgrey;">
-                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำผิวดินไม่อยู่ในเกณฑ์มาตรฐาน </div>
+        <span>หมายเหตุ: <span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง ค่าคุณภาพน้ำผิวดินไม่อยู่ในเกณฑ์มาตรฐาน</span>
+        </div>
         <div class="row" style="margin-left: 1%;" id=>
         อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
-            href="http://pcd.go.th/info_serv/reg_std_water05.html">กรมควบคุมมลพิษ</a>
+            href="https://www.pcd.go.th/laws/ประกาศคณะกรรมการสิ่งแ-19/" target="_blank">กรมควบคุมมลพิษ</a>
     </div>`)
 }
 
@@ -643,9 +689,13 @@ $("#pro").on("change", function () {
     this.value == '21' ? dat = 'ระยอง' : null;
 
     zoomExtent("pro", this.value);
-    getStation(dat);
     $("#myTable").dataTable().fnDestroy();
     loadTable({ type: "prov", dat });
+    getStation(dat);
+
+    $('#chartall').slideUp();
+    hidechart();
+
 });
 
 let ws_wqi = [];
@@ -656,7 +706,7 @@ let ws_nh3n = [];
 let ws_tcb = [];
 
 $("#sta").on("change", function () {
-    console.log(this.value);
+    // console.log(this.value);
     axios.post(url + "/ws-api/getstationone", { ws_station: this.value }).then(r => {
         ws_wqi = [];
         ws_bod = [];
@@ -674,34 +724,253 @@ $("#sta").on("change", function () {
             ws_tcb.push({ "date": i.ws_date, "value": Number(i.ws_tcb) });
         })
     })
+    $('#chartall').slideUp();
+    $('#parameter').prop('selectedIndex', 0);
+
 });
 $("#chartall").hide()
 $("#parameter").on("change", function () {
+    let pro = $('#pro').val();
+    let sta = $('#sta').val();
     var parameter = $("#parameter").val();
-    if (parameter == "WQI") {
-        lineChart("chartdiv", "WQI", "WQI", ws_wqi, 0, 61, 100, 500);
-    }
-    else if (parameter == "DO") {
-        lineChart("chartdiv", "DO", "(mg/l)", ws_do, 0, 4, 10, 100);
-    }
-    else if (parameter == "BOD") {
-        lineChart("chartdiv", "BOD", "(mg/l)", ws_bod, 0, 2, 100, 500);
-    }
-    else if (parameter == "FCB") {
-        lineChart("chartdiv", "FCB", "(MPN/100ml)", ws_fcb, 0, 0, 4000, 500000);
-    }
-    else if (parameter == "AMM") {
-        lineChart("chartdiv", "แอมโมเนีย", "(mg/l)", ws_nh3n, 0, 0, 0.5, 10);
-    }
-    else if (parameter == "TCB") {
-        lineChart("chartdiv", "TCB", "(MPN/100ml)", ws_tcb, 0, 0, 20000, 250000);
-    }
 
-    $("#chartall").show()
+    let sta_n = $('#sta').children("option:selected").text()
+    let para_n = $('#parameter').children("option:selected").text()
+    $('#sta_H').text(sta_n);
+    $('#para_H').text(para_n);
+
+    if (pro !== 'eec' && sta !== 'eec') {
+        if (parameter == "WQI") {
+            lineChart("chartdiv", "WQI", "WQI", ws_wqi, 0, 61, 100, 500);
+            $('#criterion').empty().text(`ค่า WQI ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 61 - 100 `);
+        }
+        else if (parameter == "DO") {
+            lineChart("chartdiv", "DO", "(mg/l)", ws_do, 0, 4, 10, 100);
+            $('#criterion').empty().text(`ค่า DO ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 4 - 10`);
+        }
+        else if (parameter == "BOD") {
+            lineChart("chartdiv", "BOD", "(mg/l)", ws_bod, 0, 0, 2, 500);
+            $('#criterion').empty().text(`ค่า BOD ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 2`);
+        }
+        else if (parameter == "FCB") {
+            lineChart("chartdiv", "FCB", "(MPN/100ml)", ws_fcb, 0, 0, 4000, 500000);
+            $('#criterion').empty().text(`ค่า FCB ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 4,000`);
+        }
+        else if (parameter == "AMM") {
+            lineChart("chartdiv", "แอมโมเนีย", "(mg/l)", ws_nh3n, 0, 0, 0.5, 10);
+            $('#criterion').empty().text(`ค่าแอมโมเนีย ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 0.5`);;
+        }
+        else if (parameter == "TCB") {
+            lineChart("chartdiv", "TCB", "(MPN/100ml)", ws_tcb, 0, 0, 20000, 250000);
+            $('#criterion').empty().text(`ค่า TCB ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 20,000 `)
+        } else {
+            $('#chartall').slideUp();
+            $('#criterion').empty().text(`ค่าคุณภาพน้ำผิวดินไม่อยู่ในเกณฑ์มาตรฐาน`);
+        }
+
+    } else {
+        $('#warningModal').modal('show');
+    }
 });
 
 $(document).ready(() => {
     loadTable({ type: "prov", dat: 'ทุกจังหวัด' })
+    getStation('ทุกจังหวัด')
     // setall_dat()
 })
 
+let stationList = (data) => {
+    // console.log(data);
+    $("#station").empty().append(`<option value="eec">เลือกสถานี/จุดตรวจวัด</option>`);
+    data.map(i => {
+        if (i.location !== null) {
+            $("#station").append(`<option value="${i.ws_id}">${i.ws_river} ${i.ws_location !== null ? i.ws_location : ''} (รหัสสถานี:${i.ws_station}  ${i.date !== null ? "วันที่" + i.date : ''})</option>`)
+        }
+    })
+}
+$("#station").on("change", function () {
+    if (this.value !== 'eec') {
+        getChart(this.value)
+    } else {
+        hidechart();
+    }
+})
+let hidechart = () => {
+    $("#charttitle").slideUp();
+    $("#chartd").hide();
+    $("#spinner").hide();
+    $("#referlink").hide();
+}
+
+
+let loadWtrl = async () => {
+    let iconblue = L.icon({
+        iconUrl: './marker/gas-station.png',
+        iconSize: [40, 45],
+        iconAnchor: [12, 37],
+        popupAnchor: [5, -30]
+    });
+
+    let sta = [
+        {
+            staname: "station_01",
+            latlon: [12.8661616, 100.9989804],
+            measure: 275.5
+        }, {
+            staname: "station_02",
+            latlon: [12.848099999999983, 100.95313000000002],
+            measure: 244
+        }, {
+            staname: "station_03",
+            latlon: [12.846510200000028, 100.9376361],
+            measure: 298
+        }, {
+            staname: "station_04",
+            latlon: [12.694406999999996, 101.44470699999997],
+            measure: 294
+        }, {
+            staname: "station_05",
+            latlon: [12.703484000000008, 101.468717],
+            measure: 280
+        }, {
+            staname: "station_06",
+            latlon: [12.70139960000001, 101.49543049999],
+            measure: 435
+        }, {
+            staname: "station_07",
+            latlon: [12.985111299999994, 101.6776677],
+            measure: 380.6
+        }, {
+            staname: "station_08",
+            latlon: [12.909515899999995, 101.71460159999998],
+            measure: 512
+        }, {
+            staname: "station_09",
+            latlon: [12.836749900000017, 101.73254899999998],
+            measure: 550.5
+        }]
+
+    sta.map(async (i) => {
+        let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
+        resSt01.then(r => {
+            let d = r.data.data[0];
+            let marker = L.marker(i.latlon, {
+                icon: iconblue,
+                name: 'lyr',
+                // data: dat
+            });
+            // console.log(i.measure);
+            wtrlFc.addLayer(marker)
+            // marker.addTo(map)
+            marker.bindPopup(`<div style="font-family:'Kanit'"> 
+                        ชื่อสถานี : ${i.staname} <br>
+                        ระดับน้ำ : ${i.measure - Number(d.deep).toFixed(1) < 1 ? 0 : i.measure - Number(d.deep).toFixed(1)} mm.<br>
+                        ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
+                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
+                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}', ${i.measure})"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        </div>`
+            )
+        })
+    })
+}
+let wtrlModal = (stname, measure) => {
+    // console.log(measure);
+    // 
+    let arrDept = [];
+    let arrTemp = [];
+    let arrHumi = [];
+    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get-by-day.php", { stname }).then(r => {
+        // console.log(r);
+        r.data.data.map(i => {
+            arrDept.push({
+                "date": i.dt,
+                "value": measure - i.dept < 1 ? 0.0 : Math.round(measure - i.dept)
+            });
+            arrTemp.push({
+                "date": i.dt,
+                "value": Math.round(i.temp)
+            });
+            arrHumi.push({
+                "date": i.dt,
+                "value": Math.round(i.humi)
+            });
+        })
+    })
+
+    setTimeout(() => {
+        // console.log(arrDept, arrTemp, arrHumi);
+        wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
+        wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
+        wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
+    }, 500)
+
+
+    $("#wtrlModal").modal("show");
+
+}
+let wtrlChart = (arrData, div, unit) => {
+    am4core.useTheme(am4themes_animated);
+
+    // Create chart instance
+    var chart = am4core.create(div, am4charts.XYChart);
+
+    // Add data
+    chart.data = arrData;
+
+    // Set input format for the dates
+    // chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
+    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.baseValue = 0;
+    valueAxis.title.text = unit;
+
+    // Create series
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.tooltipText = "{value}";
+    // series.tensionX = 0.8;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 15;
+    series.stroke = am4core.color("#00b80f");
+
+    // Drop-shaped tooltips
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.strokeOpacity = 0;
+    series.tooltip.pointerOrientation = "vertical";
+    series.tooltip.label.minWidth = 40;
+    series.tooltip.label.minHeight = 40;
+    series.tooltip.label.textAlign = "middle";
+    series.tooltip.label.textValign = "middle";
+
+    // var range = valueAxis.createSeriesRange(series);
+    // range.value = index;
+    // range.endValue = -1000;
+    // range.contents.stroke = am4core.color("#ff0000");
+    // range.contents.fill = range.contents.stroke;
+
+    // Make bullets grow on hover
+    var bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
+    bullet.circle.fill = am4core.color("#fff");
+
+    // Make a panning cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.behavior = "panXY";
+    chart.cursor.xAxis = dateAxis;
+    chart.cursor.snapToSeries = series;
+
+    // Create a horizontal scrollbar with previe and place it underneath the date axis
+    chart.scrollbarX = new am4charts.XYChartScrollbar();
+    chart.scrollbarX.series.push(series);
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+    dateAxis.start = 0.59;
+    dateAxis.keepSelection = true;
+}
+
+loadWtrl()
