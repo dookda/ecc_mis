@@ -287,3 +287,12 @@ $("#password2").on("change", function () {
     $("#password2").val() == $("#password").val() ? $("#passcheck").hide() : $("#passcheck").show();
 });
 
+
+let loadOrganize = () => {
+    axios.post(url + '/profile-api/getocup', { regid: "regid" }).then(r => {
+        console.log(r);
+        r.data.data.map(x => $("#ocup").append(`<option value="${x.ocup}">${x.ocup}</option>`))
+        // $("#ocup").append(`<option value="${r.}"><option>`)
+    })
+}
+loadOrganize()
