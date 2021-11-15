@@ -753,6 +753,15 @@ const coastalmon62 = L.tileLayer.wms("http://marinegiscenter.dmcr.go.th/cgi-bin/
     transparent: true
 });
 
+const thaigreen = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
+    layers: "eec:a__83_thaigreen_eec",
+    name: "lyr",
+    iswms: "wms",
+    format: "image/png",
+    transparent: true
+});
+
+
 let lyrs = L.featureGroup().addTo(map)
 
 
@@ -871,7 +880,8 @@ let lyr = {
     sea: sea,
     cp_cco: cp_cco,
     cp_cbi: cp_cbi,
-    cp_ryg: cp_ryg
+    cp_ryg: cp_ryg,
+    thaigreen: thaigreen,
 }
 
 let base = {
@@ -1481,6 +1491,7 @@ $("#seaLegend").attr("src", eecUrl + "eec:a__61_sea_eec");
 $("#cp_ccoLegend").attr("src", eecUrl + "eec:a__68_complaint_pollu_cco");
 $("#cp_cbiLegend").attr("src", eecUrl + "eec:a__69_complaint_pollu_cbi");
 $("#cp_rygLegend").attr("src", eecUrl + "eec:a__70_complaint_pollu_ryg");
+$("#thaigreenLegend").attr("src", eecUrl + "eec:a__83_thaigreen_eec");
 
 $("#coastalradarLegend").attr("src", gistdaUrl + "coastalradar:recent_gulf");
 
@@ -2135,7 +2146,7 @@ let lyrName = {
     a__31_non_huntingboi: "เขตห้ามล่าสัตว์ป่า",
     a__27_f_type63_eec: "ประเภทป่าไม้ปีพ.ศ.2563",
     a__33_afforestation: "พื้นที่ปลูกป่า",
-    a__35_alroarea: "พื้นที่สปก.",
+    a__35_alroarea: "พื้นที่สปก",
     a__56_commu_forest: "ป่าชุมชน",
     a__19_geology: "ธรณีวิทยา",
     a__40_mineral: "ทรัพยากรแร่",
@@ -2160,7 +2171,8 @@ let lyrName = {
     a__75_oldtown_ryg: "เขตเมืองเก่า จังหวัดระยอง",
     a__68_complaint_pollu_cco: "เรื่องร้องเรียนมลพิษ จังหวัดฉะเชิงเทรา",
     a__69_complaint_pollu_cbi: "เรื่องร้องเรียนมลพิษ จังหวัดชลบุรี",
-    a__70_complaint_pollu_ryg: "เรื่องร้องเรียนมลพิษ จังหวัดระยอง"
+    a__70_complaint_pollu_ryg: "เรื่องร้องเรียนมลพิษ จังหวัดระยอง",
+    a__83_thaigreen_eec: "พื้นที่สีเขียวจาก Thai Green Urban",
 
 }
 
@@ -2274,7 +2286,9 @@ let fieldInfo = {
     zone_detai: 'รายละเอียดโซน',
     name_: "ชื่อวนอุทยานภาษาอังกฤษ",
     compliantly: "เรื่องร้องเรียน",
-    type2: "ประเภทเรื่องร้องเรียน"
+    type2: "ประเภทเรื่องร้องเรียน",
+    prov: "จังหวัด",
+    greengroup: "ประเภทพื้นที่สีเขียว"
 }
 
 
