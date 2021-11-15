@@ -659,7 +659,7 @@ $("#sta").on("change", function () {
             loadTable(url + '/wq-api/getdatabyprov', { prov: prov_n })
         } else {
             $("#myTable").dataTable().fnDestroy();
-            loadTable(url + '/wq-api/getdata', {})
+            loadTable(url + '/wq-api/getdata', { type: "ทุกจังหวัด" })
         }
     }
     zoomsta(sta_n)
@@ -952,7 +952,7 @@ $("#parameter").on("change", function () {
 let stationList = (data) => {
     // console.log(data);
     $("#station").empty()
-    data.map(i => $("#station").append(`<option value="${i.wq_id}">${i.syst} (เลข id:${i.wq_id} วันที่ ${i.bf_date})<option>`))
+    data.map(i => $("#station").append(`<option value="${i.wq_id}">${i.syst} (เลข id:${i.wq_id} วันที่ ${i.bf_date})</option>`))
 }
 
 $("#station").on("change", function () {
@@ -961,7 +961,7 @@ $("#station").on("change", function () {
 
 
 $(document).ready(() => {
-    loadTable(url + '/wq-api/getdata', {})
+    loadTable(url + '/wq-api/getdata', { type: "ทุกจังหวัด" })
     layermark(L62, 62)
 });
 
