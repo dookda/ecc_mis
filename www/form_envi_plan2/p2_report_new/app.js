@@ -19,8 +19,8 @@ if (typ == "admin") {
     $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span>></a></li>`)
 }
 
-// const url = "https://eec-onep.online:3700";
-const url = "http://localhost:3700";
+const url = "https://eec-onep.online:3700";
+// const url = "http://localhost:3700";
 
 let latlng;
 

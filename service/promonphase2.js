@@ -247,7 +247,7 @@ app.post("/projmon2-api/updatedata_new", async (req, res) => {
 
 app.post("/projmon2-api/delete_new", (req, res) => {
     const { pid } = req.body;
-    console.log(pid);
+    // console.log(pid);
     const sql = `DELETE FROM eecprj_mon_phase2new WHERE pid='${pid}'`
     eec.query(sql).then(r => {
         res.status(200).json({
