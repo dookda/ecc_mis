@@ -37,15 +37,14 @@
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li><a href="./../../index.html">หน้าหลัก</a></li>
                     <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./aboutus/index.html">เกี่ยวกับโครงการ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
                     <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
@@ -179,7 +178,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm">
+                        <div class="col-sm ">
                             <div class='card-d' id="cardbio">
                                 <div class="card Soft-blue" id="cardbioA" style="opacity: 1;">
                                     <!-- <div class="overlay"></div> -->
@@ -231,9 +230,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row-content">
-                        <div class="col-sm">
+                        <div class="col-sm ">
                             <div class='card-d' id="cardother">
                                 <div class="card Soft-blue" id="cardotherA" style="opacity: 1;">
                                     <!-- <div class="overlay"></div> -->
@@ -254,25 +251,26 @@
                                             </div>
                                             <p><b>ขยะ</b></p>
                                         </div>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <div class="card soft-violet" id="cardother2">
-                                            <!-- <div class="overlay" id="problem"></div> -->
+                                        <!-- <div class="card soft-violet" id="cardother2">
                                             <div class="circle">
                                                 <img src=" ./assets/img/10.png" width="65px" height="auto">
                                             </div>
                                             <p style="margin-top: 11px;"><b>แจ้งปัญหา<br>สิ่งแวดล้อม</b></p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
                             <br>
                         </div>
-                        <div class="col-sm">
-                            <div class="card soft-violet" id="manual">
+                        <div class="col-sm ">
+                            <div class="card soft-violet" id="manual"
+                                onclick="window.location.href='./File/MIS-Dashboard.pdf'">
                                 <!-- <div class="overlay center" id="manual"></div> -->
                                 <div class="circle">
                                     <img src="./assets/img/11.png" width="65px" height="auto">
                                 </div>
                                 <p><b>คู่มือการใช้งาน</b></p>
+
                             </div>
                         </div>
                         <div class="col-sm" id="g01"></div>
@@ -292,12 +290,40 @@
     <br>
     <!-- ======= Footer ======= -->
     <footer id="footer">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="p-2 bd-highlight  text-justify">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
-
             <div class="copyright">
                 <img src="assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
                 สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
-
             </div>
         </div>
     </footer><!-- End  Footer -->

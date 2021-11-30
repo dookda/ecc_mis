@@ -34,37 +34,35 @@
 <body>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container-fluid row d-flex justify-content-between align-items-center">
+  <header id="header" class="fixed-top w-100 mw-100">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-      <div class="col-sm">
-        <nav class="nav-menu d-none d-lg-block" id="navbar">
-          <ul>
-            <li class="active"><a href="./index.html">หน้าหลัก</a></li>
-            <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
-            <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
-            <li><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-            <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-            <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
-            <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
-            <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
-            <li id="usr1"><a href="./../../form_register/profile/index.html"><i
-                  class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
-            <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                ออกจากระบบ</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div class="header-social-links" style="align-items: center;">
-        <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook" style="font-size:28px;"></i></a>
+      <nav class="nav-menu d-none d-lg-block" id="navbar">
+        <ul>
+          <li class="active"><a href="./index.html">หน้าหลัก</a></li>
+          <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+          <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+          <li><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+          <li><a href="./form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+          <li><a href="./aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+          <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+          <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
+          <li id="usr1"><a href="./../../form_register/profile/index.html"><i
+                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
+          <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+              ออกจากระบบ</a></li>
+        </ul>
+      </nav>
+      <div class="header-social-links">
+        <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
       </div>
     </div>
   </header><!-- End Header -->
 
   <main id="main">
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center" style="background-image: url(assets/img/BG2.jpg); background-position: center;
+    <section id="hero" class="d-flex align-items-center h-100" style="background-image: url(assets/img/BG2.jpg); background-position: center;
     background-repeat: no-repeat; background-size: cover;">
 
       <div class="container d-flex flex-column align-items-center" data-aos="zoom-in" data-aos-delay="100" id="blur">
@@ -131,8 +129,7 @@
             <div class="card-home">
               <img src="./assets/img/a03.png" style="width: 100px; height: auto;  margin-bottom: 10px" id="a03">
               <h6>ระบบติดตามแผน<br>สิ่งแวดล้อม</h6>
-              <a class="canvas_copy_details nth-child"
-                href="https://eec-onep.soc.cmu.ac.th/envi_plan/login/index.html"><button><span
+              <a class="canvas_copy_details nth-child" href="./form_envi_plan2/login/index.html"><button><span
                     class="text">คลิก</span>&nbsp;
                   <div class="icon-container">
                     <div class="icon icon--left">
@@ -158,11 +155,41 @@
 
       </div>
 
+
     </section><!-- End Hero -->
   </main>
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
+    <div class="fixed-bottom p-2">
+      <div class="toast cookie text-white" role="alert" data-autohide="false">
+        <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+          <div class="p-2 bd-highlight  text-justify">
+            <span style="font-size: 12px; font-stretch: condensed;">
+              เว็บไซต์นี้
+              มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+              หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+              นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+              <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/" style="color: white; text-decoration: underline;"
+                target="_blank" rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                (Privacy Policy)</a>
+              และ <a href="https://www.onep.go.th/cookie-policy/" style="color: white; text-decoration: underline;"
+                target="_blank" rel="noopener noreferrer">นโยบายคุกกี้
+                (Cookie Policy)</a><br>
+              หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+              เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+              ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+            </span>
+          </div>
+          <div class="ml-auto p-2 bd-highlight">
+            <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+              ยอมรับและปิด
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
 
       <div class="copyright">
@@ -195,13 +222,19 @@
   let urid = sessionStorage.getItem('eecid');
   let urname = sessionStorage.getItem('eecname');
   let eecauth = sessionStorage.getItem('eecauth');
+  let Accept = sessionStorage.getItem('accept');
   $("#usrname").text(urname);
   // $('#typeuser').val(eecauth)
   // urid ? null : location.href = "./../../form_register/login/index.html";
 
   $("#usr1").hide()
   $("#usr2").hide()
-
+  if (Accept || eecauth) {
+    $('.toast').toast('hide')
+  }
+  else {
+    $('.toast').toast('show')
+  }
   if (urname) {
     $("#usr1").show();
     $("#usr2").show();
@@ -209,6 +242,16 @@
     $("#usrname").text(urname);
   }
 
+  $('#btnDeny').click(() => {
+    // eraseCookie('allowCookies')
+    $('.toast').toast('hide')
+  })
+  let setAccept
+  $('#btnAccept').click(() => {
+    // setCookie('allowCookies','1',7)
+    $('.toast').toast('hide')
+    setAccept = sessionStorage.setItem('accept', 'Yes');
+  })
 </script>
 
 </html>

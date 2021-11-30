@@ -135,6 +135,35 @@ app.post("/projmon2-api/getdetail", (req, res) => {
     })
 })
 
+app.post("/projmon2-api/insertdata", async (req, res) => {
+    const { data } = req.body;
+    let pid = Date.now()
+    await eec.query(`INSERT INTO eecprj_mon_phase2new(pid, dt)VALUES('${pid}',now())`)
+    // console.log(sqlid);
+    for (let d in data) {
+        if (data[d] !== '' && d !== 'geom' && d !== "pid") {
+            let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${pid}'`
+            await eec.query(sql)
+            console.log(sql);
+        }
+    }
+
+    if (data.geom !== "") {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
+                    WHERE pid='${pid}'`
+        console.log(sql);
+        await eec.query(sql)
+    } else {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=NULL
+                    WHERE pid='${pid}'`
+        console.log(sql);
+        await eec.query(sql)
+    }
+
+})
+
 app.post("/projmon2-api/updatedata", async (req, res) => {
     const { data } = req.body;
     for (let d in data) {

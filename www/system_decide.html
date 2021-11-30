@@ -44,16 +44,15 @@
                     <li><a href="./dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li><a href="./input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li class="active"><a href="./system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <!-- <li><a href="./../envi_plan.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
-                    <li><a href="https://eec-onep.soc.cmu.ac.th/">เกี่ยวกับโครงการ</a></li>
+                    <li><a href="./form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
+                    <li id="login"><a href="./form_register/login/index.html">เข้าสู่ระบบบ</a></li>
                     <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
-
-                    <!-- <li><a href="./../../form_register/profile/index.html"><i
-                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
-                        </a></li>-->
-                    <!-- <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li>  -->
+                    <li id="usr1"><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
+                    <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -76,9 +75,9 @@
                     <h2>ระบบสนับสนุนการตัดสินใจ</h2>
                     <p>
                         ระบบสนับสนุนการตัดสินใจสำหรับบริหารจัดการสิ่งแวดล้อม
-                        โดยรวบรวมข้อมูลเชิงพื้นที่ 
+                        โดยรวบรวมข้อมูลเชิงพื้นที่
                         <br>ข้อมูลสถิติทางสิ่งแวดล้อม มาประมวลผลเพื่อใช้สำหรับสนับสนุนการตัดสินใจบริหารจัดการสิ่งแวดล้อม
-                        <br>ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก  
+                        <br>ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                         <br>โดยท่านสามารถเลือกระบบสนับสนุนการตัดสินใจด้านล่างเพื่อเข้าสู่ระบบที่ต้องการ
                     </p>
                 </div>
@@ -139,22 +138,29 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm">
-                            <div class="card Light-yellow" id="manual">
-                                <!-- <div class="overlay center" id="manual"></div> -->
-                                <div class="circle" id="manual-c">
-                                    <img src="./assets/img/11.png" width="75px" height="auto">
+                            <div class="col-sm">
+                                <div class="card Light-yellow" id="manual"
+                                    onclick="window.location.href='./File/MIS-Dashboard.pdf'" download>
+                                    <!-- <div class="overlay center" id="manual"></div> -->
+                                    <div class="circle" id="manual-c">
+                                        <img src="./assets/img/11.png" width="75px" height="auto">
+                                    </div>
+                                    <p><b>คู่มือการใช้งาน</b></p>
                                 </div>
-                                <p><b>คู่มือการใช้งาน</b></p>
+                            </div>
+                            <div class="col-sm">
+                                <div class="card Light-yellow" id="cardblock">
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <br>
                 </div>
                 <br>
                 <br>
+            </div>
+            <br>
+            <br>
             </div>
 
         </section><!-- End Services Section -->
@@ -164,6 +170,36 @@
     <br>
     <!-- ======= Footer ======= -->
     <footer id="footer">
+        <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="p-2 bd-highlight  text-justify">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
 
             <div class="copyright">
