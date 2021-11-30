@@ -201,7 +201,7 @@ app.post("/projmon2-api/insertdata_new", async (req, res) => {
         if (data[d] !== '' && d !== 'geom' && d !== "pid") {
             let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${pid}'`
             await eec.query(sql)
-            console.log(sql);
+            // console.log(sql);
         }
     }
 
@@ -209,7 +209,7 @@ app.post("/projmon2-api/insertdata_new", async (req, res) => {
         let sql = `UPDATE eecprj_mon_phase2new 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
                     WHERE pid='${pid}'`
-        console.log(sql);
+        // console.log(sql);
         await eec.query(sql)
     } else {
         let sql = `UPDATE eecprj_mon_phase2new 
@@ -218,6 +218,10 @@ app.post("/projmon2-api/insertdata_new", async (req, res) => {
         console.log(sql);
         await eec.query(sql)
     }
+
+    res.status(200).json({
+        data: "success"
+    })
 })
 
 app.post("/projmon2-api/updatedata_new", async (req, res) => {

@@ -126,7 +126,7 @@ let getData = (pid) => {
 
 
         document.getElementById("prj_operat").value = r.data.data[0].prj_operat;
-        document.getElementById("prj_suboperat").value = r.data.data[0].prj_operat;
+        document.getElementById("prj_suboperat").value = r.data.data[0].prj_suboperat;
 
         document.getElementById("proc_stat").value = r.data.data[0].proc_stat;
         document.getElementById("proc_troub").value = r.data.data[0].proc_troub;

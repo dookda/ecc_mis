@@ -105,7 +105,7 @@ let loadTable = () => {
             {
                 data: '',
                 render: (data, type, row) => {
-                    return `${row.p_tact} ${row.p_plan} ${row.p_way}<span class="badge bg-info text-white">${row.p_strategy}</span>`
+                    return `<span class="bg-info">${row.p_strategy}</span><br>${row.p_tact}<br>${row.p_plan}<br>${row.p_way}`
                     // return `${row.prj_name}`
                 }
             },

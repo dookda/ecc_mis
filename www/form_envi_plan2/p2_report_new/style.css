@@ -2059,3 +2059,20 @@ body {
     }
   }
   
+
+  table {
+    /* table-layout:fixed; */
+  }
+  table td {
+    word-wrap: break-word;
+    max-width: 400px;
+  }
+
+  .bg-info{
+    font-size: 18px;
+    background-color: #37a2b8;
+    color: white;
+    border-radius: 5px;
+    padding: 3px;
+  }
+  
