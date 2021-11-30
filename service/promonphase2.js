@@ -90,6 +90,8 @@ app.post("/projmon2-api/getallproj", (req, res) => {
     })
 })
 
+
+
 app.post("/projmon2-api/getuserproj", (req, res) => {
     const { prj_operat } = req.body;
     let sql;
@@ -135,35 +137,6 @@ app.post("/projmon2-api/getdetail", (req, res) => {
     })
 })
 
-app.post("/projmon2-api/insertdata", async (req, res) => {
-    const { data } = req.body;
-    let pid = Date.now()
-    await eec.query(`INSERT INTO eecprj_mon_phase2new(pid, dt)VALUES('${pid}',now())`)
-    // console.log(sqlid);
-    for (let d in data) {
-        if (data[d] !== '' && d !== 'geom' && d !== "pid") {
-            let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${pid}'`
-            await eec.query(sql)
-            console.log(sql);
-        }
-    }
-
-    if (data.geom !== "") {
-        let sql = `UPDATE eecprj_mon_phase2new 
-                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
-                    WHERE pid='${pid}'`
-        console.log(sql);
-        await eec.query(sql)
-    } else {
-        let sql = `UPDATE eecprj_mon_phase2new 
-                    SET geom=NULL
-                    WHERE pid='${pid}'`
-        console.log(sql);
-        await eec.query(sql)
-    }
-
-})
-
 app.post("/projmon2-api/updatedata", async (req, res) => {
     const { data } = req.body;
     for (let d in data) {
@@ -193,6 +166,92 @@ app.get("/projmon2-api/getuser", async (req, res) => {
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
+        })
+    })
+})
+
+
+app.post("/projmon2-api/getallproj_new", (req, res) => {
+    const { prj_operat } = req.body;
+    sql = `SELECT * FROM eecprj_mon_phase2new`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/projmon2-api/getdetail_new", (req, res) => {
+    const { pid } = req.body;
+    let sql = `SELECT *, ST_AsGeojson(geom) as geojson FROM eecprj_mon_phase2new WHERE pid='${pid}'`
+
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/projmon2-api/insertdata_new", async (req, res) => {
+    const { data } = req.body;
+    let pid = Date.now()
+    await eec.query(`INSERT INTO eecprj_mon_phase2new (pid, dt)VALUES('${pid}',now())`)
+    // console.log(sqlid);
+    for (let d in data) {
+        if (data[d] !== '' && d !== 'geom' && d !== "pid") {
+            let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${pid}'`
+            await eec.query(sql)
+            console.log(sql);
+        }
+    }
+
+    if (data.geom !== "") {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
+                    WHERE pid='${pid}'`
+        console.log(sql);
+        await eec.query(sql)
+    } else {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=NULL
+                    WHERE pid='${pid}'`
+        console.log(sql);
+        await eec.query(sql)
+    }
+})
+
+app.post("/projmon2-api/updatedata_new", async (req, res) => {
+    const { data } = req.body;
+    for (let d in data) {
+        if (data[d] !== '' && d !== 'geom' && d !== "pid") {
+            let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${data.pid}'`
+            await eec.query(sql)
+            console.log(sql);
+        }
+    }
+    if (data.geom !== "") {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
+                    WHERE pid='${data.pid}'`
+        await eec.query(sql)
+    } else {
+        let sql = `UPDATE eecprj_mon_phase2new 
+                    SET geom=NULL
+                    WHERE pid='${data.pid}'`
+        await eec.query(sql)
+    }
+    res.status(200).json({
+        data: "success"
+    })
+})
+
+app.post("/projmon2-api/delete_new", (req, res) => {
+    const { pid } = req.body;
+    console.log(pid);
+    const sql = `DELETE FROM eecprj_mon_phase2new WHERE pid='${pid}'`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
         })
     })
 })
