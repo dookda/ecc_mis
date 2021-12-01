@@ -1,4 +1,5 @@
-const url = 'https://eec-onep.online:3700';
+// const url = 'https://eec-onep.online:3700';
+const url = 'http://localhost:3700';
 
 let login = () => {
     sessionStorage.clear();
@@ -16,8 +17,6 @@ $("#organize").on("change", function () {
 
 let getData = () => {
     axios.get(url + "/login-api/getorg").then(r => {
-        // console.log(r.data.data);
-        // $("#organize").append(`<option ></option>`)
         r.data.data.map(i => {
             $("#organize").append(`<option value="${i.prj_operat}">${i.prj_operat}</option>`)
         })
@@ -26,17 +25,41 @@ let getData = () => {
 }
 getData();
 
+let getProject = () => {
+    axios.get(url + "/login-api/getplan2_project").then(r => {
+        r.data.data.map(i => {
+            // console.log(i.assign);
+            $("#assign").append(`<hr><input type="checkbox" name="${i.pid}" id="${i.pid}" onchange="getSelect()">
+                <span class="label">${i.p_order}. ${i.p_name}</span>`)
+        })
+        // $("#organize").append(`<option value="อื่นๆ">อื่นๆ</option>`)
+    })
+}
+getProject()
+
+let projArr = [];
+let getSelect = async () => {
+    projArr = [];
+    await $('input:checked').each(function () {
+        projArr.push(Number(this.name))
+    });
+    console.log(projArr);
+}
+
 $('#loginForm').submit(function (e) {
     e.preventDefault();
     let obj = {
-        usrname: $("#usrname").val(),
-        pass: $("#pass").val(),
-        organize: $("#organize").val() == "อื่นๆ" ? $("#organize_new").val() : $("#organize").val(),
-        // organize: $("#organize_new").val() != "",
-        tel: $("#tel").val(),
-        email: $("#email").val(),
-        auth: "editor"
+        data: {
+            usrname: $("#usrname").val(),
+            pass: $("#pass").val(),
+            organize: $("#organize").val() == "อื่นๆ" ? $("#organize_new").val() : $("#organize").val(),
+            tel: $("#tel").val(),
+            email: $("#email").val(),
+            auth: "editor",
+            assign: projArr
+        }
     }
+
     if ($("#usrname").val() && $("#pass").val()) {
         // console.log(obj);
         axios.post(url + "/login-api/insert", obj).then(r => {

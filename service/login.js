@@ -3,13 +3,34 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
-app.post("/login-api/insert", (req, res) => {
-    const { usrname, pass, organize, tel, email, auth } = req.body;
+let a = () => {
+    let b = [11, 22, 33]
+    let sql = `UPDATE eecprj_mon_phase2new SET assign = array[${b}]`;
+    console.log(sql);
+    eec.query(sql)
+}
+
+// a()
+
+app.post("/login-api/insert", async (req, res) => {
+    const { data } = req.body;
     const uid = Date.now()
-    const sql = `INSERT INTO eecprj_user(uid,usrname,pass,organize,tel,email,auth)
-                    VALUES($1,$2,$3,$4,$5,$6,$7)`
-    const val = [uid, usrname, pass, organize, tel, email, auth]
-    eec.query(sql, val).then(r => {
+    const sql = `INSERT INTO eecprj_user(uid)VALUES('${uid}')`;
+    eec.query(sql).then(async () => {
+        let d;
+        for (d in data) {
+            console.log(d, data[d]);
+            if (data[d] !== '' && d !== 'assign') {
+                let sql = `UPDATE eecprj_user SET ${d}='${data[d]}' WHERE uid='${uid}'`;
+                await eec.query(sql)
+            }
+
+            if (d == 'assign') {
+                let sql = `UPDATE eecprj_user SET assign=array[${data[d]}] WHERE uid='${uid}'`;
+                console.log(sql);
+                await eec.query(sql)
+            }
+        }
         res.status(200).json({
             data: "success"
         })
@@ -18,6 +39,15 @@ app.post("/login-api/insert", (req, res) => {
 
 app.get("/login-api/getorg", (req, res) => {
     const sql = `SELECT DISTINCT organize as prj_operat FROM eecprj_user ORDER BY organize`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.get("/login-api/getplan2_project", (req, res) => {
+    const sql = `SELECT * FROM eecprj_mon_phase2new ORDER BY gid`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
