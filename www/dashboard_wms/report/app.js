@@ -954,7 +954,7 @@ let onEachFeatureHotspot = (feature, layer) => {
     if (feature.properties) {
         layer.bindPopup(
             `<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
-            <br/>ข้อมูลจาก VIRRS
+            <br/>ข้อมูลจาก VIIRS
             <br/>ตำแหน่งที่พบ : ${feature.properties.latitude}, ${feature.properties.longitude} 
             <br/>ค่า Brightness temperature: ${feature.properties.satellite} Kelvin
             <br/>วันที่: ${feature.properties.acq_datetime} UTC`
