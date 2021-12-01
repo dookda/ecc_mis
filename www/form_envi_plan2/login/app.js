@@ -17,12 +17,14 @@ let gotoPage = (id) => {
         sessionStorage.setItem('key', id.uid);
         sessionStorage.setItem('typ', id.auth);
         sessionStorage.setItem('org', id.organize);
+        sessionStorage.setItem('usrname', id.usrname);
     } else {
         // console.log(id);
         location.href = "./../dashboard/index.html";
         sessionStorage.setItem('key', id.uid);
         sessionStorage.setItem('typ', id.auth);
         sessionStorage.setItem('org', id.organize);
+        sessionStorage.setItem('usrname', id.usrname);
     }
 }
 

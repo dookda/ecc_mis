@@ -2,6 +2,8 @@ let uid = sessionStorage.getItem('key');
 let typ = sessionStorage.getItem('typ');
 let org = sessionStorage.getItem('org');
 
+let usrname = sessionStorage.getItem('usrname');
+
 let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
@@ -10,10 +12,10 @@ let logout = () => {
 uid && org ? null : logout();
 
 if (typ == "admin") {
-    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a></li>
+    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${usrname}</span></a></li>
         <li><a href="./../admin/index.html"><i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a></li>`)
 } else {
-    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${org}</span></a></li>`)
+    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${usrname}</span></a></li>`)
 }
 
 let searchParams = new URLSearchParams(window.location.search)

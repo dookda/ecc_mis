@@ -3,14 +3,6 @@ const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
 
-let a = () => {
-    let b = [11, 22, 33]
-    let sql = `UPDATE eecprj_mon_phase2new SET assign = array[${b}]`;
-    console.log(sql);
-    eec.query(sql)
-}
-
-// a()
 
 app.post("/login-api/insert", async (req, res) => {
     const { data } = req.body;
@@ -55,7 +47,7 @@ app.get("/login-api/getplan2_project", (req, res) => {
 
 app.post("/login-api/validate", (req, res) => {
     const { usrname, pass } = req.body;
-    const sql = `SELECT uid, auth, organize FROM eecprj_user WHERE usrname='${usrname}' AND pass='${pass}'`
+    const sql = `SELECT uid, auth, organize, usrname FROM eecprj_user WHERE usrname='${usrname}' AND pass='${pass}'`
     // console.log(sql);
     eec.query(sql).then(r => {
         res.status(200).json({
