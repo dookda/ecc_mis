@@ -949,19 +949,14 @@ let getDetail = (e) => {
     location.href = "./../detail/index.html";
 }
 
-let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
+let hpData = axios.get("https://firms.modaps.eosdis.nasa.gov/mapserver/wfs/SouthEast_Asia/c56f7d70bc06160e3c443a592fd9c87e/?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:fires_snpp_24hrs&STARTINDEX=0&COUNT=5000&SRSNAME=urn:ogc:def:crs:EPSG::4326&BBOX=-90,-180,90,180,urn:ogc:def:crs:EPSG::4326&outputformat=geojson");
 let onEachFeatureHotspot = (feature, layer) => {
     if (feature.properties) {
-        const time = feature.properties.acq_time;
-        const hr = Number(time.slice(0, 2));
-        const mn = Number(time.slice(2, 4));
-        layer.bindPopup(
-            '<b>ตำแหน่งจุดความร้อน (hotspot)</b>' +
-            '<br/>lat: ' + feature.properties.latitude +
-            '<br/>lon: ' + feature.properties.longitude +
-            // '<br/>satellite: ' + feature.properties.satellite +
-            '<br/>วันที่: ' + feature.properties.acq_date +
-            '<br/>เวลา: ' + hr + ':' + mn
+        layer.bindPopup(`<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
+            <br/>lat:  ${feature.properties.latitude}
+            <br/>lon:  ${feature.properties.longitude} 
+            <br/>satellite: ${feature.properties.satellite} 
+            <br/>วันที่: ${feature.properties.acq_datetime} UTC`
         );
     }
 }
@@ -969,7 +964,7 @@ let onEachFeatureHotspot = (feature, layer) => {
 let loadHotspot = async () => {
     let hp = await hpData;
     // console.log(hp);
-    const fs = hp.data.data.features;
+    const fs = hp.data.features;
 
     var geojsonMarkerOptions = {
         radius: 6,

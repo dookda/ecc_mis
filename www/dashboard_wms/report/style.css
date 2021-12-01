@@ -6,6 +6,11 @@
     margin: 2px 2px 2px 2px;
 }
 
+.kanit{
+  font-family: "Kanit",sans-serif !important;
+  font-size: 13px !important; 
+}
+
 #map{
     height: 700px;
     border-radius: 0.8rem;
