@@ -346,7 +346,7 @@ let onEachFeature = (feature, layer) => {
       `<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
       <br/>ข้อมูลจาก VIIRS
       <br/>ตำแหน่งที่พบ : ${feature.properties.latitude}, ${feature.properties.longitude} 
-      <br/>ค่า Brightness temperature: ${feature.properties.satellite} Kelvin
+      <br/>ค่า Brightness temperature: ${feature.properties.brightness} Kelvin
       <br/>วันที่: ${feature.properties.acq_datetime} UTC`
     );
   }
@@ -354,7 +354,7 @@ let onEachFeature = (feature, layer) => {
 
 let loadHotspot = async () => {
   let hp = await hpData;
-  console.log(hp);
+  // console.log(hp);
   const fs = hp.data.features;
 
   var geojsonMarkerOptions = {
