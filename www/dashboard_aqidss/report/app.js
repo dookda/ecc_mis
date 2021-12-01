@@ -2040,10 +2040,11 @@ loadAQI()
 let hpData = axios.get("https://firms.modaps.eosdis.nasa.gov/mapserver/wfs/SouthEast_Asia/c56f7d70bc06160e3c443a592fd9c87e/?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:fires_snpp_24hrs&STARTINDEX=0&COUNT=5000&SRSNAME=urn:ogc:def:crs:EPSG::4326&BBOX=-90,-180,90,180,urn:ogc:def:crs:EPSG::4326&outputformat=geojson");
 let onEachFeature = (feature, layer) => {
     if (feature.properties) {
-        layer.bindPopup(`<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
-            <br/>lat:  ${feature.properties.latitude}
-            <br/>lon:  ${feature.properties.longitude} 
-            <br/>satellite: ${feature.properties.satellite} 
+        layer.bindPopup(
+            `<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
+            <br/>ข้อมูลจาก VIRRS
+            <br/>ตำแหน่งที่พบ : ${feature.properties.latitude}, ${feature.properties.longitude} 
+            <br/>ค่า Brightness temperature: ${feature.properties.satellite} Kelvin
             <br/>วันที่: ${feature.properties.acq_datetime} UTC`
         );
     }

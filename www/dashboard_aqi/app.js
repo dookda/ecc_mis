@@ -344,9 +344,9 @@ let onEachFeature = (feature, layer) => {
   if (feature.properties) {
     layer.bindPopup(
       `<span class="kanit"><b>ตำแหน่งจุดความร้อน</b>
-      <br/>lat:  ${feature.properties.latitude}
-      <br/>lon:  ${feature.properties.longitude} 
-      <br/>satellite: ${feature.properties.satellite} 
+      <br/>ข้อมูลจาก VIRRS
+      <br/>ตำแหน่งที่พบ : ${feature.properties.latitude}, ${feature.properties.longitude} 
+      <br/>ค่า Brightness temperature: ${feature.properties.satellite} Kelvin
       <br/>วันที่: ${feature.properties.acq_datetime} UTC`
     );
   }
