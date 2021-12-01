@@ -97,6 +97,12 @@ let UW_year = (pcode) => {
 
     })
 }
+$('#P1_industry').on('change', function () {
+    getyear_industry();
+})
+$('#Y_industry').on('change', function () {
+    getyear_industry();
+})
 let getyear_industry = () => {
     var p_code = $('#P1_industry').val();
     UW_year(p_code)
@@ -108,6 +114,8 @@ let chart_UW_industry = (data, names, umit, divchart, color1, color2) => {
     var chart = am4core.create(divchart, am4charts.XYChart)
     chart.colors.step = 2;
     chart.numberFormatter.numberFormat = "#,###,###,###as" + ` ${umit}` + "'";
+    chart.width = am4core.percent(100);
+    chart.height = am4core.percent(100);
 
     chart.legend = new am4charts.Legend()
     chart.legend.position = 'top'
@@ -122,6 +130,13 @@ let chart_UW_industry = (data, names, umit, divchart, color1, color2) => {
 
     var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
     yAxis.min = 0;
+    // yAxis.renderer.minGridDistance = 100;
+    yAxis.events.on("ready", function (ev) {
+        // ev.target.min = ev.target.min;
+        // ev.target.max = ev.target.max;
+        // console.log(ev.target.max)
+        yAxis.max = ev.target.max + 5
+    })
 
     function createSeries(value, name, unit, color1, color2) {
         var series = chart.series.push(new am4charts.ColumnSeries())
@@ -141,9 +156,9 @@ let chart_UW_industry = (data, names, umit, divchart, color1, color2) => {
 
         var bullet = series.bullets.push(new am4charts.LabelBullet())
         bullet.interactionsEnabled = false
-        bullet.dy = 30;
+        bullet.dy = -15;
         bullet.label.text = "{valueY.formatNumber('###,###,###.##')}"
-        bullet.label.fill = am4core.color('#ffffff')
+        bullet.label.fill = am4core.color('#000000')
 
         return series;
     }
@@ -189,16 +204,16 @@ let chart_UW_industry = (data, names, umit, divchart, color1, color2) => {
         }
     }
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 let chart_UW_industrybyamp = (data, names, umit, divchart, color1, color2) => {
 
@@ -270,16 +285,16 @@ let chart_UW_industrybyamp = (data, names, umit, divchart, color1, color2) => {
 
     chart.cursor = new am4charts.XYCursor();
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 let UW_industrybyprov_all = () => {
     let url = "https://eec-onep.online:3700";
@@ -440,7 +455,7 @@ let change_UW_industrybyprov = (arrData, unit) => {
     var label2 = pieChart.seriesContainer.createChild(am4core.Label);
     label2.text = "";
     label2.horizontalCenter = "middle";
-    label2.fontSize = 12;
+    label2.fontSize = 18;
     label2.dy = 20;
 
     // Auto-select first slice on load
@@ -675,6 +690,7 @@ $('#T_industry').on('change', function () {
         $('#C_industry_1').hide();
 
         $('#P_industry1').show();
+        getyear_industry()
 
     } else if (this.value == "prov") {
         $('#Y_industry_1').hide();

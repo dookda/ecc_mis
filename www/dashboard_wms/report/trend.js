@@ -62,609 +62,1130 @@ let datlu_industry = [];
 let datlu_agri = [];
 let datlu_envi = [];
 
-let dataforecast_eec = () => {
+$(document).ready(function () {
+    forecast()
+})
+
+let forecast = async () => {
     let url = "https://eec-onep.online:3700";
-    axios.post(url + "/forecast_eec/getdata/").then(async (r) => {
-        let eec24_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "24")
-        let eec20_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "20")
-        let eec21_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "21")
-        let eec_all = r.data.data.filter(e => e.list_code == "popsum" && e.t_code == "eec")
-        datall_pop.push(
-            { category: 'ปี 2559', first: Number(eec24_all[0].f2559), second: Number(eec20_all[0].f2559), third: Number(eec21_all[0].f2559), four: Number(eec_all[0].f2559), },
-            { category: 'ปี 2560', first: Number(eec24_all[0].f2560), second: Number(eec20_all[0].f2560), third: Number(eec21_all[0].f2560), four: Number(eec_all[0].f2560), },
-            { category: 'ปี 2561', first: Number(eec24_all[0].f2561), second: Number(eec20_all[0].f2561), third: Number(eec21_all[0].f2561), four: Number(eec_all[0].f2561), },
-            { category: 'ปี 2562', first: Number(eec24_all[0].f2562), second: Number(eec20_all[0].f2562), third: Number(eec21_all[0].f2562), four: Number(eec_all[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_all[0].f2563), second: Number(eec20_all[0].f2563), third: Number(eec21_all[0].f2563), four: Number(eec_all[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_all[0].f2564), second: Number(eec20_all[0].f2564), third: Number(eec21_all[0].f2564), four: Number(eec_all[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_all[0].f2565), second: Number(eec20_all[0].f2565), third: Number(eec21_all[0].f2565), four: Number(eec_all[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_all[0].f2566), second: Number(eec20_all[0].f2566), third: Number(eec21_all[0].f2566), four: Number(eec_all[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_all[0].f2567), second: Number(eec20_all[0].f2567), third: Number(eec21_all[0].f2567), four: Number(eec_all[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_all[0].f2568), second: Number(eec20_all[0].f2568), third: Number(eec21_all[0].f2568), four: Number(eec_all[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_all[0].f2569), second: Number(eec20_all[0].f2569), third: Number(eec21_all[0].f2569), four: Number(eec_all[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_all[0].f2570), second: Number(eec20_all[0].f2570), third: Number(eec21_all[0].f2570), four: Number(eec_all[0].f2570), }
-        )
+    //pop normal  
+    let year_pop_T01 = []
+    let year_pop_T02 = []
+    let year_pop_T03 = []
+    let year_pop_T04 = []
 
-        let eec24_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "24")
-        let eec20_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "20")
-        let eec21_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "21")
-        let eec_house = r.data.data.filter(e => e.list_code == "pophouse" && e.t_code == "eec")
-        datregister_pop.push(
-            { category: 'ปี 2559', first: Number(eec24_house[0].f2559), second: Number(eec20_house[0].f2559), third: Number(eec21_house[0].f2559), four: Number(eec_house[0].f2559), },
-            { category: 'ปี 2560', first: Number(eec24_house[0].f2560), second: Number(eec20_house[0].f2560), third: Number(eec21_house[0].f2560), four: Number(eec_house[0].f2560), },
-            { category: 'ปี 2561', first: Number(eec24_house[0].f2561), second: Number(eec20_house[0].f2561), third: Number(eec21_house[0].f2561), four: Number(eec_house[0].f2561), },
-            { category: 'ปี 2562', first: Number(eec24_house[0].f2562), second: Number(eec20_house[0].f2562), third: Number(eec21_house[0].f2562), four: Number(eec_house[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_house[0].f2563), second: Number(eec20_house[0].f2563), third: Number(eec21_house[0].f2563), four: Number(eec_house[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_house[0].f2564), second: Number(eec20_house[0].f2564), third: Number(eec21_house[0].f2564), four: Number(eec_house[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_house[0].f2565), second: Number(eec20_house[0].f2565), third: Number(eec21_house[0].f2565), four: Number(eec_house[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_house[0].f2566), second: Number(eec20_house[0].f2566), third: Number(eec21_house[0].f2566), four: Number(eec_house[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_house[0].f2567), second: Number(eec20_house[0].f2567), third: Number(eec21_house[0].f2567), four: Number(eec_house[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_house[0].f2568), second: Number(eec20_house[0].f2568), third: Number(eec21_house[0].f2568), four: Number(eec_house[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_house[0].f2569), second: Number(eec20_house[0].f2569), third: Number(eec21_house[0].f2569), four: Number(eec_house[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_house[0].f2570), second: Number(eec20_house[0].f2570), third: Number(eec21_house[0].f2570), four: Number(eec_house[0].f2570), }
-        )
-
-        let eec24_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "24")
-        let eec20_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "20")
-        let eec21_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "21")
-        let eec_hide = r.data.data.filter(e => e.list_code == "pophide" && e.t_code == "eec")
-        datdisguise_pop.push(
-            { category: 'ปี 2559', first: Number(eec24_hide[0].f2559), second: Number(eec20_hide[0].f2559), third: Number(eec21_hide[0].f2559), four: Number(eec_hide[0].f2559), },
-            { category: 'ปี 2560', first: Number(eec24_hide[0].f2560), second: Number(eec20_hide[0].f2560), third: Number(eec21_hide[0].f2560), four: Number(eec_hide[0].f2560), },
-            { category: 'ปี 2561', first: Number(eec24_hide[0].f2561), second: Number(eec20_hide[0].f2561), third: Number(eec21_hide[0].f2561), four: Number(eec_hide[0].f2561), },
-            { category: 'ปี 2562', first: Number(eec24_hide[0].f2562), second: Number(eec20_hide[0].f2562), third: Number(eec21_hide[0].f2562), four: Number(eec_hide[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_hide[0].f2563), second: Number(eec20_hide[0].f2563), third: Number(eec21_hide[0].f2563), four: Number(eec_hide[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_hide[0].f2564), second: Number(eec20_hide[0].f2564), third: Number(eec21_hide[0].f2564), four: Number(eec_hide[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_hide[0].f2565), second: Number(eec20_hide[0].f2565), third: Number(eec21_hide[0].f2565), four: Number(eec_hide[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_hide[0].f2566), second: Number(eec20_hide[0].f2566), third: Number(eec21_hide[0].f2566), four: Number(eec_hide[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_hide[0].f2567), second: Number(eec20_hide[0].f2567), third: Number(eec21_hide[0].f2567), four: Number(eec_hide[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_hide[0].f2568), second: Number(eec20_hide[0].f2568), third: Number(eec21_hide[0].f2568), four: Number(eec_hide[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_hide[0].f2569), second: Number(eec20_hide[0].f2569), third: Number(eec21_hide[0].f2569), four: Number(eec_hide[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_hide[0].f2570), second: Number(eec20_hide[0].f2570), third: Number(eec21_hide[0].f2570), four: Number(eec_hide[0].f2570), }
-        )
-
-        let eec24_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "24")
-        let eec20_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "20")
-        let eec21_city = r.data.data.filter(e => e.list_code == "popcity" && e.t_code == "21")
-        datacity_pop.push(
-            { category: 'ปี 2565', first: Number(eec24_city[0].f2565), second: Number(eec20_city[0].f2565), third: Number(eec21_city[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_city[0].f2566), second: Number(eec20_city[0].f2566), third: Number(eec21_city[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_city[0].f2567), second: Number(eec20_city[0].f2567), third: Number(eec21_city[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_city[0].f2568), second: Number(eec20_city[0].f2568), third: Number(eec21_city[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_city[0].f2569), second: Number(eec20_city[0].f2569), third: Number(eec21_city[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_city[0].f2570), second: Number(eec20_city[0].f2570), third: Number(eec21_city[0].f2570), },
-            { category: 'ปี 2571', first: Number(eec24_city[0].f2571), second: Number(eec20_city[0].f2571), third: Number(eec21_city[0].f2571), },
-            { category: 'ปี 2572', first: Number(eec24_city[0].f2572), second: Number(eec20_city[0].f2572), third: Number(eec21_city[0].f2572), },
-            { category: 'ปี 2573', first: Number(eec24_city[0].f2573), second: Number(eec20_city[0].f2573), third: Number(eec21_city[0].f2573), },
-            { category: 'ปี 2574', first: Number(eec24_city[0].f2574), second: Number(eec20_city[0].f2574), third: Number(eec21_city[0].f2574), },
-            { category: 'ปี 2575', first: Number(eec24_city[0].f2575), second: Number(eec20_city[0].f2575), third: Number(eec21_city[0].f2575), },
-            { category: 'ปี 2576', first: Number(eec24_city[0].f2576), second: Number(eec20_city[0].f2576), third: Number(eec21_city[0].f2576), },
-            { category: 'ปี 2577', first: Number(eec24_city[0].f2577), second: Number(eec20_city[0].f2577), third: Number(eec21_city[0].f2577), },
-            { category: 'ปี 2578', first: Number(eec24_city[0].f2578), second: Number(eec20_city[0].f2578), third: Number(eec21_city[0].f2578), },
-            { category: 'ปี 2579', first: Number(eec24_city[0].f2579), second: Number(eec20_city[0].f2579), third: Number(eec21_city[0].f2579), },
-            { category: 'ปี 2580', first: Number(eec24_city[0].f2580), second: Number(eec20_city[0].f2580), third: Number(eec21_city[0].f2580), }
-        )
-        ///pop_covid
-        let eec24_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "24")
-        let eec20_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "20")
-        let eec21_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "21")
-        let eec_all_covid = r.data.data.filter(e => e.list_code == "popsum_covid" && e.t_code == "eec")
-        datall_pop_covid.push(
-            { category: 'ปี 2562', first: Number(eec24_all_covid[0].f2562), second: Number(eec20_all_covid[0].f2562), third: Number(eec21_all_covid[0].f2562), four: Number(eec_all_covid[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_all_covid[0].f2563), second: Number(eec20_all_covid[0].f2563), third: Number(eec21_all_covid[0].f2563), four: Number(eec_all_covid[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_all_covid[0].f2564), second: Number(eec20_all_covid[0].f2564), third: Number(eec21_all_covid[0].f2564), four: Number(eec_all_covid[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_all_covid[0].f2565), second: Number(eec20_all_covid[0].f2565), third: Number(eec21_all_covid[0].f2565), four: Number(eec_all_covid[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_all_covid[0].f2566), second: Number(eec20_all_covid[0].f2566), third: Number(eec21_all_covid[0].f2566), four: Number(eec_all_covid[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_all_covid[0].f2567), second: Number(eec20_all_covid[0].f2567), third: Number(eec21_all_covid[0].f2567), four: Number(eec_all_covid[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_all_covid[0].f2568), second: Number(eec20_all_covid[0].f2568), third: Number(eec21_all_covid[0].f2568), four: Number(eec_all_covid[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_all_covid[0].f2569), second: Number(eec20_all_covid[0].f2569), third: Number(eec21_all_covid[0].f2569), four: Number(eec_all_covid[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_all_covid[0].f2570), second: Number(eec20_all_covid[0].f2570), third: Number(eec21_all_covid[0].f2570), four: Number(eec_all_covid[0].f2570), }
-        )
-
-        let eec24_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "24")
-        let eec20_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "20")
-        let eec21_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "21")
-        let eec_house_covid = r.data.data.filter(e => e.list_code == "pophouse_covid" && e.t_code == "eec")
-        datregister_pop_covid.push(
-            { category: 'ปี 2562', first: Number(eec24_house_covid[0].f2562), second: Number(eec20_house_covid[0].f2562), third: Number(eec21_house_covid[0].f2562), four: Number(eec_house_covid[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_house_covid[0].f2563), second: Number(eec20_house_covid[0].f2563), third: Number(eec21_house_covid[0].f2563), four: Number(eec_house_covid[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_house_covid[0].f2564), second: Number(eec20_house_covid[0].f2564), third: Number(eec21_house_covid[0].f2564), four: Number(eec_house_covid[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_house_covid[0].f2565), second: Number(eec20_house_covid[0].f2565), third: Number(eec21_house_covid[0].f2565), four: Number(eec_house_covid[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_house_covid[0].f2566), second: Number(eec20_house_covid[0].f2566), third: Number(eec21_house_covid[0].f2566), four: Number(eec_house_covid[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_house_covid[0].f2567), second: Number(eec20_house_covid[0].f2567), third: Number(eec21_house_covid[0].f2567), four: Number(eec_house_covid[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_house_covid[0].f2568), second: Number(eec20_house_covid[0].f2568), third: Number(eec21_house_covid[0].f2568), four: Number(eec_house_covid[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_house_covid[0].f2569), second: Number(eec20_house_covid[0].f2569), third: Number(eec21_house_covid[0].f2569), four: Number(eec_house_covid[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_house_covid[0].f2570), second: Number(eec20_house_covid[0].f2570), third: Number(eec21_house_covid[0].f2570), four: Number(eec_house_covid[0].f2570), }
-        )
-
-        let eec24_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "24")
-        let eec20_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "20")
-        let eec21_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "21")
-        let eec_hide_covid = r.data.data.filter(e => e.list_code == "pophide_covid" && e.t_code == "eec")
-        datdisguise_pop_covid.push(
-            { category: 'ปี 2562', first: Number(eec24_hide_covid[0].f2562), second: Number(eec20_hide_covid[0].f2562), third: Number(eec21_hide_covid[0].f2562), four: Number(eec_hide_covid[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec24_hide_covid[0].f2563), second: Number(eec20_hide_covid[0].f2563), third: Number(eec21_hide_covid[0].f2563), four: Number(eec_hide_covid[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec24_hide_covid[0].f2564), second: Number(eec20_hide_covid[0].f2564), third: Number(eec21_hide_covid[0].f2564), four: Number(eec_hide_covid[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_hide_covid[0].f2565), second: Number(eec20_hide_covid[0].f2565), third: Number(eec21_hide_covid[0].f2565), four: Number(eec_hide_covid[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_hide_covid[0].f2566), second: Number(eec20_hide_covid[0].f2566), third: Number(eec21_hide_covid[0].f2566), four: Number(eec_hide_covid[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_hide_covid[0].f2567), second: Number(eec20_hide_covid[0].f2567), third: Number(eec21_hide_covid[0].f2567), four: Number(eec_hide_covid[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_hide_covid[0].f2568), second: Number(eec20_hide_covid[0].f2568), third: Number(eec21_hide_covid[0].f2568), four: Number(eec_hide_covid[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_hide_covid[0].f2569), second: Number(eec20_hide_covid[0].f2569), third: Number(eec21_hide_covid[0].f2569), four: Number(eec_hide_covid[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_hide_covid[0].f2570), second: Number(eec20_hide_covid[0].f2570), third: Number(eec21_hide_covid[0].f2570), four: Number(eec_hide_covid[0].f2570), }
-        )
-        ///wastewaters
-        let eec24_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "24")
-        let eec20_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "20")
-        let eec21_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "21")
-        let eec_waste = r.data.data.filter(e => e.list_code == "wastewater" && e.t_code == "eec")
-        datwaste.push(
-            { category: 'ปี 2564', first: Number(eec24_waste[0].f2564), second: Number(eec20_waste[0].f2564), third: Number(eec21_waste[0].f2564), four: Number(eec_waste[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_waste[0].f2565), second: Number(eec20_waste[0].f2565), third: Number(eec21_waste[0].f2565), four: Number(eec_waste[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_waste[0].f2566), second: Number(eec20_waste[0].f2566), third: Number(eec21_waste[0].f2566), four: Number(eec_waste[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_waste[0].f2567), second: Number(eec20_waste[0].f2567), third: Number(eec21_waste[0].f2567), four: Number(eec_waste[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_waste[0].f2568), second: Number(eec20_waste[0].f2568), third: Number(eec21_waste[0].f2568), four: Number(eec_waste[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_waste[0].f2569), second: Number(eec20_waste[0].f2569), third: Number(eec21_waste[0].f2569), four: Number(eec_waste[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_waste[0].f2570), second: Number(eec20_waste[0].f2570), third: Number(eec21_waste[0].f2570), four: Number(eec_waste[0].f2570), }
-        )
-        ///garbages
-        let eec24_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "24")
-        let eec20_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "20")
-        let eec21_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "21")
-        let eec_garbage = r.data.data.filter(e => e.list_code == "garbage" && e.t_code == "eec")
-        datgarbage.push(
-            { category: 'ปี 2564', first: Number(eec24_garbage[0].f2564), second: Number(eec20_garbage[0].f2564), third: Number(eec21_garbage[0].f2564), four: Number(eec_garbage[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec24_garbage[0].f2565), second: Number(eec20_garbage[0].f2565), third: Number(eec21_garbage[0].f2565), four: Number(eec_garbage[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_garbage[0].f2566), second: Number(eec20_garbage[0].f2566), third: Number(eec21_garbage[0].f2566), four: Number(eec_garbage[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_garbage[0].f2567), second: Number(eec20_garbage[0].f2567), third: Number(eec21_garbage[0].f2567), four: Number(eec_garbage[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_garbage[0].f2568), second: Number(eec20_garbage[0].f2568), third: Number(eec21_garbage[0].f2568), four: Number(eec_garbage[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_garbage[0].f2569), second: Number(eec20_garbage[0].f2569), third: Number(eec21_garbage[0].f2569), four: Number(eec_garbage[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_garbage[0].f2570), second: Number(eec20_garbage[0].f2570), third: Number(eec21_garbage[0].f2570), four: Number(eec_garbage[0].f2570), }
-        )
-        ///usewaters
-        let eec24_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "24")
-        let eec20_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "20")
-        let eec21_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "21")
-        let eec_WD = r.data.data.filter(e => e.list_code == "water_demand" && e.t_code == "eec")
-        datuse_water_all.push(
-            { category: 'ปี 2560', first: Number(eec24_WD[0].f2560), second: Number(eec20_WD[0].f2560), third: Number(eec21_WD[0].f2560), four: Number(eec_WD[0].f2560), },
-            { category: 'ปี 2570', first: Number(eec24_WD[0].f2570), second: Number(eec20_WD[0].f2570), third: Number(eec21_WD[0].f2570), four: Number(eec_WD[0].f2570), },
-            { category: 'ปี 2580', first: Number(eec24_WD[0].f2580), second: Number(eec20_WD[0].f2580), third: Number(eec21_WD[0].f2580), four: Number(eec_WD[0].f2580), },
-        )
-
-        let eec24_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "24")
-        let eec20_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "20")
-        let eec21_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "21")
-        let eec_WD_consumer = r.data.data.filter(e => e.list_code == "WD_consumer" && e.t_code == "eec")
-        datuse_water_Yconsume.push(
-            { category: 'ปี 2560', first: Number(eec24_WD_consumer[0].f2560), second: Number(eec20_WD_consumer[0].f2560), third: Number(eec21_WD_consumer[0].f2560), four: Number(eec_WD_consumer[0].f2560), },
-            { category: 'ปี 2570', first: Number(eec24_WD_consumer[0].f2570), second: Number(eec20_WD_consumer[0].f2570), third: Number(eec21_WD_consumer[0].f2570), four: Number(eec_WD_consumer[0].f2570), },
-            { category: 'ปี 2580', first: Number(eec24_WD_consumer[0].f2580), second: Number(eec20_WD_consumer[0].f2580), third: Number(eec21_WD_consumer[0].f2580), four: Number(eec_WD_consumer[0].f2580), },
-        )
-
-        let eec24_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "24")
-        let eec20_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "20")
-        let eec21_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "21")
-        let eec_WD_agri = r.data.data.filter(e => e.list_code == "WD_agri" && e.t_code == "eec")
-        datuse_water_Yagri.push(
-            { category: 'ปี 2560', first: Number(eec24_WD_agri[0].f2560), second: Number(eec20_WD_agri[0].f2560), third: Number(eec21_WD_agri[0].f2560), four: Number(eec_WD_agri[0].f2560), },
-            { category: 'ปี 2570', first: Number(eec24_WD_agri[0].f2570), second: Number(eec20_WD_agri[0].f2570), third: Number(eec21_WD_agri[0].f2570), four: Number(eec_WD_agri[0].f2570), },
-            { category: 'ปี 2580', first: Number(eec24_WD_agri[0].f2580), second: Number(eec20_WD_agri[0].f2580), third: Number(eec21_WD_agri[0].f2580), four: Number(eec_WD_agri[0].f2580), },
-        )
-
-        let eec24_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "24")
-        let eec20_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "20")
-        let eec21_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "21")
-        let eec_WD_industry = r.data.data.filter(e => e.list_code == "WD_industry" && e.t_code == "eec")
-        datuse_water_Yindustry.push(
-            { category: 'ปี 2560', first: Number(eec24_WD_industry[0].f2560), second: Number(eec20_WD_industry[0].f2560), third: Number(eec21_WD_industry[0].f2560), four: Number(eec_WD_industry[0].f2560), },
-            { category: 'ปี 2570', first: Number(eec24_WD_industry[0].f2570), second: Number(eec20_WD_industry[0].f2570), third: Number(eec21_WD_industry[0].f2570), four: Number(eec_WD_industry[0].f2570), },
-            { category: 'ปี 2580', first: Number(eec24_WD_industry[0].f2580), second: Number(eec20_WD_industry[0].f2580), third: Number(eec21_WD_industry[0].f2580), four: Number(eec_WD_industry[0].f2580), },
-        )
-
-        let eec_WD_industry1 = r.data.data.filter(e => e.list_code == "WD_industry1" && e.t_code == "eec")
-        datuse_water_Yindustry1.push(
-            { category: 'ปี 2559', four: Number(eec_WD_industry1[0].f2559), },
-            { category: 'ปี 2566', four: Number(eec_WD_industry1[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_WD_industry1[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_WD_industry1[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_WD_industry1[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_WD_industry1[0].f2584), },
-        )
-        let eec_WD_industry2 = r.data.data.filter(e => e.list_code == "WD_industry2" && e.t_code == "eec")
-        datuse_water_Yindustry2.push(
-            { category: 'ปี 2566', four: Number(eec_WD_industry2[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_WD_industry2[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_WD_industry2[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_WD_industry2[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_WD_industry2[0].f2584), },
-        )
-
-        let eec24_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "24")
-        let eec20_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "20")
-        let eec21_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "21")
-        let eec_WD_prapa = r.data.data.filter(e => e.list_code == "WD_prapa" && e.t_code == "eec")
-        datuse_water_prapa.push(
-            { category: 'ปี 2559', first: Number(eec24_WD_prapa[0].f2559), second: Number(eec20_WD_prapa[0].f2559), third: Number(eec21_WD_prapa[0].f2559), four: Number(eec_WD_prapa[0].f2559), },
-            { category: 'ปี 2566', first: Number(eec24_WD_prapa[0].f2566), second: Number(eec20_WD_prapa[0].f2566), third: Number(eec21_WD_prapa[0].f2566), four: Number(eec_WD_prapa[0].f2566), },
-            { category: 'ปี 2569', first: Number(eec24_WD_prapa[0].f2569), second: Number(eec20_WD_prapa[0].f2569), third: Number(eec21_WD_prapa[0].f2569), four: Number(eec_WD_prapa[0].f2569), },
-            { category: 'ปี 2574', first: Number(eec24_WD_prapa[0].f2574), second: Number(eec20_WD_prapa[0].f2574), third: Number(eec21_WD_prapa[0].f2574), four: Number(eec_WD_prapa[0].f2574), },
-            { category: 'ปี 2579', first: Number(eec24_WD_prapa[0].f2579), second: Number(eec20_WD_prapa[0].f2579), third: Number(eec21_WD_prapa[0].f2579), four: Number(eec_WD_prapa[0].f2579), },
-            { category: 'ปี 2584', first: Number(eec24_WD_prapa[0].f2584), second: Number(eec20_WD_prapa[0].f2584), third: Number(eec21_WD_prapa[0].f2584), four: Number(eec_WD_prapa[0].f2584), },
-        )
-        datuse_water_prov60.push(
-            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2560, second: eec20_WD_consumer[0].f2560, third: eec21_WD_consumer[0].f2560, four: eec_WD_consumer[0].f2560 },
-            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2560, second: eec20_WD_industry[0].f2560, third: eec21_WD_industry[0].f2560, four: eec_WD_industry[0].f2560 },
-            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2560, second: eec20_WD_agri[0].f2560, third: eec21_WD_agri[0].f2560, four: eec_WD_agri[0].f2560 },
-        )
-        datuse_water_prov70.push(
-            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2570, second: eec20_WD_consumer[0].f2570, third: eec21_WD_consumer[0].f2570, four: eec_WD_consumer[0].f2570 },
-            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2570, second: eec20_WD_industry[0].f2570, third: eec21_WD_industry[0].f2570, four: eec_WD_industry[0].f2570 },
-            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2570, second: eec20_WD_agri[0].f2570, third: eec21_WD_agri[0].f2570, four: eec_WD_agri[0].f2570 },
-        )
-        datuse_water_prov80.push(
-            { category: 'อุปโภค', first: eec24_WD_consumer[0].f2580, second: eec20_WD_consumer[0].f2580, third: eec21_WD_consumer[0].f2580, four: eec_WD_consumer[0].f2580 },
-            { category: 'อุตสาหกรรม', first: eec24_WD_industry[0].f2580, second: eec20_WD_industry[0].f2580, third: eec21_WD_industry[0].f2580, four: eec_WD_industry[0].f2580 },
-            { category: 'เกษตรกรรม', first: eec24_WD_agri[0].f2580, second: eec20_WD_agri[0].f2580, third: eec21_WD_agri[0].f2580, four: eec_WD_agri[0].f2580 },
-        )
-
-        ///untreatedwater
-        let eec_UW_industry = r.data.data.filter(e => e.list_code == "UW_industry" && e.t_code == "eec")
-        let eec_UW_prapa = r.data.data.filter(e => e.list_code == "UW_prapa" && e.t_code == "eec")
-        let eec_UW_sum = r.data.data.filter(e => e.list_code == "UW_sum" && e.t_code == "eec")
-
-        UW_industry.push(
-            { category: 'ปี 2559', four: Number(eec_UW_industry[0].f2559), },
-            { category: 'ปี 2566', four: Number(eec_UW_industry[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_UW_industry[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_UW_industry[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_UW_industry[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_UW_industry[0].f2579), }
-        )
-        UW_prapa.push(
-            { category: 'ปี 2559', four: Number(eec_UW_prapa[0].f2559), },
-            { category: 'ปี 2566', four: Number(eec_UW_prapa[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_UW_prapa[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_UW_prapa[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_UW_prapa[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_UW_prapa[0].f2579), }
-        )
-        UW_sum.push(
-            { category: 'ปี 2559', four: Number(eec_UW_sum[0].f2559), },
-            { category: 'ปี 2566', four: Number(eec_UW_sum[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_UW_sum[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_UW_sum[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_UW_sum[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_UW_sum[0].f2579), }
-        )
-        ///elec_demand
-        let eec24_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "24")
-        let eec20_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "20")
-        let eec21_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "21")
-        let eec_elec_demand = r.data.data.filter(e => e.list_code == "elec_demand" && e.t_code == "eec")
-        datelec_demand.push(
-            { category: 'ปี 2566', first: Number(eec24_elec_demand[0].f2566), second: Number(eec20_elec_demand[0].f2566), third: Number(eec21_elec_demand[0].f2566), four: Number(eec_elec_demand[0].f2566), },
-            { category: 'ปี 2569', first: Number(eec24_elec_demand[0].f2569), second: Number(eec20_elec_demand[0].f2569), third: Number(eec21_elec_demand[0].f2569), four: Number(eec_elec_demand[0].f2569), },
-            { category: 'ปี 2574', first: Number(eec24_elec_demand[0].f2574), second: Number(eec20_elec_demand[0].f2574), third: Number(eec21_elec_demand[0].f2574), four: Number(eec_elec_demand[0].f2574), },
-            { category: 'ปี 2579', first: Number(eec24_elec_demand[0].f2579), second: Number(eec20_elec_demand[0].f2579), third: Number(eec21_elec_demand[0].f2579), four: Number(eec_elec_demand[0].f2579), },
-            { category: 'ปี 2584', first: Number(eec24_elec_demand[0].f2584), second: Number(eec20_elec_demand[0].f2584), third: Number(eec21_elec_demand[0].f2584), four: Number(eec_elec_demand[0].f2584), },
-        )
-        let eec_genelec_insys = r.data.data.filter(e => e.list_code == "genelec_insys" && e.t_code == "eec")
-        datelec_genelec_insys.push(
-            { category: 'ปี 2566', four: Number(eec_genelec_insys[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_genelec_insys[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_genelec_insys[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_genelec_insys[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_genelec_insys[0].f2584), },
-        )
-        let eec_genelec_afsys = r.data.data.filter(e => e.list_code == "genelec_afsys" && e.t_code == "eec")
-        datelec_genelec_afsys.push(
-            { category: 'ปี 2566', four: Number(eec_genelec_afsys[0].f2566), },
-            { category: 'ปี 2569', four: Number(eec_genelec_afsys[0].f2569), },
-            { category: 'ปี 2574', four: Number(eec_genelec_afsys[0].f2574), },
-            { category: 'ปี 2579', four: Number(eec_genelec_afsys[0].f2579), },
-            { category: 'ปี 2584', four: Number(eec_genelec_afsys[0].f2584), }
-        )
-        ///econ
-        let eec24_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "24")
-        let eec20_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "20")
-        let eec21_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "21")
-        let eec_econ_tourist = r.data.data.filter(e => e.list_code == "econ_tourist" && e.t_code == "eec")
-        datecon_tourist.push(
-            { category: 'ปี 2565', first: Number(eec24_econ_tourist[0].f2565), second: Number(eec20_econ_tourist[0].f2565), third: Number(eec21_econ_tourist[0].f2565), four: Number(eec_econ_tourist[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_econ_tourist[0].f2566), second: Number(eec20_econ_tourist[0].f2566), third: Number(eec21_econ_tourist[0].f2566), four: Number(eec_econ_tourist[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_econ_tourist[0].f2567), second: Number(eec20_econ_tourist[0].f2567), third: Number(eec21_econ_tourist[0].f2567), four: Number(eec_econ_tourist[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_econ_tourist[0].f2568), second: Number(eec20_econ_tourist[0].f2568), third: Number(eec21_econ_tourist[0].f2568), four: Number(eec_econ_tourist[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_econ_tourist[0].f2569), second: Number(eec20_econ_tourist[0].f2569), third: Number(eec21_econ_tourist[0].f2569), four: Number(eec_econ_tourist[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_econ_tourist[0].f2570), second: Number(eec20_econ_tourist[0].f2570), third: Number(eec21_econ_tourist[0].f2570), four: Number(eec_econ_tourist[0].f2570), },
-            { category: 'ปี 2571', first: Number(eec24_econ_tourist[0].f2571), second: Number(eec20_econ_tourist[0].f2571), third: Number(eec21_econ_tourist[0].f2571), four: Number(eec_econ_tourist[0].f2571), },
-            { category: 'ปี 2572', first: Number(eec24_econ_tourist[0].f2572), second: Number(eec20_econ_tourist[0].f2572), third: Number(eec21_econ_tourist[0].f2572), four: Number(eec_econ_tourist[0].f2572), },
-            { category: 'ปี 2573', first: Number(eec24_econ_tourist[0].f2573), second: Number(eec20_econ_tourist[0].f2573), third: Number(eec21_econ_tourist[0].f2573), four: Number(eec_econ_tourist[0].f2573), },
-            { category: 'ปี 2574', first: Number(eec24_econ_tourist[0].f2574), second: Number(eec20_econ_tourist[0].f2574), third: Number(eec21_econ_tourist[0].f2574), four: Number(eec_econ_tourist[0].f2574), },
-            { category: 'ปี 2575', first: Number(eec24_econ_tourist[0].f2575), second: Number(eec20_econ_tourist[0].f2575), third: Number(eec21_econ_tourist[0].f2575), four: Number(eec_econ_tourist[0].f2575), },
-            { category: 'ปี 2576', first: Number(eec24_econ_tourist[0].f2576), second: Number(eec20_econ_tourist[0].f2576), third: Number(eec21_econ_tourist[0].f2576), four: Number(eec_econ_tourist[0].f2576), },
-            { category: 'ปี 2577', first: Number(eec24_econ_tourist[0].f2577), second: Number(eec20_econ_tourist[0].f2577), third: Number(eec21_econ_tourist[0].f2577), four: Number(eec_econ_tourist[0].f2577), },
-            { category: 'ปี 2578', first: Number(eec24_econ_tourist[0].f2578), second: Number(eec20_econ_tourist[0].f2578), third: Number(eec21_econ_tourist[0].f2578), four: Number(eec_econ_tourist[0].f2578), },
-            { category: 'ปี 2579', first: Number(eec24_econ_tourist[0].f2579), second: Number(eec20_econ_tourist[0].f2579), third: Number(eec21_econ_tourist[0].f2579), four: Number(eec_econ_tourist[0].f2579), },
-            { category: 'ปี 2580', first: Number(eec24_econ_tourist[0].f2580), second: Number(eec20_econ_tourist[0].f2580), third: Number(eec21_econ_tourist[0].f2580), four: Number(eec_econ_tourist[0].f2580), },
-        )
-        let eec_econ_agri = r.data.data.filter(e => e.list_code == "econ_agri" && e.t_code == "eec")
-        let eec_econ_industry = r.data.data.filter(e => e.list_code == "econ_industry" && e.t_code == "eec")
-        let eec_econ_sevice = r.data.data.filter(e => e.list_code == "econ_sevice" && e.t_code == "eec")
-
-        datecon_agri.push(
-            { category: 'ปี 2562', four: Number(eec_econ_agri[0].f2562), },
-            { category: 'ปี 2563', four: Number(eec_econ_agri[0].f2563), },
-            { category: 'ปี 2564', four: Number(eec_econ_agri[0].f2564), },
-            { category: 'ปี 2565', four: Number(eec_econ_agri[0].f2565), },
-            { category: 'ปี 2566', four: Number(eec_econ_agri[0].f2566), },
-            { category: 'ปี 2567', four: Number(eec_econ_agri[0].f2567), },
-            { category: 'ปี 2568', four: Number(eec_econ_agri[0].f2568), },
-            { category: 'ปี 2569', four: Number(eec_econ_agri[0].f2569), },
-            { category: 'ปี 2570', four: Number(eec_econ_agri[0].f2570), }
-        )
-        datecon_industry.push(
-            { category: 'ปี 2562', four: Number(eec_econ_industry[0].f2562), },
-            { category: 'ปี 2563', four: Number(eec_econ_industry[0].f2563), },
-            { category: 'ปี 2564', four: Number(eec_econ_industry[0].f2564), },
-            { category: 'ปี 2565', four: Number(eec_econ_industry[0].f2565), },
-            { category: 'ปี 2566', four: Number(eec_econ_industry[0].f2566), },
-            { category: 'ปี 2567', four: Number(eec_econ_industry[0].f2567), },
-            { category: 'ปี 2568', four: Number(eec_econ_industry[0].f2568), },
-            { category: 'ปี 2569', four: Number(eec_econ_industry[0].f2569), },
-            { category: 'ปี 2570', four: Number(eec_econ_industry[0].f2570), }
-        )
-        datecon_sevice.push(
-            { category: 'ปี 2562', four: Number(eec_econ_sevice[0].f2562), },
-            { category: 'ปี 2563', four: Number(eec_econ_sevice[0].f2563), },
-            { category: 'ปี 2564', four: Number(eec_econ_sevice[0].f2564), },
-            { category: 'ปี 2565', four: Number(eec_econ_sevice[0].f2565), },
-            { category: 'ปี 2566', four: Number(eec_econ_sevice[0].f2566), },
-            { category: 'ปี 2567', four: Number(eec_econ_sevice[0].f2567), },
-            { category: 'ปี 2568', four: Number(eec_econ_sevice[0].f2568), },
-            { category: 'ปี 2569', four: Number(eec_econ_sevice[0].f2569), },
-            { category: 'ปี 2570', four: Number(eec_econ_sevice[0].f2570), }
-        )
-        ///labor
-        let eec24_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "24")
-        let eec20_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "20")
-        let eec21_labor_minwage = r.data.data.filter(e => e.list_code == "labor_minwage" && e.t_code == "21")
-        datlabor_minwage.push(
-            { category: 'ปี 2565', first: Number(eec24_labor_minwage[0].f2565), second: Number(eec20_labor_minwage[0].f2565), third: Number(eec21_labor_minwage[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_labor_minwage[0].f2566), second: Number(eec20_labor_minwage[0].f2566), third: Number(eec21_labor_minwage[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_labor_minwage[0].f2567), second: Number(eec20_labor_minwage[0].f2567), third: Number(eec21_labor_minwage[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_labor_minwage[0].f2568), second: Number(eec20_labor_minwage[0].f2568), third: Number(eec21_labor_minwage[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_labor_minwage[0].f2569), second: Number(eec20_labor_minwage[0].f2569), third: Number(eec21_labor_minwage[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_labor_minwage[0].f2570), second: Number(eec20_labor_minwage[0].f2570), third: Number(eec21_labor_minwage[0].f2570), },
-            { category: 'ปี 2571', first: Number(eec24_labor_minwage[0].f2571), second: Number(eec20_labor_minwage[0].f2571), third: Number(eec21_labor_minwage[0].f2571), },
-            { category: 'ปี 2572', first: Number(eec24_labor_minwage[0].f2572), second: Number(eec20_labor_minwage[0].f2572), third: Number(eec21_labor_minwage[0].f2572), },
-            { category: 'ปี 2573', first: Number(eec24_labor_minwage[0].f2573), second: Number(eec20_labor_minwage[0].f2573), third: Number(eec21_labor_minwage[0].f2573), },
-            { category: 'ปี 2574', first: Number(eec24_labor_minwage[0].f2574), second: Number(eec20_labor_minwage[0].f2574), third: Number(eec21_labor_minwage[0].f2574), },
-            { category: 'ปี 2575', first: Number(eec24_labor_minwage[0].f2575), second: Number(eec20_labor_minwage[0].f2575), third: Number(eec21_labor_minwage[0].f2575), },
-            { category: 'ปี 2576', first: Number(eec24_labor_minwage[0].f2576), second: Number(eec20_labor_minwage[0].f2576), third: Number(eec21_labor_minwage[0].f2576), },
-            { category: 'ปี 2577', first: Number(eec24_labor_minwage[0].f2577), second: Number(eec20_labor_minwage[0].f2577), third: Number(eec21_labor_minwage[0].f2577), },
-            { category: 'ปี 2578', first: Number(eec24_labor_minwage[0].f2578), second: Number(eec20_labor_minwage[0].f2578), third: Number(eec21_labor_minwage[0].f2578), },
-            { category: 'ปี 2579', first: Number(eec24_labor_minwage[0].f2579), second: Number(eec20_labor_minwage[0].f2579), third: Number(eec21_labor_minwage[0].f2579), },
-            { category: 'ปี 2580', first: Number(eec24_labor_minwage[0].f2580), second: Number(eec20_labor_minwage[0].f2580), third: Number(eec21_labor_minwage[0].f2580), },
-        )
-
-        let eec24_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "24")
-        let eec20_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "20")
-        let eec21_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "21")
-        let eec_labor_employ = r.data.data.filter(e => e.list_code == "labor_employ" && e.t_code == "eec")
-        datlabor_employ.push(
-            { category: 'ปี 2565', first: Number(eec24_labor_employ[0].f2565), second: Number(eec20_labor_employ[0].f2565), third: Number(eec21_labor_employ[0].f2565), four: Number(eec_labor_employ[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_labor_employ[0].f2566), second: Number(eec20_labor_employ[0].f2566), third: Number(eec21_labor_employ[0].f2566), four: Number(eec_labor_employ[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_labor_employ[0].f2567), second: Number(eec20_labor_employ[0].f2567), third: Number(eec21_labor_employ[0].f2567), four: Number(eec_labor_employ[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_labor_employ[0].f2568), second: Number(eec20_labor_employ[0].f2568), third: Number(eec21_labor_employ[0].f2568), four: Number(eec_labor_employ[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_labor_employ[0].f2569), second: Number(eec20_labor_employ[0].f2569), third: Number(eec21_labor_employ[0].f2569), four: Number(eec_labor_employ[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_labor_employ[0].f2570), second: Number(eec20_labor_employ[0].f2570), third: Number(eec21_labor_employ[0].f2570), four: Number(eec_labor_employ[0].f2570), },
-            { category: 'ปี 2571', first: Number(eec24_labor_employ[0].f2571), second: Number(eec20_labor_employ[0].f2571), third: Number(eec21_labor_employ[0].f2571), four: Number(eec_labor_employ[0].f2571), },
-            { category: 'ปี 2572', first: Number(eec24_labor_employ[0].f2572), second: Number(eec20_labor_employ[0].f2572), third: Number(eec21_labor_employ[0].f2572), four: Number(eec_labor_employ[0].f2572), },
-            { category: 'ปี 2573', first: Number(eec24_labor_employ[0].f2573), second: Number(eec20_labor_employ[0].f2573), third: Number(eec21_labor_employ[0].f2573), four: Number(eec_labor_employ[0].f2573), },
-            { category: 'ปี 2574', first: Number(eec24_labor_employ[0].f2574), second: Number(eec20_labor_employ[0].f2574), third: Number(eec21_labor_employ[0].f2574), four: Number(eec_labor_employ[0].f2574), },
-            { category: 'ปี 2575', first: Number(eec24_labor_employ[0].f2575), second: Number(eec20_labor_employ[0].f2575), third: Number(eec21_labor_employ[0].f2575), four: Number(eec_labor_employ[0].f2575), },
-            { category: 'ปี 2576', first: Number(eec24_labor_employ[0].f2576), second: Number(eec20_labor_employ[0].f2576), third: Number(eec21_labor_employ[0].f2576), four: Number(eec_labor_employ[0].f2576), },
-            { category: 'ปี 2577', first: Number(eec24_labor_employ[0].f2577), second: Number(eec20_labor_employ[0].f2577), third: Number(eec21_labor_employ[0].f2577), four: Number(eec_labor_employ[0].f2577), },
-            { category: 'ปี 2578', first: Number(eec24_labor_employ[0].f2578), second: Number(eec20_labor_employ[0].f2578), third: Number(eec21_labor_employ[0].f2578), four: Number(eec_labor_employ[0].f2578), },
-            { category: 'ปี 2579', first: Number(eec24_labor_employ[0].f2579), second: Number(eec20_labor_employ[0].f2579), third: Number(eec21_labor_employ[0].f2579), four: Number(eec_labor_employ[0].f2579), },
-            { category: 'ปี 2580', first: Number(eec24_labor_employ[0].f2580), second: Number(eec20_labor_employ[0].f2580), third: Number(eec21_labor_employ[0].f2580), four: Number(eec_labor_employ[0].f2580), },
-        )
-
-        let eec24_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "24")
-        let eec20_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "20")
-        let eec21_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "21")
-        let eec_labor_exert = r.data.data.filter(e => e.list_code == "labor" && e.t_code == "eec")
-        datlabor_exert.push(
-            { category: 'ปี 2565', first: Number(eec24_labor_exert[0].f2565), second: Number(eec20_labor_exert[0].f2565), third: Number(eec21_labor_exert[0].f2565), four: Number(eec_labor_exert[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec24_labor_exert[0].f2566), second: Number(eec20_labor_exert[0].f2566), third: Number(eec21_labor_exert[0].f2566), four: Number(eec_labor_exert[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec24_labor_exert[0].f2567), second: Number(eec20_labor_exert[0].f2567), third: Number(eec21_labor_exert[0].f2567), four: Number(eec_labor_exert[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec24_labor_exert[0].f2568), second: Number(eec20_labor_exert[0].f2568), third: Number(eec21_labor_exert[0].f2568), four: Number(eec_labor_exert[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec24_labor_exert[0].f2569), second: Number(eec20_labor_exert[0].f2569), third: Number(eec21_labor_exert[0].f2569), four: Number(eec_labor_exert[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec24_labor_exert[0].f2570), second: Number(eec20_labor_exert[0].f2570), third: Number(eec21_labor_exert[0].f2570), four: Number(eec_labor_exert[0].f2570), },
-            { category: 'ปี 2571', first: Number(eec24_labor_exert[0].f2571), second: Number(eec20_labor_exert[0].f2571), third: Number(eec21_labor_exert[0].f2571), four: Number(eec_labor_exert[0].f2571), },
-            { category: 'ปี 2572', first: Number(eec24_labor_exert[0].f2572), second: Number(eec20_labor_exert[0].f2572), third: Number(eec21_labor_exert[0].f2572), four: Number(eec_labor_exert[0].f2572), },
-            { category: 'ปี 2573', first: Number(eec24_labor_exert[0].f2573), second: Number(eec20_labor_exert[0].f2573), third: Number(eec21_labor_exert[0].f2573), four: Number(eec_labor_exert[0].f2573), },
-            { category: 'ปี 2574', first: Number(eec24_labor_exert[0].f2574), second: Number(eec20_labor_exert[0].f2574), third: Number(eec21_labor_exert[0].f2574), four: Number(eec_labor_exert[0].f2574), },
-            { category: 'ปี 2575', first: Number(eec24_labor_exert[0].f2575), second: Number(eec20_labor_exert[0].f2575), third: Number(eec21_labor_exert[0].f2575), four: Number(eec_labor_exert[0].f2575), },
-            { category: 'ปี 2576', first: Number(eec24_labor_exert[0].f2576), second: Number(eec20_labor_exert[0].f2576), third: Number(eec21_labor_exert[0].f2576), four: Number(eec_labor_exert[0].f2576), },
-            { category: 'ปี 2577', first: Number(eec24_labor_exert[0].f2577), second: Number(eec20_labor_exert[0].f2577), third: Number(eec21_labor_exert[0].f2577), four: Number(eec_labor_exert[0].f2577), },
-            { category: 'ปี 2578', first: Number(eec24_labor_exert[0].f2578), second: Number(eec20_labor_exert[0].f2578), third: Number(eec21_labor_exert[0].f2578), four: Number(eec_labor_exert[0].f2578), },
-            { category: 'ปี 2579', first: Number(eec24_labor_exert[0].f2579), second: Number(eec20_labor_exert[0].f2579), third: Number(eec21_labor_exert[0].f2579), four: Number(eec_labor_exert[0].f2579), },
-            { category: 'ปี 2580', first: Number(eec24_labor_exert[0].f2580), second: Number(eec20_labor_exert[0].f2580), third: Number(eec21_labor_exert[0].f2580), four: Number(eec_labor_exert[0].f2580), },
-        )
-
-        let eec_labor_M3 = r.data.data.filter(e => e.list_code == "labor_M3" && e.t_code == "eec")
-        let eec_labor_M6 = r.data.data.filter(e => e.list_code == "labor_M6" && e.t_code == "eec")
-        let eec_labor_profession = r.data.data.filter(e => e.list_code == "labor_profession" && e.t_code == "eec")
-        let eec_labor_Bachelor = r.data.data.filter(e => e.list_code == "labor_Bachelor" && e.t_code == "eec")
-        let eec_labor_MoreBachelor = r.data.data.filter(e => e.list_code == "labor_MoreBachelor" && e.t_code == "eec")
-        datlabor_edulevel_all.push(
-            { category: 'ปี 2561', first: Number(eec_labor_M3[0].f2561), second: Number(eec_labor_M6[0].f2561), third: Number(eec_labor_profession[0].f2561), four: Number(eec_labor_Bachelor[0].f2561), fifth: Number(eec_labor_MoreBachelor[0].f2561), },
-            { category: 'ปี 2562', first: Number(eec_labor_M3[0].f2562), second: Number(eec_labor_M6[0].f2562), third: Number(eec_labor_profession[0].f2562), four: Number(eec_labor_Bachelor[0].f2562), fifth: Number(eec_labor_MoreBachelor[0].f2562), },
-            { category: 'ปี 2563', first: Number(eec_labor_M3[0].f2563), second: Number(eec_labor_M6[0].f2563), third: Number(eec_labor_profession[0].f2563), four: Number(eec_labor_Bachelor[0].f2563), fifth: Number(eec_labor_MoreBachelor[0].f2563), },
-            { category: 'ปี 2564', first: Number(eec_labor_M3[0].f2564), second: Number(eec_labor_M6[0].f2564), third: Number(eec_labor_profession[0].f2564), four: Number(eec_labor_Bachelor[0].f2564), fifth: Number(eec_labor_MoreBachelor[0].f2564), },
-            { category: 'ปี 2565', first: Number(eec_labor_M3[0].f2565), second: Number(eec_labor_M6[0].f2565), third: Number(eec_labor_profession[0].f2565), four: Number(eec_labor_Bachelor[0].f2565), fifth: Number(eec_labor_MoreBachelor[0].f2565), },
-            { category: 'ปี 2566', first: Number(eec_labor_M3[0].f2566), second: Number(eec_labor_M6[0].f2566), third: Number(eec_labor_profession[0].f2566), four: Number(eec_labor_Bachelor[0].f2566), fifth: Number(eec_labor_MoreBachelor[0].f2566), },
-            { category: 'ปี 2567', first: Number(eec_labor_M3[0].f2567), second: Number(eec_labor_M6[0].f2567), third: Number(eec_labor_profession[0].f2567), four: Number(eec_labor_Bachelor[0].f2567), fifth: Number(eec_labor_MoreBachelor[0].f2567), },
-            { category: 'ปี 2568', first: Number(eec_labor_M3[0].f2568), second: Number(eec_labor_M6[0].f2568), third: Number(eec_labor_profession[0].f2568), four: Number(eec_labor_Bachelor[0].f2568), fifth: Number(eec_labor_MoreBachelor[0].f2568), },
-            { category: 'ปี 2569', first: Number(eec_labor_M3[0].f2569), second: Number(eec_labor_M6[0].f2569), third: Number(eec_labor_profession[0].f2569), four: Number(eec_labor_Bachelor[0].f2569), fifth: Number(eec_labor_MoreBachelor[0].f2569), },
-            { category: 'ปี 2570', first: Number(eec_labor_M3[0].f2570), second: Number(eec_labor_M6[0].f2570), third: Number(eec_labor_profession[0].f2570), four: Number(eec_labor_Bachelor[0].f2570), fifth: Number(eec_labor_MoreBachelor[0].f2570), },
-        )
-
-        datlabor_edulevel_M3.push(
-            { year: '2018', value: Number(eec_labor_M3[0].f2561), },
-            { year: '2019', value: Number(eec_labor_M3[0].f2562), },
-            { year: '2020', value: Number(eec_labor_M3[0].f2563), },
-            { year: '2021', value: Number(eec_labor_M3[0].f2564), },
-            { year: '2022', value: Number(eec_labor_M3[0].f2565), },
-            { year: '2023', value: Number(eec_labor_M3[0].f2566), },
-            { year: '2024', value: Number(eec_labor_M3[0].f2567), },
-            { year: '2025', value: Number(eec_labor_M3[0].f2568), },
-            { year: '2026', value: Number(eec_labor_M3[0].f2569), },
-            { year: '2027', value: Number(eec_labor_M3[0].f2570), },
-        )
-        datlabor_edulevel_M6.push(
-            { year: '2018', value: Number(eec_labor_M6[0].f2561), },
-            { year: '2019', value: Number(eec_labor_M6[0].f2562), },
-            { year: '2020', value: Number(eec_labor_M6[0].f2563), },
-            { year: '2021', value: Number(eec_labor_M6[0].f2564), },
-            { year: '2022', value: Number(eec_labor_M6[0].f2565), },
-            { year: '2023', value: Number(eec_labor_M6[0].f2566), },
-            { year: '2024', value: Number(eec_labor_M6[0].f2567), },
-            { year: '2025', value: Number(eec_labor_M6[0].f2568), },
-            { year: '2026', value: Number(eec_labor_M6[0].f2569), },
-            { year: '2027', value: Number(eec_labor_M6[0].f2570), },
-        )
-        datlabor_edulevel_profession.push(
-            { year: '2018', value: Number(eec_labor_profession[0].f2561), },
-            { year: '2019', value: Number(eec_labor_profession[0].f2562), },
-            { year: '2020', value: Number(eec_labor_profession[0].f2563), },
-            { year: '2021', value: Number(eec_labor_profession[0].f2564), },
-            { year: '2022', value: Number(eec_labor_profession[0].f2565), },
-            { year: '2023', value: Number(eec_labor_profession[0].f2566), },
-            { year: '2024', value: Number(eec_labor_profession[0].f2567), },
-            { year: '2025', value: Number(eec_labor_profession[0].f2568), },
-            { year: '2026', value: Number(eec_labor_profession[0].f2569), },
-            { year: '2027', value: Number(eec_labor_profession[0].f2570), },
-        )
-        datlabor_edulevel_Bachelor.push(
-            { year: '2018', value: Number(eec_labor_Bachelor[0].f2561), },
-            { year: '2019', value: Number(eec_labor_Bachelor[0].f2562), },
-            { year: '2020', value: Number(eec_labor_Bachelor[0].f2563), },
-            { year: '2021', value: Number(eec_labor_Bachelor[0].f2564), },
-            { year: '2022', value: Number(eec_labor_Bachelor[0].f2565), },
-            { year: '2023', value: Number(eec_labor_Bachelor[0].f2566), },
-            { year: '2024', value: Number(eec_labor_Bachelor[0].f2567), },
-            { year: '2025', value: Number(eec_labor_Bachelor[0].f2568), },
-            { year: '2026', value: Number(eec_labor_Bachelor[0].f2569), },
-            { year: '2027', value: Number(eec_labor_Bachelor[0].f2570), },
-        )
-        datlabor_edulevel_MoreBachelor.push(
-            { year: '2018', value: Number(eec_labor_MoreBachelor[0].f2561), },
-            { year: '2019', value: Number(eec_labor_MoreBachelor[0].f2562), },
-            { year: '2020', value: Number(eec_labor_MoreBachelor[0].f2563), },
-            { year: '2021', value: Number(eec_labor_MoreBachelor[0].f2564), },
-            { year: '2022', value: Number(eec_labor_MoreBachelor[0].f2565), },
-            { year: '2023', value: Number(eec_labor_MoreBachelor[0].f2566), },
-            { year: '2024', value: Number(eec_labor_MoreBachelor[0].f2567), },
-            { year: '2025', value: Number(eec_labor_MoreBachelor[0].f2568), },
-            { year: '2026', value: Number(eec_labor_MoreBachelor[0].f2569), },
-            { year: '2027', value: Number(eec_labor_MoreBachelor[0].f2570), },
-        )
-
-
-        let eec_waste_industry = r.data.data.filter(e => e.list_code == "waste_industry" && e.t_code == "eec");
-        let eec_waste_infectious = r.data.data.filter(e => e.list_code == "waste_infectious" && e.t_code == "eec");
-        let eec_waste_garbage = r.data.data.filter(e => e.list_code == "waste_garbage" && e.t_code == "eec");
-        datwaste_industry.push(
-            { category: 'ปี 2562', four: Number(eec_waste_industry[0].f2562) },
-            { category: 'ปี 2565', four: Number(eec_waste_industry[0].f2565) },
-            { category: 'ปี 2570', four: Number(eec_waste_industry[0].f2570) },
-            { category: 'ปี 2575', four: Number(eec_waste_industry[0].f2575) },
-            { category: 'ปี 2580', four: Number(eec_waste_industry[0].f2580) },
-        )
-        datwaste_infectious.push(
-            { category: 'ปี 2562', four: Number(eec_waste_infectious[0].f2562) },
-            { category: 'ปี 2565', four: Number(eec_waste_infectious[0].f2565) },
-            { category: 'ปี 2570', four: Number(eec_waste_infectious[0].f2570) },
-            { category: 'ปี 2575', four: Number(eec_waste_infectious[0].f2575) },
-            { category: 'ปี 2580', four: Number(eec_waste_infectious[0].f2580) },
-        )
-        datwaste_garbage.push(
-            { category: 'ปี 2562', four: Number(eec_waste_garbage[0].f2562) },
-            { category: 'ปี 2565', four: Number(eec_waste_garbage[0].f2565) },
-            { category: 'ปี 2570', four: Number(eec_waste_garbage[0].f2570) },
-            { category: 'ปี 2575', four: Number(eec_waste_garbage[0].f2575) },
-            { category: 'ปี 2580', four: Number(eec_waste_garbage[0].f2580) },
-        )
-
-        let TH_gas_all = r.data.data.filter(e => e.list_code == "gas_sum" && e.t_code == "TH");
-        let TH_gas_energy = r.data.data.filter(e => e.list_code == "gas_energy" && e.t_code == "TH");
-        let TH_gas_waste = r.data.data.filter(e => e.list_code == "gas_waste" && e.t_code == "TH");
-        let TH_gas_industry = r.data.data.filter(e => e.list_code == "gas_industry" && e.t_code == "TH");
-        let TH_gas_agri = r.data.data.filter(e => e.list_code == "gas_agri" && e.t_code == "TH");
-
-        datgas_all.push(
-            { category: 'ปี 2563', four: Number(TH_gas_all[0].f2563) },
-            { category: 'ปี 2568', four: Number(TH_gas_all[0].f2568) },
-            { category: 'ปี 2573', four: Number(TH_gas_all[0].f2573) },
-        )
-        datgas_energy.push(
-            { category: 'ปี 2563', four: Number(TH_gas_energy[0].f2563) },
-            { category: 'ปี 2568', four: Number(TH_gas_energy[0].f2568) },
-            { category: 'ปี 2573', four: Number(TH_gas_energy[0].f2573) },
-        )
-        // console.log(TH_gas_waste)
-        datgas_waste.push(
-            { category: 'ปี 2563', four: Number(TH_gas_waste[0].f2563) },
-            { category: 'ปี 2568', four: Number(TH_gas_waste[0].f2568) },
-            { category: 'ปี 2573', four: Number(TH_gas_waste[0].f2573) },
-        )
-        datgas_industry.push(
-            { category: 'ปี 2563', four: Number(TH_gas_industry[0].f2563) },
-            { category: 'ปี 2568', four: Number(TH_gas_industry[0].f2568) },
-            { category: 'ปี 2573', four: Number(TH_gas_industry[0].f2573) },
-        )
-        datgas_agri.push(
-            { category: 'ปี 2563', four: Number(TH_gas_agri[0].f2563) },
-            { category: 'ปี 2568', four: Number(TH_gas_agri[0].f2568) },
-            { category: 'ปี 2573', four: Number(TH_gas_agri[0].f2573) },
-        )
-
-
-        let eec24_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "24")
-        let eec20_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "20")
-        let eec21_lu_urban = r.data.data.filter(e => e.list_code == "lu_urban" && e.t_code == "21")
-        datlu_urban.push(
-            { category: 'ปี 2560', first: Number(eec24_lu_urban[0].f2560), second: Number(eec20_lu_urban[0].f2560), third: Number(eec21_lu_urban[0].f2560) },
-            { category: 'ปี 2580', first: Number(eec24_lu_urban[0].f2580), second: Number(eec20_lu_urban[0].f2580), third: Number(eec21_lu_urban[0].f2580) },
-        )
-
-        let eec24_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "24")
-        let eec20_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "20")
-        let eec21_lu_industry = r.data.data.filter(e => e.list_code == "lu_industry" && e.t_code == "21")
-        datlu_industry.push(
-            { category: 'ปี 2560', first: Number(eec24_lu_industry[0].f2560), second: Number(eec20_lu_industry[0].f2560), third: Number(eec21_lu_industry[0].f2560) },
-            { category: 'ปี 2580', first: Number(eec24_lu_industry[0].f2580), second: Number(eec20_lu_industry[0].f2580), third: Number(eec21_lu_industry[0].f2580) },
-        )
-
-        let eec24_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "24")
-        let eec20_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "20")
-        let eec21_lu_agri = r.data.data.filter(e => e.list_code == "lu_agri" && e.t_code == "21")
-        datlu_agri.push(
-            { category: 'ปี 2560', first: Number(eec24_lu_agri[0].f2560), second: Number(eec20_lu_agri[0].f2560), third: Number(eec21_lu_agri[0].f2560) },
-            { category: 'ปี 2580', first: Number(eec24_lu_agri[0].f2580), second: Number(eec20_lu_agri[0].f2580), third: Number(eec21_lu_agri[0].f2580) },
-        )
-
-        let eec24_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "24")
-        let eec20_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "20")
-        let eec21_lu_envi = r.data.data.filter(e => e.list_code == "lu_envi" && e.t_code == "21")
-        datlu_envi.push(
-            { category: 'ปี 2560', first: Number(eec24_lu_envi[0].f2560), second: Number(eec20_lu_envi[0].f2560), third: Number(eec21_lu_envi[0].f2560) },
-            { category: 'ปี 2580', first: Number(eec24_lu_envi[0].f2580), second: Number(eec20_lu_envi[0].f2580), third: Number(eec21_lu_envi[0].f2580) },
-        )
+    let pop_eec_T01 = []
+    let pop_eec_T02 = []
+    let pop_eec_T03 = []
+    let pop_eec_T04 = []
+    await axios.post(url + "/forecast_eec/pop/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_pop_T01.push({ year: i.y_year })
+        })
     })
+    await axios.post(url + "/forecast_eec/pop/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_pop_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_pop_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_pop_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        year_pop_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datall_pop.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(pop_eec_T01)
+        // console.log(datall_pop)
+
+        let eec24_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "24")
+        let eec20_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "20")
+        let eec21_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "21")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+
+        year_pop_T02.map(i => {
+            let cs = eec24_T02.filter(e => e.y_year == i.year)
+            let cb = eec20_T02.filter(e => e.y_year == i.year)
+            let ry = eec21_T02.filter(e => e.y_year == i.year)
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datregister_pop.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(pop_eec_T02)
+        // console.log(datregister_pop)
+
+        let eec24_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "24")
+        let eec20_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "20")
+        let eec21_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "21")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_pop_T03.map(i => {
+            let cs = eec24_T03.filter(e => e.y_year == i.year)
+            let cb = eec20_T03.filter(e => e.y_year == i.year)
+            let ry = eec21_T03.filter(e => e.y_year == i.year)
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datdisguise_pop.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(pop_eec_T03)
+        // console.log(datdisguise_pop)
+
+        let eec24_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "24")
+        let eec20_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "20")
+        let eec21_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "21")
+
+        year_pop_T04.map(i => {
+            let cs = eec24_T04.filter(e => e.y_year == i.year)
+            let cb = eec20_T04.filter(e => e.y_year == i.year)
+            let ry = eec21_T04.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datacity_pop.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: 0 },
+            )
+        })
+        // console.log(pop_eec_T04)
+        // console.log(datacity_pop)
+    })
+    //pop covid
+    let year_popcovid_T01 = []
+    let year_popcovid_T02 = []
+    let year_popcovid_T03 = []
+
+    let popcovid_eec_T01 = []
+    let popcovid_eec_T02 = []
+    let popcovid_eec_T03 = []
+    await axios.post(url + "/forecast_eec/pop_covid/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_popcovid_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop_covid/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_popcovid_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop_covid/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_popcovid_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/pop_covid/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        year_popcovid_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datall_pop_covid.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(popcovid_eec_T01)
+        // console.log(datall_pop_covid)
+
+        let eec24_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "24")
+        let eec20_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "20")
+        let eec21_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "21")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+
+        year_popcovid_T02.map(i => {
+            let cs = eec24_T02.filter(e => e.y_year == i.year)
+            let cb = eec20_T02.filter(e => e.y_year == i.year)
+            let ry = eec21_T02.filter(e => e.y_year == i.year)
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datregister_pop_covid.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(popcovid_eec_T02)
+        // console.log(datregister_pop_covid)
+
+        let eec24_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "24")
+        let eec20_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "20")
+        let eec21_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "21")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_popcovid_T03.map(i => {
+            let cs = eec24_T03.filter(e => e.y_year == i.year)
+            let cb = eec20_T03.filter(e => e.y_year == i.year)
+            let ry = eec21_T03.filter(e => e.y_year == i.year)
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datdisguise_pop_covid.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(popcovid_eec_T03)
+        // console.log(datdisguise_pop_covid)
+    })
+
+    // wastewater
+    let year_wastewater_T01 = []
+    let wastewater_eec_T01 = []
+    await axios.post(url + "/forecast_eec/wastewater/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_wastewater_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/wastewater/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        year_wastewater_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datwaste.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(wastewater_eec_T01)
+        // console.log(datwaste)
+    })
+
+    // garbage
+    let year_garbage_T01 = []
+    let garbage_eec_T01 = []
+    await axios.post(url + "/forecast_eec/garbage/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_garbage_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/garbage/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        year_garbage_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datgarbage.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(garbage_eec_T01)
+        // console.log(datgarbage)
+    })
+
+    //water_demand
+    let year_WD_T01 = []
+    let year_WD_T02 = []
+    let year_WD_T03 = []
+    let year_WD_T04 = []
+    let year_WD_T04_2 = []
+    let year_WD_T04_3 = []
+    let year_WD_T05 = []
+    let year_WD_T06 = [{ year: '2560' }, { year: '2570' }, { year: '2580' }]
+
+    let WD_eec_T01 = []
+    let WD_eec_T02 = []
+    let WD_eec_T03 = []
+    let WD_eec_T04 = []
+    let WD_eec_T04_2 = []
+    let WD_eec_T04_3 = []
+    let WD_eec_T05 = []
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T04_2' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T04_2.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T04_3' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T04_3.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/year", { code: 'T05' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WD_T05.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/water_demand/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        year_WD_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datuse_water_all.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WD_eec_T01)
+        // console.log(datuse_water_all)
+
+        let eec24_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "24")
+        let eec20_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "20")
+        let eec21_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "21")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+
+        year_WD_T02.map(i => {
+            let cs = eec24_T02.filter(e => e.y_year == i.year)
+            let cb = eec20_T02.filter(e => e.y_year == i.year)
+            let ry = eec21_T02.filter(e => e.y_year == i.year)
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datuse_water_Yconsume.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WD_eec_T02)
+        // console.log(datuse_water_Yconsume)
+
+        let eec24_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "24")
+        let eec20_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "20")
+        let eec21_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "21")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_WD_T03.map(i => {
+            let cs = eec24_T03.filter(e => e.y_year == i.year)
+            let cb = eec20_T03.filter(e => e.y_year == i.year)
+            let ry = eec21_T03.filter(e => e.y_year == i.year)
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datuse_water_Yagri.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WD_eec_T03)
+        // console.log(datuse_water_Yagri)
+
+        let eec24_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "24")
+        let eec20_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "20")
+        let eec21_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "21")
+        let eec_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "eec")
+        let eec_T04_2 = r.data.data.filter(e => e.title_c == "T04_2" && e.prov_c == "eec")
+        let eec_T04_3 = r.data.data.filter(e => e.title_c == "T04_3" && e.prov_c == "eec")
+        // console.log(eec24_T04)
+        // console.log(year_WD_T04)
+        year_WD_T04.map(i => {
+            let cs = eec24_T04.filter(e => e.y_year == i.year)
+            let cb = eec20_T04.filter(e => e.y_year == i.year)
+            let ry = eec21_T04.filter(e => e.y_year == i.year)
+            let eec = eec_T04.filter(e => e.y_year == i.year)
+            datuse_water_Yindustry.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        year_WD_T04_2.map(i => {
+            let eec = eec_T04_2.filter(e => e.y_year == i.year)
+            datuse_water_Yindustry1.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        year_WD_T04_3.map(i => {
+            let eec = eec_T04_3.filter(e => e.y_year == i.year)
+            datuse_water_Yindustry2.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WD_eec_T04_2)
+        // console.log(datuse_water_Yindustry1)
+        // console.log(WD_eec_T04_3)
+        // console.log(datuse_water_Yindustry2)
+        // console.log(datuse_water_Yindustry)
+        year_WD_T06.map(i => {
+            let cs_T02 = eec24_T02.filter(e => e.y_year == i.year)
+            let cs_T03 = eec24_T03.filter(e => e.y_year == i.year)
+            let cs_T04 = eec24_T04.filter(e => e.y_year == i.year)
+
+            let cb_T02 = eec20_T02.filter(e => e.y_year == i.year)
+            let cb_T03 = eec20_T03.filter(e => e.y_year == i.year)
+            let cb_T04 = eec20_T04.filter(e => e.y_year == i.year)
+
+            let ry_T02 = eec21_T02.filter(e => e.y_year == i.year)
+            let ry_T03 = eec21_T03.filter(e => e.y_year == i.year)
+            let ry_T04 = eec21_T04.filter(e => e.y_year == i.year)
+
+            let Aeec_T02 = eec_T02.filter(e => e.y_year == i.year)
+            let Aeec_T03 = eec_T03.filter(e => e.y_year == i.year)
+            let Aeec_T04 = eec_T04.filter(e => e.y_year == i.year)
+
+            if (i.year == '2560') {
+                datuse_water_prov60.push(
+                    { category: 'อุปโภค', first: cs_T02[0].v_value, second: cb_T02[0].v_value, third: ry_T02[0].v_value, four: Aeec_T02[0].v_value },
+                    { category: 'อุตสาหกรรม', first: cs_T04[0].v_value, second: cb_T04[0].v_value, third: ry_T04[0].v_value, four: Aeec_T04[0].v_value },
+                    { category: 'เกษตรกรรม', first: cs_T03[0].v_value, second: cb_T03[0].v_value, third: ry_T03[0].v_value, four: Aeec_T03[0].v_value },
+
+                )
+            } else if (i.year == '2570') {
+                datuse_water_prov70.push(
+                    { category: 'อุปโภค', first: cs_T02[0].v_value, second: cb_T02[0].v_value, third: ry_T02[0].v_value, four: Aeec_T02[0].v_value },
+                    { category: 'อุตสาหกรรม', first: cs_T04[0].v_value, second: cb_T04[0].v_value, third: ry_T04[0].v_value, four: Aeec_T04[0].v_value },
+                    { category: 'เกษตรกรรม', first: cs_T03[0].v_value, second: cb_T03[0].v_value, third: ry_T03[0].v_value, four: Aeec_T03[0].v_value },
+
+                )
+            } else if (i.year == '2580') {
+                datuse_water_prov80.push(
+                    { category: 'อุปโภค', first: cs_T02[0].v_value, second: cb_T02[0].v_value, third: ry_T02[0].v_value, four: Aeec_T02[0].v_value },
+                    { category: 'อุตสาหกรรม', first: cs_T04[0].v_value, second: cb_T04[0].v_value, third: ry_T04[0].v_value, four: Aeec_T04[0].v_value },
+                    { category: 'เกษตรกรรม', first: cs_T03[0].v_value, second: cb_T03[0].v_value, third: ry_T03[0].v_value, four: Aeec_T03[0].v_value },
+
+                )
+            }
+
+        })
+
+        // console.log(WD_eec_T01)
+        // console.log(datuse_water_Yindustry)
+        let eec24_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "24")
+        let eec20_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "20")
+        let eec21_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "21")
+        let eec_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "eec")
+
+        year_WD_T05.map(i => {
+            let cs = eec24_T05.filter(e => e.y_year == i.year)
+            let cb = eec20_T05.filter(e => e.y_year == i.year)
+            let ry = eec21_T05.filter(e => e.y_year == i.year)
+            let eec = eec_T05.filter(e => e.y_year == i.year)
+            // console.log(cs, i.year)
+            datuse_water_prapa.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WD_eec_T05)
+        // console.log(datuse_water_prapa)
+    })
+
+    //untreated_water
+    let year_UW_T01 = []
+    let year_UW_T02 = []
+    let year_UW_T03 = []
+
+    let UW_eec_T01 = []
+    let UW_eec_T02 = []
+    let UW_eec_T03 = []
+    await axios.post(url + "/forecast_eec/untreated_water/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_UW_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/untreated_water/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_UW_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/untreated_water/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_UW_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/untreated_water/data").then(async (r) => {
+        let data = r.data.data
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_UW_T01.map(i => {
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            UW_industry.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        year_UW_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            UW_prapa.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        year_UW_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            UW_sum.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+
+    })
+
+    //elec_demand
+    let year_ED_T01 = []
+    let year_ED_T02 = []
+    let year_ED_T03 = []
+
+    let ED_eec_T01 = []
+    let ED_eec_T02 = []
+    let ED_eec_T03 = []
+    await axios.post(url + "/forecast_eec/elec_demand/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_ED_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/elec_demand/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_ED_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/elec_demand/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_ED_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/elec_demand/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_ED_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            if (i.year !== '2559') {
+                datelec_demand.push(
+                    { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+                )
+            }
+        })
+        // console.log(datelec_demand)
+        year_ED_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            if (i.year !== '2559') {
+                datelec_genelec_insys.push(
+                    { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+                )
+            }
+        })
+        // console.log(ED_eec_T02)
+        // console.log(datelec_genelec_insys)
+        year_ED_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            if (i.year !== '2559') {
+                datelec_genelec_afsys.push(
+                    { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+                )
+            }
+        })
+        // console.log(ED_eec_T03)
+        // console.log(datelec_genelec_afsys)
+
+    })
+
+    //econ
+    let year_econ_T01 = []
+    let year_econ_T02 = []
+    let year_econ_T03 = []
+    let year_econ_T04 = []
+
+    let econ_eec_T01 = []
+    let econ_eec_T02 = []
+    let econ_eec_T03 = []
+    let econ_eec_T04 = []
+    await axios.post(url + "/forecast_eec/econ/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_econ_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/econ/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_econ_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/econ/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_econ_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/econ/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_econ_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/econ/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+        let eec_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "eec")
+
+        year_econ_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            datecon_tourist.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(econ_eec_T01)
+        // console.log(datecon_tourist)
+        year_econ_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            datecon_agri.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(econ_eec_T02)
+        // console.log(datecon_agri)
+        year_econ_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            datecon_industry.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(econ_eec_T03)
+        // console.log(datecon_industry)
+        year_econ_T04.map(i => {
+            let eec = eec_T04.filter(e => e.y_year == i.year)
+            datecon_sevice.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(econ_eec_T04)
+        // console.log(datecon_sevice)
+
+    })
+
+    //labor
+    let year_labor_T01 = []
+    let year_labor_T02 = []
+    let year_labor_T03 = []
+
+    let labor_eec_T01 = []
+    let labor_eec_T02 = []
+    let labor_eec_T03 = []
+    await axios.post(url + "/forecast_eec/labor/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_labor_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_labor_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_labor_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+
+        let eec24_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "24")
+        let eec20_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "20")
+        let eec21_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "21")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+
+        let eec24_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "24")
+        let eec20_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "20")
+        let eec21_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "21")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_labor_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            datlabor_minwage.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value) },
+            )
+
+        })
+        // console.log(labor_eec_T01)
+        // console.log(datlabor_minwage)
+        year_labor_T02.map(i => {
+            let cs = eec24_T02.filter(e => e.y_year == i.year)
+            let cb = eec20_T02.filter(e => e.y_year == i.year)
+            let ry = eec21_T02.filter(e => e.y_year == i.year)
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            datlabor_employ.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(labor_eec_T02)
+        // console.log(datlabor_employ)
+        year_labor_T03.map(i => {
+            let cs = eec24_T03.filter(e => e.y_year == i.year)
+            let cb = eec20_T03.filter(e => e.y_year == i.year)
+            let ry = eec21_T03.filter(e => e.y_year == i.year)
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            datlabor_exert.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value), four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(labor_eec_T03)
+        // console.log(datlabor_exert)
+    })
+
+    //labor_edulevel
+    let year_LE = []
+    let year_LE_T01 = []
+    let year_LE_T02 = []
+    let year_LE_T03 = []
+    let year_LE_T04 = []
+    let year_LE_T05 = []
+
+    let LE_eec = []
+    let LE_eec_T01 = []
+    let LE_eec_T02 = []
+    let LE_eec_T03 = []
+    let LE_eec_T04 = []
+    let LE_eec_T05 = []
+    await axios.post(url + "/forecast_eec/labor_edulevel/years").then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/year", { code: 'T05' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_LE_T05.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/labor_edulevel/data").then(async (r) => {
+        let data = r.data.data
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+        let eec_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "eec")
+        let eec_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "eec")
+
+        year_LE.map(i => {
+            let T01 = eec_T01.filter(e => e.y_year == i.year)
+            let T02 = eec_T02.filter(e => e.y_year == i.year)
+            let T03 = eec_T03.filter(e => e.y_year == i.year)
+            let T04 = eec_T04.filter(e => e.y_year == i.year)
+            let T05 = eec_T05.filter(e => e.y_year == i.year)
+            datlabor_edulevel_all.push(
+                { category: `ปี ${i.year}`, first: Number(T01[0].v_value), second: Number(T02[0].v_value), third: Number(T03[0].v_value), four: Number(T04[0].v_value), fifth: Number(T05[0].v_value) },
+            )
+        })
+        // console.log(LE_eec)
+        // console.log(datlabor_edulevel_all)
+
+        year_LE_T01.map(i => {
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            datlabor_edulevel_M3.push(
+                { year: `${i.year}`, value: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(LE_eec_T01)
+        // console.log(datlabor_edulevel_M3)
+        year_LE_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            datlabor_edulevel_M6.push(
+                { year: `${i.year}`, value: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(LE_eec_T02)
+        // console.log(datlabor_edulevel_M6)
+        year_LE_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            datlabor_edulevel_profession.push(
+                { year: `${i.year}`, value: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(LE_eec_T03)
+        year_LE_T04.map(i => {
+            let eec = eec_T04.filter(e => e.y_year == i.year)
+            datlabor_edulevel_Bachelor.push(
+                { year: `${i.year}`, value: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(LE_eec_T04)
+        year_LE_T05.map(i => {
+            let eec = eec_T05.filter(e => e.y_year == i.year)
+            datlabor_edulevel_MoreBachelor.push(
+                { year: `${i.year}`, value: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(LE_eec_T05)
+        // console.log(datlabor_exert)
+    })
+
+    //waste_raffle
+    let year_WR_T01 = []
+    let year_WR_T02 = []
+    let year_WR_T03 = []
+
+    let WR_eec_T01 = []
+    let WR_eec_T02 = []
+    let WR_eec_T03 = []
+    await axios.post(url + "/forecast_eec/waste_raffle/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WR_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/waste_raffle/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WR_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/waste_raffle/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_WR_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/waste_raffle/data").then(async (r) => {
+        let data = r.data.data
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "eec")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "eec")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "eec")
+
+        year_WR_T01.map(i => {
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            datwaste_industry.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(WR_eec_T01)
+        // console.log(datwaste_industry)
+        year_WR_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            datwaste_infectious.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(WR_eec_T02)
+        // console.log(datwaste_infectious)
+        year_WR_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            datwaste_garbage.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(WR_eec_T03)
+        // console.log(datwaste_garbage)
+
+    })
+
+    //greenhouse_gas
+    let year_gg_T01 = []
+    let year_gg_T02 = []
+    let year_gg_T03 = []
+    let year_gg_T04 = []
+    let year_gg_T05 = []
+
+    let gg_eec_T01 = []
+    let gg_eec_T02 = []
+    let gg_eec_T03 = []
+    let gg_eec_T04 = []
+    let gg_eec_T05 = []
+    await axios.post(url + "/forecast_eec/greenhouse_gas/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_gg_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/greenhouse_gas/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_gg_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/greenhouse_gas/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_gg_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/greenhouse_gas/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_gg_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/greenhouse_gas/year", { code: 'T05' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_gg_T05.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/greenhouse_gas/data").then(async (r) => {
+        let data = r.data.data
+        let eec_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "TH")
+        let eec_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "TH")
+        let eec_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "TH")
+        let eec_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "TH")
+        let eec_T05 = r.data.data.filter(e => e.title_c == "T05" && e.prov_c == "TH")
+
+        year_gg_T01.map(i => {
+            let eec = eec_T01.filter(e => e.y_year == i.year)
+            datgas_energy.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(gg_eec_T01)
+        // console.log(datgas_energy)
+        year_gg_T02.map(i => {
+            let eec = eec_T02.filter(e => e.y_year == i.year)
+            datgas_waste.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+
+        })
+        // console.log(gg_eec_T02)
+        // console.log(datgas_waste)
+        year_gg_T03.map(i => {
+            let eec = eec_T03.filter(e => e.y_year == i.year)
+            datgas_industry.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(gg_eec_T03)
+        // console.log(datgas_industry)
+        year_gg_T04.map(i => {
+            let eec = eec_T04.filter(e => e.y_year == i.year)
+            datgas_agri.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(gg_eec_T04)
+        // console.log(datgas_agri)
+        year_gg_T05.map(i => {
+            let eec = eec_T05.filter(e => e.y_year == i.year)
+            datgas_all.push(
+                { category: `ปี ${i.year}`, four: Number(eec[0].v_value) },
+            )
+        })
+        // console.log(gg_eec_T05)
+        // console.log(datgas_all)
+
+
+    })
+
+    //landuse
+    let year_lu_T01 = []
+    let year_lu_T02 = []
+    let year_lu_T03 = []
+    let year_lu_T04 = []
+
+    let lu_eec_T01 = []
+    let lu_eec_T02 = []
+    let lu_eec_T03 = []
+    let lu_eec_T04 = []
+    await axios.post(url + "/forecast_eec/landuse/year", { code: 'T01' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_lu_T01.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/landuse/year", { code: 'T02' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_lu_T02.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/landuse/year", { code: 'T03' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_lu_T03.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/landuse/year", { code: 'T04' }).then(async (r) => {
+        let d = r.data.data
+        d.map(i => {
+            year_lu_T04.push({ year: i.y_year })
+        })
+    })
+    await axios.post(url + "/forecast_eec/landuse/data").then(async (r) => {
+        let data = r.data.data
+        let eec24_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "24")
+        let eec20_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "20")
+        let eec21_T01 = r.data.data.filter(e => e.title_c == "T01" && e.prov_c == "21")
+
+        let eec24_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "24")
+        let eec20_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "20")
+        let eec21_T02 = r.data.data.filter(e => e.title_c == "T02" && e.prov_c == "21")
+
+        let eec24_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "24")
+        let eec20_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "20")
+        let eec21_T03 = r.data.data.filter(e => e.title_c == "T03" && e.prov_c == "21")
+
+        let eec24_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "24")
+        let eec20_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "20")
+        let eec21_T04 = r.data.data.filter(e => e.title_c == "T04" && e.prov_c == "21")
+
+        year_lu_T01.map(i => {
+            let cs = eec24_T01.filter(e => e.y_year == i.year)
+            let cb = eec20_T01.filter(e => e.y_year == i.year)
+            let ry = eec21_T01.filter(e => e.y_year == i.year)
+            datlu_urban.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value) },
+            )
+        })
+        // console.log(lu_eec_T01)
+        // console.log(datlu_urban)
+
+        year_lu_T02.map(i => {
+            let cs = eec24_T02.filter(e => e.y_year == i.year)
+            let cb = eec20_T02.filter(e => e.y_year == i.year)
+            let ry = eec21_T02.filter(e => e.y_year == i.year)
+            datlu_industry.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value) },
+            )
+        })
+        // console.log(lu_eec_T02)
+        // console.log(datlu_industry)
+        year_lu_T03.map(i => {
+            let cs = eec24_T03.filter(e => e.y_year == i.year)
+            let cb = eec20_T03.filter(e => e.y_year == i.year)
+            let ry = eec21_T03.filter(e => e.y_year == i.year)
+            datlu_agri.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value) },
+            )
+        })
+        // console.log(lu_eec_T03)
+        // console.log(datlu_agri)
+        year_lu_T04.map(i => {
+            let cs = eec24_T04.filter(e => e.y_year == i.year)
+            let cb = eec20_T04.filter(e => e.y_year == i.year)
+            let ry = eec21_T04.filter(e => e.y_year == i.year)
+            datlu_envi.push(
+                { category: `ปี ${i.year}`, first: Number(cs[0].v_value), second: Number(cb[0].v_value), third: Number(ry[0].v_value) },
+            )
+        })
+        // console.log(lu_eec_T04)
+        // console.log(datlu_envi)
+
+    })
+
+
+
 }
-dataforecast_eec()
 
 let chart_all = (data, umit, divchart, color1, color2) => {
     // Themes begin
@@ -703,6 +1224,15 @@ let chart_all = (data, umit, divchart, color1, color2) => {
         series.tooltip.background.fill = am4core.color(color2);
         series.columns.template.stroke = am4core.color(color1);
         series.columns.template.fill = am4core.color(color1);
+
+        series.tooltip.label.adapter.add("text", function (text, target) {
+            if (target.dataItem && target.dataItem.valueY == 0) {
+                return "";
+            }
+            else {
+                return text;
+            }
+        });
 
         var bullet = series.bullets.push(new am4charts.LabelBullet())
         bullet.interactionsEnabled = false
@@ -761,16 +1291,16 @@ let chart_all = (data, umit, divchart, color1, color2) => {
     }
     chart.cursor = new am4charts.XYCursor()
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 let chart_by_prov = (data, umit, divchart) => {
     // $("#chartdiv2").removeAttr("style").css({ "width": "1200px", "height": "800px" })
@@ -871,16 +1401,16 @@ let chart_by_prov = (data, umit, divchart) => {
     }
     chart.cursor = new am4charts.XYCursor()
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 let chart_edu = (data, name, umit) => {
     am4core.useTheme(am4themes_animated);
@@ -945,16 +1475,16 @@ let chart_edu = (data, name, umit) => {
     // chart.scrollbarX = new am4core.Scrollbar();
     chart.cursor = new am4charts.XYCursor()
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 
 }
 $('#laboredu').on('change', function () {
@@ -1291,16 +1821,16 @@ let chartUW_by_prov = (data, umit, divchart) => {
         }
     }
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    // return { data: data };
+    // });
 }
 let chartUW_by_cat = (data, umit, divchart) => {
     // $("#chartdiv2").removeAttr("style").css({ "width": "1200px", "height": "800px" })
@@ -1388,16 +1918,16 @@ let chartUW_by_cat = (data, umit, divchart) => {
         }
     }
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 let chartUW_by_year = (data, umit, divchart) => {
     // $("#chartdiv2").removeAttr("style").css({ "width": "1200px", "height": "800px" })
@@ -1492,16 +2022,16 @@ let chartUW_by_year = (data, umit, divchart) => {
         }
     }
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 ///cardusewater
 $('#cardusewater').hide();
@@ -1714,16 +2244,16 @@ let chartUW_all = () => {
     createSeries("value2", "อุตสาหกรรม", "#DEAD54", "#D69929");
     createSeries("value3", "เกษตรกรรม", "#54DEAD", "#29D699");
     chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 }
 
 $('#btn_prapa_down').hide();

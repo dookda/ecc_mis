@@ -44,8 +44,8 @@ let map = L.map("map", {
   zoom: 8
 });
 
-const url = 'http://localhost:3700';
-// const url = "https://eec-onep.online:3700";
+// const url = 'http://localhost:3700';
+const url = "https://eec-onep.online:3700";
 
 let iconblue = L.icon({
   iconUrl: './marker/location-pin-blue.svg',
@@ -162,7 +162,7 @@ function showLegend() {
     div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
     div.innerHTML += '<img src="./marker/radar.png"  height="30px"></i><span>เรดาห์น้ำฝน</span><br>'
     div.innerHTML += `<button class="btn btn-sm" onClick="Puop()" id="PUOP">
-    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i>
   </button>`
     div.innerHTML += `<div id='PU'></div>`
     div.innerHTML += '<img src="./marker/location-pin-blue.svg"  height="30px"><span>จุดตรวจวัดคุณภาพอากาศ</span><br>'
@@ -191,7 +191,7 @@ hideLegend()
 function Puop() {
   $('#PUOP').hide()
   $('#PU').html(`<button class="btn btn-sm" onClick="Puclose()" id="PUCLOSE">
-  <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-up" aria-hidden="true"></i></button><br>
+  <span class="kanit">แหล่งกำเนิดมลพิษ</span><i class="fa fa-angle-double-down" aria-hidden="true"></i></button><br>
   <i style="background: #ff3769; border-radius: 1%;"></i><span>ตัวเมืองและย่านการค้า</span><br>
   <i style="background: #379eff; border-radius: 1%;"></i><span>ท่าเรือ</span><br>
   <i style="background: #ad71db; border-radius: 1%;"></i><span>นิคมอุตสาหกรรม</span><br>
@@ -201,11 +201,13 @@ function Puop() {
   <i style="background: #7ae3ff; border-radius: 1%;"></i><span>สถานที่เพาะเลี้ยงสัตว์น้ำ</span><br>
   <i style="background: #000988; border-radius: 1%;"></i><span>สถานที่ราชการและสถาบันต่าง ๆ</span><br>
   <i style="background: #f9b310; border-radius: 1%;"></i><span>สถานีบริการน้ำมัน</span><br>
-  <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`)
+  <i style="background: #984700; border-radius: 1%;"></i><span>หมู่บ้าน/ที่ดินจัดสรรร้าง</span><br></div>`).slideDown();
 }
 function Puclose() {
   $('#PUOP').show()
-  $('#PU').html('')
+  $('#PU').html('').slideUp(function () {
+    $('#PU').show();
+  });
 }
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
   collapsed: true
@@ -237,16 +239,43 @@ var lc = L.control.locate({
 
 lc.start();
 
+let prov_n, amp_n, tam_n
+$('#Hc_pat').html('ทุกจังหวัด')
 $("#pro").on("change", function () {
   getPro(this.value)
   zoomExtent("pro", this.value)
+
+  prov_n = $('#pro').children("option:selected").text()
+  if (this.value == 'eec') {
+    $("#pro_tn").html($('#pro').children("option:selected").text())
+    $('#Hc_pat').html('ทุกจังหวัด')
+    $('#chartparamiter').hide();
+  } else {
+    $("#pro_tn").html('จังหวัด' + $('#pro').children("option:selected").text())
+    $('#Hc_pat').html(`จ.${prov_n}`)
+    $('#chartparamiter').show();
+  }
+
+
 });
 $("#amp").on("change", function () {
-  getAmp(this.value)
-  zoomExtent("amp", this.value)
+  if (this.value !== "eec") {
+    getAmp(this.value)
+    zoomExtent("amp", this.value)
+
+    amp_n = $('#amp').children("option:selected").text()
+    $("#amp_tn").html('อำเภอ' + $('#amp').children("option:selected").text())
+    $('#Hc_pat').html(`อ.${amp_n} จ.${prov_n}`)
+  }
 });
 $("#tam").on("change", function () {
-  zoomExtent("tam", this.value)
+  if (this.value !== "eec") {
+    zoomExtent("tam", this.value)
+    $("#tam_tn").html('ตำบล' + $('#tam').children("option:selected").text())
+
+    tam_n = $('#tam').children("option:selected").text()
+    $('#Hc_pat').html(`ต.${tam_n} อ.${amp_n} จ.${prov_n}`)
+  }
 });
 
 let zoomExtent = (lyr, code) => {
@@ -260,7 +289,7 @@ let zoomExtent = (lyr, code) => {
     let geom = JSON.parse(r.data.data[0].geom)
     var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
 
-    console.log(lyr, code);
+    // console.log(lyr, code);
 
     $("#tab").dataTable().fnDestroy();
     showDataTable({ col: lyr, val: code });
@@ -282,8 +311,8 @@ let zoomExtent = (lyr, code) => {
 let getPro = (procode) => {
   axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
     // console.log(r.data.data);
-    $("#amp").empty();
-    $("#tam").empty();
+    $("#amp").empty().append(`<option value="eec">เลือกอำเภอ</option>`);;
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);;
     r.data.data.map(i => {
       $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
     })
@@ -292,14 +321,14 @@ let getPro = (procode) => {
 
 let getAmp = (ampcode) => {
   axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
-    $("#tam").empty();
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
     r.data.data.map(i => {
       $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
     })
   })
 }
 
-let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th");
+let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
 let response = axios.get(url + '/eec-api/get-aqi');
 let responseAll = axios.get(url + '/eec-api/get-aqi-all');
 
@@ -387,7 +416,8 @@ let showDataTable = async (json) => {
         "sPrevious": "ก่อนหน้า",
         "sNext": "ถัดไป",
         "sLast": "สุดท้าย"
-      }
+      },
+      "emptyTable": "ไม่พบข้อมูล..."
     }
   });
   let table = $('#tab').DataTable({
@@ -398,10 +428,10 @@ let showDataTable = async (json) => {
       dataSrc: 'data'
     },
     columns: [
-      {
-        data: null,
-        "render": function (data, type, row) { return `<a type="button" href="#report-section" class="btn btn-margin btn-success" ><i class="bi bi-clipboard-data"></i> ดูข้อมูลย้อนหลัง</a>` }
-      },
+      // {
+      //   data: null,
+      //   "render": function (data, type, row) { return `<a type="button" href="#report-section" class="btn btn-margin btn-success" ><i class="bi bi-clipboard-data"></i> ดูข้อมูลย้อนหลัง</a>` }
+      // },
       { data: 'sta_id' },
       { data: 'sta_th' },
       // { data: 'area_th' },
@@ -434,10 +464,25 @@ let showDataTable = async (json) => {
         "render": function (data, type, row) { return Number(data.aqi).toFixed(1) }
       }
     ],
+    columnDefs: [
+      { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7, 8] },
+      // { "width": "10%", "targets": [0] },
+      // { "width": "100%", "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9] }
+      // {
+      //     'targets': 0,
+      //     'searchable': false,
+      //     'orderable': false,
+      //     'className': 'dt-body-center',
+      //     'render': function (data, type, full, meta) {
+      //         return '<input type="radio" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+      //     }
+      // }
+    ],
     dom: 'Bfrtip',
     buttons: [
       'excel', 'print'
     ],
+    scrollX: true,
     select: true,
     pageLength: 7,
     responsive: {
@@ -447,16 +492,18 @@ let showDataTable = async (json) => {
 
   table.on('search.dt', function () {
     resp = table.rows({ search: 'applied' }).data();
-    // getData(data);
+
+    getsta_2(resp);
     // console.log("resp");
     mapAQI()
+    $('#paramiter').prop('selectedIndex', 0);
   });
 
-  $('#tab tbody').on('click', 'tr', function () {
-    let data = table.row(this).data();
-    // console.log(data);
-    showChart(data)
-  });
+  // $('#tab tbody').on('click', 'tr', function () {
+  //   let data = table.row(this).data();
+  //   // console.log(data);
+  //   showChart(data)
+  // });
 
   // $('#tab tbody').on('click', 'tr', function () {
   //   let data = table.row(this).data();
@@ -470,10 +517,11 @@ let showDataTable = async (json) => {
   // });
 }
 
-
+$('#q1').hide();
 let mapAQI = async () => {
   $('#q1').hide();
   $('#imgaqi').show();
+  $('#Hc_p').text('ค่าดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
   // $("#variable").text('ดัชนีคุณภาพอากาศ (Air Quality Index : AQI)')
   rmLyr()
   // let d = await response;
@@ -560,6 +608,8 @@ let mapPM25 = async () => {
   $('#q1').show();
   $("#variable").text('ฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน (PM2.5)')
 
+  $('#Hc_p').text('ค่าฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน (PM2.5)')
+
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -644,7 +694,8 @@ let mapPM25 = async () => {
 let mapPM10 = async () => {
   $('#imgaqi').hide();
   $('#q1').show();
-  $("#variable").text('ฝุ่นละอองขนาดไม่เกิน 10 ไมครอน (PM10)')
+  // $("#variable").text('ฝุ่นละอองขนาดไม่เกิน 10 ไมครอน (PM10)')
+  $('#Hc_p').text('ค่าฝุ่นละอองขนาดไม่เกิน 10 ไมครอน (PM10)')
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -728,7 +779,8 @@ let mapPM10 = async () => {
 let mapO3 = async () => {
   $('#imgaqi').hide();
   $('#q1').show();
-  $("#variable").text('ก๊าซโอโซน (O3)')
+  // $("#variable").text('ก๊าซโอโซน (O3)')
+  $("#Hc_p").text('ค่าก๊าซโอโซน (O3)')
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -812,7 +864,9 @@ let mapO3 = async () => {
 let mapCO = async () => {
   $('#imgaqi').hide();
   $('#q1').show();
-  $("#variable").text('คาร์บอนมอนอกไซด์ (CO)')
+  // $("#variable").text('คาร์บอนมอนอกไซด์ (CO)')
+  $("#Hc_p").text('ค่าคาร์บอนมอนอกไซด์ (CO)')
+
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -896,7 +950,8 @@ let mapCO = async () => {
 let mapNO2 = async () => {
   $('#imgaqi').hide();
   $('#q1').show();
-  $("#variable").text('ก๊าซไนโตรเจนไดออกไซด์ (NO2)')
+  // $("#variable").text('ก๊าซไนโตรเจนไดออกไซด์ (NO2)')
+  $("#Hc_p").text('ค่าก๊าซไนโตรเจนไดออกไซด์ (NO2)')
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -980,7 +1035,8 @@ let mapNO2 = async () => {
 let mapSO2 = async () => {
   $('#imgaqi').hide();
   $('#q1').show();
-  $("#variable").text('ก๊าซซัลเฟอร์ไดออกไซด์ (SO2)')
+  // $("#variable").text('ก๊าซซัลเฟอร์ไดออกไซด์ (SO2)')
+  $("#Hc_p").text('ค่าก๊าซซัลเฟอร์ไดออกไซด์ (SO2)')
   rmLyr()
   // let d = await response;
   let datArr = [];
@@ -1088,6 +1144,11 @@ let barChart = (datArr, unit, title) => {
     return dy;
   });
 
+  let label = categoryAxis.renderer.labels.template;
+  label.truncate = true;
+  label.maxWidth = 150;
+  label.tooltipText = "{category}";
+
   var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
   valueAxis.title.text = title;
   valueAxis.title.fontWeight = 800;
@@ -1117,6 +1178,33 @@ let barChart = (datArr, unit, title) => {
     });
     return { data: data };
   });
+
+  var indicator;
+  function showIndicator() {
+    if (indicator) {
+      indicator.show();
+    }
+    else {
+      indicator = chart.tooltipContainer.createChild(am4core.Container);
+      indicator.background.fill = am4core.color("#fff");
+      indicator.background.fillOpacity = 0.8;
+      indicator.width = am4core.percent(100);
+      indicator.height = am4core.percent(100);
+
+      var indicatorLabel = indicator.createChild(am4core.Label);
+      indicatorLabel.text = "ไม่พบข้อมูล...";
+      indicatorLabel.align = "center";
+      indicatorLabel.valign = "middle";
+      indicatorLabel.fontSize = 20;
+    }
+  }
+
+  chart.events.on("beforedatavalidated", function (ev) {
+    // console.log(ev.target.data)
+    if (ev.target.data.length == 0) {
+      showIndicator();
+    }
+  });
 }
 
 // let showHistoryChart = (id) => {
@@ -1127,7 +1215,8 @@ let barChart = (datArr, unit, title) => {
 // }
 
 let showChart = async (e) => {
-  $("#sta_name").text(`${e.sta_th} ${e.area_th}`)
+  // ${e.sta_th} 
+  $("#sta_name").text(`${e.area_th}`)
   let d = await axios.post(url + '/eec-api/get-hist', { sta_id: e.sta_id });
 
   let arrPM25 = [];
@@ -1186,13 +1275,13 @@ let showChart = async (e) => {
   $("#idxso2").text(so2)
   $("#idxaqi").text(aqi)
 
-  chartTemplate(arrPM25, "chart-pm25", pm25);
-  chartTemplate(arrPM10, "chart-pm10", pm10);
-  chartTemplate(arrO3, "chart-o3", o3);
-  chartTemplate(arrCO, "chart-co", co);
-  chartTemplate(arrNO2, "chart-no2", no2);
-  chartTemplate(arrSO2, "chart-so2", so2);
-  chartTemplate(arrAQI, "chart-aqi", aqi);
+  await chartTemplate(arrPM25, "chart-pm25", pm25);
+  await chartTemplate(arrPM10, "chart-pm10", pm10);
+  await chartTemplate(arrO3, "chart-o3", o3);
+  await chartTemplate(arrCO, "chart-co", co);
+  await chartTemplate(arrNO2, "chart-no2", no2);
+  await chartTemplate(arrSO2, "chart-so2", so2);
+  await chartTemplate(arrAQI, "chart-aqi", aqi);
 }
 
 let chartTemplate = (arrData, div, index) => {
@@ -1269,6 +1358,45 @@ let chartTemplate = (arrData, div, index) => {
     });
     return { data: data };
   });
+
+  chart.events.on('ready', async () => {
+    if (div == "chart-aqi") {
+      await $('#spin1').hide();
+      $('#Dechart').fadeIn("slow")
+
+      // await $('#spin1').hide(function () {
+      //   $('#Paramiterchart').fadeIn(100);
+
+      // });
+    }
+  });
+
+  var indicator;
+  function showIndicator() {
+    if (indicator) {
+      indicator.show();
+    }
+    else {
+      indicator = chart.tooltipContainer.createChild(am4core.Container);
+      indicator.background.fill = am4core.color("#fff");
+      indicator.background.fillOpacity = 0.8;
+      indicator.width = am4core.percent(100);
+      indicator.height = am4core.percent(100);
+
+      var indicatorLabel = indicator.createChild(am4core.Label);
+      indicatorLabel.text = "ไม่พบข้อมูล...";
+      indicatorLabel.align = "center";
+      indicatorLabel.valign = "middle";
+      indicatorLabel.fontSize = 20;
+    }
+  }
+
+  chart.events.on("beforedatavalidated", function (ev) {
+    // console.log(ev.target.data)
+    if (ev.target.data.length == 0) {
+      showIndicator();
+    }
+  });
 }
 
 // init aqi
@@ -1277,7 +1405,7 @@ loadHotspot()
 // getAvAQI()
 // showDataTable()
 showDataTable({ col: "pro", val: "eec" });
-showChart({ sta_id: '74t', sta_th: "ศูนย์ราชการจังหวัดระยอง", area_th: "ต.เนินพระ อ.เมือง, ระยอง" })
+// showChart({ sta_id: '74t', sta_th: "ศูนย์ราชการจังหวัดระยอง", area_th: "ต.เนินพระ อ.เมือง, ระยอง" })
 
 
 var apiData = {};
@@ -1384,3 +1512,58 @@ function showFrame(nextPosition) {
   changeRadarPosition(nextPosition);
   // changeRadarPosition(nextPosition + preloadingDirection, true);
 }
+$('#paramiter').on('change', function () {
+  var prov = $('#pro').val()
+  if (prov !== 'eec') {
+    if (this.value == "AQI") { mapAQI() }
+    else if (this.value == "PM25") { mapPM25() }
+    else if (this.value == "PM10") { mapPM10() }
+    else if (this.value == "O3") { mapO3() }
+    else if (this.value == "CO") { mapCO() }
+    else if (this.value == "NO2") { mapNO2() }
+    else if (this.value == "SO2") { mapSO2() }
+  } else {
+    $('#warningModal').modal('show')
+  }
+})
+
+let datafor_chart
+let getsta_2 = (data) => {
+  datafor_chart = data
+  $("#sta_name").hide();
+  $("#spin1").hide();
+  $("#Dechart").hide();
+
+  $("#sta_name2").empty().append(`<option value="eec">ทุกสถานีตรวจวัด</option>`);
+  data.map(i => {
+    $("#sta_name2").append(`<option value="${i.sta_id}">${i.sta_th}</option>`)
+  })
+}
+
+$("#spin1").hide();
+$("#Dechart").hide();
+$("#chartparamiter").hide();
+$('#sta_name2').on('change', function () {
+  if (this.value == "eec") {
+    $("#sta_name").text(``);
+    $("#sta_name").hide();
+    $("#Dechart").slideUp();
+    $("#spin1").slideUp();
+    // H1_close()
+    // H2_close()
+  } else {
+    $("#sta_name").show();
+    $("#spin1").slideDown();
+    $("#Dechart").hide();
+    // $('#Dechart1').hide();
+    // $('#spin1').show();
+
+    // $('#Dechart2').hide();
+    // $('#spin2').show();
+
+    let a = datafor_chart.filter(e => e.sta_id == this.value)
+    let data = a
+
+    showChart({ sta_id: data[0].sta_id, sta_th: data[0].sta_th, area_th: data[0].area_th })
+  }
+})
