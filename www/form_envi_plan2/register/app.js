@@ -1,5 +1,5 @@
-// const url = 'https://eec-onep.online:3700';
-const url = 'http://localhost:3700';
+const url = 'https://eec-onep.online:3700';
+// const url = 'http://localhost:3700';
 
 let login = () => {
     sessionStorage.clear();
@@ -55,7 +55,7 @@ $('#loginForm').submit(function (e) {
             organize: $("#organize").val() == "อื่นๆ" ? $("#organize_new").val() : $("#organize").val(),
             tel: $("#tel").val(),
             email: $("#email").val(),
-            auth: "editor",
+            auth: $("#auth").val(),
             assign: projArr
         }
     }

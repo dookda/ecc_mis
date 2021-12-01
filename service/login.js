@@ -16,7 +16,7 @@ app.post("/login-api/insert", async (req, res) => {
                 await eec.query(sql)
             }
 
-            if (d == 'assign') {
+            if (d == 'assign' && data[d].length > 0) {
                 let sql = `UPDATE eecprj_user SET assign=array[${data[d]}] WHERE uid='${uid}'`;
                 await eec.query(sql)
             }
@@ -60,7 +60,8 @@ app.post("/login-api/validate", (req, res) => {
 app.post("/login-api/getuser", (req, res) => {
     const { uid } = req.body;
     let uidql = `SELECT uid FROM eecprj_user WHERE uid='${uid}'`;
-    let sql = `SELECT uid, usrname, organize, tel, email FROM eecprj_user WHERE auth<>'admin'`;
+    // let sql = `SELECT uid, usrname, organize, tel, email FROM eecprj_user WHERE auth<>'admin'`;
+    let sql = `SELECT uid, usrname, organize, tel, email, auth FROM eecprj_user`;
     eec.query(uidql).then(x => {
         if (x.rows[0].uid == uid) {
             eec.query(sql).then(r => {

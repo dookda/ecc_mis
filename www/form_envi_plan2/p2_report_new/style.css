@@ -36,6 +36,7 @@ html, body {
 
 #map{
     height: 400px !important; 
+    z-index: 1;
 }
 
 .cboard{

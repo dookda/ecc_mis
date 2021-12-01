@@ -36,7 +36,7 @@ $('#loginForm').submit(function (e) {
     }
     if ($("#usrname").val() && $("#pass").val()) {
         axios.post(url + "/login-api/validate", obj).then(r => {
-            // console.log(r.data.data);
+            console.log(r.data.data);
             r.data.data.length > 0 ? gotoPage(r.data.data[0]) : $("#modal").modal('show');
         })
     } else {

@@ -8,7 +8,7 @@ let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-// console.log(uid, org);
+console.log(uid, org, typ);
 uid && org ? null : logout();
 
 if (typ == "admin") {
@@ -20,7 +20,6 @@ if (typ == "admin") {
 
 const url = "https://eec-onep.online:3700";
 // const url = "http://localhost:3700";
-// const url = 
 
 let drawnItems = new L.FeatureGroup();
 
@@ -35,12 +34,12 @@ let loadTable = () => {
 }
 
 let loadTable2 = () => {
-    axios.post(url + '/projmon2-api/getallproj', { org: org, typ: typ }).then(r => {
+    axios.post(url + '/projmon2-api/getallproj_new', { uid, typ }).then(r => {
         let dat = r.data.data
         getProc_stat(dat, "chart21");
         getOpert_stat(dat, "chart22");
-        getPrj_cate(dat, "chart23");
-        getBudget(dat, "chart25");
+        getPrj_cate_p2(dat, "chart23");
+        getBudget_p2(dat, "chart25");
     });
 }
 
@@ -126,6 +125,86 @@ let getBudget = async (x, div) => {
         cat: e,
         val: ev
     }]
+    // console.log(dat);
+    barChart(dat, div, "ล้านบาท")
+}
+
+
+let getPrj_cate_p2 = async (x, div) => {
+    let a = "ยุทธศาสตร์ที่ 1  การจัดการสิ่งแวดล้อมเพื่อชีวิตที่เป็นสุข"
+    let b = "ยุทธศาสตร์ที่ 2  การจัดการทรัพยากรธรรมชาติอย่างยั่งยืน"
+    let c = "ยุทธศาสตร์ที่ 3 การสร้างศักยภาพชุมชนพึ่งตนเองและรับมือต่อการเปลี่ยนแปลงสภาพภูมิอากาศและอุบัติภัย  "
+    let d = "ยุทธศาสตร์ที่ 4 การเพิ่มประสิทธิภาพการบริหารจัดการและกลไกการมีส่วนร่วมเพื่อขับเคลื่อนแผนสู่การปฏิบัติ "
+    let av = 0, bv = 0, cv = 0, dv = 0;
+
+    await x.map(i => {
+        // console.log(i);
+        if (i.p_strategy == a) {
+            av++
+        } else if (i.p_strategy == b) {
+            bv++
+        } else if (i.p_strategy == c) {
+            cv++
+        } else if (i.p_strategy == d) {
+            dv++
+        }
+    })
+    let dat = [{
+        cat: 'ยุทธศาสตร์ที่ 1',
+        val: a
+    }, {
+        cat: 'ยุทธศาสตร์ที่ 2',
+        val: bv
+    }, {
+        cat: 'ยุทธศาสตร์ที่ 3',
+        val: cv
+    }, {
+        cat: 'ยุทธศาสตร์ที่ 4',
+        val: dv
+    }]
+    barChart(dat, div, "จำนวนโครงการ")
+}
+
+let getBudget_p2 = async (x, div) => {
+    // console.log(x);
+    let a = "งบประมาณปี 2565";
+    let b = "งบประมาณปี 2566";
+    let c = "งบประมาณปี 2567";
+    let d = "งบประมาณปี 2568";
+    let e = "งบประมาณปี 2569";
+    let f = "งบประมาณปี 2570";
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0, fv = 0;
+
+    await x.map(i => {
+        // console.log(i);
+        av += Number(i.budg_65)
+        bv += Number(i.budg_66)
+        cv += Number(i.budg_67)
+        dv += Number(i.budg_68)
+        ev += Number(i.budg_69)
+        fv += Number(i.budg_70)
+    })
+
+    let dat = [{
+        cat: a,
+        val: av
+    }, {
+        cat: b,
+        val: bv
+    }, {
+        cat: c,
+        val: cv
+    }, {
+        cat: d,
+        val: dv
+    }, {
+        cat: e,
+        val: ev
+    }, {
+        cat: f,
+        val: fv
+    }]
+
     // console.log(dat);
     barChart(dat, div, "ล้านบาท")
 }

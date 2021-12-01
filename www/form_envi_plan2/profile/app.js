@@ -25,6 +25,7 @@ let getData = (uid) => {
         document.getElementById("organize").value = r.data.data[0].organize;
         document.getElementById("tel").value = r.data.data[0].tel;
         document.getElementById("email").value = r.data.data[0].email;
+        document.getElementById("auth").value = r.data.data[0].auth;
     })
 }
 getData(uid);
@@ -38,7 +39,8 @@ let update = () => {
             organize: document.getElementById("organize").value,
             // organize: $("#organize_new").val() != "",
             tel: document.getElementById("tel").value,
-            email: document.getElementById("email").value
+            email: document.getElementById("email").value,
+            auth: document.getElementById("auth").value
         }
     }
     console.log(obj);

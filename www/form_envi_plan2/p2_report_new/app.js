@@ -6,12 +6,11 @@ let usrname = sessionStorage.getItem('usrname');
 
 sessionStorage.removeItem("pid");
 
-
 let logout = () => {
     sessionStorage.clear();
     location.href = "./../login/index.html";
 }
-// console.log(uid, typ, org);
+console.log(uid, typ, org, usrname);
 
 uid && org ? null : logout();
 
@@ -100,7 +99,7 @@ let loadTable = () => {
         ajax: {
             type: "POST",
             url: url + '/projmon2-api/getallproj_new',
-            data: { org: org, typ: typ },
+            data: { uid, typ },
             dataSrc: 'data'
         },
         columns: [
@@ -205,61 +204,58 @@ let getMap = (x) => {
 }
 
 let getPrj_cate = async (x) => {
-    let a = "Flagship"
-    let b = "ยุทธศาสตร์ที่ 1"
-    let c = "ยุทธศาสตร์ที่ 2"
-    let d = "ยุทธศาสตร์ที่ 3"
-    let e = "ยุทธศาสตร์ที่ 4"
-    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
+    let a = "ยุทธศาสตร์ที่ 1  การจัดการสิ่งแวดล้อมเพื่อชีวิตที่เป็นสุข"
+    let b = "ยุทธศาสตร์ที่ 2  การจัดการทรัพยากรธรรมชาติอย่างยั่งยืน"
+    let c = "ยุทธศาสตร์ที่ 3 การสร้างศักยภาพชุมชนพึ่งตนเองและรับมือต่อการเปลี่ยนแปลงสภาพภูมิอากาศและอุบัติภัย  "
+    let d = "ยุทธศาสตร์ที่ 4 การเพิ่มประสิทธิภาพการบริหารจัดการและกลไกการมีส่วนร่วมเพื่อขับเคลื่อนแผนสู่การปฏิบัติ "
+    let av = 0, bv = 0, cv = 0, dv = 0;
 
     await x.map(i => {
         // console.log(i);
-        if (i.prj_cate == a) {
+        if (i.p_strategy == a) {
             av++
-        } else if (i.prj_cate == b) {
+        } else if (i.p_strategy == b) {
             bv++
-        } else if (i.prj_cate == c) {
+        } else if (i.p_strategy == c) {
             cv++
-        } else if (i.prj_cate == d) {
+        } else if (i.p_strategy == d) {
             dv++
-        } else if (i.prj_cate == e) {
-            ev++
         }
     })
     let dat = [{
-        cat: a,
-        val: av
+        cat: 'ยุทธศาสตร์ที่ 1',
+        val: a
     }, {
-        cat: b,
+        cat: 'ยุทธศาสตร์ที่ 2',
         val: bv
     }, {
-        cat: c,
+        cat: 'ยุทธศาสตร์ที่ 3',
         val: cv
     }, {
-        cat: d,
+        cat: 'ยุทธศาสตร์ที่ 4',
         val: dv
-    }, {
-        cat: e,
-        val: ev
     }]
     barChart(dat, "chart1", "จำนวนโครงการ")
 }
 
 let getBudget = async (x) => {
-    let a = "งบประมาณปี 2561";
-    let b = "งบประมาณปี 2562";
-    let c = "งบประมาณปี 2563";
-    let d = "งบประมาณปี 2564";
-    let e = "งบประมาณปี 2565";
-    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0;
+    // console.log(x);
+    let a = "งบประมาณปี 2565";
+    let b = "งบประมาณปี 2566";
+    let c = "งบประมาณปี 2567";
+    let d = "งบประมาณปี 2568";
+    let e = "งบประมาณปี 2569";
+    let f = "งบประมาณปี 2570";
+    let av = 0, bv = 0, cv = 0, dv = 0, ev = 0, fv = 0;
 
     await x.map(i => {
         // console.log(i);
-        av += Number(i.budg_61)
-        bv += Number(i.budg_62)
-        cv += Number(i.budg_63)
-        dv += Number(i.budg_64)
-        ev += Number(i.budg_65)
+        av += Number(i.budg_65)
+        bv += Number(i.budg_66)
+        cv += Number(i.budg_67)
+        dv += Number(i.budg_68)
+        ev += Number(i.budg_69)
+        fv += Number(i.budg_70)
     })
 
     let dat = [{
@@ -277,6 +273,9 @@ let getBudget = async (x) => {
     }, {
         cat: e,
         val: ev
+    }, {
+        cat: f,
+        val: fv
     }]
 
     // console.log(dat);

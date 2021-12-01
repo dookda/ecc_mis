@@ -80,17 +80,16 @@ app.post("/projmon2-api/prj_detail", (req, res) => {
     })
 })
 
-app.post("/projmon2-api/getallproj", (req, res) => {
-    const { prj_operat } = req.body;
-    sql = `SELECT * FROM eecprj_mon_phase2`;
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
-
-
+// app.post("/projmon2-api/getallproj", (req, res) => {
+//     const { uid, type } = req.body;
+//     console.log(uid, type);
+//     let sql = `SELECT * FROM eecprj_mon_phase2`;
+//     eec.query(sql).then(r => {
+//         res.status(200).json({
+//             data: r.rows
+//         })
+//     })
+// })
 
 app.post("/projmon2-api/getuserproj", (req, res) => {
     const { prj_operat } = req.body;
@@ -111,7 +110,6 @@ app.post("/projmon2-api/getuserproj", (req, res) => {
         })
     })
 })
-
 
 app.post("/projmon2-api/getuserproj", (req, res) => {
     const { prj_operat } = req.body;
@@ -172,13 +170,31 @@ app.get("/projmon2-api/getuser", async (req, res) => {
 
 
 app.post("/projmon2-api/getallproj_new", (req, res) => {
-    const { prj_operat } = req.body;
-    sql = `SELECT * FROM eecprj_mon_phase2new`;
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
+    const { uid, typ } = req.body;
+    if (typ == "admin") {
+        sql = `SELECT * FROM eecprj_mon_phase2new`;
+        eec.query(sql).then(r => {
+            res.status(200).json({
+                data: r.rows
+            })
         })
-    })
+    } else if (typ == "editor") {
+        let sql = `SELECT assign FROM eecprj_user WHERE uid='${uid}'`;
+        let selRow = ''
+        eec.query(sql).then(r => {
+            r.rows[0].assign.map((i, j) => {
+                j < r.rows[0].assign.length - 1 ? selRow += `pid='${i}' OR ` : selRow += `pid='${i}'`
+            })
+
+            let sql2 = `SELECT * FROM eecprj_mon_phase2new WHERE ${selRow}`;
+            eec.query(sql2).then(x => {
+                res.status(200).json({
+                    data: x.rows
+                })
+            })
+        })
+    }
+
 })
 
 app.post("/projmon2-api/getdetail_new", (req, res) => {
@@ -200,17 +216,15 @@ app.post("/projmon2-api/insertdata_new", async (req, res) => {
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom' && d !== "pid") {
             let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${pid}'`
-            await eec.query(sql)
-            // console.log(sql);
+            await eec.query(sql);
         }
     }
 
     if (data.geom !== "") {
         let sql = `UPDATE eecprj_mon_phase2new 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
-                    WHERE pid='${pid}'`
-        // console.log(sql);
-        await eec.query(sql)
+                    WHERE pid='${pid}'`;
+        await eec.query(sql);
     } else {
         let sql = `UPDATE eecprj_mon_phase2new 
                     SET geom=NULL
@@ -229,20 +243,20 @@ app.post("/projmon2-api/updatedata_new", async (req, res) => {
     for (let d in data) {
         if (data[d] !== '' && d !== 'geom' && d !== "pid") {
             let sql = `UPDATE eecprj_mon_phase2new SET ${d}='${data[d]}' WHERE pid='${data.pid}'`
-            await eec.query(sql)
+            await eec.query(sql);
             console.log(sql);
         }
     }
     if (data.geom !== "") {
         let sql = `UPDATE eecprj_mon_phase2new 
                     SET geom=ST_GeomfromGeoJSON('${JSON.stringify(data.geom.geometry)}')
-                    WHERE pid='${data.pid}'`
-        await eec.query(sql)
+                    WHERE pid='${data.pid}'`;
+        await eec.query(sql);
     } else {
         let sql = `UPDATE eecprj_mon_phase2new 
                     SET geom=NULL
-                    WHERE pid='${data.pid}'`
-        await eec.query(sql)
+                    WHERE pid='${data.pid}'`;
+        await eec.query(sql);
     }
     res.status(200).json({
         data: "success"

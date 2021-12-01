@@ -30,6 +30,7 @@ $(document).ready(function () {
             { data: 'organize', width: "30%" },
             { data: 'tel' },
             { data: 'email' },
+            { data: 'auth' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
