@@ -299,7 +299,7 @@ let getAmp = (ampcode) => {
   })
 }
 
-let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
+let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th");
 let response = axios.get(url + '/eec-api/get-aqi');
 let responseAll = axios.get(url + '/eec-api/get-aqi-all');
 
