@@ -19,7 +19,6 @@ app.post("/login-api/insert", async (req, res) => {
     eec.query(sql).then(async () => {
         let d;
         for (d in data) {
-            console.log(d, data[d]);
             if (data[d] !== '' && d !== 'assign') {
                 let sql = `UPDATE eecprj_user SET ${d}='${data[d]}' WHERE uid='${uid}'`;
                 await eec.query(sql)
@@ -27,7 +26,6 @@ app.post("/login-api/insert", async (req, res) => {
 
             if (d == 'assign') {
                 let sql = `UPDATE eecprj_user SET assign=array[${data[d]}] WHERE uid='${uid}'`;
-                console.log(sql);
                 await eec.query(sql)
             }
         }
