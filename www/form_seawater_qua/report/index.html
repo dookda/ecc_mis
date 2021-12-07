@@ -94,7 +94,7 @@
                 <div class="section-title">
                     <h2>ระบบรายงานสถานการณ์คุณภาพน้ำทะเลและชายฝั่ง</h2>
                     <p>
-                        ระบบรายงานสถานการณ์คุณภาพน้ำทะเลและชายฝั่งเป็นการแสดงผลข้อมูลสถิติคุณภาพของน้ำทะเลและชายฝั่งที่จัดเก็บและวิเคราะห์โดยกรมควบคุมมลพิษและสำนักงานสิ่งแวดล้อมภาคที่
+                        ระบบรายงานสถานการณ์คุณภาพน้ำทะเลและชายฝั่งเป็นการแสดงผลข้อมูลสถิติคุณภาพของน้ำทะเลและชายฝั่งที่จัดเก็บและวิเคราะห์โดยสำนักงานสิ่งแวดล้อมภาคที่
                         13 (ชลบุรี)
                         ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถเรียกดูข้อมูลสถิติของพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                     </p>
@@ -109,7 +109,7 @@
                             <div class="col-sm-4 form-group">
                                 <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
                                 <select class="form-control" id="prov">
-                                    <option value="ทุกจังหวัด">ทุกจังหวัด</option>
+                                    <option value="eec">ทุกจังหวัด</option>
                                     <option value="24">ฉะเชิงเทรา</option>
                                     <option value="20">ชลบุรี</option>
                                     <option value="21">ระยอง</option>
@@ -142,18 +142,22 @@
                         </div>
 
                         <div class="row" style="margin-left: 1%; color: darkgrey;">
-                            หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทะเลและชายฝั่งไม่อยู่ในเกณฑ์มาตรฐาน </div>
+                            <span>หมายเหตุ: <span id="criterion"></span> </span>
+                        </div>
                         <div class="row" style="margin-left: 1%;">
                             อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
-                                href="http://pcd.go.th/info_serv/reg_std_water02.html">กรมควบคุมมลพิษ</a>
+                                href="https://www.pcd.go.th/laws/%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%81%e0%b8%b2%e0%b8%a8%e0%b8%84%e0%b8%93%e0%b8%b0%e0%b8%81%e0%b8%a3%e0%b8%a3%e0%b8%a1%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%aa%e0%b8%b4%e0%b9%88%e0%b8%87%e0%b9%81%e0%b8%a7%e0%b8%94%e0%b8%a5%e0%b9%89%e0%b8%ad%e0%b8%a1%e0%b9%81%e0%b8%ab%e0%b9%88%e0%b8%87%e0%b8%8a%e0%b8%b2%e0%b8%95%e0%b8%b4-%e0%b9%80%e0%b8%a3%e0%b8%b7%e0%b9%88%e0%b8%ad%e0%b8%87-%e0%b8%81%e0%b8%b3%e0%b8%ab%e0%b8%99%e0%b8%94%e0%b8%a1%e0%b8%b2%e0%b8%95%e0%b8%a3%e0%b8%90%e0%b8%b2%e0%b8%99%e0%b8%84%e0%b8%b8%e0%b8%93%e0%b8%a0%e0%b8%b2%e0%b8%9e%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%97%e0%b8%b0%e0%b9%80%e0%b8%a5/">กรมควบคุมมลพิษ</a>
                         </div>
                         <br>
                     </div>
                 </div>
 
-                <h5>ตำแหน่งรายงานคุณภาพน้ำทะเล</h5>
                 <div class="card">
-                    <div id="map"></div>
+                    <div class="card-body">
+                        <h5>ตำแหน่งรายงานคุณภาพน้ำทะเล</h5>
+                        <hr>
+                        <div id="map"></div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -203,98 +207,103 @@
                     </div>
                 </div>
 
-                <div id="chartdiv">
-                    <label for="">ที่ได้จากการตรวจวัด</label>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_do"></div>
+                <div class="card" id="chartdiv">
+                    <div class="card-body">
+                        <h5>ค่าที่ได้จากการตรวจวัดที่ <span id="sta_name"></span></h5>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_do"></div>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_tcb"></div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_tcb"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_po43p"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_po43p"></div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_no3n"></div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_temp"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_ss"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_ph"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_nh3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_mwqi"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="sqchart" id="sq_pb"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-left: 1%; color: darkgrey;">
+                            <span>หมายเหตุ: <span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง
+                                ค่าคุณภาพน้ำทะเลและชายฝั่งไม่อยู่ในเกณฑ์มาตรฐาน </span>
+                        </div>
+                        <div class="row" style="margin-left: 1%;">
+                            อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
+                                href="https://www.pcd.go.th/laws/%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%81%e0%b8%b2%e0%b8%a8%e0%b8%84%e0%b8%93%e0%b8%b0%e0%b8%81%e0%b8%a3%e0%b8%a3%e0%b8%a1%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%aa%e0%b8%b4%e0%b9%88%e0%b8%87%e0%b9%81%e0%b8%a7%e0%b8%94%e0%b8%a5%e0%b9%89%e0%b8%ad%e0%b8%a1%e0%b9%81%e0%b8%ab%e0%b9%88%e0%b8%87%e0%b8%8a%e0%b8%b2%e0%b8%95%e0%b8%b4-%e0%b9%80%e0%b8%a3%e0%b8%b7%e0%b9%88%e0%b8%ad%e0%b8%87-%e0%b8%81%e0%b8%b3%e0%b8%ab%e0%b8%99%e0%b8%94%e0%b8%a1%e0%b8%b2%e0%b8%95%e0%b8%a3%e0%b8%90%e0%b8%b2%e0%b8%99%e0%b8%84%e0%b8%b8%e0%b8%93%e0%b8%a0%e0%b8%b2%e0%b8%9e%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%97%e0%b8%b0%e0%b9%80%e0%b8%a5/">กรมควบคุมมลพิษ</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_no3n"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_temp"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_ss"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_ph"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_nh3"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_mwqi"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="sqchart" id="sq_pb"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-left: 1%; color: darkgrey;">
-                        หมายเหตุ: สีแดง หมายถึง ค่าคุณภาพน้ำทะเลและชายฝั่งไม่อยู่ในเกณฑ์มาตรฐาน </div>
-                    <div class="row" style="margin-left: 1%;">
-                        อ้างอิงจากเกณฑ์ของดัชนีคุณภาพน้ำของประเทศไทย <a
-                            href="http://pcd.go.th/info_serv/reg_std_water02.html">กรมควบคุมมลพิษ</a></div>
                 </div>
                 <hr>
                 <div class="container">
                     <div class="row" style="align-items: baseline; margin-left: -2px; margin-bottom: -10px;">
                         <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
-                        <P>กรมควบคุมมลพิษและสำนักงานสิ่งแวดล้อมภาคที่ 13 (ชลบุรี) ปี2563</P>
+                        <P>สำนักงานสิ่งแวดล้อมภาคที่ 13 (ชลบุรี) ปี2563</P>
                     </div>
                 </div>
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
@@ -353,7 +362,61 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="warningModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-square-fill text-warning mr-2"
+                            style="font-size: 26px;"></i>แจ้งเตือน
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">
+                        <b>กรุณาเพิ่มข้อมูลคุณภาพน้ำทะเลและชายฝั่ง</b><br>ตอนนี้ระบบยังไม่มีข้อมูลคุณภาพน้ำทะเลและชายฝั่งของท่าน
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning"
+                        onclick="location.href='./../add/index.html';">เพิ่มข้อมูล</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>

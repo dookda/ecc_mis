@@ -20,7 +20,7 @@ if (fromAdmin) {
     link = "./../report/index.html"
 }
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
@@ -47,7 +47,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -56,7 +56,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -65,7 +65,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -88,7 +88,7 @@ var overlayMap = {
 
 L.control.layers(baseMap, overlayMap).addTo(map);
 
-let geom = null;
+let geom = "";
 let dataurl = "";
 
 map.on('click', (e) => {
@@ -140,40 +140,86 @@ axios.post(url + "/sq-api/getone", { sq_id: sq_id }).then(r => {
     }
 })
 
-let sendData = () => {
-    const obj = {
-        sq_id: sq_id,
-        data: {
-            usrid: urid,
-            usrname: urname,
-            // sq_spname: $('#sq_spname').val(),
-            sq_date: $('#sq_date').val(),
-            sq_time: $('#sq_time').val(),
-            sq_order: $('#sq_order').val(),
-            sta_loc: $('#sta_loc').val(),
-            // pro: $('#pro').val(),
-            // amp: $('#amp').val(),
-            // tam: $('#tam').val(),
-            sq_do: $('#sq_do').val(),
-            sq_tcb: $('#sq_tcb').val(),
-            sq_po43p: $('#sq_po43p').val(),
-            sq_no3n: $('#sq_no3n').val(),
-            sq_temp: $('#sq_temp').val(),
-            sq_ss: $('#sq_ss').val(),
-            sq_ph: $('#sq_ph').val(),
-            sq_nh3: $('#sq_nh3').val(),
-            sq_mwqi: $('#sq_mwqi').val(),
-            sq_pb: $('#sq_pb').val(),
-            // img: dataurl ? dataurl : dataurl = '',
-            geom: geom ? geom.toGeoJSON().geometry : null
-        }
+$('#sq_date').on("input", function () {
+    if (this.value == '') {
+        $("#sq_date").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sq_date").removeClass("is-invalid")
+        console.log("true")
     }
-    // console.log(obj.data);
-    axios.post(url + "/sq-api/update", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
-        sessionStorage.removeItem('sq_id');
-    })
-    return false;
+})
+$('#sq_time').on("input", function () {
+    if (this.value == '') {
+        $("#sq_time").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sq_time").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#sta_loc').on("input", function () {
+    if (this.value == '') {
+        $("#sta_loc").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#sta_loc").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
+let sendData = () => {
+    if ($('#sq_date').val() == "" || $('#sq_time').val() == "" || $('#sta_loc').val() == "") {
+        $("#errormodal").modal("show")
+        if ($('#sq_date').val() == "") {
+            $("#sq_date").addClass("is-invalid")
+        }
+        if ($('#sq_time').val() == "") {
+            $("#sq_time").addClass("is-invalid")
+        }
+        if ($('#sta_loc').val() == "") {
+            $("#sta_loc").addClass("is-invalid")
+        }
+    } else if ($('#sq_date').val() !== "" || $('#sq_time').val() !== "" || $('#sta_loc').val() !== "") {
+        const obj = {
+            sq_id: sq_id,
+            data: {
+                usrid: urid,
+                usrname: urname,
+                // sq_spname: $('#sq_spname').val(),
+                sq_date: $('#sq_date').val(),
+                sq_time: $('#sq_time').val(),
+                sq_order: $('#sq_order').val(),
+                sta_loc: $('#sta_loc').val(),
+                // pro: $('#pro').val(),
+                // amp: $('#amp').val(),
+                // tam: $('#tam').val(),
+                sq_do: $('#sq_do').val(),
+                sq_tcb: $('#sq_tcb').val(),
+                sq_po43p: $('#sq_po43p').val(),
+                sq_no3n: $('#sq_no3n').val(),
+                sq_temp: $('#sq_temp').val(),
+                sq_ss: $('#sq_ss').val(),
+                sq_ph: $('#sq_ph').val(),
+                sq_nh3: $('#sq_nh3').val(),
+                sq_mwqi: $('#sq_mwqi').val(),
+                sq_pb: $('#sq_pb').val(),
+                // img: dataurl ? dataurl : dataurl = '',
+                geom: geom ? geom.toGeoJSON().geometry : null
+            }
+        }
+        // console.log(obj.data);
+
+        if (geom != "") {
+            axios.post(url + "/sq-api/update", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+                sessionStorage.removeItem('sq_id');
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
+    }
 }
 
 let gotoReport = () => {

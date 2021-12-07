@@ -2,18 +2,23 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_seawater_qua = sessionStorage.getItem('f_seawater_qua');
+$("#usrname").text(urname);
+urid ? null : $("#noauth").modal("show");
 
-if (f_seawater_qua == 'false') {
+// if (f_seawater_qua == 'false') {
+//     $("#noauth").modal("show")
+//     // location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
-
-var L61 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__61_sea_eec&maxFeatures=50&outputFormat=application%2Fjson'
+var L61 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__61_sea_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
 
-const url = "https://eec-onep.online:3700";
-// const url = 'http://localhost:3700';
+// const url = "https://eec-onep.online/api";
+const url = 'http://localhost:3700';
 
 
 let latlng = {
@@ -41,7 +46,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -50,7 +55,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -59,7 +64,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -67,17 +72,17 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-// const seaeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const seaeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__61_sea_eec',
 //     format: 'image/png',
 //     transparent: true,
 // });
-const mangrovelu = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const mangrovelu = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__39_mangrovelu',
     format: 'image/png',
     transparent: true,
 });
-const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pollution = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__81_pollution_group',
     format: 'image/png',
     transparent: true,
@@ -287,13 +292,14 @@ let loadTable = (type, dat) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
-            url: url + '/sq-api/getdata',
+            url: url + '/sq-api/getdata/user',
             data: { type, dat, usrid: urid },
             dataSrc: 'data'
         },
@@ -301,16 +307,14 @@ let loadTable = (type, dat) => {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return `
-                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>`
+                    return `<button class="btn btn-margin btn-info" onclick="getDetail(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.sq_id},'${row.sta_loc}','${row.date}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                     //    <button class="btn btn-margin btn-success" onclick="getChart(${row.sq_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
                 }
             },
             {
                 data: '',
                 render: (data, type, row, meta) => {
-                    // console.log(meta.row);
                     return `${meta.row + 1}`
                 }
             },
@@ -351,14 +355,14 @@ let loadTable = (type, dat) => {
 
 
 let getMarker = (d) => {
-    console.log(d)
+    // console.log(d)
     map.eachLayer(i => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
 
     let mg = L.layerGroup();
     d.map(i => {
-        console.log(i);
+        // console.log(i);
         if (i.geojson) {
             let json = JSON.parse(i.geojson);
             // console.log(json)
@@ -380,6 +384,7 @@ let getDetail = (e) => {
     location.href = "./../detail/index.html";
 }
 
+
 let geneChart = (arr, div, tt, unit, min, max, value) => {
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create(div, am4charts.XYChart);
@@ -389,8 +394,11 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
 
     var title = chart.titles.create();
     title.text = tt;
-    title.fontSize = 18;
-    title.marginBottom = 5;
+    // title.align = "center";
+    title.fontSize = 14;
+    title.marginBottom = 12;
+    title.fontWeight = 600;
+    title.paddingLeft = 50;
 
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "cat";
@@ -405,8 +413,8 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     axis.title.text = unit;
     axis.title.rotation = 270;
     axis.title.align = "center";
-    axis.title.valign = "top";
-    axis.title.dy = 40;
+    // axis.title.valign = "top";
+    // axis.title.dy = 40;
 
     // Create series
     function createSeries(field, name) {
@@ -444,21 +452,52 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.menu.align = "left";
     chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
+    // chart.exporting.adapter.add("data", function (data, target) {
 
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+            indicatorLabel.paddingLeft = 50;
+        }
+    }
+
+
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log()
+        let data = ev.target.data
+        if (data[0].value == null) {
+            showIndicator();
+        }
     });
 }
 
 let getDataByPro = (code) => {
-    console.log(code);
+    // console.log(code);
     let sq_pro
     if (code == "20") {
         sq_pro = "ชลบุรี"
@@ -474,7 +513,7 @@ let getDataByPro = (code) => {
     let sq_mwqi = [];
 
     axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
-        console.log(r.data.data)
+        // console.log(r.data.data)
         await r.data.data.map(i => {
             sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
             sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
@@ -503,7 +542,11 @@ let lineChart = (div, data, label, unit, min1, max1, min2, max2,) => {
 
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
+    chart.dateFormatter.dateFormat = "dd/MM/yyyy";
 
+    data.sort(function (a, b) {
+        return new Date(b.cat) - new Date(a.cat);
+    });
     // Add data
     chart.data = data;
 
@@ -542,7 +585,7 @@ let lineChart = (div, data, label, unit, min1, max1, min2, max2,) => {
     })
 
     var bullet2 = series.bullets.push(new am4charts.Bullet());
-    bullet2.tooltipText = `{dateX} : [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
+    bullet2.tooltipText = `วันที่ {dateX} : [bold]{valueY.formatNumber('###,###,###.##')} ${unit}[/]`;
     bullet2.adapter.add("fill", function (fill, target) {
         if (target.dataItem.valueY > min2) {
             return am4core.color("#e53935");
@@ -587,28 +630,30 @@ let lineChart = (div, data, label, unit, min1, max1, min2, max2,) => {
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.menu.align = "left";
     chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
+    // chart.events.on('ready', () => {
+    //     $("#chartall").slideDown();
+    // });
 }
 // dateAxis.start = 0.50;
 // dateAxis.keepSelection = true;
 
 
 let provStation = (prov) => {
-    axios.post(url + "/sq-api/getstation", { prov }).then(r => {
-        // console.log(r);
+    axios.post(url + "/sq-api/getstation", { prov, type: "user", usrid: urid }).then(r => {
+        // console.log(r.data.data);
         var data = r.data.data.filter(e => e.sta_loc !== null);
-
         $("#parameter").empty();
-        $("#sta").empty().append('<option value="">เลือก</option>');
+        $("#sta").empty().append('<option value="ทุกสถานีตรวจวัดค่า">เลือก</option>');
         data.map(i => {
             $("#sta").append(`<option value="${i.sta_loc}">${i.sta_loc}</option>`)
         })
@@ -630,6 +675,7 @@ let callData = (val) => {
         loadTable("ทุกจังหวัด", "ทุกจังหวัด");
 
         provStation(prov_n)
+        $('#chartall').hide();
     } else {
         $('#chartall').hide();
         zoomExtent("pro", val)
@@ -641,9 +687,10 @@ let callData = (val) => {
     }
 }
 
-$('#chartall').hide();
+$("#chartall").hide();
 $("#prov").change(function () {
     callData(this.value)
+    $("#chartall").slideUp();
 })
 $("#sta").change(function () {
     let sta_n = $("#sta").children("option:selected").text()
@@ -655,6 +702,7 @@ $("#sta").change(function () {
     }
     // zoomsta(sta_n)
 
+    $("#chartall").slideUp();
     $("#parameter").empty().append(
         `<option>เลือก</option>
         <option value="MWQI">MWQI</option>
@@ -665,7 +713,28 @@ $("#sta").change(function () {
 
 })
 $("#parameter").on("change", function () {
-    callChart()
+    let parameter_n = $('#parameter').children("option:selected").text()
+    let parameter = this.value;
+    if (parameter_n !== 'เลือก') {
+        callChart();
+
+
+        if (parameter == "MWQI") {
+            $('#criterion').empty().html(`ค่า MWQI ไม่กำหนดเกณฑ์มาตรฐาน`);
+        }
+        else if (parameter == "PH") {
+            $('#criterion').empty().html(`<span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง ค่าความเป็นกรด-ด่าง ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 7 - 8.5`);
+        }
+        else if (parameter == "NN") {
+            $('#criterion').empty().html(`<span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง ค่าไนเตรด-ไนโตรเจน ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 60`);
+        }
+        else if (parameter == "FF") {
+            $('#criterion').empty().html(`<span style="color: #B30D02; font-weight: bold;"> สีแดง </span> หมายถึง ค่าฟอสเฟต-ฟอสฟอรัส ไม่อยู่ในเกณฑ์มาตรฐานช่วงที่ 0 - 45`);
+        }
+    } else {
+        $('#chartall').slideUp();
+        $('#criterion').empty().text(`ค่าคุณภาพน้ำทะเลและชายฝั่งไม่อยู่ในเกณฑ์มาตรฐาน`);
+    }
 })
 
 let callChart = () => {
@@ -681,7 +750,7 @@ let callChart = () => {
     let sq_ph = [];
     let sq_mwqi = [];
     if (sta_n == "ทุกสถานีตรวจวัดค่า" && sq_pro !== "ทุกจังหวัด") {
-        $("#chartall").show();
+        $("#chartall").slideDown();
         $('#staname').html(` ${parameter_n} ของจังหวัด${sq_pro} `)
         axios.post(url + "/sq-api/getsummarize", { sq_pro: sq_pro }).then(async (r) => {
             // console.log(r.data.data)
@@ -705,9 +774,9 @@ let callChart = () => {
             }
         })
     } else if (sta_n !== "ทุกสถานีตรวจวัดค่า" && sq_pro !== "ทุกจังหวัด") {
-        $("#chartall").show();
+        $("#chartall").slideDown();
         $('#staname').html(` ${parameter_n} ของสถานีตรวจวัด${sq_sta} จังหวัด${sq_pro} `)
-        axios.post(url + "/sq-api/getdatabysta", { sta: sta_n }).then((r) => {
+        axios.post(url + "/sq-api/getdatabysta", { sta: sta_n, type: "user", usrid: urid }).then((r) => {
             r.data.data.map(i => {
                 sq_po43p.push({ cat: i.sq_date, dat: i.sq_po43p ? Number(i.sq_po43p) : null });
                 sq_no3n.push({ cat: i.sq_date, dat: i.sq_no3n ? Number(i.sq_no3n) : null });
@@ -760,11 +829,11 @@ let layermark = (Url, Nlayer) => {
     if (Nlayer == 61) {
         axios.get(Url).then((r) => {
             var d = r.data.features
-            // console.log(r.data.features);
+            // console.log(r);
             ms61 = L.layerGroup()
             d.map(i => {
                 if (i.properties) {
-                    m61 = L.circleMarker([i.geometry.coordinates[1], i.geometry.coordinates[0]], {
+                    m61 = L.circleMarker([i.properties.lat, i.properties.lng], {
                         radius: 8,
                         fillColor: "#2febc9",
                         color: "#232323",
@@ -774,13 +843,13 @@ let layermark = (Url, Nlayer) => {
                     })
                         .bindPopup(`<h6><b>สถานี :</b> ${i.properties.station_n}</h6><h6><b>จังหวัด :</b> ${i.properties.prov}</h6> <h6><b>ค่าที่ตรวจวัดได้ :</b> ${i.properties.value}</h6>`)
                     // .addTo(map);
-                    m61.on("click", function () {
-                        dtable.search(i.properties.station_n).draw();
-                    })
+                    // m61.on("click", function () {
+                    //     dtable.search(i.properties.station_n).draw();
+                    // })
                 }
                 ms61.addLayer(m61);
             })
-            ms61.addTo(map)
+            // ms61.addTo(map)
             lyrControl.addOverlay(ms61, "จุดวัดคุณภาพน้ำทะเล")
         });
     }
@@ -789,6 +858,7 @@ let layermark = (Url, Nlayer) => {
 let zoomsta = (sta) => {
     axios.get(L61).then((r) => {
         var d = r.data.features
+        // console.log(d)
         d.map(i => {
             if (i.properties.station_n == sta) {
                 var popup = L.popup()
@@ -808,17 +878,48 @@ let zoomsta = (sta) => {
 
 let stationList = (data) => {
     // console.log(data);
-    $("#station").empty()
-    data.map(i => $("#station").append(`<option value="${i.sq_id}">${i.sta_loc} ${i.date !== null ? "(วันที่" + i.date + ")" : ''}<option>`))
+    $("#station").empty().append(`<option value="eec">เลือกสถานี/จุดตรวจวัด</option>`);
+    data.map(i => $("#station").append(`<option value="${i.sq_id}">${i.sta_loc} ${i.date !== null ? "(วันที่" + i.date + ")" : ''}</option>`))
 }
 
 $("#station").on("change", function () {
-    getChart(this.value)
-})
+    if (this.value !== 'eec') {
+        getChart(this.value)
 
+        let station = $('#station').children("option:selected").text()
+        $('#sta_name').text(station)
+    } else {
+        $("#chartdiv").hide();
+    }
+
+})
 
 $(document).ready(() => {
     callData("eec")
+    axios.post(url + '/sq-api/getdata/user', { type: "ทุกจังหวัด", dat: "ทุกจังหวัด", usrid: urid }).then(r => {
+        let d = r.data.data
+        if (d.length == 0) {
+            // $("#warningModal").modal("show")
+        }
+    })
     // loadTable("ทุกจังหวัด", "ทุกจังหวัด");
-    // layermark(L61, 61)
+    layermark(L61, 61)
+    checkdata()
 });
+
+
+let checkdata = async () => {
+    await axios.post(url + '/sq-api/getdata/user', { type: "ทุกจังหวัด", dat: "ทุกจังหวัด", usrid: urid }).then(r => {
+        let d = r.data.data
+        if (f_seawater_qua == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
+        }
+    })
+}

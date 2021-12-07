@@ -8,6 +8,8 @@ if (eecauth !== "admin" && eecauth !== "user") {
     location.href = "./../../form_register/login/index.html";
 }
 
+console.log(urid, eecauth)
+
 sessionStorage.removeItem('biodiversity_proj_gid');
 
 $(document).ready(() => {

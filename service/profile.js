@@ -4,6 +4,7 @@ const con = require("./db");
 const eec = con.eec;
 
 const nodemailer = require("nodemailer");
+// const nodemailer = require('../lib/nodemailer');
 
 app.post("/profile-api/register", async (req, res) => {
     const { data } = req.body;
@@ -125,7 +126,7 @@ app.post("/profile-api/resetmail", async (req, res) => {
 
         if (r.rows.length > 0) {
             let newpass = Date.now()
-            await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
+            // await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
 
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -223,6 +224,26 @@ app.post("/profile-api/approvedmail", async (req, res) => {
 //     i++
 // }, 3000);
 
+const main = async () => {
+    const sgMail = require('@sendgrid/mail')
+    sgMail.setApiKey('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')
+    const msg = {
+        to: 'sakda.homhuan@gmail.com', // Change to your recipient
+        from: 'sakda.homhuan@gmail.com', // Change to your verified sender
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+// main()
 
 
 module.exports = app;

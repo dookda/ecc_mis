@@ -13,7 +13,7 @@ $("#usrname").text(urname);
 //     location.href = "./../../form_register/login/index.html";
 // }
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -41,21 +41,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -161,7 +161,7 @@ let sendData = () => {
                 sq_time: $('#sq_time').val(),
                 sq_order: $('#sq_order').val(),
                 sta_loc: $('#sta_loc').val(),
-                // pro: $('#pro').val(),
+                pro: $('#pro').val(),
                 // amp: $('#amp').val(),
                 // tam: $('#tam').val(),
                 sq_do: $('#sq_do').val(),
@@ -178,7 +178,6 @@ let sendData = () => {
                 geom: geom == "" ? "" : geom.toGeoJSON()
             }
         }
-        // console.log(obj.data);
 
         if (geom != "") {
             axios.post(url + "/sq-api/insert", obj).then((r) => {

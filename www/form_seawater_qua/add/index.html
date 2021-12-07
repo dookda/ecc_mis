@@ -111,7 +111,8 @@
                 <div class="container-fluid">
                     <hr>
                     <h3>แผนที่</h3>
-                    <h6>กรุณาคลิกที่แผนที่เพื่อนำเข้าตำแหน่งที่ตรวจวัดคุณภาพน้ำทะเลและชายฝั่ง</h6>
+                    <h6>กรุณาคลิกที่แผนที่เพื่อนำเข้าตำแหน่งที่ตรวจวัดคุณภาพน้ำทะเลและชายฝั่ง<label style="color: red;"
+                            for="">*</label></h6>
                     <div class="card mt-1 p-0">
                         <div id="map"></div>
                     </div>
@@ -148,6 +149,16 @@
                                 <div class="invalid-feedback">
                                     *ระบุสถานที่ตรวจวัด
                                 </div>
+                            </div>
+
+                            <div class="col-sm">
+                                <label for="sta_loc">เลือกจังหวัด:</label><label style="color: red;" for="">*</label>
+
+                                <select class="form-control mb-2" id="pro">
+                                    <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                                    <option value="ชลบุรี">ชลบุรี</option>
+                                    <option value="ระยอง">ระยอง</option>
+                                </select>
                             </div>
 
 
