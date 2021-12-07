@@ -2,18 +2,25 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
 
 if (eecauth !== "admin" && eecauth !== "office") {
+    urid ? null : $("#noauth").modal("show");
+    // location.href = "./../../form_register/login/index.html";
+}
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
-var L79 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__79_stationwaste_eec&maxFeatures=50&outputFormat=application%2Fjson'
+
+var L79 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__79_stationwaste_eec&maxFeatures=50&outputFormat=application%2Fjson'
 $(document).ready(() => {
     loadTable()
     layermark(L79, 79)
 });
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 
@@ -42,7 +49,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -51,7 +58,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -60,7 +67,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -68,12 +75,12 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const classtrasheec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const classtrasheec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__78_classtrash_eec',
     format: 'image/png',
     transparent: true,
 });
-// const stationwasteeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const stationwasteeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__79_stationwaste_eec',
 //     format: 'image/png',
 //     transparent: true,
@@ -109,7 +116,7 @@ function showLegend() {
         div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-color:#beb297 ; border-style: solid; border-width: 2px;"></i><span>พื้นที่บริหารจัดการขยะมูลฝอย</span><br>';
         div.innerHTML += '<img src="./img/statwast.png"  height="30px"><span>ศูนย์กำจัดขยะ</span><br>';
-        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งหน่วยงานที่รายงานปริมาณขยะ</span><br>';
         return div;
     };
     legend.addTo(map);
@@ -135,7 +142,16 @@ let refreshPage = () => {
 
 let confirmDelete = (sq_id, prj_name, prov, year) => {
     $("#projId").val(sq_id)
-    $("#projName").text(`${prj_name} จ.${prov}`)
+    if (prov == "20") {
+        $("#projName").text(`${prj_name} จ.ชลบุรี`)
+    }
+    else if (prov == "21") {
+        $("#projName").text(`${prj_name} จ.ระยอง`)
+    }
+    else if (prov == "24") {
+        $("#projName").text(`${prj_name} จ.ฉะเชิงเทรา`)
+    }
+    else { $("#projName").text(`${prj_name} จ.${prov}`) }
     if (year !== null) {
         $("#projTime").text(`ปี ${year}`)
     }
@@ -183,7 +199,7 @@ let geneChart = (div, data) => {
         series.sequencedInterpolation = true;
         series.dataFields.valueY = "val";
         series.dataFields.categoryX = "cat";
-        series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+        series.tooltipText = "{categoryX}: [bold]{valueY} ตัน/วัน[/]";
         series.columns.template.strokeWidth = 0;
 
         series.tooltip.pointerOrientation = "vertical";
@@ -217,14 +233,13 @@ let geneChart = (div, data) => {
     });
 }
 
-$("#chartdiv").hide()
 function getChart(gb_id) {
     // console.log(gb_id);
     let obj = {
         gb_id: gb_id
     }
     axios.post(url + "/gb-api/getone", obj).then((r) => {
-        $("#chartdiv").show();
+        $("#chartdiv").slideDown().show();
         $("#year").text(`ปี ${r.data.data[0].year}`);
         $("#Cyear").text(` ${r.data.data[0].dla} จ.${r.data.data[0].prov} ปี ${r.data.data[0].year}`);
         $("#staDetail").text(`${r.data.data[0].dla} จ.${r.data.data[0].prov}`);
@@ -277,7 +292,7 @@ let getMarker = (d) => {
             }
         });
         ms.addTo(map)
-        lyrControl.addOverlay(ms, "ตำแหน่งนำเข้าข้อมูล")
+        lyrControl.addOverlay(ms, "ตำแหน่งหน่วยงานที่รายงานปริมาณขยะ")
     }
 }
 let dtable
@@ -298,7 +313,8 @@ let loadTable = () => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     dtable = $('#myTable').DataTable({
@@ -310,6 +326,17 @@ let loadTable = () => {
         },
         columns: [
             // { data: 'prj_name' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                       <button class="btn btn-margin btn-info" onclick="getDetail(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>
+                       <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gb_id},'${row.dla}','${row.prov}','${row.year}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                       `
+                    //    <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                }
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -325,19 +352,9 @@ let loadTable = () => {
             { data: 'amt_benf' },
             { data: 'was_ncor' },
             { data: 'usrname' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.gb_id},'${row.dla}','${row.prov}','${row.year}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูรายละเอียด</button>`
-                }
-            }
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7, 8] },
+            { className: 'text-center', targets: [0, 1, 3, 4, 5, 6, 7, 8] },
         ],
         searching: true,
         scrollX: true,
@@ -351,14 +368,16 @@ let loadTable = () => {
         // console.log(data);
         showChart(data)
         getMarker(data);
+        stationlist(data)
         // loadBiotype(data);
         // loadBiopro(data);
     });
-    getChart(1897);
+    // getChart(1897);
 }
 
 let getDetail = (e) => {
     sessionStorage.setItem('garbage_id', e);
+    sessionStorage.setItem('garbage_from_admin', 'yes');
     location.href = "./../detail/index.html";
 }
 
@@ -476,7 +495,7 @@ let compareChart = (div, data, label, unit) => {
     series2.name = "ชลบุรี";
     series2.minBulletDistance = 10;
     // series2.strokeDasharray = "3,4";
-    series2.tooltipText = "{valueY}";
+    series2.tooltipText = "{valueY} ตัน/ปี";
     series2.showOnInit = true;
 
     // Create series
@@ -486,7 +505,7 @@ let compareChart = (div, data, label, unit) => {
     series3.strokeWidth = 2;
     series3.name = "ระยอง";
     series3.strokeDasharray = "3,4";
-    series3.tooltipText = "{valueY}";
+    series3.tooltipText = "{valueY} ตัน/ปี";
     series3.showOnInit = true;
 
     // Create series
@@ -496,7 +515,7 @@ let compareChart = (div, data, label, unit) => {
     series4.strokeWidth = 2;
     series4.name = "ฉะเชิงเทรา ";
     series4.strokeDasharray = "6,7";
-    series4.tooltipText = "{valueY}";
+    series4.tooltipText = "{valueY} ตัน/ปี";
     series4.showOnInit = true;
 
     var bullet2 = series2.bullets.push(new am4charts.CircleBullet());
@@ -587,17 +606,17 @@ $('#prov').on("change", function () {
     if (pro !== "ทุกจังหวัด") {
         dtable.search(pro).draw();
         getstation(pro)
+        $('#H_mwqichart').empty().append(`ปริมาณขยะของจ.${pro} ที่เกิดขึ้นรายปี`);
     } else {
         dtable.search('').draw();
         getstation("eec")
+        $('#H_mwqichart').empty().append(`ปริมาณขยะที่เกิดขึ้นรายปี`);
     }
 
 })
 $('#amp').on("change", function () {
     getAmp(this.value)
     zoomExtent("amp", this.value)
-
-
     // let amp = $("#amp").children("option:selected").text()
     // dtable.search(amp).draw();
 })
@@ -608,8 +627,15 @@ $('#tam').on("change", function () {
     // dtable.search(tam).draw();
 })
 $('#sta').on("change", function () {
-    dtable.search(this.value).draw();
-    getChart2(this.value)
+    if (this.value !== "staall") {
+        dtable.search(this.value).draw();
+        getChart2(this.value)
+        let sta = $("#sta").children("option:selected").text()
+        $('#H_mwqichart').empty().append(`ปริมาณขยะของ${sta} ที่เกิดขึ้นรายปี`);
+    } else {
+        dtable.search('').draw();
+        $('#H_mwqichart').empty().append(`ปริมาณขยะที่เกิดขึ้นรายปี`);
+    }
 })
 
 let zoomExtent = (lyr, code) => {
@@ -644,17 +670,37 @@ let getAmp = (ampcode) => {
     })
 }
 let getstation = (Pcode) => {
+    let pro = $("#prov").children("option:selected").text()
     if (Pcode == "eec") {
         $("#sta").empty().append(`<option value="staall">ทุกอปท.</option>`);
     }
     else {
-        $("#sta").empty();
+        $("#sta").empty().append(`<option value="staall">ทุกอปท.</option>`);
     }
     axios.post(url + `/gb-api/getstation`, { prov: Pcode }).then(r => {
         var data = r.data.data.filter(e => e.dla !== null);
-        data.map(i => {
-            $("#sta").append(`<option value="${i.dla}">${i.dla}</option>`)
-        })
+        if (Pcode == 'eec') {
+            data.map(i => {
+                // $("#sta").append(`<option value="${i.dla}">${i.dla} ${i.prov !== null ? "(จ." + i.prov + ")" : ''}</option>`)
+
+                if (i.prov == '24') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ฉะเชิงเทรา)</option>`)
+                } else if (i.prov == '20') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ชลบุรี)</option>`)
+                } else if (i.prov == '21') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ระยอง)</option>`)
+                } else if (i.prov == null) {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} </option>`)
+                }
+                else {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.${i.prov})</option>`)
+                }
+            })
+        } else {
+            data.map(i => {
+                $("#sta").append(`<option value="${i.dla}">${i.dla} (จ.${pro})</option>`)
+            })
+        }
     })
 }
 getstation("eec")
@@ -665,7 +711,7 @@ function getChart2(dla) {
     }
     axios.post(url + "/gb-api/getonebysta", obj).then((r) => {
         // console.log(r.data.data)
-        $("#chartdiv").show();
+        $("#chartdiv").hide();
         $("#year").text(`ปี ${r.data.data[0].year}`);
         $("#Cyear").text(` ${r.data.data[0].dla} จ.${r.data.data[0].prov} ปี ${r.data.data[0].year}`);
         $("#staDetail").text(`${r.data.data[0].dla} จ.${r.data.data[0].prov}`);
@@ -696,3 +742,30 @@ function getChart2(dla) {
         ]);
     })
 }
+
+let stationlist = (data) => {
+    $('#station').empty().append(`<option value="eec">เลือกอปท.</option>`)
+    $('#chartdiv').slideUp("slow")
+    data.map(i => {
+        if (i.prov == '24') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ฉะเชิงเทรา ปี${i.year})</option>`)
+        } else if (i.prov == '20') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ชลบุรี ปี${i.year})</option>`)
+        } else if (i.prov == '21') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ระยอง ปี${i.year})</option>`)
+        } else {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.${i.prov} ปี${i.year})</option>`)
+        }
+    })
+}
+$('#chartdiv').hide();
+$('#station').on("change", function () {
+    if (this.value !== "eec") {
+        getChart(this.value)
+    } else {
+        $('#chartdiv').slideUp("slow")
+
+    }
+})
+
+// data.map(i => $("#station").append(<option value="${i.sq_id}">${i.sta_loc} ${i.date !== null ? "(วันที่" + i.date + ")" : ''}<option>))

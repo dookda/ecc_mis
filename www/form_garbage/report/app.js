@@ -2,20 +2,27 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_garbage = sessionStorage.getItem('f_garbage');
+$("#usrname").text(urname);
 
-if (f_garbage == 'false') {
+urid ? null : $("#noauth").modal("show");
+// urid ? null : location.href = "./../../form_register/login/index.html";
+// if (f_garbage == 'false') {
+// $("#noauth").modal("show")
+//     location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
-
-var L79 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__79_stationwaste_eec&maxFeatures=50&outputFormat=application%2Fjson'
-$(document).ready(() => {
-    loadTable()
+var L79 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__79_stationwaste_eec&maxFeatures=50&outputFormat=application%2Fjson'
+$(document).ready(async () => {
+    await checkdata();
+    loadTable();
     layermark(L79, 79)
 });
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -43,7 +50,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -52,7 +59,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -61,7 +68,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -69,12 +76,12 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const classtrasheec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const classtrasheec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__78_classtrash_eec',
     format: 'image/png',
     transparent: true,
 });
-// const stationwasteeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const stationwasteeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__79_stationwaste_eec',
 //     format: 'image/png',
 //     transparent: true,
@@ -110,7 +117,7 @@ function showLegend() {
         div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-color:#beb297 ; border-style: solid; border-width: 2px;"></i><span>พื้นที่บริหารจัดการขยะมูลฝอย</span><br>';
         div.innerHTML += '<img src="./img/statwast.png"  height="30px"><span>ศูนย์กำจัดขยะ</span><br>';
-        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งนำเข้าข้อมูล</span><br>';
+        div.innerHTML += '<img src="./img/Mark.png" width="10px"><span>ตำแหน่งหน่วยงานที่รายงานปริมาณขยะ</span><br>';
         return div;
     };
     legend.addTo(map);
@@ -136,7 +143,17 @@ let refreshPage = () => {
 
 let confirmDelete = (sq_id, prj_name, prov, year) => {
     $("#projId").val(sq_id)
-    $("#projName").text(`${prj_name} จ.${prov}`)
+    if (prov == "20") {
+        $("#projName").text(`${prj_name} จ.ชลบุรี`)
+    }
+    else if (prov == "21") {
+        $("#projName").text(`${prj_name} จ.ระยอง`)
+    }
+    else if (prov == "24") {
+        $("#projName").text(`${prj_name} จ.ฉะเชิงเทรา`)
+    }
+    else { $("#projName").text(`${prj_name} จ.${prov}`) }
+
     if (year !== null) {
         $("#projTime").text(`ปี ${year}`)
     }
@@ -184,7 +201,7 @@ let geneChart = (div, data) => {
         series.sequencedInterpolation = true;
         series.dataFields.valueY = "val";
         series.dataFields.categoryX = "cat";
-        series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+        series.tooltipText = "{categoryX}: [bold]{valueY} ตัน/วัน [/]";
         series.columns.template.strokeWidth = 0;
 
         series.tooltip.pointerOrientation = "vertical";
@@ -292,9 +309,9 @@ let getMarker = (d) => {
         }
     });
     ms.addTo(map)
-    lyrControl.addOverlay(ms, "ตำแหน่งนำเข้าข้อมูล")
+    lyrControl.addOverlay(ms, "ตำแหน่งหน่วยงานที่รายงานปริมาณขยะ")
 }
-
+let dtable
 let loadTable = () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -312,11 +329,12 @@ let loadTable = () => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     // console.log(urid);
-    let dtable = $('#myTable').DataTable({
+    dtable = $('#myTable').DataTable({
         ajax: {
             type: "POST",
             url: url + '/gb-api/getownerdata',
@@ -325,6 +343,17 @@ let loadTable = () => {
         },
         columns: [
             // { data: 'prj_name' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    // console.log(data);
+                    return `
+                    <button class="btn btn-margin btn-info" onclick="getDetail(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>   
+                    <button class="btn btn-margin btn-danger" onclick="confirmDelete(${row.gb_id},'${row.dla}','${row.prov}','${row.year}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
+                    `
+                    //    <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
+                }
+            },
             {
                 data: '',
                 render: (data, type, row, meta) => {
@@ -346,20 +375,10 @@ let loadTable = () => {
             { data: 'amt_coll' },
             { data: 'amt_benf' },
             { data: 'was_ncor' },
-            { data: 'usrname' },
-            {
-                data: null,
-                render: function (data, type, row, meta) {
-                    // console.log(data);
-                    return `
-                       <button class="btn btn-margin btn-outline-danger" onclick="confirmDelete(${row.gb_id},'${row.dla}','${row.prov}','${row.year}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>
-                       <button class="btn btn-margin btn-outline-success" onclick="getChart(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แสดงกราฟ</button>
-                       <button class="btn btn-margin btn-outline-info" onclick="getDetail(${row.gb_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;ดูรายละเอียด</button>`
-                }
-            }
+            // { data: 'usrname' },
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 2, 3, 4, 5, 6, 7, 8] },
+            { className: 'text-center', targets: [0, 1, 3, 4, 5, 6, 7, 8] },
         ],
         searching: true,
         scrollX: true,
@@ -375,7 +394,8 @@ let loadTable = () => {
         getMarker(data);
         // loadBiotype(data);
         // loadBiopro(data);
-        getChart(data[0].gb_id);
+        stationlist(data)
+        // getChart(data[0].gb_id);
     });
 }
 
@@ -543,7 +563,7 @@ let compareChart = (div, data, label, unit) => {
     series2.name = "ชลบุรี";
     series2.minBulletDistance = 10;
     // series2.strokeDasharray = "3,4";
-    series2.tooltipText = "{valueY}";
+    series2.tooltipText = "{name} : {valueY} ตัน/ปี";
     series2.showOnInit = true;
 
     // Create series
@@ -553,7 +573,7 @@ let compareChart = (div, data, label, unit) => {
     series3.strokeWidth = 2;
     series3.name = "ระยอง";
     series3.strokeDasharray = "3,4";
-    series3.tooltipText = "{valueY}";
+    series3.tooltipText = "{name} : {valueY} ตัน/ปี";
     series3.showOnInit = true;
 
     // Create series
@@ -563,7 +583,7 @@ let compareChart = (div, data, label, unit) => {
     series4.strokeWidth = 2;
     series4.name = "ฉะเชิงเทรา ";
     series4.strokeDasharray = "6,7";
-    series4.tooltipText = "{valueY}";
+    series4.tooltipText = "{name} : {valueY} ตัน/ปี";
     series4.showOnInit = true;
 
     var bullet2 = series2.bullets.push(new am4charts.CircleBullet());
@@ -645,14 +665,133 @@ let layermark = (Url, Nlayer) => {
 
 }
 
+let stationlist = (data) => {
+    $('#station').empty().append(`<option value="eec">เลือกอปท.</option>`)
+    $('#chartdiv').slideUp("slow")
+    data.map(i => {
+        if (i.prov == '24') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ฉะเชิงเทรา ปี${i.year})</option>`)
+        } else if (i.prov == '20') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ชลบุรี ปี${i.year})</option>`)
+        } else if (i.prov == '21') {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.ระยอง ปี${i.year})</option>`)
+        } else {
+            $('#station').append(`<option value="${i.gb_id}">${i.dla} (จ.${i.prov} ปี${i.year})</option>`)
+        }
+    })
+}
+$('#chartdiv').hide();
+$('#station').on("change", function () {
+    if (this.value !== "eec") {
+        getChart(this.value)
+    } else {
+        $('#chartdiv').slideUp("slow")
 
+    }
+})
 
+$("#prov").on('change', function () {
+    getstation(this.value)
+})
+$("#sta").on('change', function () {
+    // getstation(this.value)
+    if (this.value !== "staall") {
+        dtable.search(this.value).draw();
+        let sta = $("#sta").children("option:selected").text()
+        getChart2(this.value)
+        $('#H_mwqichart').empty().append(`ปริมาณขยะของ${sta} ที่เกิดขึ้นรายปี`);
+    } else {
+        dtable.search('').draw();
+        $('#H_mwqichart').empty().append(`ปริมาณขยะที่เกิดขึ้นรายปี`);
+    }
+})
+let getstation = (Pcode) => {
+    let pro = $("#prov").children("option:selected").text()
+    if (Pcode == "eec") {
+        $("#sta").empty().append(`<option value="staall">ทุกอปท.</option>`);
+    }
+    else {
+        $("#sta").empty().append(`<option value="staall">ทุกอปท.</option>`);
+    }
+    axios.post(url + `/gb-api/getstation/user`, { prov: Pcode, userid: urid }).then(r => {
+        var data = r.data.data.filter(e => e.dla !== null);
+        if (Pcode == 'eec') {
+            data.map(i => {
+                // $("#sta").append(`<option value="${i.dla}">${i.dla} ${i.prov !== null ? "(จ." + i.prov + ")" : ''}</option>`)
 
+                if (i.prov == '24') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ฉะเชิงเทรา)</option>`)
+                } else if (i.prov == '20') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ชลบุรี)</option>`)
+                } else if (i.prov == '21') {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.ระยอง)</option>`)
+                } else if (i.prov == null) {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} </option>`)
+                }
+                else {
+                    $('#sta').append(`<option value="${i.dla}">${i.dla} (จ.${i.prov})</option>`)
+                }
+            })
+        } else {
+            data.map(i => {
+                $("#sta").append(`<option value="${i.dla}">${i.dla} (จ.${pro})</option>`)
+            })
+        }
+    })
+}
+getstation("eec")
 
+function getChart2(dla) {
+    // console.log(gb_id);
+    let obj = {
+        sta: dla
+    }
+    axios.post(url + "/gb-api/getonebysta", obj).then((r) => {
+        // console.log(r.data.data)
+        $("#chartdiv").hide();
+        $("#year").text(`ปี ${r.data.data[0].year}`);
+        $("#Cyear").text(` ${r.data.data[0].dla} จ.${r.data.data[0].prov} ปี ${r.data.data[0].year}`);
+        $("#staDetail").text(`${r.data.data[0].dla} จ.${r.data.data[0].prov}`);
+        $("#populace").text(`${r.data.data[0].populace ? (r.data.data[0].populace).toLocaleString() : "-"}`);
+        $("#amtwas").text(`${r.data.data[0].amt_was ? r.data.data[0].amt_was : "-"}`);
+        // console.log(r.data.data[0]);
+        geneChart("gbDetail", [
+            { "cat": "ปริมาณขยะที่เกิดขึ้น", "val": r.data.data[0].amt_was },
+            { "cat": "ปริมาณขยะที่เกิดขึ้นใน อปท. พื้นที่ให้บริการ", "val": r.data.data[0].was_dla },
+            { "cat": "ปริมาณขยะที่เก็บขนไปกำจัด", "val": r.data.data[0].amt_coll },
+            { "cat": "ปริมาณขยะที่ถูกนำไปใช้ประโยชน์", "val": r.data.data[0].amt_benf },
+            { "cat": "ปริมาณขยะที่ไม่มีการให้บริการ", "val": r.data.data[0].nwas_dla },
+            { "cat": "ปริมาณขยะที่กำจัดไม่ถูกต้อง", "val": r.data.data[0].was_ncor },
+            { "cat": "ปริมาณขยะที่กำจัดถูกต้อง", "val": r.data.data[0].was_corr },
+            { "cat": "การนำไปใช้ประโยชน์", "val": r.data.data[0].use_benf },
+            { "cat": "การนำไปกำจัด", "val": r.data.data[0].removal },
+            { "cat": "Landfill", "val": r.data.data[0].landfill },
+            { "cat": "Compost", "val": r.data.data[0].compost },
+            { "cat": "Incinerator", "val": r.data.data[0].incinrt },
+            { "cat": "ปริมาณขยะที่ถูกนำไปใช้ประโยชน์", "val": r.data.data[0].was_benf },
+            { "cat": "ปริมาณขยะที่กำจัดไม่ถูกต้อง", "val": r.data.data[0].nwas_cor },
+            { "cat": "ปริมาณขยะที่ถูกนำไปใช้ประโยชน์", "val": r.data.data[0].all_benf },
+            { "cat": "ขยะทั่วไป", "val": r.data.data[0].ge_was },
+            { "cat": "ขยะอินทรีย์", "val": r.data.data[0].orga_was },
+            { "cat": "ขยะรีไซเคิล", "val": r.data.data[0].recy_was },
+            { "cat": "ขยะอันตราย", "val": r.data.data[0].dang_was },
+            { "cat": "ขยะอื่น ๆ", "val": r.data.data[0].other }
+        ]);
+    })
+}
 
-
-
-
-
-
-
+let checkdata = async () => {
+    await axios.post(url + '/gb-api/getownerdata/', { usrid: urid }).then(r => {
+        let d = r.data.data
+        if (f_garbage == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
+        }
+    })
+}

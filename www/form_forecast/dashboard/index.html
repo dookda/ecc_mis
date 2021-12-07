@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>รายงานข้อมูลนำเข้าการคาดการณ์และแนวโน้มสถานการณ์สิ่งแวดล้อม</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+    <!-- <link href="./../../assets/vendor/icofont/icofont.min.css" rel="stylesheet"> -->
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="./../../assets/vendor/icofont/icofont.min.css">
+    <link href="./../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <!-- Favicons -->
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css">
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li class="active"><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+                    <li id="login"><a href="./../../form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+                    <!-- <li><a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a></li> -->
+                    <li id="usr1"><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span></a></li>
+                    <li id="usr2"><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
+                </ul>
+            </nav>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+    <br>
+    <br>
+    <br>
+
+    <main id="main">
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container" data-aos="fade-up">
+                <div class="section-title">
+                    <br>
+                    <br>
+                    <h2>รายงานข้อมูลนำเข้าการคาดการณ์และแนวโน้มสถานการณ์สิ่งแวดล้อม
+                    </h2>
+                    <p style="font-size: 15px;">
+                        เป็นการรายงานข้อมูลนำเข้าการคาดการณ์และแนวโน้มสถานการณ์สิ่งแวดล้อมด้านต่าง ๆ
+                        ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        <br> โดยท่านสามารถเลือกดูข้อมูลที่นำเข้า ที่ระบบรายงานด้านล่างเพื่อดูข้อมูลตามที่ต้องการ
+                    </p>
+                </div>
+                <hr>
+                <div class="card">
+                    <div class="card-body" id="cardselect" style="margin-bottom: -20px;">
+                        <br>
+                        <h6 style="text-align: center; font-weight: bold;">เรียกดูข้อมูลนำเข้า</h6>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm">
+                                <label for="sel1">ข้อมูล</label><label style="color: red;" for="sel1">*</label>
+                                <select class="form-control" id="data">
+                                    <option value="eec">เลือกข้อมูล</option>
+                                    <option value="pop">ประชากร</option>
+                                    <option value="pop_covid">ประชากร (COVID-19)</option>
+                                    <option value="labor">แรงงาน</option>
+                                    <option value="labor_edulevel">ความต้องจ้างแรงงาน (แยกตามระดับการศึกษา)</option>
+                                    <option value="econ">เศรษฐกิจ</option>
+                                    <option value="elec_demand">ความต้องการใช้พลังงานไฟฟ้าของอุตสาหกรรม</option>
+                                    <option value="wastewater">ปริมาณน้ำเสียชุมชน</option>
+                                    <option value="garbage">ปริมาณขยะมูลฝอย</option>
+                                    <option value="water_demand">ความต้องการใช้น้ำ</option>
+                                    <option value="untreated_water">ปริมาณน้ำดิบ</option>
+                                    <option value="waste_raffle">ปริมาณของเสียที่เกิดขึ้น</option>
+                                    <option value="greenhouse_gas">คาดการณ์ปริมาณการปล่อยก๊าซเรือนกระจก</option>
+                                    <option value="landuse">ประเภทการใช้ประโยชน์ที่ดิน</option>
+                                    <option value="uw_industrybycate">การใช้น้ำอุตสาหกรรม (ประเภทอุตสาหกรรม)</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    *ระบุ
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <label for="sel1">ประเภทข้อมูล</label><label style="color: red;" for="sel1">*</label>
+                                <select class="form-control" id="typedata">
+                                </select>
+                                <div class="invalid-feedback">
+                                    *ระบุ
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <label for="locate">ปี พ.ศ ของข้อมูล</label><label style="color: red;"
+                                    for="sel1">*</label>
+                                <select class="form-control" id="year">
+                                </select>
+                                <div class="invalid-feedback">
+                                    *ระบุปี พ.ศ
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <a href="./../add/index.html" class="btn btn-success m-auto" id="button"><i
+                                class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล</a>
+                        <hr>
+                    </div>
+                    <div class="card-body" id="cardtable">
+                        <table id="myTable" class="table table-striped table-bordered display nowrap"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ประเภทข้อมูล</th>
+                                    <th>จังหวัด</th>
+                                    <th>ปี พ.ศ.</th>
+                                    <th>จำนวน</th>
+                                    <th>หน่วย</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+    <p></p>
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3">
+            <!-- updated: <span id="editdate"></span> -->
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">แก้ไขข้อมูล</h5>
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="form-group">
+                            <h6><b>ข้อมูลคาดการณ์<span id="E_data"></span></b></h6>
+                            <span id="E_type"></span>
+                        </div>
+                        <hr>
+                        <div class="form-group row m-auto">
+                            <div class="col-sm-3">
+                                <label class="col-form-label" id="E_prov"></label><label style="color: red;"
+                                    for="sel1">*</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="E_value">
+                                <div class="invalid-feedback">
+                                    *โปรดระบุค่า
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <label class="col-form-label " id="E_unit">หน่วย</label>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <input type="hidden" id="Eid_data">
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="./../dashboard/index.html" class="btn btn-secondary" class="fa fa-floppy-o"
+                        data-dismiss="modal">ปิด</button>
+                        <a class="btn btn-success" onclick="saveData()">บันทึก</a>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการลบข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span></b><br>ประเภทข้อมูล: <b><span id="projType"></span></b>&nbsp; ปี:
+                        <b><span id="projYear"></span><br>
+                            ใช่หรือไม่?
+                    </p>
+                    <input type="hidden" id="projId">
+                    <input type="hidden" id="D_type">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="warningModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-square-fill text-warning mr-2"
+                            style="font-size: 26px;"></i>แจ้งเตือน
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">
+                        <b>กรุณาเพิ่มข้อมูลคุณภาพน้ำบาดาล</b><br>ตอนนี้ระบบยังไม่มีข้อมูลคุณภาพน้ำบาดาลของท่าน
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning"
+                        onclick="location.href='./../add/index.html';">เพิ่มข้อมูล</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container">
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+            </div>
+        </div>
+        </div>
+    </footer><!-- End  Footer -->
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+<script src="./app.js"></script>
+
+</html>

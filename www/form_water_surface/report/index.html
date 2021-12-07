@@ -348,25 +348,32 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="wtrlModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <div class="hchart" id="depthChart"></div>
-                    <p></p>
-                    <div class="hchart" id="tempChart"></div>
-                    <p></p>
-                    <div class="hchart" id="humiChart"></div>
-
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
                 </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+                <!-- Modal footer -->
                 <div class="modal-footer">
-
-                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>

@@ -2,15 +2,19 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_water_surface = sessionStorage.getItem('f_water_surface');
+$("#usrname").text(urname);
+// urid ? null : location.href = "./../../form_register/login/index.html";
 
-urid ? null : location.href = "./../../form_register/login/index.html";
 if (f_water_surface == 'false') {
+    $("#noauth").modal("show")
+    // location.href = "./../../form_register/login/index.html";
+}
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
-
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -38,7 +42,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -47,7 +51,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -56,7 +60,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -65,7 +69,6 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
 });
 
 let lyrs = L.featureGroup().addTo(map)
-let wtrlFc = L.featureGroup()
 
 var baseMap = {
     "Mapbox": mapbox.addTo(map),
@@ -76,7 +79,6 @@ const overlayMap = {
     "ขอบเขตจังหวัด": pro.addTo(map),
     "ขอบเขตอำเภอ": amp,
     "ขอบเขตตำบล": tam,
-    "จุดตรวจวัดปริมาณน้ำท่า": wtrlFc,
 }
 
 const lyrControl = L.control.layers(baseMap, overlayMap, {
@@ -138,10 +140,10 @@ var MIcon3 = L.icon({
     // popupAnchor: [10, 0]
 });
 
-var L53 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
-var L58 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__58_water_mnre&maxFeatures=50&outputFormat=application%2Fjson'
-var L59 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__59_water_onep&maxFeatures=50&outputFormat=application%2Fjson'
-var L60 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__60_water_stand_eec&maxFeatures=50&outputFormat=application%2Fjson'
+var L53 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__53_9w_reser63_3p&maxFeatures=50&outputFormat=application%2Fjson'
+var L58 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__58_water_mnre&maxFeatures=50&outputFormat=application%2Fjson'
+var L59 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=eec%3Aa__59_water_onep&maxFeatures=50&outputFormat=application%2Fjson'
+var L60 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__60_water_stand_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
 
 axios.get(L58).then((r) => {
@@ -345,12 +347,34 @@ let loadTable = (data) => {
 
     dtable.on('search.dt', function () {
         let data = dtable.rows({ search: 'applied' }).data()
-        // getMarker(data);
+        getMarker(data);
         stationList(data)
         station_hide()
     });
 }
+let getMarker = (d) => {
+    // console.log(d)
+    map.eachLayer(i => {
+        i.options.name == "marker" ? map.removeLayer(i) : null;
+    });
 
+    let mg = L.layerGroup();
+    d.map(i => {
+        // console.log(i);
+        if (i.geojson) {
+            let json = JSON.parse(i.geojson);
+            // console.log(json)
+            var mk = L.geoJson(json, {
+                name: "marker",
+                // onEachFeature: onEachFeature
+            }).bindPopup(`<h6><b>สถานที่ :</b> ${i.ws_location !== null ? i.ws_location + ' (' + i.ws_station + ')' : i.ws_river + ' (' + i.ws_station + ')'}</h6><h6><b>จังหวัด :</b> ${i.ws_province}</h6><h6><b>วันที่รายงาน :</b> ${i.date !== 'null' ? i.date : '-'}</h6>`)
+            mg.addLayer(mk);
+        }
+
+    });
+    mg.addTo(map)
+    lyrControl.addOverlay(mg, "ตำแหน่งนำเข้าข้อมูล")
+}
 let zoomExtent = (lyr, code) => {
     map.eachLayer(lyr => {
         if (lyr.options.name == 'bound') {
@@ -829,11 +853,18 @@ let hidechart = () => {
     $("#referlink").hide();
 }
 
-let checkdata = (prov) => {
+let checkdata = async (prov) => {
     axios.post(url + '/ws-api/getownerdata', prov).then(r => {
         let d = r.data.data
-        if (d.length == 0) {
-            $("#warningModal2").modal("show")
+        if (f_water_surface == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal2").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
         }
     })
 }
@@ -854,176 +885,3 @@ let station_hide = () => {
     $("#spinner").hide();
     $("#referlink").hide();
 }
-
-
-let loadWtrl = async () => {
-    let iconblue = L.icon({
-        iconUrl: './marker/gas-station.png',
-        iconSize: [40, 45],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
-    });
-
-    let sta = [
-        {
-            staname: "station_01",
-            latlon: [12.8661616, 100.9989804],
-            measure: 275.5
-        }, {
-            staname: "station_02",
-            latlon: [12.848099999999983, 100.95313000000002],
-            measure: 244
-        }, {
-            staname: "station_03",
-            latlon: [12.846510200000028, 100.9376361],
-            measure: 298
-        }, {
-            staname: "station_04",
-            latlon: [12.694406999999996, 101.44470699999997],
-            measure: 294
-        }, {
-            staname: "station_05",
-            latlon: [12.703484000000008, 101.468717],
-            measure: 280
-        }, {
-            staname: "station_06",
-            latlon: [12.70139960000001, 101.49543049999],
-            measure: 435
-        }, {
-            staname: "station_07",
-            latlon: [12.985111299999994, 101.6776677],
-            measure: 380.6
-        }, {
-            staname: "station_08",
-            latlon: [12.909515899999995, 101.71460159999998],
-            measure: 512
-        }, {
-            staname: "station_09",
-            latlon: [12.836749900000017, 101.73254899999998],
-            measure: 550.5
-        }]
-
-    sta.map(async (i) => {
-        let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
-        resSt01.then(r => {
-            let d = r.data.data[0];
-            let marker = L.marker(i.latlon, {
-                icon: iconblue,
-                name: 'lyr',
-                // data: dat
-            });
-            // console.log(i.measure);
-            wtrlFc.addLayer(marker)
-            // marker.addTo(map)
-            marker.bindPopup(`<div style="font-family:'Kanit'"> 
-                        ชื่อสถานี : ${i.staname} <br>
-                        ระดับน้ำ : ${i.measure - Number(d.deep).toFixed(1) < 1 ? 0 : i.measure - Number(d.deep).toFixed(1)} mm.<br>
-                        ความชื้นสัมพัทธ์ : ${Number(d.humidity).toFixed(1)} %.<br>
-                        อุณหภูมิ : ${Number(d.temperature).toFixed(1)} องศาเซลเซียส<br>
-                        ดูกราฟ <span style="font-size: 20px; color:#006fa2; cursor: pointer;" onclick="wtrlModal('${i.staname}', ${i.measure})"><i class="bi bi-file-earmark-bar-graph"></i></span>
-                        </div>`
-            )
-        })
-    })
-}
-let wtrlModal = (stname, measure) => {
-    // console.log(measure);
-    // 
-    let arrDept = [];
-    let arrTemp = [];
-    let arrHumi = [];
-    axios.post("https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get-by-day.php", { stname }).then(r => {
-        // console.log(r);
-        r.data.data.map(i => {
-            arrDept.push({
-                "date": i.dt,
-                "value": measure - i.dept < 1 ? 0.0 : Math.round(measure - i.dept)
-            });
-            arrTemp.push({
-                "date": i.dt,
-                "value": Math.round(i.temp)
-            });
-            arrHumi.push({
-                "date": i.dt,
-                "value": Math.round(i.humi)
-            });
-        })
-    })
-
-    setTimeout(() => {
-        // console.log(arrDept, arrTemp, arrHumi);
-        wtrlChart(arrDept, "depthChart", "ระดับน้ำ (cm.)");
-        wtrlChart(arrTemp, "tempChart", "อุณหภูมิ (°C)");
-        wtrlChart(arrHumi, "humiChart", "ความชื้น (%)");
-    }, 500)
-
-
-    $("#wtrlModal").modal("show");
-
-}
-let wtrlChart = (arrData, div, unit) => {
-    am4core.useTheme(am4themes_animated);
-
-    // Create chart instance
-    var chart = am4core.create(div, am4charts.XYChart);
-
-    // Add data
-    chart.data = arrData;
-
-    // Set input format for the dates
-    // chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
-    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
-
-    // Create axes
-    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.baseValue = 0;
-    valueAxis.title.text = unit;
-
-    // Create series
-    var series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.valueY = "value";
-    series.dataFields.dateX = "date";
-    series.tooltipText = "{value}";
-    // series.tensionX = 0.8;
-    series.strokeWidth = 2;
-    series.minBulletDistance = 15;
-    series.stroke = am4core.color("#00b80f");
-
-    // Drop-shaped tooltips
-    series.tooltip.background.cornerRadius = 20;
-    series.tooltip.background.strokeOpacity = 0;
-    series.tooltip.pointerOrientation = "vertical";
-    series.tooltip.label.minWidth = 40;
-    series.tooltip.label.minHeight = 40;
-    series.tooltip.label.textAlign = "middle";
-    series.tooltip.label.textValign = "middle";
-
-    // var range = valueAxis.createSeriesRange(series);
-    // range.value = index;
-    // range.endValue = -1000;
-    // range.contents.stroke = am4core.color("#ff0000");
-    // range.contents.fill = range.contents.stroke;
-
-    // Make bullets grow on hover
-    var bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.circle.strokeWidth = 2;
-    bullet.circle.radius = 4;
-    bullet.circle.fill = am4core.color("#fff");
-
-    // Make a panning cursor
-    chart.cursor = new am4charts.XYCursor();
-    chart.cursor.behavior = "panXY";
-    chart.cursor.xAxis = dateAxis;
-    chart.cursor.snapToSeries = series;
-
-    // Create a horizontal scrollbar with previe and place it underneath the date axis
-    chart.scrollbarX = new am4charts.XYChartScrollbar();
-    chart.scrollbarX.series.push(series);
-    chart.scrollbarX.parent = chart.bottomAxesContainer;
-
-    dateAxis.start = 0.59;
-    dateAxis.keepSelection = true;
-}
-
-loadWtrl()

@@ -3,8 +3,15 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_air = sessionStorage.getItem('f_air');
 
-if (f_air == 'true') {
+if (f_air == 'false') {
     location.href = "./../../form_register/login/index.html";
+}
+let gotoreport = () => {
+    if (eecauth !== "admin") {
+        location.href = "./../dashboard/index.html";
+    } else {
+        location.href = "./../report_admin/index.html";
+    }
 }
 
 $("#usrname").text(urname);
@@ -12,7 +19,7 @@ $("#usrname").text(urname);
 let userid;
 
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3000';
 let latlng = {
     lat: 13.305567,
@@ -41,21 +48,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -303,7 +310,7 @@ $('#imgfile').change(function (evt) {
     }
     resize();
 });
-
+let dataimgurl = null
 let resize = () => {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         var filesToUploads = document.getElementById('imgfile').files;
@@ -601,200 +608,264 @@ let getsick = (x, y, z) => {
     }
 }
 
-function saveData() {
-    let data01
-    let sick1, sick2, sick3, sick4, sick5, sick6, sick7, sick8
-    var sn1 = document.getElementById('sickness01');
-    if (sn1.checked == true) {
-        sick1 = $('#sickness01').val()
-    } else { sick1 = "Havenot" }
+$('#lat').on("input", function () {
+    if (this.value == '') {
+        $("#lat").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#lat").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#lon').on("input", function () {
+    if (this.value == '') {
+        $("#lon").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#lon").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#redate').on("input", function () {
+    if (this.value == '') {
+        $("#redate").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#redate").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#retime').on("input", function () {
+    if (this.value == '') {
+        $("#retime").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#retime").removeClass("is-invalid")
+        console.log("true")
+    }
+})
 
-    var sn2 = document.getElementById('sickness02');
-    if (sn2.checked == true) {
-        sick2 = $('#sickness02').val()
-    } else { sick2 = "Havenot" }
+async function saveData() {
+    if ($('#lat').val() == "" || $('#lon').val() == "" || $('#redate').val() == "" || $('#retime').val() == "") {
+        await $("#NOdatamodal").modal("show")
+        if ($('#lat').val() == "") {
+            $("#lat").addClass("is-invalid")
+        }
+        if ($('#lon').val() == "") {
+            $("#lon").addClass("is-invalid")
+        }
+        if ($('#redate').val() == "") {
+            $("#redate").addClass("is-invalid")
+        }
+        if ($('#retime').val() == "") {
+            $("#retime").addClass("is-invalid")
+        }
+    } else if ($('#lat').val() !== "" || $('#lon').val() !== "" || $('#redate').val() == "" || $('#retime').val() == "") {
+        console.log(dataimgurl)
 
-    var sn3 = document.getElementById('sickness03');
-    if (sn3.checked == true) {
-        sick3 = $('#sickness03').val()
-    } else { sick3 = "Havenot" }
+        if (dataimgurl == null) { await $("#imgfile_show").modal("show") }
+        else {
+            let data01
+            let sick1, sick2, sick3, sick4, sick5, sick6, sick7, sick8
+            var sn1 = document.getElementById('sickness01');
+            if (sn1.checked == true) {
+                sick1 = $('#sickness01').val()
+            } else { sick1 = "Havenot" }
 
-    var sn4 = document.getElementById('sickness04');
-    if (sn4.checked == true) {
-        sick4 = $('#sickness04').val()
-    } else { sick4 = "Havenot" }
+            var sn2 = document.getElementById('sickness02');
+            if (sn2.checked == true) {
+                sick2 = $('#sickness02').val()
+            } else { sick2 = "Havenot" }
 
-    var sn5 = document.getElementById('sickness05');
-    if (sn5.checked == true) {
-        sick5 = $('#sickness05').val()
-    } else { sick5 = "Havenot" }
+            var sn3 = document.getElementById('sickness03');
+            if (sn3.checked == true) {
+                sick3 = $('#sickness03').val()
+            } else { sick3 = "Havenot" }
 
-    var sn6 = document.getElementById('sickness06');
-    if (sn6.checked == true) {
-        sick6 = $('#sickness06').val()
-    } else { sick6 = "Havenot" }
+            var sn4 = document.getElementById('sickness04');
+            if (sn4.checked == true) {
+                sick4 = $('#sickness04').val()
+            } else { sick4 = "Havenot" }
 
-    var sn7 = document.getElementById('sickness07');
-    if (sn7.checked == true) {
-        sick7 = $('#sickness07').val()
-    } else { sick7 = "Havenot" }
+            var sn5 = document.getElementById('sickness05');
+            if (sn5.checked == true) {
+                sick5 = $('#sickness05').val()
+            } else { sick5 = "Havenot" }
 
-    var sn8 = document.getElementById('sickness00');
-    if (sn8.checked == true) {
-        sick8 = $('#sickness08').val()
-    } else { sick8 = "Havenot" }
+            var sn6 = document.getElementById('sickness06');
+            if (sn6.checked == true) {
+                sick6 = $('#sickness06').val()
+            } else { sick6 = "Havenot" }
 
-    datasick.map(async (x) => {
-        if (x.no == 01) {
-            data02.push({ no01: x.val })
-        }
-        if (x.no == 02) {
-            data02.push({ no02: x.val })
-        }
-        if (x.no == 03) {
-            data02.push({ no03: x.val })
-        }
-        if (x.no == 04) {
-            data02.push({ no04: x.val })
-        }
-        if (x.no == 05) {
-            data02.push({ no05: x.val })
-        }
-        if (x.no == 06) {
-            data02.push({ no06: x.val })
-        }
-        if (x.no == 07) {
-            data02.push({ no07: x.val })
-        }
-        if (x.no == 08) {
-            data02.push({ no08: x.val })
-        }
-        if (x.no == 09) {
-            data02.push({ no09: x.val })
-        }
-        if (x.no == 10) {
-            data02.push({ no10: x.val })
-        }
-        if (x.no == 11) {
-            data02.push({ no11: x.val })
-        }
-        if (x.no == 12) {
-            data02.push({ no12: x.val })
-        }
-        if (x.no == 13) {
-            data02.push({ no13: x.val })
-        }
-        if (x.no == 14) {
-            data02.push({ no14: x.val })
-        }
-        if (x.no == 15) {
-            data02.push({ no15: x.val })
-        }
-        if (x.no == 16) {
-            data02.push({ no16: x.val })
-        }
-        if (x.no == 17) {
-            data02.push({ no17: x.val })
-        }
-        if (x.no == 18) {
-            data02.push({ no18: x.val })
-        }
-        if (x.no == 19) {
-            data02.push({ no19: x.val })
-        }
-        if (x.no == 20) {
-            data02.push({ no20: x.val })
-        }
-        if (x.no == 21) {
-            data02.push({ no21: x.val })
-        }
-        if (x.no == 22) {
-            data02.push({ no22: x.val })
-        }
-        if (x.no == 00) {
-            data02.push({
-                no01: "Havenot",
-                no02: "Havenot",
-                no03: "Havenot",
-                no04: "Havenot",
-                no05: "Havenot",
-                no06: "Havenot",
-                no07: "Havenot",
-                no08: "Havenot",
-                no09: "Havenot",
-                no10: "Havenot",
-                no12: "Havenot",
-                no13: "Havenot",
-                no14: "Havenot",
-                no15: "Havenot",
-                no16: "Havenot",
-                no17: "Havenot",
-                no18: "Havenot",
-                no19: "Havenot",
-                no20: "Havenot",
-                no21: "Havenot",
-                no22: "Havenot"
+            var sn7 = document.getElementById('sickness07');
+            if (sn7.checked == true) {
+                sick7 = $('#sickness07').val()
+            } else { sick7 = "Havenot" }
+
+            var sn8 = document.getElementById('sickness00');
+            if (sn8.checked == true) {
+                sick8 = $('#sickness08').val()
+            } else { sick8 = "Havenot" }
+
+            datasick.map(async (x) => {
+                if (x.no == 01) {
+                    data02.push({ no01: x.val })
+                }
+                if (x.no == 02) {
+                    data02.push({ no02: x.val })
+                }
+                if (x.no == 03) {
+                    data02.push({ no03: x.val })
+                }
+                if (x.no == 04) {
+                    data02.push({ no04: x.val })
+                }
+                if (x.no == 05) {
+                    data02.push({ no05: x.val })
+                }
+                if (x.no == 06) {
+                    data02.push({ no06: x.val })
+                }
+                if (x.no == 07) {
+                    data02.push({ no07: x.val })
+                }
+                if (x.no == 08) {
+                    data02.push({ no08: x.val })
+                }
+                if (x.no == 09) {
+                    data02.push({ no09: x.val })
+                }
+                if (x.no == 10) {
+                    data02.push({ no10: x.val })
+                }
+                if (x.no == 11) {
+                    data02.push({ no11: x.val })
+                }
+                if (x.no == 12) {
+                    data02.push({ no12: x.val })
+                }
+                if (x.no == 13) {
+                    data02.push({ no13: x.val })
+                }
+                if (x.no == 14) {
+                    data02.push({ no14: x.val })
+                }
+                if (x.no == 15) {
+                    data02.push({ no15: x.val })
+                }
+                if (x.no == 16) {
+                    data02.push({ no16: x.val })
+                }
+                if (x.no == 17) {
+                    data02.push({ no17: x.val })
+                }
+                if (x.no == 18) {
+                    data02.push({ no18: x.val })
+                }
+                if (x.no == 19) {
+                    data02.push({ no19: x.val })
+                }
+                if (x.no == 20) {
+                    data02.push({ no20: x.val })
+                }
+                if (x.no == 21) {
+                    data02.push({ no21: x.val })
+                }
+                if (x.no == 22) {
+                    data02.push({ no22: x.val })
+                }
+                if (x.no == 00) {
+                    data02.push({
+                        no01: "Havenot",
+                        no02: "Havenot",
+                        no03: "Havenot",
+                        no04: "Havenot",
+                        no05: "Havenot",
+                        no06: "Havenot",
+                        no07: "Havenot",
+                        no08: "Havenot",
+                        no09: "Havenot",
+                        no10: "Havenot",
+                        no12: "Havenot",
+                        no13: "Havenot",
+                        no14: "Havenot",
+                        no15: "Havenot",
+                        no16: "Havenot",
+                        no17: "Havenot",
+                        no18: "Havenot",
+                        no19: "Havenot",
+                        no20: "Havenot",
+                        no21: "Havenot",
+                        no22: "Havenot"
+                    })
+                }
             })
+
+            data01 = [{
+                id_date: Date.now(),
+                id_user: urname,
+                id_userid: urid,
+
+                // gender: $('#gender').val(),
+                // age: $('#age').val(),
+                // working: $('#working').val(),
+                // timearea: $('#timearea').val(),
+                feeling: feel1,
+                symptom: [
+                    { sym01: sick1 },
+                    { sym02: sick2 },
+                    { sym03: sick3 },
+                    { sym04: sick4 },
+                    { sym05: sick5 },
+                    { sym06: sick6 },
+                    { sym07: sick7 },
+                    { sym08: sick8 }
+                ],
+
+                sickcheck: data02,
+
+                lat: $('#lat').val(),
+                lng: $('#lon').val(),
+                geom: datageom,
+
+                tambon: tam_name,
+                amphoe: amp_name,
+                province: prov_name,
+                t_code: tam_code,
+                a_code: amp_code,
+                p_code: prov_code,
+                aqi: $('#aqi').val(),
+                pm10: $('#pm10').val(),
+                pm25: $('#pm25').val(),
+                datepm: $("#datetime").val(),
+                staair: sa,
+                details: $('#detail').val(),
+                datreport: $('#redate').val(),
+                dattime: $('#retime').val(),
+                img: dataimgurl
+            }]
+
+
+            // console.log(data02)
+            // console.log(feel1)
+            sendData(data01)
         }
-    })
-
-    data01 = [{
-        id_date: Date.now(),
-        id_user: urname,
-        id_userid: urid,
-
-        // gender: $('#gender').val(),
-        // age: $('#age').val(),
-        // working: $('#working').val(),
-        // timearea: $('#timearea').val(),
-        feeling: feel1,
-        symptom: [
-            { sym01: sick1 },
-            { sym02: sick2 },
-            { sym03: sick3 },
-            { sym04: sick4 },
-            { sym05: sick5 },
-            { sym06: sick6 },
-            { sym07: sick7 },
-            { sym08: sick8 }
-        ],
-
-        sickcheck: data02,
-
-        lat: $('#lat').val(),
-        lng: $('#lon').val(),
-        geom: datageom,
-
-        tambon: tam_name,
-        amphoe: amp_name,
-        province: prov_name,
-        t_code: tam_code,
-        a_code: amp_code,
-        p_code: prov_code,
-        aqi: $('#aqi').val(),
-        pm10: $('#pm10').val(),
-        pm25: $('#pm25').val(),
-        datepm: $("#datetime").val(),
-        staair: sa,
-        details: $('#detail').val(),
-        datreport: $('#redate').val(),
-        dattime: $('#retime').val(),
-        img: dataimgurl ? dataimgurl : dataimgurl = "",
-    }]
-    // console.log(data02)
-    // console.log(feel1)
-    sendData(data01)
+    }
 }
+
 
 let sendData = (data) => {
     const obj = {
         data: data
     }
-    // console.log(obj)
+    $("#Modalconfirm").modal("show")
+    console.log(obj)
     // var url = "http://localhost:3000"
-    // var url = "https://eec-onep.online:3700";
+    var url = "https://eec-onep.online:3700";
     $.post(url + "/form_ap/insert", obj).done((r) => {
-        r.data.data == "success"
+        r.data.data == "success" ? $("#Modalconfirm").modal("show") : null
+
     })
 }
+
 

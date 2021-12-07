@@ -20,10 +20,22 @@ urid ? null : location.href = "./../../form_register/login/index.html";
 // }
 
 if (eecauth == "admin") {
-    $("#usermenu").append(`<li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span></a></li>
-        <li><a href="./../admin/index.html"><i class="bi bi-tools"></i>&nbsp;จัดการผู้ใช้</a></li>`)
+    $("#usermenu").append(`
+        <li> <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="bi bi-tools"></i>&nbsp;<span >จัดการข้อมูล</span></a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="./../admin/index.html">
+                <i class="bi bi-pencil-square"></i>&nbsp;จัดการข้อมูลผู้ใช้</a>
+                <a class="dropdown-item" href="./../../form_forecast/add/index.html">
+                <i class="bi bi-pencil-square"></i>&nbsp;นำเข้าข้อมูลการคาดสถานณ์สิ่งแวดล้อม</a>
+            </div></li>
+        <li><a href=""><i class="bi bi-person-square"></i>&nbsp;<span>${urname}</span></a></li>
+        <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
+        `)
 } else {
-    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>></a></li>`)
+    $("#usermenu").append(`<li><a href="" ><i class="bi bi-person-square"></i>&nbsp;<span >${urname}</span>></a></li>
+    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>ออกจากระบบ</a></li>`)
 }
 
 // var url = 'http://localhost:3700';
@@ -147,7 +159,7 @@ let checkdata = async () => {
     }
 
     if (!$('#tele').val()) {
-        $("#detail").append(`<span> เบอร์โทรศัพท์</span>`);
+        $("#detail").append(`<span> ชื่อผู้ใช้ (Account) </span>`);
         a += 1
     }
 

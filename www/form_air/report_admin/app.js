@@ -2,13 +2,13 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : location.href = "./../../form_register/login/index.html";
 
 // if (eecauth !== "admin" && eecauth !== "user") {
 //     location.href = "./../../form_register/login/index.html";
 // }
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3000';
 let dataurl
 if (eecauth == "admin") {
@@ -138,6 +138,12 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
+            {
+                // targets: -1,
+                data: null,
+                defaultContent: `<button type="button" class="btn btn-warning" id="getMap"><i class="bi bi-zoom-in"></i>&nbsp;ซูม</button>
+                                 <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
+            },
             { data: 'repor_date' },
             { data: 'dattime' },
             { data: 'tambon' },
@@ -168,12 +174,7 @@ $(document).ready(function () {
             { data: 'pm25' },
             { data: 'pm10' },
             { data: 'staair' },
-            {
-                // targets: -1,
-                data: null,
-                defaultContent: `<button type="button" class="btn btn-success" id="getMap">ขยายแผนที่</button>
-                                 <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
-            },
+
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6] },
@@ -231,21 +232,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,

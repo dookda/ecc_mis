@@ -23,7 +23,7 @@ if (fromAdmin) {
 let userid;
 
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
@@ -64,7 +64,7 @@ var baseMap = {
 }
 
 var overlayMap = {
-    "ขอบจังหวัด": pro
+    "ขอบเขตจังหวัด": pro
 }
 
 L.control.layers(baseMap, overlayMap).addTo(map);
@@ -114,35 +114,116 @@ axios.post(url + "/biodiversity-api/getdataone", { proj_id: proj_id }).then(r =>
     map.setView([Number(r.data.data[0].lat), Number(r.data.data[0].lon)], 12);
 })
 
+$('#bioname').on("input", function () {
+    if (this.value == '') {
+        $("#bioname").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#bioname").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#bioplace').on("input", function () {
+    if (this.value == '') {
+        $("#bioplace").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#bioplace").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#biotype').on("input", function () {
+    if (this.value == '') {
+        $("#biotype").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#biotype").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#pro').on("input", function () {
+    if (this.value == '') {
+        $("#pro").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#pro").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#amp').on("input", function () {
+    if (this.value == '') {
+        $("#amp").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#amp").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#tam').on("input", function () {
+    if (this.value == '') {
+        $("#tam").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#tam").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
 let sendData = () => {
     // console.log(geom[0]);
-    const obj = {
-        proj_id: proj_id,
-        data: {
-            usrid: urid,
-            usrname: urname,
-            bioname: $('#bioname').val(),
-            biodetail: $('#biodetail').val(),
-            bioplace: $('#bioplace').val(),
-            biotype: $('#biotype').val(),
-            pro: $('#pro').val(),
-            amp: $('#amp').val(),
-            tam: $('#tam').val(),
-            pro_name: $('#pro_name').val(),
-            amp_name: $('#amp_name').val(),
-            tam_name: $('#tam_name').val(),
-            lat: $('#lat').val(),
-            lon: $('#lon').val(),
-            // img: dataurl ? dataurl : dataurl = "",
-            geom: geom == "" ? "" : geom.toGeoJSON()
+    if ($('#bioname').val() == "" || $('#bioplace').val() == "" || $('#biotype').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#bioname').val() == "") {
+            $("#bioname").addClass("is-invalid")
         }
+        if ($('#bioplace').val() == "") {
+            $("#bioplace").addClass("is-invalid")
+        }
+        if ($('#biotype').val() == "") {
+            $("#biotype").addClass("is-invalid")
+        }
+        if ($('#pro').val() == "") {
+            $("#pro").addClass("is-invalid")
+        }
+        if ($('#amp').val() == "") {
+            $("#amp").addClass("is-invalid")
+        }
+        if ($('#tam').val() == "") {
+            $("#tam").addClass("is-invalid")
+        }
+    } else if ($('#bioname').val() !== "" || $('#bioplace').val() !== "" || $('#biotype').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        const obj = {
+            proj_id: proj_id,
+            data: {
+                usrid: urid,
+                usrname: urname,
+                bioname: $('#bioname').val(),
+                biodetail: $('#biodetail').val(),
+                bioplace: $('#bioplace').val(),
+                biotype: $('#biotype').val(),
+                pro: $('#pro').val(),
+                amp: $('#amp').val(),
+                tam: $('#tam').val(),
+                pro_name: $('#pro_name').val(),
+                amp_name: $('#amp_name').val(),
+                tam_name: $('#tam_name').val(),
+                lat: $('#lat').val(),
+                lon: $('#lon').val(),
+                // img: dataurl ? dataurl : dataurl = "",
+                geom: geom == "" ? "" : geom.toGeoJSON()
+            }
+        }
+        // console.log(obj);
+        if (geom != "") {
+            axios.post(url + "/biodiversity-api/update", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null;
+                sessionStorage.removeItem('biodiversity_proj_gid');
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
     }
-    // console.log(obj);
-    axios.post(url + "/biodiversity-api/update", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null;
-        sessionStorage.removeItem('biodiversity_proj_gid');
-    })
-    return false;
 }
 
 let gotoReport = () => {

@@ -3,13 +3,14 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_air = sessionStorage.getItem('f_air');
 
-if (f_air == 'true') {
+urid ? null : location.href = "./../../form_register/login/index.html";
+if (f_air == 'false') {
     location.href = "./../../form_register/login/index.html";
 }
 
 $("#usrname").text(urname);
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3000';
 let dataurl
 if (eecauth == "admin") {
@@ -139,6 +140,12 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
+            {
+                // targets: -1,
+                data: null,
+                defaultContent: `<button type="button" class="btn btn-warning" id="getMap"><i class="bi bi-zoom-in"></i>&nbsp;ซูม</button>
+                                 <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
+            },
             { data: 'repor_date' },
             { data: 'dattime' },
             { data: 'tambon' },
@@ -169,12 +176,6 @@ $(document).ready(function () {
             { data: 'pm25' },
             { data: 'pm10' },
             { data: 'staair' },
-            {
-                // targets: -1,
-                data: null,
-                defaultContent: `<button type="button" class="btn btn-success" id="getMap">ขยายแผนที่</button>
-                                 <button type="button" class="btn btn-danger" id="delete">ลบ!</button>`
-            }
         ],
         columnDefs: [
             { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
@@ -197,7 +198,7 @@ $(document).ready(function () {
 
     $('#myTable tbody').on('click', '#getMap', function () {
         var data = table.row($(this).parents('tr')).data();
-        zoomExtent(data.st_asgeojson)
+        zoomExtent(data.st_asgeojson, data)
     });
 
     $('#myTable tbody').on('click', '#edit', function () {
@@ -236,21 +237,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -341,36 +342,36 @@ let getMap = (x) => {
     let iconblue = L.icon({
         iconUrl: './marker/location-pin-blue.svg',
         iconSize: [50, 50],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -30]
     });
 
     let icongreen = L.icon({
         iconUrl: './marker/location-pin-green.svg',
         iconSize: [50, 50],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -30]
     });
 
     let iconyellow = L.icon({
         iconUrl: './marker/location-pin-yellow.svg',
         iconSize: [50, 50],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -30]
     });
 
     let iconorange = L.icon({
         iconUrl: './marker/location-pin-orange.svg',
         iconSize: [50, 50],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -30]
     });
 
     let iconred = L.icon({
         iconUrl: './marker/location-pin-red.svg',
         iconSize: [50, 50],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -30]
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -30]
     });
     // x.map(i => {
     //     if (i.st_asgeojson) {
@@ -437,14 +438,9 @@ let getMap = (x) => {
 }
 
 
-let zoomExtent = (geojson, i) => {
-    // console.log(geom);
-    // map.eachLayer((lyr) => {
-    //     if (lyr.options.name == 'point') {
-    //         map.removeLayer(lyr);
-    //     }
-    // });
-    point = L.geoJSON(JSON.parse(geojson), {
+let zoomExtent = (geojson, data) => {
+
+    var point = L.geoJSON(JSON.parse(geojson), {
         name: 'st_asgeojson'
     })
     map.fitBounds(point.getBounds());
@@ -476,3 +472,14 @@ let deleteValue = () => {
 
 
 
+let checkdata = () => {
+    axios.get(url + "/form_ap/get_geom/" + urid).then(r => {
+        let d = r.data.data
+        if (d.length == 0) {
+            $('#warningModal').modal('show')
+        } else {
+            $('#warningModal').modal('hide')
+        }
+    })
+}
+checkdata()

@@ -2,21 +2,38 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_biodiversity = sessionStorage.getItem('f_biodiversity');
+$("#usrname").text(urname);
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
 
-if (f_biodiversity == 'false') {
+// if (f_biodiversity == 'false') {
+//     $("#noauth").modal("show")
+//     // location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
 
 sessionStorage.removeItem('biodiversity_proj_gid');
 
-$(document).ready(() => {
+$(document).ready(async () => {
     loadTable()
+    $("#amp").empty().append(`<option value="eec">เลือกอำเภอ</option>`);
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
+
+    await axios.post(url + '/biodiversity-api/getownerdata', { usrid: urid }).then(r => {
+        let d = r.data.data
+        if (d.length == 0) {
+            // $("#warningModal").modal("show")
+        }
+    })
+    checkdata()
 
 });
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -44,7 +61,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -53,7 +70,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -62,30 +79,30 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-// const specieseec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const specieseec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__66_species_eec',
 //     format: 'image/png',
 //     transparent: true
 // });
-// const naturaleec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const naturaleec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__71_natural_eec',
 //     format: 'image/png',
 //     transparent: true
 // });
-// const wetlandeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+// const wetlandeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
 //     layers: 'eec:a__80_wetland_eec',
 //     format: 'image/png',
 //     transparent: true
 // });
 
-const forest2563 = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const forest2563 = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__27_f_type63_eec',
     format: 'image/png',
     transparent: true
@@ -225,7 +242,8 @@ let loadTable = () => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     dtable = $('#myTable').DataTable({
@@ -242,7 +260,7 @@ let loadTable = () => {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(row);
-                    return `<button class="btn m btn-warning" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;ซูม</button>
+                    return `<button class="btn m btn-warning" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-zoom-in"></i>&nbsp;ซูม</button>
                             <button class="btn m btn-info" onclick="getDetail(${row.proj_id})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>
                             <button class="btn m btn-danger" onclick="confirmDelete('${row.proj_id}','${row.bioname}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
@@ -259,7 +277,7 @@ let loadTable = () => {
             { data: 'usrname' },
         ],
         columnDefs: [
-            { className: 'text-center', targets: [2, 3] },
+            { className: 'text-center', targets: [0, 1, 3] },
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
@@ -368,43 +386,61 @@ let loadBiopro = async (d) => {
         i.pro_name == "สระแก้ว" ? skeaw += 1 : null;
     })
     let dat = [{
+        name: "ฉะเชิงเทรา",
+        value: csao,
+        color: "#7FC8A9"
+    }, {
         name: "ชลบุรี",
-        value: chon
+        value: chon,
+        color: "#D5EEBB"
     }, {
         name: "ระยอง",
-        value: ryong
-    }, {
-        name: "ฉะเชิงเทรา",
-        value: csao
-    }]
-
-    // let dat = [{
-    //     name: "จันทบุรี",
-    //     value: chan
-    // }, {
-    //     name: "ฉะเชิงเทรา",
-    //     value: csao
-    // }, {
-    //     name: "ชลบุรี",
-    //     value: chon
-    // }, {
-    //     name: "ตราด",
-    //     value: trad
-    // }, {
-    //     name: "นครนายก",
-    //     value: nyok
-    // }, {
-    //     name: "ปราจีนบุรี",
-    //     value: pchin
-    // }, {
-    //     name: "ระยอง",
-    //     value: ryong
-    // }, {
-    //     name: "สระแก้ว",
-    //     value: skeaw
-    // }];
+        value: ryong,
+        color: "#5F7A61"
+    },]
 
     chartbiopro("chartbiopro", dat)
+
+    let pro_val = $("#prov").val();
+    let pro = $("#prov").children("option:selected").text()
+
+    let amp_val = $("#amp").val();
+    let amp_code = amp_val.slice(0, 2);
+
+    let tam_val = $("#tam").val();
+    let tam_code = tam_val.slice(0, 2);
+
+    // console.log(pro_val, amp_val, tam_val)
+    // console.log(pro_val, amp_code, tam_code)
+
+    if (amp_val == null && tam_val == null) {
+        chartbiopro("chartbiopro", dat)
+        $("#pat").text(`${pro !== "ทุกจังหวัด" ? 'จังหวัด' + pro : 'จังหวัด'}`)
+    } else if (amp_code == pro_val && tam_val == "eec" || tam_val == null) {
+        let amp = $("#amp").children("option:selected").text()
+        let setdat_amp = d.filter(e => e.amp_name == amp)
+        let dat_amp
+        if (pro_val == 24) { dat_amp = [{ "name": amp, "value": setdat_amp.length, color: "#7FC8A9" }]; }
+        else if (pro_val == 20) { dat_amp = [{ "name": amp, "value": setdat_amp.length, color: "#D5EEBB" }]; }
+        else if (pro_val == 21) { dat_amp = [{ "name": amp, "value": setdat_amp.length, color: "#5F7A61" }]; }
+        chartbiopro("chartbiopro", dat_amp)
+        $("#pat").text(`จ.${pro} อ.${amp} `)
+
+    } else if (tam_code == pro_val && tam_code == amp_code) {
+        let amp = $("#amp").children("option:selected").text();
+        let tam = $("#tam").children("option:selected").text();
+        let setdat_tam = d.filter(e => e.tam_name == tam)
+        let dat_tam
+        if (pro_val == 24) { dat_tam = [{ "name": tam, "value": setdat_tam.length, color: "#7FC8A9" }]; }
+        else if (pro_val == 20) { dat_tam = [{ "name": tam, "value": setdat_tam.length, color: "#D5EEBB" }]; }
+        else if (pro_val == 21) { dat_tam = [{ "name": tam, "value": setdat_tam.length, color: "#5F7A61" }]; }
+        chartbiopro("chartbiopro", dat_tam)
+        $("#pat").text(`จ.${pro} อ.${amp} ต.${tam} `)
+
+    } else {
+        chartbiopro("chartbiopro", dat)
+        $("#pat").text(`${pro !== "ทุกจังหวัด" ? 'จังหวัด' + pro : 'จังหวัด'}`)
+    }
 }
 
 let getDetail = (e) => {
@@ -415,6 +451,18 @@ let getDetail = (e) => {
 
 let chartbiopro = (div, val) => {
     // console.log(val);
+    // function am4themes_myTheme(target) {
+    //     if (target instanceof am4core.ColorSet) {
+    //         target.list = [
+    //             am4core.color("#7FC8A9"),
+    //             am4core.color("#D5EEBB"),
+    //             am4core.color("#5F7A61"),
+    //             am4core.color("#444941"),
+    //         ];
+    //     }
+    // }
+    // am4core.useTheme(am4themes_myTheme)
+
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -445,23 +493,29 @@ let chartbiopro = (div, val) => {
     series.sequencedInterpolation = true;
     series.dataFields.valueY = "value";
     series.dataFields.categoryX = "name";
-    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    // series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
     series.columns.template.strokeWidth = 0;
 
-    series.tooltip.pointerOrientation = "vertical";
+    // series.tooltip.pointerOrientation = "vertical";
 
     series.columns.template.column.cornerRadiusTopLeft = 10;
     series.columns.template.column.cornerRadiusTopRight = 10;
-    series.columns.template.column.fillOpacity = 0.8;
+    // series.columns.template.column.fillOpacity = 0.8;
+
+    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+    labelBullet.label.verticalCenter = "bottom";
+    labelBullet.label.dy = 0;
+    labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
 
     // on hover, make corner radiuses bigger
-    var hoverState = series.columns.template.column.states.create("hover");
-    hoverState.properties.cornerRadiusTopLeft = 0;
-    hoverState.properties.cornerRadiusTopRight = 0;
-    hoverState.properties.fillOpacity = 1;
+    // var hoverState = series.columns.template.column.states.create("hover");
+    // hoverState.properties.cornerRadiusTopLeft = 0;
+    // hoverState.properties.cornerRadiusTopRight = 0;
+    // hoverState.properties.fillOpacity = 1;
 
     series.columns.template.adapter.add("fill", function (fill, target) {
-        return chart.colors.getIndex(target.dataItem.index);
+        // return chart.colors.getIndex(target.dataItem.index);
+        return target.dataItem.dataContext["color"];
     });
 
     // Cursor
@@ -476,6 +530,35 @@ let chartbiopro = (div, val) => {
             }
         });
         return { data: data };
+    });
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log(ev.target.data)
+        if (ev.target.data.length == 1) {
+            let dat = ev.target.data
+            if (dat[0].value == 0) {
+                showIndicator();
+            }
+        }
     });
 
 }
@@ -510,7 +593,7 @@ let pieChart = (div, val) => {
     });
 }
 
-let wfs = "https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputFormat=application%2Fjson"
+let wfs = "https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputFormat=application%2Fjson"
 
 
 // div.innerHTML += '<img src="./../../marker/forest2.png" width="10px"><span>ชนิดพันธุ์สำคัญ หายาก และชีวภาพ</span><br>';
@@ -626,17 +709,40 @@ $('#prov').on("change", function () {
     }
 })
 $('#amp').on("change", function () {
-    getAmp(this.value)
-    zoomExtent("amp", this.value)
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
+    if (this.value !== "eec") {
+        getAmp(this.value)
+        zoomExtent("amp", this.value)
 
-    let amp = $("#amp").children("option:selected").text()
-    dtable.search(amp).draw();
+        let amp = $("#amp").children("option:selected").text()
+        dtable.search(amp).draw();
+    } else {
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
+        let prov_val = $("#prov").val();
+        zoomExtent("pro", prov_val)
+
+        let pro = $("#prov").children("option:selected").text()
+        if (pro !== "ทุกจังหวัด") {
+            dtable.search(pro).draw();
+        } else {
+            dtable.search('').draw();
+        }
+    }
+
 })
 $('#tam').on("change", function () {
-    zoomExtent("tam", this.value)
+    if (this.value !== "eec") {
+        zoomExtent("tam", this.value)
 
-    let tam = $("#tam").children("option:selected").text()
-    dtable.search(tam).draw();
+        let tam = $("#tam").children("option:selected").text()
+        dtable.search(tam).draw();
+    } else {
+        let amp_val = $("#amp").val();
+        zoomExtent("amp", amp_val)
+        let amp = $("#amp").children("option:selected").text()
+        dtable.search(amp).draw();
+
+    }
 })
 
 let zoomExtent = (lyr, code) => {
@@ -655,8 +761,8 @@ let zoomExtent = (lyr, code) => {
 let getPro = (procode) => {
     axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
         // console.log(r.data.data);
-        $("#amp").empty();
-        $("#tam").empty();
+        $("#amp").empty().append(`<option value="eec">เลือกอำเภอ</option>`);
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
         r.data.data.map(i => {
             $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
         })
@@ -664,10 +770,26 @@ let getPro = (procode) => {
 }
 let getAmp = (ampcode) => {
     axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
-        $("#tam").empty();
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
         r.data.data.map(i => {
             $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
         })
+    })
+}
+
+let checkdata = async () => {
+    await axios.post(url + '/biodiversity-api/getownerdata', { usrid: urid }).then(r => {
+        let d = r.data.data
+        if (f_biodiversity == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
+        }
     })
 }
 

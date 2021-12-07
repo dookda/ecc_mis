@@ -2,20 +2,27 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_wastewater = sessionStorage.getItem('f_wastewater');
+$("#usrname").text(urname);
 
-urid ? null : location.href = "./../../form_register/login/index.html";
-if (f_wastewater == 'false') {
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
+
+// if (f_wastewater == 'false') {
+//     $("#noauth").modal("show")
+//     // location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
-
-var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
+var L62 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
 $(document).ready(() => {
     loadTable({ prov: 'ทุกจังหวัด' });
     // loadMap()
     layermark(L62, 62)
+    checkdata()
 });
 
 let latlng = {
@@ -30,7 +37,7 @@ let map = L.map('map', {
 let marker;
 
 // const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
@@ -47,7 +54,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -56,7 +63,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -65,29 +72,29 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-const wsystemeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wsystemeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__62_w_system_eec',
     format: 'image/png',
     transparent: true
 });
-const wpipeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wpipeeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__63_w_pipe_eec',
     format: 'image/png',
     transparent: true
 });
-const wscopeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wscopeeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__64_w_scope_eec',
     format: 'image/png',
     transparent: true,
 });
-const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pollution = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__81_pollution_group',
     format: 'image/png',
     transparent: true,
@@ -755,3 +762,22 @@ $("#station").on("change", function () {
         // $("#referlink").hide();
     }
 })
+
+let checkdata = async () => {
+    await axios.post(url + '/waste-api/getownerdata', { prov: 'ทุกจังหวัด', usrid: urid }).then(r => {
+        let d = r.data.data
+        if (f_wastewater == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
+        }
+    })
+}
+
+
+

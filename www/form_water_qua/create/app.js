@@ -9,7 +9,7 @@ if (f_water_qua == 'false') {
 
 $("#usrname").text(urname);
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let refreshPage = () => {

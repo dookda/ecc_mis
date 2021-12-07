@@ -2,15 +2,21 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
-urid ? null : location.href = "./../../form_register/login/index.html";
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
 
 if (eecauth !== "admin" && eecauth !== "office") {
+    $("#noauth").modal("show")
+    // location.href = "./../../form_register/login/index.html";
+}
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-var L62 = 'https://eec-onep.online:8443/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
+var L62 = 'https://eec-onep.online/geoserver/eec/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=eec%3Aa__62_w_system_eec&maxFeatures=50&outputFormat=application%2Fjson'
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 
@@ -39,7 +45,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -48,7 +54,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -57,7 +63,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -65,22 +71,22 @@ const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const wsystemeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wsystemeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__62_w_system_eec',
     format: 'image/png',
     transparent: true
 });
-const wpipeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wpipeeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__63_w_pipe_eec',
     format: 'image/png',
     transparent: true
 });
-const wscopeeec = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const wscopeeec = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__64_w_scope_eec',
     format: 'image/png',
     transparent: true,
 });
-const pollution = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pollution = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__81_pollution_group',
     format: 'image/png',
     transparent: true,
@@ -451,11 +457,11 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
                 series.columns.template.fill = am4core.color("#d32f2f");
             }
             else if (arr[0].value2 < max) {
-                series.stroke = am4core.color("#7e57c2");
+                series.stroke = am4core.color("#57C2B4");
                 series.tooltip.getFillFromObject = false;
-                series.tooltip.background.fill = am4core.color("#7e57c2");
-                series.columns.template.stroke = am4core.color("#7e57c2");
-                series.columns.template.fill = am4core.color("#7e57c2");
+                series.tooltip.background.fill = am4core.color("#57C2B4");
+                series.columns.template.stroke = am4core.color("#57C2B4");
+                series.columns.template.fill = am4core.color("#57C2B4");
             }
         }
     }
@@ -467,16 +473,16 @@ let geneChart = (arr, div, tt, unit, min, max, value) => {
     chart.exporting.menu = new am4core.ExportMenu();
     chart.exporting.menu.align = "left";
     chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
+    // chart.exporting.adapter.add("data", function (data, target) {
+    //     var data = [];
+    //     chart.series.each(function (series) {
+    //         for (var i = 0; i < series.data.length; i++) {
+    //             series.data[i].name = series.name;
+    //             data.push(series.data[i]);
+    //         }
+    //     });
+    //     return { data: data };
+    // });
 
     var indicator;
     function showIndicator() {

@@ -269,6 +269,62 @@
         </div>
     </div>
 
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="warningModal2">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-square-fill text-warning mr-2"
+                            style="font-size: 26px;"></i>แจ้งเตือน
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">
+                        <b>กรุณาเพิ่มข้อมูลคุณภาพน้ำทิ้ง/น้ำเสีย</b><br>ตอนนี้ระบบยังไม่มีข้อมูลคุณภาพน้ำทิ้ง/น้ำเสียของท่าน
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning"
+                        onclick="location.href='./../create/index.html';">เพิ่มข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="chartModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">

@@ -109,8 +109,11 @@
                             <h4>กรุณากรอกข้อมูลความหลากหลายทางชีวภาพ</h4>
                             <br>
                             <div class="form-group">
-                                <label>ชื่อชนิดที่พบ</label>
+                                <label>ชื่อชนิดที่พบ</label><label style="color: red;" for="sel1">*</label>
                                 <input type="text" class="form-control" id="bioname">
+                                <div class="invalid-feedback">
+                                    *ระบุชื่อชนิดที่พบ
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -119,22 +122,28 @@
                             </div>
 
                             <div class="form-group">
-                                <label>ชื่อสถานที่ที่พบ</label>
+                                <label>ชื่อสถานที่ที่พบ</label><label style="color: red;" for="sel1">*</label>
                                 <input type="text" class="form-control" id="bioplace">
+                                <div class="invalid-feedback">
+                                    *ระบุชื่อสถานที่ที่พบ
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>ประเภท</label>
+                                <label>ประเภท</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="biotype">
                                     <option value=""></option>
                                     <option value="พืช">พืช</option>
                                     <option value="สัตว์">สัตว์</option>
                                     <option value="อื่นๆ">อื่นๆ</option>
                                 </select>
+                                <div class="invalid-feedback">
+                                    *ระบุประเภท
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>จังหวัด</label>
+                                <label>จังหวัด</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="pro" onchange="getAmp(this.value)">
                                     <option value=""></option>
                                     <option value="24">ฉะเชิงเทรา</option>
@@ -147,16 +156,25 @@
                                     <option value="26">นครนายก</option>
                                     <option value="27">สระแก้ว</option> -->
                                 </select>
+                                <div class="invalid-feedback">
+                                    *ระบุจังหวัด
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>อำเภอ</label>
+                                <label>อำเภอ</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="amp" onchange="getTam(this.value)"></select>
+                                <div class="invalid-feedback">
+                                    *ระบุอำเภอ
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>ตำบล</label>
+                                <label>ตำบล</label><label style="color: red;" for="sel1">*</label>
                                 <select class="form-control" id="tam" onchange="getTamOne(this.value)"></select>
+                                <div class="invalid-feedback">
+                                    *ระบุตำบล
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -166,19 +184,26 @@
                     <input type="hidden" id="tam_name">
 
                     <div class="form-group">
-                        <h6 for="">กรุณาคลิกที่แผนที่เพื่อระบุตำแหน่งที่พบ</h6>
+                        <h6 for="">กรุณาคลิกที่แผนที่เพื่อระบุตำแหน่งที่พบ<label style="color: red;"
+                                for="sel1">*</label></h6>
                         <div class="card" id="map"></div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col">
-                                    <label>ละติจูด</label>
+                                    <label>ละติจูด</label><label style="color: red;" for="sel1">*</label>
                                     <input type="number" class="form-control" id="lat" disabled>
+                                    <div class="invalid-feedback">
+                                        *ระบุละติจูด
+                                    </div>
                                 </div>
                                 <div class="col">
-                                    <label>ลองจิจูด</label>
+                                    <label>ลองจิจูด</label><label style="color: red;" for="sel1">*</label>
                                     <input type="number" class="form-control" id="lon" disabled>
+                                    <div class="invalid-feedback">
+                                        *ระบุลองจิจูด
+                                    </div>
                                 </div>
                             </div>
 
@@ -226,31 +251,89 @@
             </div>
         </div>
     </footer><!-- End  Footer -->
-    <div class="modal fade" id="okmodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+
+    <div class="modal" id="okmodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <span id="notify"></span>เพิ่มข้อมูลสำเร็จ
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal"
-                        onclick="gotoReport()">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="gotoReport()">ยืนยัน</button>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div class="modal" id="NOdatamodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>กรุณาระบุตำแหน่งที่พบ โดยคลิ๊กลงบนแผนที่</p>
-                    <p></p>
-                    <p></p>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
                 </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาระบุตำแหน่งที่พบ โดยคลิกลงบนแผนที่</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
             </div>
         </div>
     </div>

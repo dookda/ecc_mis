@@ -2,14 +2,22 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_green = sessionStorage.getItem('f_green');
+$("#usrname").text(urname);
 
-if (f_green == 'false') {
+// urid ? null : location.href = "./../../form_register/login/index.html";
+urid ? null : $("#noauth").modal("show");
+
+// if (f_green == 'false') {
+//     $("#noauth").modal("show")
+//     // location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 let latlng = {
@@ -37,7 +45,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -46,7 +54,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -55,28 +63,34 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-const greenmuni = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const greenmuni = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__52_gsus_muni',
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-const municiple = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const municiple = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__04_municiple',
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-
+const thaigreen = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
+    layers: 'eec:a__83_thaigreen_eec',
+    format: "image/png",
+    transparent: true,
+    // maxZoom: 10,
+    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
+});
 var baseMaps = {
     "Mapbox": mapbox.addTo(map),
     "google Hybrid": ghyb
@@ -86,9 +100,9 @@ const overlayMaps = {
     "ขอบเขตอำเภอ": amp,
     "ขอบเขตตำบล": tam,
     "ขอบเขตเทศบาล": municiple,
-    "พื้นที่สีเขียว": fc.addTo(map),
+    "พื้นที่สีเขียวสาธารณะ": fc.addTo(map),
     "พื้นที่สีเขียวยั่งยืนในเขตเทศบาล": greenmuni,
-
+    "พื้นที่สีเขียวจาก Thai Green Urban": thaigreen,
 }
 
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
@@ -107,9 +121,13 @@ function showLegend() {
         div.innerHTML += '<i style="background: #FFFFFF; border-style: solid; border-width: 1.5px;"></i><span>ขอบเขตอำเภอ</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-style: dotted; border-width: 1.5px;"></i><span>ขอบเขตตำบล</span><br>';
         div.innerHTML += '<i style="background: #FFFFFF; border-color: #987db7; border-style: solid; border-width: 2px;"></i><span>ขอบเขตเทศบาล</span><br>';
-        div.innerHTML += '<i style="background: #0c9953; border-color: #038a5a; border-style: solid; border-width: 1.5px;"></i><span>พื้นที่สีเขียว</span><br>';
+        div.innerHTML += '<i style="background: #0c9953; border-color: #038a5a; border-style: solid; border-width: 1.5px;"></i><span>พื้นที่สีเขียวสาธารณะ</span><br>';
         div.innerHTML += '<i style="background: #74e19e; border-radius: 1%;"></i><span>พื้นที่สีเขียวยั่งยืนในเขตเทศบาล</span><br>';
         div.innerHTML += '<i style="background: #ff5100; border-radius: 50%;"></i><span>จุดความร้อน</span><br>';
+        div.innerHTML += `<button class="btn btn-sm" onClick="thaigreenop()" id="TG_OP">
+    <span class="kanit">พื้นที่สีเขียวจาก Thai Green Urban</span><i class="fa fa-angle-double-up" aria-hidden="true"></i>
+  </button>`
+        div.innerHTML += `<div id='TG_Legend'></div>`
         return div;
     };
     legend.addTo(map);
@@ -128,6 +146,24 @@ function hideLegend() {
 }
 
 hideLegend()
+
+function thaigreenop() {
+    $('#TG_OP').hide()
+    $('#TG_Legend').html(`<button class="btn btn-sm" onClick="thaigreenclose()" id="TG_CLOSE">
+    <span class="kanit">พื้นที่สีเขียวจาก Thai Green Urban</span><i class="fa fa-angle-double-down" aria-hidden="true"></i></button><br>
+    <i style="background: #c0b6a4; border-radius: 1%;"></i><span>พื้นที่สีเขียวรอการพัฒนา</span><br>
+    <i style="background: #ffae6b; border-radius: 1%;"></i><span>พื้นที่สีเขียวอรรถประโยชน์</span><br>
+    <i style="background: #ffddc0; border-radius: 1%;"></i><span>พื้นที่สีเขียวริ้วยาวตามแนวสาธารณูปการ</span><br>
+    <i style="background: #87e6a4; border-radius: 1%;"></i><span>พื้นที่เสียวสาธารณะ</span><br>
+    <i style="background: #a9f14a; border-radius: 1%;"></i><span>พื้นที่สีเขียวเพื่อเศรษฐกิจชุมชน</span><br>
+    <i style="background: #33a02c; border-radius: 1%;"></i><span>พื้นที่สีเขียวธรรมชาติ</span><br>`).slideDown();
+
+}
+function thaigreenclose() {
+    $('#TG_OP').show()
+    $('#TG_Legend').slideUp().show().html('<br>');
+}
+
 
 let datArr = [];
 
@@ -280,7 +316,32 @@ let showAreaChart = (data) => {
 
 let showCountChart = (data, div, label) => {
     // Themes begin
-    am4core.useTheme(am4themes_animated);
+    // function am4themes_myTheme(target) {
+    //     if (target instanceof am4core.ColorSet) {
+    //         target.list = [
+    //             am4core.color("#E5DCC3"),
+    //             am4core.color("#C7BEA2"),
+    //             am4core.color("#AAA492"),
+    //             am4core.color("#9A9483"),
+    //         ];
+    //     }
+    // }
+    // function am4themes_myTheme2(target) {
+    //     if (target instanceof am4core.ColorSet) {
+    //         target.list = [
+    //             am4core.color("#7FC8A9"),
+    //             am4core.color("#D5EEBB"),
+    //             am4core.color("#5F7A61"),
+    //             am4core.color("#444941"),
+    //         ];
+    //     }
+    // }
+    // if (div == 'areaChart') {
+    //     am4core.useTheme(am4themes_myTheme)
+    // } else if (div == 'cntChart') {
+    //     am4core.useTheme(am4themes_myTheme2);
+    // }
+
     // Themes end
 
     // Create chart instance
@@ -311,23 +372,27 @@ let showCountChart = (data, div, label) => {
     series.sequencedInterpolation = true;
     series.dataFields.valueY = "val";
     series.dataFields.categoryX = "cat";
-    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    // series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
     series.columns.template.strokeWidth = 0;
-
-    series.tooltip.pointerOrientation = "vertical";
-
+    // series.tooltip.pointerOrientation = "vertical";
     series.columns.template.column.cornerRadiusTopLeft = 10;
     series.columns.template.column.cornerRadiusTopRight = 10;
-    series.columns.template.column.fillOpacity = 0.8;
+    // series.columns.template.column.fillOpacity = 0.8;
+
+    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+    labelBullet.label.verticalCenter = "bottom";
+    labelBullet.label.dy = 0;
+    labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
 
     // on hover, make corner radiuses bigger
-    var hoverState = series.columns.template.column.states.create("hover");
-    hoverState.properties.cornerRadiusTopLeft = 0;
-    hoverState.properties.cornerRadiusTopRight = 0;
-    hoverState.properties.fillOpacity = 1;
+    // var hoverState = series.columns.template.column.states.create("hover");
+    // hoverState.properties.cornerRadiusTopLeft = 0;
+    // hoverState.properties.cornerRadiusTopRight = 0;
+    // hoverState.properties.fillOpacity = 1;
 
     series.columns.template.adapter.add("fill", function (fill, target) {
-        return chart.colors.getIndex(target.dataItem.index);
+        // return chart.colors.getIndex(target.dataItem.index);
+        return target.dataItem.dataContext["color"];
     });
 
     // Cursor
@@ -346,7 +411,41 @@ let showCountChart = (data, div, label) => {
         });
         return { data: data };
     });
+
+    var indicator;
+    function showIndicator() {
+        if (indicator) {
+            indicator.show();
+        }
+        else {
+            indicator = chart.tooltipContainer.createChild(am4core.Container);
+            indicator.background.fill = am4core.color("#fff");
+            indicator.background.fillOpacity = 0.8;
+            indicator.width = am4core.percent(100);
+            indicator.height = am4core.percent(100);
+
+            var indicatorLabel = indicator.createChild(am4core.Label);
+            indicatorLabel.text = "ไม่มีข้อมูล";
+            indicatorLabel.align = "center";
+            indicatorLabel.valign = "middle";
+            indicatorLabel.fontSize = 20;
+            // indicatorLabel.isMeasured = false;
+            // indicatorLabel.x = 250;
+            // indicatorLabel.y = 150;
+        }
+    }
+
+    chart.events.on("beforedatavalidated", function (ev) {
+        // console.log(ev.target.data)
+        if (ev.target.data.length == 1) {
+            let dat = ev.target.data
+            if (dat[0].val == 0) {
+                showIndicator();
+            }
+        }
+    });
 }
+
 
 let getDataForChart = (data) => {
     // console.log(data);
@@ -373,32 +472,101 @@ let getDataForChart = (data) => {
             cs += 1;
         }
     })
-
     let cnt = [{
+        "cat": "จ.ฉะเชิงเทรา",
+        "val": cs,
+        "color": "#7FC8A9"
+    }, {
         "cat": "จ.ชลบุรี",
-        "val": cb
+        "val": cb,
+        "color": "#D5EEBB"
     }, {
         "cat": "จ.ระยอง",
-        "val": ry
-    }, {
-        "cat": "จ.ฉะเชิงเทรา",
-        "val": cs
-    }];
+        "val": ry,
+        "color": "#5F7A61"
+    },];
 
     let area = [{
+        "cat": "จ.ฉะเชิงเทรา",
+        "val": csa,
+        "color": "#E5DCC3"
+    }, {
         "cat": "จ.ชลบุรี",
-        "val": cba
+        "val": cba,
+        "color": "#C7BEA2"
     }, {
         "cat": "จ.ระยอง",
-        "val": rya
-    }, {
-        "cat": "จ.ฉะเชิงเทรา",
-        "val": csa
-    }];
+        "val": rya,
+        "color": "#AAA492"
+    },];
 
     // console.log(cnt);
     showCountChart(area, 'areaChart', 'เนื้อที่พื้นที่สีเขียว (ไร่)');
-    showCountChart(cnt, 'cntChart', 'จำนวนสีเขียว (แห่ง)')
+    showCountChart(cnt, 'cntChart', 'จำนวนสีเขียว (แห่ง)');
+
+    let pro_val = $("#prov").val();
+    let pro = $("#prov").children("option:selected").text()
+
+    let amp_val = $("#amp").val();
+    let amp_code = amp_val.slice(0, 2);
+
+    let tam_val = $("#tam").val();
+    let tam_code = tam_val.slice(0, 2);
+
+    // console.log(pro_val, amp_val, tam_val)
+    // console.log(pro_val, amp_code, tam_code)
+
+    if (amp_val == null && tam_val == null) {
+        $("#pat").text(`${pro !== "ทุกจังหวัด" ? 'ข้อมูลของจังหวัด' + pro : ''}`)
+    } else if (amp_code == pro_val && tam_val == "eec" || tam_val == null) {
+        let amp = $("#amp").children("option:selected").text()
+
+        let dat_amp_n
+        let dat_amp_a
+        if (pro_val == 24) {
+            dat_amp_n = [{ "cat": amp, "val": cs, "color": "#7FC8A9" }];
+            dat_amp_a = [{ "cat": amp, "val": csa, "color": "#E5DCC3" }];
+        }
+        else if (pro_val == 20) {
+            dat_amp_n = [{ "cat": amp, "val": cb, "color": "#D5EEBB" }];
+            dat_amp_a = [{ "cat": amp, "val": cba, "color": "#C7BEA2" }];
+        }
+        else if (pro_val == 21) {
+            dat_amp_n = [{ "cat": amp, "val": ry, "color": "#5F7A61" }];
+            dat_amp_a = [{ "cat": amp, "val": rya, "color": "#AAA492" }];
+        }
+        showCountChart(dat_amp_a, 'areaChart', 'เนื้อที่พื้นที่สีเขียว (ไร่)');
+        showCountChart(dat_amp_n, 'cntChart', 'จำนวนสีเขียว (แห่ง)')
+
+
+        $("#pat").text(`ข้อมูลของ จ.${pro} อ.${amp} `)
+
+    } else if (tam_code == pro_val && tam_code == amp_code) {
+        let amp = $("#amp").children("option:selected").text();
+        let tam = $("#tam").children("option:selected").text();
+
+        let dat_tam_n
+        let dat_tam_a
+        if (pro_val == 24) {
+            dat_tam_n = [{ "cat": tam, "val": cs, "color": "#7FC8A9" }];
+            dat_tam_a = [{ "cat": tam, "val": csa, "color": "#E5DCC3" }];
+        }
+        else if (pro_val == 20) {
+            dat_tam_n = [{ "cat": tam, "val": cb, "color": "#D5EEBB" }];
+            dat_tam_a = [{ "cat": tam, "val": cba, "color": "#C7BEA2" }];
+        }
+        else if (pro_val == 21) {
+            dat_tam_n = [{ "cat": tam, "val": ry, "color": "#5F7A61" }];
+            dat_tam_a = [{ "cat": tam, "val": rya, "color": "#AAA492" }];
+        }
+        showCountChart(dat_tam_a, 'areaChart', 'เนื้อที่พื้นที่สีเขียว (ไร่)');
+        showCountChart(dat_tam_n, 'cntChart', 'จำนวนสีเขียว (แห่ง)')
+
+        $("#pat").text(`ข้อมูลของ จ.${pro} อ.${amp} ต.${tam} `)
+
+    } else {
+        $("#pat").text(`${pro !== "ทุกจังหวัด" ? 'ข้อมูลของจังหวัด' + pro : ''}`)
+    }
 }
 
 let table
@@ -436,7 +604,7 @@ let loadTable = () => {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(row);
-                    return `<button class="btn btn-margin btn-info" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไข</button>&nbsp;
+                    return `<button class="btn btn-margin btn-info" onclick="getDetail(${row.gid})"><i class="bi bi-bar-chart-fill"></i>&nbsp;แก้ไขข้อมูล</button>&nbsp;
                             <button class="btn btn-margin btn-danger" onclick="confirmDelete('${row.gid}','${row.gr_name}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
                 width: "25%"
@@ -547,9 +715,12 @@ let geneChart = (arr, div, tt, unit) => {
 }
 
 
-$(document).ready(() => {
+$(document).ready(async () => {
+    await checkdata();
     loadTable();
-    loadHotspot()
+    loadHotspot();
+    $("#amp").empty().append(`<option value="eec">เลือกอำเภอ</option>`);
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
 });
 let hpData = axios.get("https://rti2dss.com:3600/hp_api/hp_viirs_th?fbclid=IwAR34tLi82t2GbsXPK8DmS30NJDWN93Q1skgP-eACKOucWs9pNYjHs24kHT4");
 let onEachFeature = (feature, layer) => {
@@ -604,18 +775,39 @@ $('#prov').on("change", function () {
     }
 })
 $('#amp').on("change", function () {
-    getAmp(this.value)
-    zoomExtent("amp", this.value)
+    $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
+    if (this.value !== "eec") {
+        getAmp(this.value)
+        zoomExtent("amp", this.value)
 
-    let amp = $("#amp").children("option:selected").text()
-    table.search(amp).draw();
+        let amp = $("#amp").children("option:selected").text()
+        table.search(amp).draw();
+    } else {
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
+        let prov_val = $("#prov").val();
+        zoomExtent("pro", prov_val)
+
+        let pro = $("#prov").children("option:selected").text()
+        if (pro !== "ทุกจังหวัด") {
+            table.search(pro).draw();
+        } else {
+            table.search('').draw();
+        }
+    }
 })
 $('#tam').on("change", function () {
-    zoomExtent("tam", this.value)
-
-    let tam = $("#tam").children("option:selected").text()
-    table.search(tam).draw();
+    if (this.value !== "eec") {
+        zoomExtent("tam", this.value)
+        let tam = $("#tam").children("option:selected").text()
+        table.search(tam).draw();
+    } else {
+        let amp_val = $("#amp").val();
+        zoomExtent("amp", amp_val)
+        let amp = $("#amp").children("option:selected").text()
+        table.search(amp).draw();
+    }
 })
+
 
 let zoomExtent = (lyr, code) => {
     map.eachLayer(lyr => {
@@ -633,9 +825,8 @@ let zoomExtent = (lyr, code) => {
 let getPro = (procode) => {
     axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
         // console.log(r.data.data);
-        $("#amp").empty();
-        $("#tam").empty();
-        $("#amp").append('<option></option>');
+        $("#amp").empty().append(`<option value="eec">เลือกอำเภอ</option>`);
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
         r.data.data.map(i => {
             $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
         })
@@ -643,8 +834,7 @@ let getPro = (procode) => {
 }
 let getAmp = (ampcode) => {
     axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
-        $("#tam").empty();
-        $("#tam").append('<option></option>');
+        $("#tam").empty().append(`<option value="eec">เลือกตำบล</option>`);
         r.data.data.map(i => {
             $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
         })
@@ -660,3 +850,19 @@ map.on("click", async (e) => {
 })
 
 
+let checkdata = async () => {
+    await axios.post(url + '/green-api/getownerdata', { usrid: urid }).then(r => {
+        let d = r.data.data
+        if (f_green == 'false') {
+            $("#noauth").modal("show")
+            // location.href = "./../../form_register/login/index.html";
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
+        }
+    })
+}

@@ -11,7 +11,7 @@ eecauth == "admin" ? null : location.href = "./../../form_register/login/index.h
 sessionStorage.removeItem('pfid');
 sessionStorage.removeItem('pfname');
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 
 $(document).ready(function () {

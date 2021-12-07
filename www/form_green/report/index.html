@@ -164,12 +164,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm" style="text-align: center;">
-                                    จำนวนสีเขียว (แห่ง)
+                                <div class="col-sm" style="text-align: center; font-size: 16px;">
+                                    <h6 style="font-size: 18px; font-weight: bold;"> จำนวนสีเขียว (แห่ง)</h6>
                                     <div id="cntChart"></div>
                                 </div>
-                                <div class="col-sm" style="text-align: center;">
-                                    เนื้อที่พื้นที่สีเขียว (ไร่)
+                                <div class="col-sm" style="text-align: center; font-size: 16px;">
+                                    <h6 style="font-size: 18px; font-weight: bold;">เนื้อที่พื้นที่สีเขียว (ไร่)</h6>
                                     <div id="areaChart"></div>
                                 </div>
                             </div>
@@ -256,7 +256,60 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="warningModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-square-fill text-warning mr-2"
+                            style="font-size: 26px;"></i>แจ้งเตือน
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">
+                        <b>กรุณาเพิ่มข้อมูลพื้นที่สีเขียวสาธารณะ</b><br>ตอนนี้ระบบยังไม่มีข้อมูลพื้นที่สีเขียวสาธารณะของท่าน
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning"
+                        onclick="location.href='./../add/index.html';">เพิ่มข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Vendor JS Files -->
     <script src="./../../assets/vendor/jquery/jquery.min.js"></script>
     <script src="./../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

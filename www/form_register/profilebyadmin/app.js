@@ -180,7 +180,7 @@ let checkdata = async () => {
     }
 
     if (!$('#tele').val()) {
-        $("#detail").append(`<span> เบอร์โทรศัพท์</span>`);
+        $("#detail").append(`<span> ชื่อผู้ใช้ (Account) </span>`);
         a += 1
     }
 

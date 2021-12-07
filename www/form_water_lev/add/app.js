@@ -28,8 +28,8 @@ $("#usrname").text(urname);
 //     userid = profile.userId;
 // }
 
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online/api";
+// const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -56,21 +56,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -107,7 +107,6 @@ let onLocationFound = (e) => {
 
     $("#lat").val(e.latlng.lat);
     $("#lon").val(e.latlng.lng);
-    getAtp(e.latlng.lat, e.latlng.lng)
 }
 
 map.on("locationfound", onLocationFound);
@@ -125,7 +124,6 @@ map.on('click', (e) => {
 
     $("#lat").val(e.latlng.lat);
     $("#lon").val(e.latlng.lng);
-    getAtp(e.latlng.lat, e.latlng.lng)
 });
 
 let waterlevel;
@@ -157,15 +155,6 @@ $('#placename').on("input", function () {
     }
 })
 
-let getAtp = (lat, lon) => {
-    axios.get(`${url}/eec-api/gettambylatlon/${lat}/${lon}`).then(r => {
-        // console.log(r);
-        $("#tam").val(r.data.data[0].tam_name)
-        $("#amp").val(r.data.data[0].amp_name)
-        $("#pro").val(r.data.data[0].pro_name)
-    })
-}
-
 let sendData = () => {
     // console.log(geom[0]);
     if ($('#watername').val() == "" || $('#placename').val() == "") {
@@ -183,9 +172,6 @@ let sendData = () => {
                 usrname: urname,
                 placename: $('#placename').val(),
                 watername: $('#watername').val(),
-                tam: $('#tam').val(),
-                amp: $('#amp').val(),
-                pro: $('#pro').val(),
                 waterlevel: waterlevel,
                 img: dataurl ? dataurl : dataurl = "",
                 geom: geom == "" ? "" : geom.toGeoJSON()
@@ -204,7 +190,12 @@ let sendData = () => {
     }
 }
 let gotoList = () => {
-    location.href = "./../report/index.html";
+    if (eecauth !== 'admin') {
+        location.href = "./../report/index.html";
+    } else {
+        location.href = "./../report_admin/index.html";
+
+    }
 }
 
 let refreshPage = () => {

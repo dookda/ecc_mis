@@ -70,7 +70,7 @@
                     <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
                     <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
                     <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
-                    <li><a href="./../../envi_plan/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
 
                     <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
@@ -438,7 +438,8 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <p style="text-align: center;">กรุณาวาดขอบเขตพื้นที่ที่คาดว่าได้รับผลกระทบ
+                                    <p style="text-align: center;">กรุณาวาดขอบเขตพื้นที่ที่คาดว่าได้รับผลกระทบ<label
+                                            style="color: red;" for="sel1">*</label>
                                     </p>
                                     <div class="card">
                                         <div class="card-body p2">
@@ -547,17 +548,25 @@
                                 <div class="row">
                                     <div class="col-sm">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">ค่าพิกัด X:</label>
+                                            <label class="col-sm-3 col-form-label">ค่าพิกัด lat: <label
+                                                    style="color: red;" for="sel1">*</label></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" id="lat" readonly>
+                                                <div class="invalid-feedback">
+                                                    *ระบุค่าพิกัด lat
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">ค่าพิกัด Y:</label>
+                                            <label class="col-sm-3 col-form-label">ค่าพิกัด lng: <label
+                                                    style="color: red;" for="sel1">*</label></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" id="lon" readonly>
+                                                <div class="invalid-feedback">
+                                                    *ระบุค่าพิกัด lng
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -565,17 +574,25 @@
                                 <div class="form-group row">
                                     <div class="col-sm">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">วันที่รายงาน : </label>
+                                            <label class="col-sm-3 col-form-label">วันที่รายงาน :<label
+                                                    style="color: red;" for="sel1">*</label> </label>
                                             <div class="col-sm-9">
                                                 <input type="date" id="redate" class="form-control">
+                                                <div class="invalid-feedback">
+                                                    *ระบุวันที่รายงาน
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">เวลา : </label>
+                                            <label class="col-sm-3 col-form-label">เวลา : <label style="color: red;"
+                                                    for="sel1">*</label> </label>
                                             <div class="col-sm">
                                                 <input type="time" id="retime" class="form-control">
+                                                <div class="invalid-feedback">
+                                                    *ระบุเวลา
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -588,7 +605,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">ลักษณะสถาพอากาศ</label>
+                                    <label class="col-sm-2 col-form-label">ลักษณะสภาพอากาศ</label>
                                     <div class="col-sm-10 col-form-label">
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
@@ -614,14 +631,11 @@
                                     <!-- <a href="https://eec-onep.online/" class="btn btn-info">
                                         <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>
                                     &nbsp;&nbsp; -->
-                                    <a href="" type="submit" class="btn btn-success" onclick="saveData()"
-                                        data-toggle="modal" data-target=".bd-example-modal-lg">
-                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;บันทึก</a>
-                                    &nbsp;&nbsp;
-
-                                    <a href="./../dashboard/index.html" class="btn btn-light">
+                                    <button type="button" class="btn btn-success" onclick="saveData()"><i
+                                            class="bi bi-save"></i>&nbsp;บันทึก</button>&nbsp;&nbsp;
+                                    &nbsp;&nbsp; <button class="btn btn-light" onclick="gotoreport()" type="button">
                                         <i class="fa fa-bar-chart" aria-hidden="true">
-                                        </i>&nbsp;หน้ารายงาน</a>
+                                        </i>&nbsp;หน้ารายงาน</button>
                                     &nbsp;&nbsp;
 
 
@@ -701,28 +715,100 @@
             </div>
         </div>
     </div>
-    <div class="modal fade bd-example-modal-lg" id="Modalconfirm" tabindex="-1" role="dialog"
+
+    <!-- <div class="modal fade bd-example-modal-lg" id="Modalconfirm" tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
-            <div class="w3-animate-top">
-                <div class="modal-content">
-                    <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
-                        <h4 class="modal-title">
-                            <i class="bi bi-file-earmark-check-fill text-success mr-2"
-                                style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
-                        </h4>
-                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
-                    </div>
-                    <div class="modal-body text-center mx-auto">
-                        <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
                 </div>
+                <div class="modal-body text-center ">
+                    <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="modal fade bd-example-modal-lg" id="Modalconfirm">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="NOdatamodal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="imgfile_show">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาอัพโหลดไฟล์รูปภาพ</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
             </div>
         </div>
     </div>

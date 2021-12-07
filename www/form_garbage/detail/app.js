@@ -35,7 +35,7 @@ let gps = "";
 let dataurl;
 
 // const url = 'http://localhost:3700';
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 
 
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -54,7 +54,7 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     lyrname: "bmap"
 });
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
@@ -63,7 +63,7 @@ const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
@@ -72,7 +72,7 @@ const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -205,7 +205,8 @@ function updateData() {
     }
     // console.log(obj.data);
     axios.post(url + "/gb-api/update", obj).then((r) => {
-        refreshPage()
+        // UserReport()
+        $("#okmodal").modal("show")
     })
     return false;
 }
@@ -216,11 +217,6 @@ function refreshPage() {
 }
 
 let UserReport = () => {
-    if (eecauth !== "admin" && eecauth !== "office") {
-        location.href = "./../report_user/index.html";
-    } else if (eecauth == "admin") {
-        location.href = "./../report_admin/index.html"
-    } else if (eecauth == "office") {
-        location.href = "./../report/index.html"
-    }
+    location.href = link;
+    sessionStorage.removeItem('garbage_from_admin');
 }

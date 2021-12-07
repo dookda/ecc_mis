@@ -2,16 +2,26 @@ let urid = sessionStorage.getItem('eecid');
 let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 let f_water_lev = sessionStorage.getItem('f_water_lev');
+$("#usrname").text(urname);
 
-if (f_water_lev == 'false') {
+// urid ? null : location.href = "./../../form_register/login/index.html";
+
+// if (f_water_lev == 'false') {
+//     $("#noauth").modal("show")
+//     // location.href = "./../../form_register/login/index.html";
+// }
+
+let gotoLogin = () => {
     location.href = "./../../form_register/login/index.html";
 }
 
-$("#usrname").text(urname);
+$(document).ready(() => {
+    loadTable({ usrid: urid, bcode: "ทุกจังหวัด" })
+    checkdata({ usrid: urid, bcode: "ทุกจังหวัด" })
+});
 
-
-// const url = "https://eec-onep.online:3700";
-const url = 'http://localhost:3700';
+const url = "https://eec-onep.online/api";
+// const url = 'http://localhost:3700';
 
 let latlng = {
     lat: 13.305567,
@@ -38,21 +48,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -133,7 +143,7 @@ let deleteValue = () => {
     })
 }
 
-let loadTable = (btype, bcode) => {
+let loadTable = (data) => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
             "sProcessing": "กำลังดำเนินการ...",
@@ -150,7 +160,8 @@ let loadTable = (btype, bcode) => {
                 "sPrevious": "ก่อนหน้า",
                 "sNext": "ถัดไป",
                 "sLast": "สุดท้าย"
-            }
+            },
+            "emptyTable": "ไม่พบข้อมูล..."
         }
     });
     let dtable = $('#myTable').DataTable({
@@ -159,7 +170,7 @@ let loadTable = (btype, bcode) => {
             async: true,
             type: "POST",
             url: url + '/waterlevel-api/getownerdata',
-            data: { usrid: urid, btype: btype, bcode: bcode },
+            data: data,
             dataSrc: 'data'
         },
         columns: [
@@ -167,10 +178,10 @@ let loadTable = (btype, bcode) => {
                 data: null,
                 render: function (data, type, row, meta) {
                     // console.log(row);
-                    return `<button class="btn m btn-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-map"></i>&nbsp;zoom</button>
+                    return `<button class="btn m btn-info" onclick="zoomMap(${row.lat}, ${row.lon})"><i class="bi bi-zoom-in"></i>&nbsp;ซูม</button>
                             <button class="btn m btn-danger" onclick="confirmDelete('${row.proj_id}','${row.placename}','${row.ndate}')"><i class="bi bi-trash"></i>&nbsp;ลบ</button>`
                 },
-                // width: "30%"
+                width: "16%"
             },
             {
                 data: '',
@@ -188,9 +199,10 @@ let loadTable = (btype, bcode) => {
                 }
             },
             { data: 'ndate' },
+
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0, 3, 4] },
+            { className: 'text-center', targets: [0, 1, 4, 5] },
         ],
         // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         dom: 'Bfrtip',
@@ -249,41 +261,69 @@ let getMarker = (d) => {
 let loadChartData = async (d) => {
     // console.log(d);
     let dat = [];
-    await d.map(i => {
-        dat.push({
-            date: i.ndate,
-            value: i.waterlevel
-        })
-    });
+    // await d.map(i => {
+    //     dat.push({
+    //         date: i.ndate,
+    //         value: i.waterlevel
+    //     })
+    // })
 
+    var counts = {};
+
+    var result = await d.reduce(function (r, e) {
+        // console.log(e.ndate)
+        counts[e.watername] = 1 + (counts[e.watername] || 0);
+        // r[e.ndate] = (r[e.ndate] || 0) + +(r[e.ndate] || 1)
+        return counts;
+    }, {})
+
+    for (const [key, value] of Object.entries(result)) {
+        // console.log(`${key}: ${value}`);
+        // let date = key.split("-");
+        // let ndate = date[2] + "-" + date[1] + "-" + date[0]
+        dat.push({
+            category: key,
+            value: value
+        })
+    }
+    // console.log(dat)
     timeLine("timeline", dat);
 }
 
 let timeLine = (div, val) => {
+    // Themes begin
     am4core.useTheme(am4themes_animated);
+    // Themes end
 
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
+    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
-    chart.data = val;
-
-    // Set input format for the dates
-    chart.dateFormatter.inputDateFormat = "dd-MM-yyyy";
+    chart.data = val
 
     // Create axes
-    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "category";
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 30;
+    // categoryAxis.renderer.labels.template.horizontalCenter = "right";
+    // categoryAxis.renderer.labels.template.verticalCenter = "middle";
+    // categoryAxis.renderer.labels.template.rotation = 270;
+    // categoryAxis.tooltip.disabled = true;
+    // categoryAxis.renderer.minHeight = 110;
+
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.minWidth = 50;
 
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
+    series.sequencedInterpolation = true;
     series.dataFields.valueY = "value";
-    series.dataFields.dateX = "date";
-    series.tooltipText = "{value}"
-    series.strokeWidth = 2;
-    series.minBulletDistance = 15;
+    series.dataFields.categoryX = "category";
+    series.tooltipText = "สถานที่ {categoryX}: [bold]{valueY} ครั้ง[/]";
+    series.columns.template.strokeWidth = 0;
 
-    // Drop-shaped tooltips
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.strokeOpacity = 0;
     series.tooltip.pointerOrientation = "vertical";
@@ -292,96 +332,46 @@ let timeLine = (div, val) => {
     series.tooltip.label.textAlign = "middle";
     series.tooltip.label.textValign = "middle";
 
-    // Make bullets grow on hover
-    var bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.circle.strokeWidth = 2;
-    bullet.circle.radius = 4;
-    bullet.circle.fill = am4core.color("#fff");
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.fillOpacity = 0.8;
 
-    var bullethover = bullet.states.create("hover");
-    bullethover.properties.scale = 1.3;
+    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+    labelBullet.label.verticalCenter = "bottom";
+    labelBullet.label.dy = -20;
+    labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')} ครั้ง";
 
-    // Make a panning cursor
+    // on hover, make corner radiuses bigger
+    var hoverState = series.columns.template.column.states.create("hover");
+    hoverState.properties.cornerRadiusTopLeft = 0;
+    hoverState.properties.cornerRadiusTopRight = 0;
+    hoverState.properties.fillOpacity = 1;
+
+    series.columns.template.adapter.add("fill", function (fill, target) {
+        return chart.colors.getIndex(target.dataItem.index);
+    });
+
+    // Cursor
     chart.cursor = new am4charts.XYCursor();
-    chart.cursor.behavior = "panXY";
-    chart.cursor.xAxis = dateAxis;
-    chart.cursor.snapToSeries = series;
 
-    // Create vertical scrollbar and place it before the value axis
-    // chart.scrollbarY = new am4core.Scrollbar();
-    // chart.scrollbarY.parent = chart.leftAxesContainer;
-    // chart.scrollbarY.toBack();
-
-    // Create a horizontal scrollbar with previe and place it underneath the date axis
-    chart.scrollbarX = new am4charts.XYChartScrollbar();
-    chart.scrollbarX.series.push(series);
-    chart.scrollbarX.parent = chart.bottomAxesContainer;
-
-    dateAxis.start = 0.40;
-    dateAxis.keepSelection = true;
 }
 
-
-$("#pro").on("change", function () {
-    getPro(this.value)
-    zoomExtent("pro", this.value)
-});
-
-$("#amp").on("change", function () {
-    getAmp(this.value)
-    zoomExtent("amp", this.value)
-});
-
-$("#tam").on("change", function () {
-    zoomExtent("tam", this.value)
-});
-
-
-let zoomExtent = (lyr, code) => {
-    map.eachLayer(lyr => {
-        if (lyr.options.name == 'bound') {
-            map.removeLayer(lyr)
+let checkdata = async (prov) => {
+    axios.post(url + '/waterlevel-api/getownerdata', prov).then(r => {
+        let d = r.data.data
+        if (f_water_lev == 'false') {
+            $("#noauth").modal("show")
+        } else {
+            $("#noauth").modal("hide")
+            if (d.length == 0) {
+                $("#warningModal").modal("show")
+            } else {
+                $("#warningModal").modal("hide")
+            }
         }
     })
-
-    axios.get(url + `/eec-api/get-bound-flip/${lyr}/${code}`).then(r => {
-        let geom = JSON.parse(r.data.data[0].geom)
-        var polygon = L.polygon(geom.coordinates, { color: "red", name: "bound", fillOpacity: 0.0 }).addTo(map);
-
-        console.log(lyr, code);
-
-        $("#myTable").dataTable().fnDestroy();
-        loadTable(lyr, code);
-
-        map.fitBounds(polygon.getBounds());
-    })
 }
 
-let getPro = (procode) => {
-    axios.get(url + `/eec-api/get-amp/${procode}`).then(r => {
-        // console.log(r.data.data);
-        $("#amp").empty();
-        $("#tam").empty();
-        $("#amp").append(`<option></option>`);
-        r.data.data.map(i => {
-            $("#amp").append(`<option value="${i.amphoe_idn}">${i.amp_namt}</option>`)
-        })
-    })
-}
-
-let getAmp = (ampcode) => {
-    axios.get(url + `/eec-api/get-tam/${ampcode}`).then(r => {
-        $("#tam").empty();
-        $("#tam").append(`<option></option>`);
-        r.data.data.map(i => {
-            $("#tam").append(`<option value="${i.tambon_idn}">${i.tam_namt}</option>`)
-        })
-    })
-}
-
-$(document).ready(() => {
-    loadTable('pro', "ทุกจังหวัด")
-});
 
 
 

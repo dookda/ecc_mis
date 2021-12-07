@@ -11,7 +11,7 @@ $("#usrname").text(urname);
 
 let userid;
 
-const url = "https://eec-onep.online:3700";
+const url = "https://eec-onep.online/api";
 // const url = 'http://localhost:3700';
 let latlng = {
     lat: 13.305567,
@@ -38,21 +38,21 @@ const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
-const tam = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const tam = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__03_tambon_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const amp = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const amp = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__02_amphoe_eec",
     format: "image/png",
     transparent: true,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
 
-const pro = L.tileLayer.wms("https://eec-onep.online:8443/geoserver/eec/wms?", {
+const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: "eec:a__01_prov_eec",
     format: "image/png",
     transparent: true,
@@ -108,35 +108,116 @@ map.on('click', (e) => {
     $("#lon").val(e.latlng.lng);
 });
 
+$('#bioname').on("input", function () {
+    if (this.value == '') {
+        $("#bioname").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#bioname").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#bioplace').on("input", function () {
+    if (this.value == '') {
+        $("#bioplace").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#bioplace").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#biotype').on("input", function () {
+    if (this.value == '') {
+        $("#biotype").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#biotype").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#pro').on("input", function () {
+    if (this.value == '') {
+        $("#pro").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#pro").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#amp').on("input", function () {
+    if (this.value == '') {
+        $("#amp").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#amp").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+$('#tam').on("input", function () {
+    if (this.value == '') {
+        $("#tam").addClass("is-invalid")
+        console.log("false")
+    } else {
+        $("#tam").removeClass("is-invalid")
+        console.log("true")
+    }
+})
+
 let sendData = () => {
     // console.log(geom[0]);
-    const obj = {
-        data: {
-            usrid: urid,
-            usrname: urname,
-            bioname: $('#bioname').val(),
-            biodetail: $('#biodetail').val(),
-            bioplace: $('#bioplace').val(),
-            biotype: $('#biotype').val(),
-            pro: $('#pro').val(),
-            amp: $('#amp').val(),
-            tam: $('#tam').val(),
-            pro_name: $('#pro_name').val(),
-            amp_name: $('#amp_name').val(),
-            tam_name: $('#tam_name').val(),
-            lat: $('#lat').val(),
-            lon: $('#lon').val(),
-            img: dataurl ? dataurl : dataurl = "",
-            geom: geom == "" ? "" : geom.toGeoJSON()
+    if ($('#bioname').val() == "" || $('#bioplace').val() == "" || $('#biotype').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        $("#NOdatamodal").modal("show")
+        if ($('#bioname').val() == "") {
+            $("#bioname").addClass("is-invalid")
         }
+        if ($('#bioplace').val() == "") {
+            $("#bioplace").addClass("is-invalid")
+        }
+        if ($('#biotype').val() == "") {
+            $("#biotype").addClass("is-invalid")
+        }
+        if ($('#pro').val() == "") {
+            $("#pro").addClass("is-invalid")
+        }
+        if ($('#amp').val() == "") {
+            $("#amp").addClass("is-invalid")
+        }
+        if ($('#tam').val() == "") {
+            $("#tam").addClass("is-invalid")
+        }
+    } else if ($('#bioname').val() !== "" || $('#bioplace').val() !== "" || $('#biotype').val() == "" || $('#pro').val() == "" || $('#amp').val() == "" || $('#tam').val() == "") {
+        const obj = {
+            data: {
+                usrid: urid,
+                usrname: urname,
+                bioname: $('#bioname').val(),
+                biodetail: $('#biodetail').val(),
+                bioplace: $('#bioplace').val(),
+                biotype: $('#biotype').val(),
+                pro: $('#pro').val(),
+                amp: $('#amp').val(),
+                tam: $('#tam').val(),
+                pro_name: $('#pro_name').val(),
+                amp_name: $('#amp_name').val(),
+                tam_name: $('#tam_name').val(),
+                lat: $('#lat').val(),
+                lon: $('#lon').val(),
+                img: dataurl ? dataurl : dataurl = "",
+                geom: geom == "" ? "" : geom.toGeoJSON()
+            }
+        }
+
+        // console.log(obj);
+
+        if (geom != "") {
+            axios.post(url + "/biodiversity-api/insert", obj).then((r) => {
+                r.data.data == "success" ? $("#okmodal").modal("show") : null
+            })
+        } else {
+            $("#modal").modal("show");
+        }
+        return false;
     }
-
-    // console.log(obj);
-    axios.post(url + "/biodiversity-api/insert", obj).then((r) => {
-        r.data.data == "success" ? $("#okmodal").modal("show") : null
-    })
-
-    return false;
 }
 
 let gotoReport = () => {
