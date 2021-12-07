@@ -20,6 +20,7 @@ let gotoInput = (id, name, auth, f_water_lev, f_wastewater, f_water_surface, f_w
     sessionStorage.setItem('eecid', id);
     sessionStorage.setItem('eecname', name);
     sessionStorage.setItem('eecauth', auth);
+    sessionStorage.setItem('eecviewuser', "view");
 
     sessionStorage.setItem('f_water_lev', f_water_lev);
     sessionStorage.setItem('f_wastewater', f_wastewater);

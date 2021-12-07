@@ -6,6 +6,8 @@ let Accept = sessionStorage.getItem('accept');
 $("#usr1").hide()
 $("#usr2").hide()
 
+console.log(eecauth);
+
 if (Accept || eecauth) {
     $('.toast').toast('hide')
 } else {
@@ -86,65 +88,103 @@ $('#cardwc2').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_wastewater/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_wastewater/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+
+        let f_wastewater = sessionStorage.getItem('f_wastewater');
+        f_wastewater == 'false' ? window.location.href = './form_wastewater/report_user/index.html' : window.location.href = './form_wastewater/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
+
 })
 //โมดูลคุณภาพน้ำ
 $('#cardqc1').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_water_surface/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_water_surface/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_water_surface = sessionStorage.getItem('f_water_surface');
+        f_water_surface == 'false' ? window.location.href = './form_water_surface/report_user/index.html' : window.location.href = './form_water_surface/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 $('#cardqc2').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_water_qua/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_water_qua/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_water_qua = sessionStorage.getItem('f_water_qua');
+        f_water_qua == 'false' ? window.location.href = './form_water_qua/report_user/index.html' : window.location.href = './form_water_qua/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 $('#cardqc3').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_seawater_qua/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_seawater_qua/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_seawater_qua = sessionStorage.getItem('f_seawater_qua');
+        f_seawater_qua == 'false' ? window.location.href = './form_seawater_qua/report_user/index.html' : window.location.href = './form_seawater_qua/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 //โมดูลชีวภาพ 
 $('#cardbio1').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_green/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_green/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_green = sessionStorage.getItem('f_green');
+        f_green == 'false' ? window.location.href = './form_green/report_user/index.html' : window.location.href = './form_green/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 $('#cardbio2').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = '/form_biodiversity/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = '/form_biodiversity/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_biodiversity = sessionStorage.getItem('f_biodiversity');
+        f_biodiversity == 'false' ? window.location.href = '/form_biodiversity/report_user/index.html' : window.location.href = '/form_biodiversity/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 $('#cardbio3').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_familyforest/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_familyforest/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_familyforest = sessionStorage.getItem('f_familyforest');
+        f_familyforest == 'false' ? window.location.href = './form_familyforest/report_user/index.html' : window.location.href = './form_familyforest/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
+})
+$('#cardbio4').on('click', function () {
+    if (eecauth == 'admin') {
+        window.location.href = './form_organic/report_admin/index.html'
+    } else if (eecauth == 'user' || eecauth == "office") {
+        let f_organic = sessionStorage.getItem('f_organic');
+        f_organic == 'false' ? window.location.href = './form_organic/report_user/index.html' : window.location.href = './form_organic/dashboard/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 //โมดูลอื่นๆ
 $('#cardother1').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_garbage/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_garbage/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        let f_garbage = sessionStorage.getItem('f_garbage');
+        f_garbage == 'false' ? window.location.href = './form_garbage/report_user/index.html' : window.location.href = './form_garbage/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })
 $('#cardother2').on('click', function () {
     if (eecauth == 'admin') {
         window.location.href = './form_notice/report_admin/index.html'
     } else if (eecauth == 'user' || eecauth == "office") {
-        window.location.href = './form_notice/report_user/index.html'
-    } else { window.location.href = "./../../form_register/login/index.html" }
+        window.location.href = './form_notice/report/index.html'
+    } else {
+        window.location.href = "./../../form_register/login/index.html"
+    }
 })

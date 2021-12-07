@@ -3,7 +3,8 @@ let urname = sessionStorage.getItem('eecname');
 let eecauth = sessionStorage.getItem('eecauth');
 $("#usrname").text(urname);
 $('#typeuser').val(eecauth)
-urid ? null : location.href = "./../../form_register/login/index.html";
+// urid ? null : location.href = "./system_decide.html.html";
+// console.log("ok")
 
 $("#manual-c").css({
     "opacity": "0.3", "filter": "grayscale(100%)"
@@ -28,3 +29,12 @@ $('#btnAccept').click(() => {
     $('.toast').toast('hide')
     setAccept = sessionStorage.setItem('accept', 'Yes');
 })
+
+$("#usr1").hide()
+$("#usr2").hide()
+if (urname) {
+    $("#usr1").show();
+    $("#usr2").show();
+    $("#login").hide();
+    $("#usrname").text(urname);
+}

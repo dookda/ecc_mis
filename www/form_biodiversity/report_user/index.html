@@ -51,6 +51,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link href="./../../assets/fontawesome/css/all.css" rel="stylesheet">
     <link href="./style.css" rel="stylesheet">
 
 </head>
@@ -68,14 +70,14 @@
                     <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
-                    <li id="login"><a href="./../../form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
-                    <!-- <li><a href="./../../form_register/profile/index.html"><i
+                    <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
                     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li> -->
+                            ออกจากระบบ</a></li>
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -121,55 +123,134 @@
                     </div>
                 </div>
                 <!-- ฟอร์มนำเข้า -->
-                <br>
-                <div class="mt-3 mb-20" data-aos="fade-up">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h5>ประเภทความหลากหลายทางธรรมชาติที่พบ</h5>
-                            <div class="chart" id="chartbiotype"></div>
-                            <!-- <div class="card">
-                        </div> -->
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        เรียกดูข้อมูลในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
+                                <select class="form-control" id="prov">
+                                    <option value="eec">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
+
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="sel1">เลือกอำเภอ:</label>
+                                    <select class="form-control" id="amp">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="sel1">เลือกตำบล:</label>
+                                    <select class="form-control" id="tam">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                            <h5>จังหวัดที่พบความหลากหลายทางธรรมชาติ</h5>
-                            <div class="chart" id="chartbiopro"></div>
+                    </div>
+                </div>
+                <br>
+                <div class="mt-0 mb-0" data-aos="fade-up">
+                    <div class="row d-flex align-content-stretch">
+                        <div class="col-sm-6 m-auto">
+                            <!-- <h5>ประเภทความหลากหลายทางธรรมชาติที่พบ</h5> -->
+                            <!-- <div class="chart" id="chartbiotype"></div> -->
+                            <div class="card-body">
+                                <div class="p-2 text-center">
+                                    <h5>ประเภทความหลากหลายทางธรรมชาติที่พบ</h5>
+                                </div>
+                                <div class="row text-center ">
+                                    <div class="col-sm-6">
+                                        <div class="card p-2">
+                                            <h6 class="mt-1" style="font-size: 20px; font-weight: bold;">สัตว์</h6>
+                                            <i class="fas fa-paw"
+                                                style="font-size: 28px; font-weight: bold; color: #fe8d3d;">&nbsp;<span
+                                                    style="font-family: kanit; font-size: 48px;" id="zoo"></span></i>
+                                            <p></p>
+                                            <span>ครั้งที่รายงาน</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="card p-2">
+                                            <h6 class="mt-1" style="font-size: 20px; font-weight: bold;">พืช</h6>
+                                            <i class="fas fa-seedling"
+                                                style="font-size: 28px; font-weight: bold; color: #235b2d;">&nbsp;<span
+                                                    style="font-family: kanit; font-size: 48px;" id="plant"></span></i>
+
+                                            <p></p>
+                                            <span>ครั้งที่รายงาน</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="card p-2">
+                                            <h6 class="mt-1" style="font-size: 20px; font-weight: bold;">อื่นๆ</h6>
+                                            <i class="fas fa-street-view"
+                                                style="font-size: 28px; font-weight: bold; color: #01ceff;">&nbsp;<span
+                                                    style="font-family: kanit; font-size: 48px;" id="other"></span></i>
+
+                                            <!-- <span style="font-size: 48px; font-weight: bold; color: #3146d5;"
+                                                id="other"></span> -->
+                                            <p></p>
+                                            <span>ครั้งที่รายงาน</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-body ">
+
+                                    <h5><span id="pat">จังหวัด</span>ที่พบความหลากหลายทางธรรมชาติ</h5>
+                                    <label for="">หน่วย: ครั้งที่รายงาน</label>
+                                    <div class="chart" id="chartbiopro"></div>
+                                </div>
+                            </div>
                             <!-- <div class="card">
                         </div> -->
                         </div>
                     </div>
-                    <p></p>
-                    <p></p>
-                    <br>
-                    <h5>ตำแหน่งที่พบความหลากหลายทางธรรมชาติ</h5>
-                    <div class="card">
+                </div>
+
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h5>ตำแหน่งที่พบความหลากหลายทางธรรมชาติ</h5>
+                        <hr>
                         <div id="map"></div>
                     </div>
-                    <br>
-                    <div class="card" id="tbdata">
-                        <div class="card-body">
-                            <!-- <a class="btn btn-success" href="./../add/index.html"><i
+                </div>
+                <br>
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <!-- <a class="btn btn-success" href="./../add/index.html"><i
                                     class="bi bi-plus-circle-fill"></i>&nbsp;เพิ่มข้อมูลความหลากหลายทางชีวภาพ</a> -->
 
-                            <label for="">ดาวน์โหลดข้อมูล</label>
-                            <table id="myTable" class="table table-striped table-bordered display nowrap"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>ชื่อ</th>
-                                        <th>สถานที่ที่พบ</th>
-                                        <th>วันที่พบ</th>
-                                        <th>ผู้รายงาน</th>
-                                        <th>แก้ไข</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <label for="">ดาวน์โหลดข้อมูล</label>
+                        <table id="myTable" class="table table-striped table-bordered display nowrap"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ชื่อ</th>
+                                    <th>สถานที่ที่พบ</th>
+                                    <th>วันที่พบ</th>
+                                    <th>ผู้รายงาน</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
+
                 <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
-                <div class="mt-3 mb-6">
+                <!-- <div class="mt-3 mb-6">
                     <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
-                </div>
+                </div> -->
             </div>
         </section><!-- End Services Section -->
     </main><!-- End #main -->
@@ -190,16 +271,59 @@
         </div>
     </footer><!-- End  Footer -->
 
-    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบข้อมูล<span id="projName"></span></p>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการลบข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span>
+                        </b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
                 </div>
             </div>
         </div>

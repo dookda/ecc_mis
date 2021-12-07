@@ -7,7 +7,8 @@
 }
 
 #map{
-    height: 420px;
+    height: 620px;
+    z-index: 0;
 }
 
 .btn-margin{
@@ -16,7 +17,8 @@
 
 .chart {
     width: 100%;
-    height: 400px;
+    height: 320px;
+    background-color: #fff;
 }
 
 .mt-20{
@@ -26,6 +28,7 @@
   font-family: "Kanit",sans-serif !important;
   font-size: 14px !important; 
 }
+
   /*Legend specific*/
   .legend {
     padding: 6px 8px;
