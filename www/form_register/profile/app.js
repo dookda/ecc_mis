@@ -40,7 +40,7 @@ if (eecauth == "admin") {
 
 // var url = 'http://localhost:3700';
 // var url = "https://72dd718b2b77.ngrok.io";
-var url = 'https://eec-onep.online:3700';
+var url = 'https://eec-onep.online/api';
 
 function onLocationError(e) {
     console.log(e.message);

@@ -2,9 +2,19 @@ const express = require('express');
 const app = express.Router();
 const con = require("./db");
 const eec = con.eec;
+const oauth = con.oauth;
 
-const nodemailer = require("nodemailer");
-// const nodemailer = require('../lib/nodemailer');
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+
+const CLIENT_ID = oauth.client_id;
+const CLIENT_SECRET = oauth.client_secret;
+const REDIRECT_URI = oauth.redirect_uri;
+const REFRESH_TOKEN = oauth.refresh_token;
+
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
+
 
 app.post("/profile-api/register", async (req, res) => {
     const { data } = req.body;
@@ -122,31 +132,36 @@ app.post("/profile-api/resetmail", async (req, res) => {
 
     let sql = `SELECT email from register WHERE email='${email}'`;
     await eec.query(sql).then(async (r) => {
-        // console.log(r.rows.length);
+        console.log(r.rows.length);
 
         if (r.rows.length > 0) {
             let newpass = Date.now()
-            // await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
+            await eec.query(`UPDATE register SET pass='${newpass}' WHERE email='${email}'`);
 
-            var transporter = nodemailer.createTransport({
+            const accessToken = await oAuth2Client.getAccessToken()
+            const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
+                    type: 'OAuth2',
                     user: 'eec.onep@gmail.com',
-                    pass: 'eec090164'
+                    clientId: CLIENT_ID,
+                    clientSecret: CLIENT_SECRET,
+                    refreshToken: REFRESH_TOKEN,
+                    accessToken: accessToken
                 }
-            });
+            })
 
-            var mailOptions = {
+            const mailOptions = {
                 from: 'eec.onep@gmail.com',
                 to: email,
-                subject: 'รหัสผ่านใหม่',
-                // text: 'รหัสผ่านใหม่ของท่านคือ ' + newpass,
+                subject: "รหัสผ่านใหม่",
+                // text: 'hello test aaaa',
                 html: `รหัสผ่านใหม่ของท่านคือ  <b>${newpass}</b> 
                 <br>เข้าสู่ระบบอีกครั้งที่ https://eec-onep.online/form_register/login/index.html 
                 <br>เมื่อเข้าสู้ระบบได้แล้วกรุณาเปลี่ยนรหัสผ่านใหม่`
-            };
+            }
 
-            transporter.sendMail(mailOptions, function (error, info) {
+            await transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
                 } else {
@@ -214,36 +229,5 @@ app.post("/profile-api/approvedmail", async (req, res) => {
     })
 
 })
-
-// let i = 101;
-// setInterval(() => {
-//     let sql = `insert into register (regid, usrname, pass, ndate, tel, auth, approved)values(
-//             '111${i}','guest${i}','guest${i}',now(), 'guest${i}','admin','ตรวจสอบแล้ว'
-//         )`
-//     eec.query(sql).then(r => console.log(sql))
-//     i++
-// }, 3000);
-
-const main = async () => {
-    const sgMail = require('@sendgrid/mail')
-    sgMail.setApiKey('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')
-    const msg = {
-        to: 'sakda.homhuan@gmail.com', // Change to your recipient
-        from: 'sakda.homhuan@gmail.com', // Change to your verified sender
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    }
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-}
-// main()
-
 
 module.exports = app;

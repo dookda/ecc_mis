@@ -7,51 +7,6 @@ const th = con.th;
 const geo = con.geo;
 const oauth = con.oauth;
 
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
-
-const CLIENT_ID = oauth.client_id;
-const CLIENT_SECRET = oauth.client_secret;
-const REDIRECT_URI = oauth.redirect_uri;
-const REFRESH_TOKEN = oauth.refresh_token;
-
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
-
-
-async function sendMail() {
-    try {
-        const accessToken = await oAuth2Client.getAccessToken()
-        const transport = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                type: 'OAuth2',
-                user: 'eec.onep@gmail.com',
-                clientId: CLIENT_ID,
-                clientSecret: CLIENT_SECRET,
-                refreshToken: REFRESH_TOKEN,
-                accessToken: accessToken
-            }
-        })
-
-        const mailOptions = {
-            from: 'eec.onep@gmail.com',
-            to: 'sakda.homhuan@gmail.com',
-            subject: "hello",
-            text: 'hello test',
-            html: '<h3>hello test</h3>',
-        }
-
-        const result = await transport.sendMail(mailOptions)
-        return result
-
-    } catch (error) {
-        return error
-    }
-}
-
-sendMail()
-
 app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
     const lyr = req.params.lyr;
     const val = req.params.val;
