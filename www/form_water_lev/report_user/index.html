@@ -114,8 +114,41 @@
 
                     <div class="card">
                         <div class="card-body">
+                            เรียกดูข้อมูลในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
+                                    <select class="form-control" id="prov">
+                                        <option value="eec">ทุกจังหวัด</option>
+                                        <option value="24">ฉะเชิงเทรา</option>
+                                        <option value="20">ชลบุรี</option>
+                                        <option value="21">ระยอง</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">เลือกอำเภอ:</label>
+                                        <select class="form-control" id="amp">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">เลือกตำบล:</label>
+                                        <select class="form-control" id="tam">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
                             <label for="">จำนวนครั้งที่รายงาน (หน่วย: ครั้งที่รายงาน)</label>
-                            <div class="chart" id="timeline"></div>
+                            <div class="chart" id="cntChart"></div>
                         </div>
                     </div>
                     <div class="card">
@@ -140,6 +173,9 @@
                                         <th>ชื่อแหล่งน้ำ</th>
                                         <th>สถานที่</th>
                                         <th>ระดับน้ำ</th>
+                                        <th>ตำบล</th>
+                                        <th>อำเภอ</th>
+                                        <th>จังหวัด</th>
                                         <th>วันที่รายงาน</th>
                                     </tr>
                                 </thead>
@@ -200,6 +236,32 @@
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถเข้าถึงรายงานได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ไม่สามารถเข้าถึงรายงานได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
             </div>
         </div>
     </div>
