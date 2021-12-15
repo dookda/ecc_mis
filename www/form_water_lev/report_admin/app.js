@@ -67,22 +67,8 @@ const pro = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     // maxZoom: 10,
     // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
 });
-const greenmuni = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
-    layers: 'eec:a__52_gsus_muni',
-    format: "image/png",
-    transparent: true,
-    // maxZoom: 10,
-    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-});
 const municiple = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
     layers: 'eec:a__04_municiple',
-    format: "image/png",
-    transparent: true,
-    // maxZoom: 10,
-    // CQL_FILTER: 'pro_code=20 OR pro_code=21 OR pro_code=24'
-});
-const thaigreen = L.tileLayer.wms("https://eec-onep.online/geoserver/eec/wms?", {
-    layers: 'eec:a__83_thaigreen_eec',
     format: "image/png",
     transparent: true,
     // maxZoom: 10,
@@ -95,13 +81,9 @@ var baseMaps = {
 }
 const overlayMaps = {
     "ขอบเขตจังหวัด": pro.addTo(map),
-    "ขอบเขตอำเภอ": amp,
-    "ขอบเขตตำบล": tam,
+    "ขอบเขตอำเภอ": amp.addTo(map),
+    "ขอบเขตตำบล": tam.addTo(map),
     "ขอบเขตเทศบาล": municiple,
-    "พื้นที่สีเขียวสาธารณะ": fc.addTo(map),
-    "พื้นที่สีเขียวยั่งยืนในเขตเทศบาล": greenmuni,
-    "พื้นที่สีเขียวจาก Thai Green Urban": thaigreen,
-
 }
 
 const lyrControl = L.control.layers(baseMaps, overlayMaps, {
@@ -151,9 +133,12 @@ let refreshPage = () => {
     // console.log("ok");
 }
 
-let confirmDelete = (id, gr_name) => {
+let confirmDelete = (id, name, date) => {
     $("#projId").val(id)
-    $("#projName").text(gr_name)
+    $("#projName").text(name)
+    if (date !== null) {
+        $("#projTime").text(`วันที่ ${date}`)
+    }
     $("#deleteModal").modal("show")
 }
 
@@ -165,9 +150,10 @@ let closeModal = () => {
 
 let deleteValue = () => {
     // console.log($("#projId").val());
-    let orgid = $("#projId").val()
-    axios.post(url + "/green-api/delete", { orgid: orgid }).then(r => {
+    let proj_id = $("#projId").val()
+    axios.post(url + "/waterlevel-api/delete", { proj_id: proj_id }).then(r => {
         r.data.data == "success" ? closeModal() : null
+        $('#myTable').DataTable().ajax.reload();
     })
 }
 
@@ -194,7 +180,7 @@ let getDataForMap = (data) => {
         i.options.name == "marker" ? map.removeLayer(i) : null;
     });
 
-    d.map(i => {
+    data.map(i => {
         if (i.geojson) {
 
             let json = JSON.parse(i.geojson);
@@ -208,11 +194,14 @@ let getDataForMap = (data) => {
     });
 }
 
-let showCountChart = (data, div, label) => {
+let zoomMap = (lat, lon) => {
+    // console.log(lat, lon);
+    map.setView([lat, lon], 14)
+}
 
+let showCountChart = (data, div, label) => {
     // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
-    // chart.scrollbarX = new am4core.Scrollbar();
 
     // Add data
     chart.data = data;
@@ -224,7 +213,7 @@ let showCountChart = (data, div, label) => {
     categoryAxis.renderer.minGridDistance = 30;
     categoryAxis.renderer.labels.template.horizontalCenter = "right";
     categoryAxis.renderer.labels.template.verticalCenter = "middle";
-    categoryAxis.renderer.labels.template.rotation = 270;
+    // categoryAxis.renderer.labels.template.rotation = 270;
     categoryAxis.tooltip.disabled = true;
     categoryAxis.renderer.minHeight = 110;
 
@@ -309,32 +298,23 @@ let getDataForChart = (data) => {
     let ry = 0;
     let cs = 0;
     data.map(i => {
-        console.log(i);
-        if (i.prov_namt == "ชลบุรี") {
-            cb += 1;
-        }
-
-        if (i.prov_namt == "ระยอง") {
-            ry += 1;
-        }
-
-        if (i.prov_namt == "ฉะเชิงเทรา") {
-            cs += 1;
-        }
+        i.prov_namt == "ชลบุรี" ? cb += 1 : null
+        i.prov_namt == "ระยอง" ? ry += 1 : null
+        i.prov_namt == "ฉะเชิงเทรา" ? cs += 1 : null
     })
 
     let cnt = [{
         "cat": "ฉะเชิงเทรา",
         "val": cs,
-        "color": "#7FC8A9"
+        "color": "#50b4d8"
     }, {
         "cat": "ชลบุรี",
         "val": cb,
-        "color": "#D5EEBB"
+        "color": "#9eddef"
     }, {
         "cat": "ระยอง",
         "val": ry,
-        "color": "#5F7A61"
+        "color": "#96b3c1"
     },];
 
     showCountChart(cnt, 'cntChart', 'รายงาน (ครั้ง)')
@@ -414,7 +394,7 @@ let loadTable = (data) => {
     table.on('search.dt', function () {
         let data = table.rows({ search: 'applied' }).data();
         // console.log(data);
-        // getDataForMap(data);
+        getDataForMap(data);
         getDataForChart(data);
     });
 }
@@ -423,63 +403,6 @@ let getDetail = (e) => {
     sessionStorage.setItem('green_gid', e);
     sessionStorage.setItem('green_from_admin', 'yes');
     location.href = "./../detail/index.html";
-}
-
-let geneChart = (arr, div, tt, unit) => {
-    $("#spinner").hide();
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create(div, am4charts.XYChart);
-    chart.data = arr
-
-    var title = chart.titles.create();
-    title.text = tt;
-    title.fontSize = 14;
-    title.marginBottom = 5;
-
-    // Create axes
-    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = "cat";
-    categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.renderer.minGridDistance = 30;
-    categoryAxis.renderer.fontSize = 14;
-
-    var axis = chart.yAxes.push(new am4charts.ValueAxis());
-    axis.paddingLeft = 5;
-    axis.paddingRight = 5;
-    // axis.layout = "absolute";
-
-    axis.title.text = unit;
-    axis.title.rotation = 270;
-    axis.title.align = "center";
-    axis.title.valign = "top";
-    axis.title.dy = 12;
-    axis.title.fontSize = 14;
-
-    // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = "val";
-    series.dataFields.categoryX = "cat";
-    // series.name = "Visits";
-    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = .8;
-
-    var columnTemplate = series.columns.template;
-    columnTemplate.strokeWidth = 2;
-    columnTemplate.strokeOpacity = 1;
-
-    chart.exporting.menu = new am4core.ExportMenu();
-    chart.exporting.menu.align = "left";
-    chart.exporting.menu.verticalAlign = "top";
-    chart.exporting.adapter.add("data", function (data, target) {
-        var data = [];
-        chart.series.each(function (series) {
-            for (var i = 0; i < series.data.length; i++) {
-                series.data[i].name = series.name;
-                data.push(series.data[i]);
-            }
-        });
-        return { data: data };
-    });
 }
 
 
