@@ -16,22 +16,46 @@ app.post("/wq-api/getone", (req, res) => {
 })
 
 app.post("/wq-api/getdata", (req, res) => {
-    const { usrid } = req.body;
-    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
-            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
-        FROM v_watquality`
+    const { type, usrid } = req.body;
+    let sql;
+    if (type == 'admin') {
+        sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
+        TO_CHAR(af_date, 'DD-MM-YYYY') as af_date , TO_CHAR(bf_date, 'YYYY-MM-DD') as datetimes
+    FROM v_watquality order by datetimes desc`
+    } else {
+        sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
+        TO_CHAR(af_date, 'DD-MM-YYYY') as af_date , TO_CHAR(bf_date, 'YYYY-MM-DD') as datetimes
+    FROM v_watquality WHERE usrid='${usrid}' order by datetimes desc`
+    }
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
         })
     })
 })
-
+app.post("/wq-api/getdata/chartbystation", (req, res) => {
+    const { syst } = req.body;
+    const sql = `SELECT * FROM v_watquality WHERE syst ='${syst}'`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
 app.post("/wq-api/getdatabyprov", (req, res) => {
     const { prov } = req.body;
     const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
-            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
-        FROM v_watquality WHERE prov='${prov}'`
+            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date , TO_CHAR(bf_date, 'YYYY-MM-DD') as datetimes
+        FROM v_watquality WHERE prov ='${prov}' order by datetimes desc`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/wq-api/stationbyprov", (req, res) => {
+    const { prov } = req.body;
+    const sql = `SELECT distinct syst FROM v_watquality WHERE prov ='${prov}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -39,22 +63,11 @@ app.post("/wq-api/getdatabyprov", (req, res) => {
     })
 })
 
-app.post("/wq-api/getownerdatabyprov", (req, res) => {
-    const { prov, usrid } = req.body;
-    const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
-            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
-        FROM v_watquality WHERE prov='${prov}' AND usrid='${usrid}'`
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
 app.post("/wq-api/getownerdata", (req, res) => {
     const { usrid } = req.body;
     const sql = `SELECT *, TO_CHAR(bf_date, 'DD-MM-YYYY') as bf_date, 
-            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date 
-        FROM v_watquality WHERE usrid='${usrid}'`
+            TO_CHAR(af_date, 'DD-MM-YYYY') as af_date, TO_CHAR(bf_date, 'YYYY-MM-DD') as datetimes
+        FROM v_watquality WHERE usrid='${usrid}' order by datetimes desc`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -77,17 +90,6 @@ app.post("/wq-api/getownerdatabystation", (req, res) => {
     const { syst, usrid } = req.body;
 
     const sql = `SELECT v.* FROM v_watquality v WHERE syst='${syst}' AND usrid='${usrid}' ORDER BY v.bf_date`
-    eec.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
-
-app.post("/wq-api/stationbyprov", (req, res) => {
-    const { prov } = req.body;
-
-    const sql = `SELECT v.* FROM v_watquality v WHERE prov='${prov}'`
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

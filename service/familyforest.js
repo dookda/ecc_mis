@@ -100,10 +100,45 @@ app.post("/ff-api/getalldaily", (req, res) => {
         })
     })
 })
+app.post("/ff-api/getalldaily/user", (req, res) => {
+    const { pro, usrid } = req.body;
+    let sql;
+    if (pro == 'ทุกจังหวัด') {
+        sql = `SELECT a.*, TO_CHAR(a.dt, 'DD-MM-YYYY') as date ,
+            ST_AsGeoJson(b.geom) as geom, b.pro
+            FROM familyforest_daily a
+            LEFT JOIN familyforest_user b
+            ON a.ffid = b.ffid WHERE  usrid = '${usrid}'
+            ORDER BY a.dt DESC`;
+    } else {
+        sql = `SELECT a.*, TO_CHAR(a.dt, 'DD-MM-YYYY') as date ,
+            ST_AsGeoJson(b.geom) as geom, b.pro
+            FROM familyforest_daily a
+            LEFT JOIN familyforest_user b
+            ON a.ffid = b.ffid
+            WHERE b.pro = '${pro}'and  usrid = '${usrid}'
+            ORDER BY a.dt DESC`;
+    }
+    // console.log(sql);
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
 
 app.post("/ff-api/getparcelall", (req, res) => {
     const { ffid } = req.body;
     const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user`;
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/ff-api/getparcel/uid", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT *, ST_AsGeoJson(geom) as geom FROM familyforest_user where usrid = '${usrid}' order by gid DESC`;
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

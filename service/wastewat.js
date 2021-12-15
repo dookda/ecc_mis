@@ -36,9 +36,9 @@ app.post("/waste-api/getdata", (req, res) => {
     let sql;
     // console.log(prov);
     if (prov == 'ทุกจังหวัด') {
-        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat`
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat order by wdate desc`
     } else {
-        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE prov='${prov}'`
+        sql = `SELECT *, ST_AsGeojson(geom) as geojson, TO_CHAR(wdate, 'DD-MM-YYYY') as date FROM wastewat WHERE prov='${prov}' order by wdate desc`
     }
 
     eec.query(sql).then(r => {

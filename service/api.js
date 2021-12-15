@@ -5,7 +5,6 @@ const eec = con.eec;
 const dat = con.dat;
 const th = con.th;
 const geo = con.geo;
-const oauth = con.oauth;
 
 app.get("/eec-api/get-extent/:lyr/:val", (req, res) => {
     const lyr = req.params.lyr;
@@ -148,7 +147,7 @@ app.post("/eec-api/get-aqi-bytam", (req, res) => {
     } else {
         sql = `SELECT * FROM v_pcd_aqi_eec_by_tam WHERE tam_code='${val}'`;
     }
-    // console.log(sql);
+
     dat.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -321,6 +320,15 @@ app.get("/eec-api/get-wtrl", (req, res) => {
         })
     })
 })
+app.post("/eec-api/get-wtrl/timeline", (req, res) => {
+    const { staname } = req.body;
+    const sql = `SELECT * from public.wtrl_hii_hr where waterlevel_datetime>= (CURRENT_DATE - '14 days'::interval day) and tele_station_name ='${staname}'`;
+    dat.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
 
 app.get("/eec-api/get-th-prov", (req, res) => {
     const sql = `SELECT pv_idn, pro_name FROM province_4326`;
@@ -412,18 +420,15 @@ app.post("/eec-api/get-geomarea", async (req, res) => {
 app.get("/eec-api/gettambylatlon/:lat/:lon", (req, res) => {
     const lat = req.params.lat;
     const lon = req.params.lon;
-    const sql = `SELECT tam_name, amp_name, pro_name, tb_idn, ap_idn, pv_idn
-                FROM tambon_4326 a
+    const sql = `SELECT tam_nam_t, amphoe_t, prov_nam_t 
+                FROM _03_tambon_eec a
                 WHERE ST_Within(ST_GeomFromText('POINT(${lon} ${lat})', 4326), 
                      ST_TransForm(a.geom, 4326)) = true`;
-    eec.query(sql).then((r) => {
+    geo.query(sql).then((r) => {
         res.status(200).json({
             data: r.rows
         });
     });
 })
-
-
-
 
 module.exports = app;

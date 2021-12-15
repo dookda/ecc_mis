@@ -37,7 +37,6 @@ app.post("/sq-api/getdata", (req, res) => {
 })
 app.post("/sq-api/getdata/user", (req, res) => {
     const { type, dat, usrid } = req.body;
-    console.log(type, dat, usrid);
     let sql;
     if (type == "ทุกจังหวัด") {
         sql = `SELECT *, ST_AsGeojson(geom) as geojson, 

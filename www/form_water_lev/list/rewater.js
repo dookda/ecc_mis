@@ -10,7 +10,7 @@ if (f_water_lev == 'false') {
 $("#usrname").text(urname);
 
 
-$.get(" https://eec-onep.online:3700/api/getLv").done(r => {
+$.get(" https://eec-onep.online/api/api/getLv").done(r => {
     // console.log(r)
     let name = [];
     let waterLv = [];

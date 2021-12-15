@@ -76,8 +76,8 @@ app.get("/eec-api/iot-data-bytype-last20/:type", (req, res) => {
 })
 
 app.post("/eec-api/test", (req, res) => {
-    const { stname, deep, humidity, temperature, token } = req.body
-    console.log(stname, deep, humidity, temperature, token, "daa")
+    const { stname, deep, humidity, temperature,token } = req.body;
+    console.log(sta, val, param, val1, param1, val2, param2, token);
     const tokenServer = 'ZWVjSW9UYnlFbkdSSURzU3RhdGlvbjE=';
 
 

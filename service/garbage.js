@@ -13,10 +13,48 @@ app.post("/gb-api/getone", (req, res) => {
         })
     })
 })
+app.post("/gb-api/getonebysta", (req, res) => {
+    const { sta } = req.body;
+    const sql = `SELECT *, ST_AsGeojson(geom) as geojson 
+                FROM garbage WHERE dla='${sta}' ORDER BY year DESC`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
 
 app.post("/gb-api/getdata", (req, res) => {
     const { userid } = req.body;
     const sql = `SELECT *, ST_AsGeojson(geom) as geojson FROM garbage`
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/gb-api/getstation", (req, res) => {
+    const { prov } = req.body;
+    let sql
+    if (prov == "eec") {
+        sql = `SELECT DISTINCT dla,prov FROM garbage ORDER BY dla ASC`
+    } else {
+        sql = `SELECT DISTINCT dla FROM garbage WHERE prov='${prov}'ORDER BY dla ASC`
+    }
+    eec.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+app.post("/gb-api/getstation/user", (req, res) => {
+    const { prov, userid } = req.body;
+    let sql
+    if (prov == "eec") {
+        sql = `SELECT DISTINCT dla,prov FROM garbage  where usrid='${userid}' ORDER BY dla ASC`
+    } else {
+        sql = `SELECT DISTINCT dla FROM garbage WHERE prov='${prov}' and usrid='${userid}' ORDER BY dla ASC`
+    }
     eec.query(sql).then(r => {
         res.status(200).json({
             data: r.rows

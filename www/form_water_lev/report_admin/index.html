@@ -114,8 +114,41 @@
 
                     <div class="card">
                         <div class="card-body">
+                            เรียกดูข้อมูลในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="exampleFormControlSelect1">เลือกจังหวัด</label>
+                                    <select class="form-control" id="prov">
+                                        <option value="eec">ทุกจังหวัด</option>
+                                        <option value="24">ฉะเชิงเทรา</option>
+                                        <option value="20">ชลบุรี</option>
+                                        <option value="21">ระยอง</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">เลือกอำเภอ:</label>
+                                        <select class="form-control" id="amp">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="sel1">เลือกตำบล:</label>
+                                        <select class="form-control" id="tam">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
                             <label for="">จำนวนครั้งที่รายงาน (หน่วย: ครั้งที่รายงาน)</label>
-                            <div class="chart" id="timeline"></div>
+                            <div class="chart" id="cntChart"></div>
                         </div>
                     </div>
                     <div class="card">
@@ -140,6 +173,9 @@
                                         <th>ชื่อแหล่งน้ำ</th>
                                         <th>สถานที่</th>
                                         <th>ระดับน้ำ</th>
+                                        <th>ตำบล</th>
+                                        <th>อำเภอ</th>
+                                        <th>จังหวัด</th>
                                         <th>วันที่รายงาน</th>
                                     </tr>
                                 </thead>

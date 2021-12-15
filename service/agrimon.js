@@ -17,8 +17,7 @@ app.post("/agi-api/getone", (req, res) => {
 
 app.post("/agi-api/getdata", (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT ag_id,agname,agdate,agarea,agtype,agdetail,img, 
-        ST_AsGeoJson(geom) as geom FROM agri_mon`;
+    const sql = `SELECT ag_id,agname,agdate,agarea,agtype,agdetail,img, ST_AsGeoJson(geom) as geom FROM agri_mon`;
 
     eec.query(sql).then(r => {
         res.status(200).json({

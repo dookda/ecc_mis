@@ -68,14 +68,14 @@
                     <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
                     <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
                     <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
-                    <li id="login"><a href="./../../form_register/login/index.html">เข้าสู่ระบบบ</a></li>
+
                     <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
 
-                    <!-- <li><a href="./../../form_register/profile/index.html"><i
+                    <li><a href="./../../form_register/profile/index.html"><i
                                 class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
                         </a></li>
                     <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
-                            ออกจากระบบ</a></li> -->
+                            ออกจากระบบ</a></li>
                 </ul>
             </nav>
             <div class="header-social-links">
@@ -107,39 +107,25 @@
                             ในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
                         </p>
                     </div>
-                    <!-- ใส่แผนที่ -->
-                    <div class="container">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <!-- รับค่า ID Line -->
-                                    <div id="card">
-                                        <img alt="" id="profile">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <!-- ฟอร์มนำเข้า -->
-                <br>
-                <div class="mt-3 mb-20" data-aos="fade-up">
+                <div class="mt-0 mb-5" data-aos="fade-up">
 
                     <div class="card">
                         <div class="card-body">
-                            <label for="">จำนวนครั้งที่รายงาน</label>
+                            <label for="">จำนวนครั้งที่รายงาน (หน่วย: ครั้งที่รายงาน)</label>
                             <div class="chart" id="timeline"></div>
                         </div>
                     </div>
-                    <p></p>
-                    <p></p>
-                    <br>
-                    <h5>ตำแหน่งรายงานสถานการณ์ระดับนผิวดิน</h5>
                     <div class="card">
-                        <div id="map"></div>
+                        <div class="card-body">
+                            <h5>ตำแหน่งรายงานสถานการณ์ระดับนผิวดิน</h5>
+                            <hr>
+                            <div id="map"></div>
+                        </div>
                     </div>
-                    <br>
-                    <div class="card" id="tbdata">
+                    <div class="card">
                         <div class="card-body">
                             <a class="btn btn-success" href="./../add/index.html"><i
                                     class="bi bi-plus-circle-fill"></i>&nbsp;เพิ่มข้อมูลใหม่</a>
@@ -149,12 +135,12 @@
                                 style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>ลำดับ</th>
                                         <th>ชื่อแหล่งน้ำ</th>
                                         <th>สถานที่</th>
                                         <th>ระดับน้ำ</th>
                                         <th>วันที่รายงาน</th>
-                                        <th>แก้ไข</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -185,17 +171,35 @@
         </div>
     </footer><!-- End  Footer -->
 
-    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <!-- <div class="w3-animate-top"></div> -->
             <div class="modal-content">
-                <div class="modal-body">
-                    <p>ท่านต้องการลบข้อมูล<span id="projName"></span></p>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการลบข้อมูล
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการลบข้อมูล
+                        <b><span id="projName"></span><br><span id="projTime"></span>
+                        </b> ใช่หรือไม่?
+                    </p>
                     <input type="hidden" id="projId">
                 </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteValue()">ยืนยัน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                 </div>
+
             </div>
         </div>
     </div>
