@@ -53,31 +53,36 @@ const mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox/light-v9',
     tileSize: 512,
-    zoomOffset: -1
+    zoomOffset: -1,
+    zIndex: 0
 });
 
 const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     name: "base",
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-    maxZoom: 19
+    maxZoom: 19,
+    zIndex: 0
 });
 
 const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
     name: "base",
     maxZoom: 20,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    zIndex: 0
 });
 
 const grod = L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}", {
     name: "base",
     maxZoom: 20,
-    subdomains: ["mt0", "mt1", "mt2", "mt3"]
+    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+    zIndex: 0
 });
 
 const gter = L.tileLayer('https://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
     name: "base",
     maxZoom: 20,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    zIndex: 0
 });
 
 const lu61 = L.tileLayer.wms(eecGeoserver + "/eec/wms?", {
