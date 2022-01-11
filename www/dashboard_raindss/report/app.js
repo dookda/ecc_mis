@@ -315,7 +315,7 @@ for (let i = 1; i <= yweek[1]; i++) {
 
 let weekrainChk = false;
 $("#week_rain").on("change", async (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     await map.eachLayer(i => {
         if (i.options.name == "rainweekLyr") {
             map.removeLayer(i)
@@ -428,6 +428,7 @@ let loadWtrl = async () => {
     sta.map(async (i) => {
         let resSt01 = axios.post('https://eec-onep.soc.cmu.ac.th/api/wtrl-api-get2.php', { station: i.staname, limit: 1 });
         resSt01.then(r => {
+            // console.log(r);
             let d = r.data.data[0];
             let marker = L.marker(i.latlon, {
                 icon: iconblue,
