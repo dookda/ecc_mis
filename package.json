@@ -1,38 +1,39 @@
 {
-  "name": "ecc_mis",
-  "version": "1.0.0",
-  "description": "MIS ecc",
-  "main": "eec3700.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dookda/ecc_mis.git"
-  },
-  "keywords": [
-    "mis",
-    "ecc"
-  ],
-  "author": "enGRIDs",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dookda/ecc_mis/issues"
-  },
-  "homepage": "https://github.com/dookda/ecc_mis#readme",
+  "name": "eec_mis",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@line/bot-sdk": "^7.2.0",
-    "@sendgrid/mail": "^7.6.0",
-    "axios": "^0.20.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "googleapis": "^92.0.0",
-    "multer": "^1.4.2",
-    "nodemailer": "^6.7.2",
-    "nodemon": "^2.0.7",
-    "pg": "^8.5.1",
-    "qrcode": "^1.4.4",
-    "request": "^2.88.2"
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.1.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
