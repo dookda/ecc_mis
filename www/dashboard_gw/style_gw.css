@@ -1,0 +1,181 @@
+#chart{
+  height: 52vh;
+  width: 100%;
+}
+
+#chart1,#chart2{
+  height: 20vh;
+  width: 100%;
+}
+
+#chart7,#chart8,#chart9,#chart10,#chart11,#chart12,#chart13,#chart14,#chart15,#chart16,#chart17,#chart18,#chart19{
+  height: 35vh;
+  width: 100%;
+}
+#chart21,#chart22,#chart23,#chart24,#chart25,#chart26,#chart27,#chart28,#chart29,#chart30,#chart31,#chart32 {
+  height: 35vh;
+  width: 100%;
+}
+.container-sec{
+  width: 100%;
+  height: max-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+ 
+}
+.card-sec{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+}
+.card-sec button{
+  width: 250px;
+  height: 75px;
+  position: relative;
+  /* background-color: crimson; */
+}
+.card-sec .btn-info:hover, .btn-info:active, .btn-info:focus {
+  color: #ffffff !important;
+  background-color: #1F2838 !important;
+  border-color: #494F57 !important;
+}
+.kanit{
+  font-family: "Kanit",sans-serif !important;
+  font-size: 14px !important; 
+}
+  /*Legend specific*/
+  .legend {
+    padding: 6px 8px;
+    font: 14px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
+    border-radius: 5px;
+    line-height: 24px;
+    color: #555;
+  }
+  .legend h4 {
+    text-align: center;
+    font-size: 16px;
+    margin: 2px 12px 8px;
+    color: #777;
+  }
+  
+  .legend span {
+    position: relative;
+    bottom: 3px;
+    font-family: "Kanit",sans-serif !important;
+  }
+  
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin: 0 8px 0 0;
+    /* opacity: 0.7; */
+  }
+  .legend img {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin: 0 8px 0 0;
+    opacity: 0.7;
+  }
+  
+  .legend i.icon {
+    background-size: 18px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .cookie{
+    margin: auto;
+    width: fit-content;
+    max-width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    
+  }
+  .dcookie{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .w-fit{
+    width: fit-content;
+    max-width: 100%;
+  }
+  
+  @media (max-width:769px) {
+    .dcookie{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+  }
+  .hi-50{
+    height: 50px;
+  }
+ .hi-120{
+   height: 120px;
+ }
+  [class*=classic]:before {
+    content:"กำลังโหลดข้อมูล...";
+    font-family: "Kanit",sans-serif !important;
+    color: #828282;
+  }
+.classic-1 {
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 30px;
+  animation:c1 1s linear infinite alternate;
+}
+@keyframes c1 {to{opacity: 0}}
+
+#cardstats{
+  /* background-color: blue; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* align-items: stretch; */
+}
+.card-stats1{
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
+  background-color: #fff;
+  color: #252422;
+  position: relative;
+  border: 0 none;
+  transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+  width: 240px;
+  max-width: 100%;
+  height: 160px;
+  /* margin: auto; */
+  margin-bottom: 10px !important; 
+  margin-left: 10px !important;
+  margin-right: 10px !important; 
+}
+/* @media (max-width: 1023px) {
+  #cardstats{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    background-color: brown;
+  }
+  .card-stats1{
+    width: 500px;
+  }
+} */

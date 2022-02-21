@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ระบบรายงานสถานการณ์ปริมาณน้ำ</title>
+    <!-- start dooklink -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+    <!-- end dooklink -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+
+    <!-- Favicons -->
+    <link href="./../assets/img/favicon.png" rel="icon">
+    <link href="./../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <!-- Vendor CSS Files -->
+    <link href="./../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Template Main CSS File -->
+    <link href="./../assets/css/style.css" rel="stylesheet">
+    <link href="./style_weather.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+            <nav class="nav-menu d-none d-lg-block">
+                <ul id="nav">
+                    <li><a href="./../index.html">หน้าหลัก</a></li>
+                    <li class="active"><a href="./../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+
+                    <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
+                    <!-- <li><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+                        </a></li>
+                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li> -->
+                </ul>
+            </nav>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png"
+                        class="img-circle" style="width:35px"></a> -->
+            </div>
+        </div>
+
+    </header><!-- End Header -->
+
+    <main id="main">
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services" data-aos="fade-up">
+            <!-- <div class="container" > -->
+            <div class="section-title">
+                <br><br>
+                <h2>ระบบรายงานสถานการณ์ปริมาณน้ำผิวดิน</h2>
+                <div class="container">
+                    <p>
+                        ระบบรายงานสถานการณ์ปริมาณน้ำผิวดินเป็นระบบที่รวบรวมข้อมูลจากสถานีตรวจวัดสภาพอากาศของกรมอุตุนิยมวิทยาที่บริการข้อมูลเปิด
+                        API ประกอบด้วยข้อมูลปริมาณน้ำฝน อุณหภูมิ ความชื้นสัมพัทธ์ ความกดอากาศ และความเร็วลม
+                        เพื่อรับรู้สถานการณ์น้ำที่จะลงสู่ผิวดินในพื้นที่เขตพัฒนาพิเศษภาคตะวันออกและพื้นที่โดยรอบ
+                        โดยข้อมูลที่อยู่ในระบบสามารถสืบค้นย้อนหลัง 14 วัน
+                    </p>
+                </div>
+            </div>
+            <p></p>
+            <!-- แสดงข้อมูลอุตุ ณ ตำแหน่งผู้ใช้ -->
+            <div class="container-fluid mt-1 mb-1">
+                <hr>
+                <div class="row">
+                    <div class="col-lg col-md-6 col-sm-12 mt-1 mt-md-2 mt-1">
+                        <h3 style="font-weight: bold;">ข้อมูลลักษณะสภาพอากาศ ณ ตำแหน่งผู้ใช้งาน</h3>
+                        ข้อมูลลักษณะสภาพอากาศ วันที่ <span id="d"></span> เวลา <span id="t"></span> สถานี <span
+                            id="sta_th"></span>
+                        (จากกรมอุตุนิยมวิทยา)<br />
+                    </div>
+                    <div class="col-lg col-md-6 col-sm-12 mt-0 mt-md-4 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <a href="./../form_water_lev/report_user/index.html"
+                                class="btn btn-primary">รายงานปริมาณน้ำผิวดินจากภาคประชาชน</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card-deck">
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-cloud-rain fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>ปริมาณน้ำฝน 3 ชั่วโมง<br>
+                            <span class="ch3" id="rainfall"></span><br>มิลลิเมตร
+                        </div>
+                    </div>
+
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-tint fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>ปริมาณน้ำฝน 24 ชั่วโมง<br>
+                            <span class="ch3" id="rainfall24"></span><br>มิลลิเมตร
+                        </div>
+                    </div>
+
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-temperature-high fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>อุณหภูมิอากาศ<br>
+                            <span class="ch3" id="air_temp"></span><br> องศาเซลเซียส
+                        </div>
+                    </div>
+
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-tachometer-alt fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>ความชื้นสัมพัทธ์<br>
+                            <span class="ch3" id="rh"></span><br>เปอร์เซนต์
+                        </div>
+                    </div>
+
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-smog fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>ความกดอากาศ<br>
+                            <span class="ch3" id="msl_pressure"></span><br>มิลลิบาร์
+                        </div>
+                    </div>
+
+                    <div class="card card-stats">
+                        <div class="c-body center">
+                            <span style="color: rgb(91,192,222);">
+                                <i class="las la-wind fa-3x p-1" aria-hidden="true"></i>
+                            </span>
+                            <br>ความเร็วลม<br>
+                            <span class="ch3" id="windspeed"></span><br>กิโลเมตร/ชั่วโมง
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card-deck">
+                    <div class="card card-stats">
+                        <div class="card-body p2 text-center">
+
+                            <div id="map"></div>
+                            <div id="legend"></div>
+
+                            <div class="row" style="margin-top: 12px;">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="sel1">จังหวัด:</label>
+                                        <select class="form-control" id="pro">
+                                            <option value="eec">ทุกจังหวัด</option>
+                                            <option value="24">ฉะเชิงเทรา</option>
+                                            <option value="20">ชลบุรี</option>
+                                            <option value="21">ระยอง</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="sel1">อำเภอ:</label>
+                                        <select class="form-control" id="amp">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="sel1">ตำบล:</label>
+                                        <select class="form-control" id="tam">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="sel1">ค่าพารามิเตอร์:</label>
+                                        <select class="form-control" id="paramiter">
+                                            <option value="Rain">ปริมาณน้ำฝน</option>
+                                            <option value="Wtrl">ปริมาณน้ำท่า</option>
+                                            <option value="Temp">ค่าอุณหภูมิ</option>
+                                            <option value="Rh">ความชื้น</option>
+                                            <option value="Pressure">ความกดอากาศ</option>
+                                            <option value="Wind">ความเร็วลม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <!-- แสดงข้อมูลกราฟทุกสถานี -->
+                    <div class="col-sm-12" id="chart_P">
+                        <div class="card card-stats">
+                            <div class="card-body">
+                                <H5 class="text-center" style="font-weight:550;"><span id="Hc_p"></span>
+                                    ของสถานีตรวจวัดสภาพอากาศใน <span id="Hc_pat"></span>
+                                </H5>
+                                <hr>
+                                <div id="chart" style="height: 620px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card card-stats">
+                            <div class="card-body" id="T1">
+                                <table id="tab"
+                                    class="table table-striped table-bordered dt-responsive nowrap w-100 mw-100">
+                                    <h5 class="text-center">ตารางสถานีตรวจวัดคุณภาพอากาศ</h5>
+                                    <hr>
+                                    <label for="">ดาวน์โหลดข้อมูล</label>
+                                    <thead>
+                                        <tr>
+                                            <!-- <th></th> -->
+                                            <th>ชื่อสถานี</th>
+                                            <th>ความกดอากาศ (mBar)</th>
+                                            <th>อุณหภูมิ (°C)</th>
+                                            <th>อุณหภูมิจุดน้ำค้าง (°C)</th>
+                                            <th>ความชื้นสัมพัทธ์ (%)</th>
+                                            <th>ทัศนวิสัยทางบก (m.)</th>
+                                            <th>ทิศทางลม (°)</th>
+                                            <th>ความเร็วลม (km/hr)</th>
+                                            <th>ฝนปัจจุบัน (mm.)</th>
+                                            <th>ฝน 24 ชั่วโมง (mm.)</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="card-body" id="T2">
+                                <table id="tab2"
+                                    class="table table-striped table-bordered dt-responsive nowrap w-100 mw-100">
+                                    <h5 class="text-center">ตารางสถานีตรวจวัดน้ำท่า</h5>
+                                    <hr>
+                                    <label for="">ดาวน์โหลดข้อมูล</label>
+                                    <thead>
+                                        <tr>
+                                            <th>วันที่</th>
+                                            <th>ชื่อสถานี</th>
+                                            <th>ตำบล</th>
+                                            <th>อำเภอ</th>
+                                            <th>จังหวัด</th>
+                                            <th>ระดับน้ำ</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <hr id="report-section"> -->
+                <div class="row" id="C1">
+                    <div class="col-sm-12">
+                        <div class="card card-stats text-center">
+                            <div class="card-body ">
+                                <h5>ข้อมูลลักษณะอากาศตามสถานีตรวจวัด</h5>
+                                <h3><span id="sta_name"></span></h3>
+                                <label for="sel1">สถานีตรวจวัด <span id="pat3"></span> :</label>
+                                <div class="form-group m-auto w-25 mw-10">
+                                    <select class="form-control" id="sta_name2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="p-4 h-auto" id="spin1">
+                                <div class="classic-1"></div>
+                            </div>
+                            <div class="card-body p-4" style="background-color: #F9F9F9; -webkit-box-shadow:inset 0px 0px 0px 10px #fff;
+                        -moz-box-shadow:inset 0px 0px 0px 10px #fff;
+                        box-shadow:inset 0px 0px 0px 10px #fff;
+                        border-radius: 12px;" id="card_Ps">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card card-stats">
+                                                    <div class="card-body ">
+                                                        ปริมาณน้ำฝน (มิลลิเมตร)
+                                                        <div class="chartHist p-0" id="chart-rainfall"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card card-stats">
+                                                    <div class="card-body ">
+                                                        อุณหภูมิ (องศาเซลเซียส)
+                                                        <div class="chartHist p-0" id="chart-temperature"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card card-stats">
+                                                    <div class="card-body ">
+                                                        ความเร็วลม (กิโลเมตร/ชั่วโมง)
+                                                        <div class="chartHist p-0" id="chart-windspeed"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card card-stats">
+                                                    <div class="card-body ">
+                                                        ความชื้นสัมพัทธ์ (เปอร์เซนต์)
+                                                        <div class="chartHist p-0" id="chart-rh"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card card-stats">
+                                                    <div class="card-body ">
+                                                        ความกดอากาศ (มิลลิบาร์)
+                                                        <div class="chartHist p-0" id="chart-pressure"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row"
+                                            style="align-items: baseline; margin-left: 1%; margin-bottom: -10px;">
+                                            <h6 style="font-weight: bold;">แหล่งที่มาของข้อมูล:</h6>&nbsp;
+                                            <P>กรมอุตุนิยมวิทยา</P>
+                                            <br>
+                                        </div>
+                                        <div class="row" style="margin-left: 1%;">
+                                            อ้างอิง การให้บริการข้อมูลเปิดอุตุนิยมวิทยา <a
+                                                href="https://data.tmd.go.th/">กรมอุตุนิยมวิทยา</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row" id="C2">
+                    <div class="col-sm-12">
+                        <div class="card card-stats text-center">
+                            <div class="card-body">
+                                <h6 style="margin-top: 5px;">ข้อมูลปริมาณน้ำท่าย้อนหลัง 14 วัน</h6>
+                                <h3><span id="locat_W"></span></h3>
+                                <label for="sel1">สถานีตรวจวัด :</label>
+                                <div class="form-group m-auto w-25 mw-10">
+                                    <select class="form-control" id="sta_name3">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="p-4" style="background-color: #F9F9F9; -webkit-box-shadow:inset 0px 0px 0px 10px #fff;
+                            -moz-box-shadow:inset 0px 0px 0px 10px #fff;
+                            box-shadow:inset 0px 0px 0px 10px #fff;
+                            border-radius: 12px;" id="cardWtrl">
+                                <div class="card card-stats" id="">
+                                    <div class="card-body">
+                                        ปริมาณน้ำท่า (เมตร)
+                                        <div class="chartHist p-0" style="height: 250px;" id="chart-Wtrl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row" style="align-items: baseline; margin-left: 10px;  font-size: 14px;">
+                    <h6 style="font-weight: bold;  font-size: 14px;">หมายเหตุ:</h6>&nbsp;
+                    <p>คลิกชื่อสถานีที่ท่านสนใจที่ตารางด้านบนเพื่อแสดงข้อมูลย้อนหลัง ณ สถานีนั้น
+                    </p>
+                </div> -->
+
+                <!-- <div class="mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 09/08/2021</span></p>
+                </div> -->
+            </div>
+        </section>
+    </main>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <!-- <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="p-2 bd-highlight  text-justify">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="copyright">
+            <img src="./../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+            สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+        </div>
+        </div>
+    </footer><!-- End  Footer -->
+
+    <div class="modal fade" id="wtrlModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div style="height: 250px;" id="depthChart"></div>
+                    <p></p>
+                    <div style="height: 250px;" id="tempChart"></div>
+                    <p></p>
+                    <div style="height: 250px;" id="humiChart"></div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="warningModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center" style="background: #e5e6e5;">
+                    <h4 class="modal-title">
+                        <i class="bi bi-exclamation-circle-fill text-warning mr-2" style="font-size: 26px;"></i>
+                        แจ้งเตือน
+                    </h4>
+                </div>
+                <div class="modal-body text-center mx-auto">
+                    <p style="font-size: 18px;">กรุณาเลือกขอบเขตพื้นที่ของข้อมูลที่ท่านสนใจ<br> เช่น จังหวัด-อำเภอ-ตำบล
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
+
+
+    <!-- Vendor JS Files -->
+    <script src="./../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="./../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="./../assets/vendor/php-email-form/validate.js"></script>
+    <script src="./../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="./../assets/vendor/counterup/counterup.min.js"></script>
+    <script src="./../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../assets/vendor/venobox/venobox.min.js"></script>
+    <script src="./../assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="./../assets/js/main.js"></script>
+
+    <!-- start dooklink -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script> -->
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="./../dashboard_weather/app.js"></script>
+    <!-- end dooklink -->
+</body>
+
+</html>

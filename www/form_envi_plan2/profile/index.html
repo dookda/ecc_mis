@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>ลงทะเบียนระบบติดตามการดำเนินงานตามแผนสิ่งแวดล้อมในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก พ.ศ. 2561-2564</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="./../login-assets/images/icons/favicon.ico" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/css-hamburgers/hamburgers.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/vendor/daterangepicker/daterangepicker.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./../login-assets/css/util.css">
+	<link rel="stylesheet" type="text/css" href="./../login-assets/css/main.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title">
+					<span class="login100-form-title-1">
+						<i class="bi bi-file-earmark-person"></i>&nbsp;&nbsp;ข้อมูลผู้ใช้
+					</span>
+
+				</div>
+
+				<div class="login100-form validate-form">
+					<div class="wrap-input100 validate-input m-b-26" data-validate="กรอกชื่อผู้ใช้">
+						<span class="label-input100">ชื่อผู้ใช้</span>
+						<input class="input100" type="text" id="usrname" placeholder="กรอกชื่อผู้ใช้">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate="กรอกรหัสผ่าน">
+						<span class="label-input100">รหัสผ่าน</span>
+						<input class="input100" type="text" id="pass" placeholder="กรอกรหัสผ่าน">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate="เลือกชื่อหน่วยงาน">
+						<span class="label-input100">หน่วยงาน</span>
+						<input class="input100" type="text" id="organize">
+						<!-- <select class="form-control" id="organize"></select> -->
+					</div>
+
+					<!-- <div class="wrap-input100 m-b-18" id="org_new">
+						<span class="label-input100">เพิ่มหน่วยงานใหม่</span>
+						<input class="input100" type="text" id="organize_new" placeholder="เพิ่มหน่วยงานใหม่">
+						<span class="focus-input100"></span>
+					</div> -->
+
+					<div class="wrap-input100  m-b-18">
+						<span class="label-input100">เบอร์โทร</span>
+						<input class="input100" type="text" id="tel" placeholder="กรอกเบอร์โทร">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100  m-b-18">
+						<span class="label-input100">email</span>
+						<input class="input100" type="email" id="email" placeholder="กรอกอีเมล">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100  m-b-18">
+						<span class="label-input100">สิทธิ์ผู้ใช้งาน</span>
+						<!-- <input class="input100" type="text" id="auth" disabled> -->
+						<select class="form-control" id="auth">
+							<option value="admin">ผู้ดูแลระบบ</option>
+							<option value="editor">ผู้รับผิดชอบนำเข้าข้อมูล</option>
+						</select>
+						<!-- <span class="focus-input100"></span> -->
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" onclick="update()">
+							อัพเดท
+						</button>
+						&nbsp;&nbsp;
+						<button class="login100-form-btn" onclick="login()">
+							กลับไปหน้ารายงาน
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>อัพเดทข้อมูลสำเร็จ</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+					<button type="button" class="btn btn-primary" onclick="login()">กลับไปหน้ารายงาน</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/bootstrap/js/popper.js"></script>
+	<script src="./../login-assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/daterangepicker/moment.min.js"></script>
+	<script src="./../login-assets/vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="./../login-assets/js/main.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="./app.js"></script>
+
+</body>
+
+</html>

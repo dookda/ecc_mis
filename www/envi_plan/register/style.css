@@ -1,0 +1,15 @@
+body {
+    font-family: "Kanit", sans-serif !important;
+    color: #444444;
+    font-size: 16px !important;
+}
+  
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Kanit", sans-serif;
+}
+  
+.wrap-input100-noline {
+    width: 100%;
+    position: relative;
+    /* border-bottom: 1px solid #b2b2b2; */
+}

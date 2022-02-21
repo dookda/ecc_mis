@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- ชื่อเพจ -->
+    <title>ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- start dooklink -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+    <!-- end dooklink -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet"> -->
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+
+    <!-- Favicons -->
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap"> -->
+    <!-- Vendor CSS Files -->
+    <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="./../../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Template Main CSS File -->
+    <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+</head>
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+
+                    <!-- <li><a href="https://www.facebook.com/EECENV">facebook</a></li> -->
+                    <li><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+                        </a></li>
+                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
+                </ul>
+            </nav>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png" class="img-circle"
+                        style="width:35px"></a> -->
+
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+    <br>
+    <br>
+    <br>
+
+    <main id="main">
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container" data-aos="fade-up">
+                <div class="section-title">
+                    <h2>ระบบนำเข้าข้อมูลคุณภาพน้ำผิวดิน</h2>
+                    <p>
+                        การนำเข้าข้อมูลค่าพารามิเตอร์คุณภาพน้ำผิวดินในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                    </p>
+                </div>
+
+                <!-- ใส่แผนที่ -->
+                <div class="container">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <!-- รับค่า ID Line -->
+                                <div id="card">
+                                    <img alt="" id="profile">
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 ml-1">
+                                <h5> <span class="badge badge-info" id="displayName"></span></h5>
+                                <span id="statusMessage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>แผนที่</h3>
+                    <h5>กรุณาคลิกที่แผนที่ ณ ตำแหน่งที่เก็บข้อมูลตัวอย่างน้ำ</h5>
+                    <div class="card mt-1 p-0">
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <!-- ฟอร์มนำเข้า -->
+                <div class="container mt-3 mb-3">
+                    <div class="form-group">
+                        <h5>ข้อมูลเกี่ยวกับตัวอย่างน้ำ</h5>
+                        <p></p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">เลขที่สถานีหรือเลขอ้างอิงจุดเก็บตัวอย่าง:</label>
+                                <input type="text" class="form-control" id="ws_station">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="">สถานที่ตั้งเครื่องตรวจวัดหรือสถานที่เก็บตัวอย่าง:</label>
+                                <input type="text" class="form-control" id="ws_location">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="">ชื่อแหล่งน้ำ:</label>
+                                <input type="text" class="form-control" id="ws_river">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="">ผู้บันทึกข้อมูล หรือแหล่งที่มาของข้อมูล:</label>
+                                <input type="text" class="form-control" id="ws_recorder">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="">วันเดือนปี:</label>
+                                <input type="date" class="form-control" id="ws_date" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="">เวลา:</label>
+                                <input type="time" class="form-control" id="ws_time" required>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="">ลำดับครั้งที่เก็บตัวอย่าง:</label>
+                                <input type="number" class="form-control" id="ws_round" required>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5>ผลการตรวจวัดตัวอย่างน้ำ</h5>
+                        <p></p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">ออกซิเจนละลายน้ำ (DO) (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_do">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for=""> ปริมาณออกซิเจนที่จุลินทรีย์ต้องการ (BOD) (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_bod">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">Total Coliform Bacteria (MPN/100ml):</label>
+                                <input type="number" class="form-control" id="ws_tcb">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">Fecal Coliform Bacteria (MPN/100ml):</label>
+                                <input type="number" class="form-control" id="ws_fcb">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">แอมโมเนีย (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_nh3n">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ฟอสฟอรัสทั้งหมด (?):</label>
+                                <input type="number" class="form-control" id="ws_tp">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ของแข็งทั้งหมด (?):</label>
+                                <input type="number" class="form-control" id="ws_ts">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ของแข็งแขวนลอย (?):</label>
+                                <input type="number" class="form-control" id="ws_ss">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">อุณหภูมิ (C):</label>
+                                <input type="number" class="form-control" id="ws_temp">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">pH :</label>
+                                <input type="number" class="form-control" id="ws_ph">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ไนเตรด (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_no3">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ฟีนอล (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_phenols">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ทองแดง (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_cu">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">นิคเกิล (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_ni">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">แมงกานีส (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_mn">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">สังกะสี (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_zn">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">แคดเมียม:</label>
+                                <input type="number" class="form-control" id="ws_cd">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">โครเมียมชนิดเฮ็กซาวาเล้นท์(Cr Hexavalent):</label>
+                                <input type="number" class="form-control" id="ws_crhex">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ตะกั่ว (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_pb">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ปรอททั้งหมด (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_totalhg">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">สารหนู:</label>
+                                <input type="number" class="form-control" id="ws_as">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ไซยาไนด์ (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_cyanide">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">กัมมันตภาพรังสี (Radioactivity):</label>
+                                <input type="number" class="form-control" id="ws_radioa">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">สารฆ่าศัตรูพืชและสัตว์ชนิดที่มีคลอรีนทั้งหมด (Total Organochlorine
+                                    Pesticides) (mg/l):</label>
+                                <input type="number" class="form-control" id="ws_top">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ดีดีที (µg/l):</label>
+                                <input type="number" class="form-control" id="ws_ddt">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">บีเอชซีชนิดแอลฟา (Alpha-BHC) (µg/l):</label>
+                                <input type="number" class="form-control" id="ws_alphsb">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ดิลดริน (Dieldrin) (µg/l):</label>
+                                <input type="number" class="form-control" id="ws_dield">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">อัลดริน (Aldrin) (µg/l):</label>
+                                <input type="number" class="form-control" id="ws_aldrin">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">เฮปตาคอร์ (Heptachlor) และเฮปตาคลอร์อีปอกไซด์ (Heptachlorepoxide)
+                                    (µg/l):</label>
+                                <input type="number" class="form-control" id="ws_hepta">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">เอนดริน (Endrin):</label>
+                                <input type="number" class="form-control" id="ws_endrin">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="sq_tcb">ค่ามาตรฐานคุณภาพน้ำ:</label>
+                                <input type="number" class="form-control" id="ws_wqi">
+                            </div>
+                            <div class="col-sm-6">
+                                <form>
+                                    <label for="img">อัพโหลดรูปภาพ</label>
+                                    <input type="file" class="form-control-file" id="img">
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <a class="btn btn-light pull-right m-1" href="./../report/index.html"><i
+                                class="fa fa-clipboard"></i>&nbsp;
+                            กลับหน้ารายงาน</a>
+                        <button class="btn btn-success pull-right m-1" onclick="insertData()"><i class="fa fa-plus"
+                                aria-hidden="true"></i>&nbsp;เพิ่มข้อมูล
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Services Section -->
+
+        <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+        <!-- <div class="container mt-3 mb-6">
+            <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+        </div> -->
+    </main><!-- End #main -->
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <footer id="footer">
+        <div class="container">
+
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+            </div>
+        </div>
+    </footer><!-- End  Footer -->
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถนำเข้าข้อมูลนี้ได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ท่านไม่สามารถนำเข้าข้อมูลได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="./../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="./../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./../../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="./../../assets/vendor/php-email-form/validate.js"></script>
+    <script src="./../../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="./../../assets/vendor/counterup/counterup.min.js"></script>
+    <script src="./../../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="./../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../../assets/vendor/venobox/venobox.min.js"></script>
+    <script src="./../../assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="./../../assets/js/main.js"></script>
+
+    <!-- start dooklink -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/tkps9plvkak87264ceqgxp4icaeuhwqs6xz8wu4rknrz245q/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="./app.js"></script>
+    <!-- end dooklink -->
+
+</body>
+
+</html>

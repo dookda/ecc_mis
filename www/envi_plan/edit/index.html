@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>ระบบติดตามการดำเนินงานตามแผนสิ่งแวดล้อมในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก พ.ศ. 2561-2564</title>
+
+    <!-- start dooklink -->
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- end dooklink -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet"> -->
+    <!-- <link href="./assets/css/paper-kit.css?v=2.2.0" rel="stylesheet" /> -->
+
+    <!-- Favicons -->
+    <link href="./../assets/img/favicon.png" rel="icon">
+    <link href="./../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap"> -->
+    <!-- Vendor CSS Files -->
+    <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="./../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Template Main CSS File -->
+    <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="./../assets/css/style.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><a href="../report/index.html">หน้าหลัก</a></li>
+                    <!-- <li><a href="">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li> -->
+                    <!-- <li><a href="./../report/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li> -->
+                    <!-- <li><a href="">เกี่ยวกับโครงการ</a></li> -->
+                    <li><a href="" onclick="logout()">ออกจากระบบ</a></li>
+                </ul>
+            </nav><!-- .nav-menu -->
+
+            <!-- social icon -->
+            <div class="header-social-links">
+                <span id="aut"></span>
+                <!-- <a href="#" class="twitter"><i class="icofont-twitter"></i></a> -->
+                <a href="https://www.facebook.com/EECENV" class="facebook"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a> -->
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+
+    <main id="main">
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>ระบบติดตามการดำเนินงานตามแผนสิ่งแวดล้อมในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก พ.ศ. 2561-2564</h2>
+                    <p>
+                        แก้ไขโครงการภายใต้แผนสิ่งแวดล้อมในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                    </p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+    <div class="container">
+        <h5>รายละเอียดโครงการ</h5>
+
+        <form id="fieldForm">
+            <div class="form-group">
+                <div class="form-group">
+                    <h6>ลำดับ<span style="color: firebrick;">*</span></h6>
+                    <!-- <input type="number" step="any" class="form-control" id="prj_order" required> -->
+                    <input type="text" class="form-control" id="prj_order" required>
+                </div>
+                <h6>ประเภทของแผนงานโครงการ<span style="color: firebrick;">*</span></h6>
+                <select class="form-control" id="prj_cate">
+                    <option value="Flagship">Flagship</option>
+                    <option value="ยุทธศาสตร์ที่ 1">ยุทธศาสตร์ที่ 1 การจัดการคุณภาพสิ่งแวดล้อมที่ดี</option>
+                    <option value="ยุทธศาสตร์ที่ 2">ยุทธศาสตร์ที่ 2
+                        การส่งเสริมคุณภาพสิ่งแวดล้อมเมืองและชุมชนอย่างน่าอยู่</option>
+                    <option value="ยุทธศาสตร์ที่ 3">ยุทธศาสตร์ที่ 3
+                        การส่งเสริมการมีส่วนร่วมและสร้างความรับผิดชอบต่อสังคมและสิ่งแวดล้อม</option>
+                    <option value="ยุทธศาสตร์ที่ 4">ยุทธศาสตร์ที่ 4
+                        การบริหารจัดการทรัพยากรธรรมชาติอย่างมีประสิทธิภาพ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h6>หมวดหมู่<span style="color: firebrick;">*</span></h6>
+                <select class="form-control" id="prj_group">
+                    <option value="โครงการเร่งด่วน (Flagship)">โครงการเร่งด่วน (Flagship)</option>
+                    <option value="การจัดการกากของเสียภาคอุตสาหกรรม">การจัดการกากของเสียภาคอุตสาหกรรม</option>
+                    <option value="การจัดการขยะมูลฝอยชุมชน และมูลฝอยติดเชื้อ">การจัดการขยะมูลฝอยชุมชน และมูลฝอยติดเชื้อ
+                    </option>
+                    <option value="การจัดการทรัพยากรทางทะเลและชายฝั่ง">การจัดการทรัพยากรทางทะเลและชายฝั่ง</option>
+                    <option value="การจัดการทรัพยากรน้ำ">การจัดการทรัพยากรน้ำ</option>
+                    <option value="การจัดการทรัพยากรป่าไม้และสัตว์ป่า">การจัดการทรัพยากรป่าไม้และสัตว์ป่า</option>
+                    <option value="การจัดการน้ำเสียชุมชน">การจัดการน้ำเสียชุมชน</option>
+                    <option
+                        value="การตรวจสอบ ติดตามคุณภาพสิ่งแวดล้อม และเฝ้าระวังการปล่อยมลพิษ อุบัติภัยจากสารเคมี และการลักลอบทิ้งสารเคมี">
+                        การตรวจสอบ ติดตามคุณภาพสิ่งแวดล้อม และเฝ้าระวังการปล่อยมลพิษ อุบัติภัยจากสารเคมี
+                        และการลักลอบทิ้งสารเคมี</option>
+                    <option value="การเพิ่มประสิทธิภาพการประเมินผลการะทบสิ่งแวดล้อม">
+                        การเพิ่มประสิทธิภาพการประเมินผลการะทบสิ่งแวดล้อม</option>
+                    <option value="โครงการพัฒนาและเพิ่มพื้นที่สีเขียว">โครงการพัฒนาและเพิ่มพื้นที่สีเขียว</option>
+                    <option value="โครงการเพิ่มเติมจากหน่วยงานที่ไม่ได้มีการกำหนดโครงการไว้ในแผนฯ 1">
+                        โครงการเพิ่มเติมจากหน่วยงานที่ไม่ได้มีการกำหนดโครงการไว้ในแผนฯ 1</option>
+                    <option value="โครงการส่งเสริมและพัฒนาพื้นที่เมืองอุตสาหกรรมเชิงนิเวศ">
+                        โครงการส่งเสริมและพัฒนาพื้นที่เมืองอุตสาหกรรมเชิงนิเวศ</option>
+                    <option value="โครงการออกแบบและพัฒนาเมืองตามผังการพัฒนาที่กำหนด">
+                        โครงการออกแบบและพัฒนาเมืองตามผังการพัฒนาที่กำหนด</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h6>มาตรการ<span style="color: firebrick;">*</span></h6>
+                <select class="form-control" id="prj_measure">
+                    <option value="มาตรการ 1.1">มาตรการ 1.1 บำบัด กำจัดของเสีย และควบคุมมลพิษจากแหล่งกำเนิด</option>
+                    <option value="มาตรการ 1.2">มาตรการ 1.2 ป้องกันและลดความเสี่ยงการเกิดอุบัติภัยจากสารเคมี</option>
+                    <option value="มาตรการ 1.3">มาตรการ 1.3 เพิ่มประสิทธิภาพการประเมินผลกระทบสิ่งแวดล้อม</option>
+                    <option value="มาตรการ 2.1">มาตรการ 2.1
+                        ส่งเสริมการเพิ่มพื้นที่สีเขียวและสนับสนุนการพัฒนาเมืองในรูปแบบที่เป็นมิตรกับสิ่งแวดล้อม</option>
+                    <option value="มาตรการ 2.2">มาตรการ 2.2
+                        วางผังการใช้ประโยชน์ที่ดินและพัฒนาโครงสร้างพื้นฐานของเมืองให้รองรับการดำเนินชีวิตของคนทุกกลุ่ม
+                    </option>
+                    <option value="มาตรการ 3.1">มาตรการ 3.1 ส่งเสริมการผลิต การบริการ
+                        และการบริโภคที่เป็นมิตรกับสิ่งแวดล้อม</option>
+                    <option value="มาตรการ 3.2">มาตรการ 3.2
+                        ส่งเสริมมาตรการทางเศรษฐศาสตร์เพื่อความรับผิดชอบต่อสังคมและสิ่งแวดล้อม</option>
+                    <option value="มาตรการ 3.3">มาตรการ 3.3
+                        ส่งเสริมการเรียนรู้และการสื่อสารที่เปิดโอกาสการมีส่วนร่วมของชุมชนและประชาชน
+                    </option>
+                    <option value="มาตรการ 4.1">มาตรการ 4.1 ฟื้นฟูพื้นที่ป่าต้นน้ำลำธาร ทรัพยากรดิน
+                        และความหลากหลายทางชีวภาพ</option>
+                    <option value="มาตรการ 4.2">มาตรการ 4.2 บริหารจัดการทรัพยากรน้ำเพื่อสร้างความมั่นคงของน้ำภาคการผลิต
+                    </option>
+                    <option value="มาตรการ 4.3">มาตรการ 4.3 อนุรักษ์และฟื้นฟูทรัพยากรทางทะเลและชายฝั่ง</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <h6>แนวทางการปฎิบัติ<span style="color: firebrick;">*</span></h6>
+                <ul id="list_measure"></ul>
+            </div>
+
+            <div class="form-group">
+                <h6>ชื่อโครงการ<span style="color: firebrick;">*</span></h6>
+                <input type="text" class="form-control" id="prj_name" required>
+                <div id="prj_id" type="hidden"></div>
+            </div>
+
+            <div class="form-group">
+                <h6>วัตถุประสงค์โครงการ<span style="color: firebrick;">*</span></h6>
+                <textarea type="text" class="form-control" id="prj_obj"></textarea>
+            </div>
+
+            <div class="form-group">
+                <h6>รายละเอียดเพิ่มเติมเกี่ยวโครงการ/โครงการย่อย</h6>
+                <textarea type="text" class="form-control" id="prj_detail"></textarea>
+            </div>
+
+            <h5>ผลการดำเนินงานโครงการ</h5>
+            <h5>1. งบประมาณ</h5>
+            <div class="row">
+                <!-- <div class="col-sm">
+                    <div class="form-group">
+                        <h6>พื้นที่เป้าหมาย</h6>
+                        <input type="text" class="form-control" id="prj_site">
+                    </div>
+                </div> -->
+
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>ระยะเวลาดำเนินการ (ระบุปี พ.ศ.)</h6>
+                        <input type="text" class="form-control" id="prj_time">
+                        <!-- <select class="form-control" id="prj_time">
+                            <option value="2561">2561</option>
+                            <option value="2562">2562</option>
+                            <option value="2563">2563</option>
+                            <option value="2564">2564</option>
+                            <option value="2566">2565</option>
+                            <option value="2566">2566</option>
+                            <option value="2567">2567</option>
+                            <option value="2568">2568</option>
+                            <option value="2569">2569</option>
+                            <option value="2570">2570</option>
+                        </select> -->
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณรวมของโครงการ (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budget">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2561 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_61" value="0">
+                    </div>
+                </div>
+
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2562 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_62" value="0">
+                    </div>
+                </div>
+
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2563 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_63" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2564 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_64" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2565 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_65" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2566 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_66" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2567 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_67" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2568 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_68" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2569 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_69" value="0">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>งบประมาณปี 2570 (ล้านบาท)</h6>
+                        <input type="number" step='any' class="form-control" id="budg_70" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <div class="form-group">
+                        <h6>หน่วยงานที่ดำเนินการ</h6>
+                        <select class="form-control" id="prj_operat">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>แหล่งเงินงบประมาณที่ประสงค์จะใช้ดำเนินการ</h6>
+                        <input type="text" class="form-control" id="fund">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h6>สถานะด้านงบประมาณ</h6>
+                <select class="form-control" id="proc_stat">
+                    <option value="-"></option>
+                    <option value="ได้รับงบประมาณแล้ว">ได้รับงบประมาณแล้ว</option>
+                    <option value="ไม่ได้รับงบประมาณ">ไม่ได้รับงบประมาณ</option>
+                    <option value="ยังไม่ยื่นของบประมาณ">ยังไม่ยื่นของบประมาณ</option>
+                </select>
+            </div>
+
+            <ul>
+                <li id="div_proc_troub">
+                    <div class="form-group">
+                        <h6>เหตุผล/ปัญหาอุปสรรค ที่ยังไม่ยื่นของบประมาณ</h6>
+                        <textarea type="text" class="form-control" id="proc_troub"></textarea>
+                    </div>
+                </li>
+                <li id="div_fund_troub">
+                    <div class="form-group">
+                        <h6>เหตุผล/ปัญหาอุปสรรค ที่ไม่ได้รับงบประมาณ</h6>
+                        <textarea type="text" class="form-control" id="fund_troub"></textarea>
+                    </div>
+                </li>
+                <li id="div_fund_accpt">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <h6>งบประมาณที่ได้รับ (ล้านบาท)</h6>
+                                <input type="number" step='any' class="form-control" id="fund_accpt">
+                            </div>
+                            <!-- <div class="col-sm">
+                                <h6>ปีงบประมาณที่จะดำเนินการ:</h6>
+                                <input type="text" class="form-control" id="fund_year">
+                            </div> -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="form-group" id="div_opert_stat">
+                <h6>สถานะการดำเนินงาน</h6>
+
+                <select class="form-control" id="opert_stat">
+                    <option value="-"></option>
+                    <option value="อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด">
+                        อยู่ระหว่างการศึกษาความเหมาะสมและออกแบบรายละเอียด</option>
+                    <option value="อยู่ระหว่างตั้งของบประมาณ">อยู่ระหว่างตั้งของบประมาณ</option>
+                    <option value="อยู่ระหว่างดำเนินการ/ก่อสร้าง">อยู่ระหว่างดำเนินการ/ก่อสร้าง</option>
+                    <option value="อยู่ระหว่างจัดซื้อจัดจ้าง">อยู่ระหว่างจัดซื้อจัดจ้าง </option>
+                    <option value="ยังไม่ได้ดำเนินการ">ยังไม่ได้ดำเนินการ</option>
+                    <option value="ดำเนินการแล้วเสร็จ">ดำเนินการแล้วเสร็จ</option>
+                    <option value="ไม่ได้ดำเนินการ">ไม่ได้ดำเนินการ</option>
+                    <option value="ยกเลิกโครงการ">ยกเลิกโครงการ</option>
+                </select>
+            </div>
+
+            <ul>
+                <li id="div_opert_estm">
+                    <div class="form-group">
+                        <h6>โปรดระบุ วัน/เดือน/ปี ที่คาดว่าจะแล้วเสร็จ</h6>
+                        <input type="date" class="form-control" id="opert_estm">
+                    </div>
+                </li>
+                <li id="div_budg_year">
+                    <div class="form-group">
+                        <h6>โปรดระบุ ปีงบประมาณ พ.ศ.</h6>
+                        <input type="text" class="form-control" id="budg_year">
+                    </div>
+                </li>
+            </ul>
+
+            <hr>
+
+            <h5>2. สถานภาพโครงการ</h5>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm">
+                        <h6>ลักษณะโครงการ </h6>
+                        <select class="form-control" id="prj_type">
+                            <option value="โครงการใหม่">โครงการใหม่</option>
+                            <option value="โครงการต่อเนื่อง">โครงการต่อเนื่อง</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>พื้นที่ดำเนินการ</h6>
+                        <input type="text" class="form-control" id="prj_locate">
+                    </div>
+                </div>
+
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>เนื้อที่ (ไร่)</h6>
+                        <input type="number" class="form-control" id="prj_rai" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div id="map"></div>
+
+            <hr>
+            <h5>3. รายละเอียดโครงการ</h5>
+
+            <div class="form-group">
+                <h6>ชื่อโครงการ (หากมีการปรับเปลี่ยน) </h6>
+                <input type="text" class="form-control" id="prj_name_c">
+            </div>
+
+            <div class="form-group">
+                <h6>วัตถุประสงค์ของโครงการ (หากมีการปรับเปลี่ยน) </h6>
+                <textarea type="text" class="form-control" id="prj_obj_c"></textarea>
+            </div>
+
+            <!-- <div class="form-group">
+                <h6>วิธีการและขั้นตอนการดำเนินงาน </h6>
+                <textarea type="text" class="form-control" id="prj_method"></textarea>
+            </div> -->
+
+            <div class="form-group">
+                <h6>รูปแบบ/เทคโนโลยีที่ใช้ กรณีการก่อสร้างระบบจัดการของเสีย </h6>
+                <textarea type="text" class="form-control" id="prj_tech"></textarea>
+            </div>
+
+            <!-- <div class="form-group">
+                <h6>พื้นที่ดำเนินการ </h6>
+                <input type="text" class="form-control" id="prj_area">
+            </div> -->
+
+            <div class="form-group">
+                <h6>ผลผลิตและผลลัพธ์ที่ได้รับ </h6>
+                <textarea type="text" class="form-control" id="prj_output"></textarea>
+            </div>
+
+            <hr>
+            <div class="form-group">
+                <h6>ปัญหาอุปสรรคในการดำเนินงาน </h6>
+                <textarea type="text" class="form-control" id="prj_troub"></textarea>
+            </div>
+
+            <div class="form-group">
+                <h6>ข้อเสนอแนะในการดำเนินงานขั้นต่อไป </h6>
+                <textarea type="text" class="form-control" id="prj_comnt"></textarea>
+            </div>
+
+            <!-- <div class="form-group">
+                <h6>ข้อซักถามและประเด็นขอหารือ </h6>
+                <textarea type="text" class="form-control" id="prj_info"></textarea>
+            </div> -->
+
+            <!-- <div class="form-group">
+                <h6>Upload เอกสาร/ข้อมูลที่เกี่ยวข้อง</h6>
+                <input type="file" id="filename">
+            </div> -->
+            <hr>
+
+            <h5>4. ผู้ดำเนินงานและผู้ประสานงานหลัก </h5>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>ชื่อ-สกุล<span style="color: firebrick;">*</span></h6>
+                        <input type="text" class="form-control" id="coor_name" required>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>ตำแหน่ง<span style="color: firebrick;">*</span></h6>
+                        <input type="text" class="form-control" id="coor_pos">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>หมายเลขโทรศัพท์ (ที่ทำงาน)</h6>
+                        <input type="text" class="form-control" id="coor_tel">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <h6>E-mail</h6>
+                        <input type="text" class="form-control" id="coor_email">
+                    </div>
+                </div>
+            </div>
+            <span style="color: firebrick;">*</span>จำเป็นต้องกรอก
+            <hr>
+            <div class="mt-1">
+                <button type="submit" class="btn btn-info" id="button">
+                    <span id='n'>&nbsp;บันทึก</span>
+                </button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-light" id="refresh" onclick="refreshPage()">
+                    <span><i class="bi bi-box-arrow-in-left"></i>&nbsp;กลับไปหน้าหลัก</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <div class="modal fade" id="modal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>อัพเดทข้อมูลแล้ว </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <p></p>
+
+
+    </section>
+    </main>
+
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container">
+
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+            </div>
+        </div>
+    </footer><!-- End  Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
+</body>
+
+<!-- start dooklink -->
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://cdn.tiny.cloud/1/tkps9plvkak87264ceqgxp4icaeuhwqs6xz8wu4rknrz245q/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script src="./app.js"></script>
+<!-- end dooklink -->
+
+<!-- Vendor JS Files -->
+<script src="./../assets/vendor/jquery/jquery.min.js"></script>
+<script src="./../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="./../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+<script src="./../assets/vendor/php-email-form/validate.js"></script>
+<script src="./../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+<script src="./../assets/vendor/counterup/counterup.min.js"></script>
+<script src="./../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+<script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="./../assets/vendor/venobox/venobox.min.js"></script>
+<script src="./../assets/vendor/aos/aos.js"></script>
+
+
+<!-- <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script> -->
+
+<!-- Template Main JS File -->
+<script src="./../assets/js/main.js"></script>
+
+</html>

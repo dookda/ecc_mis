@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- ชื่อเพจ -->
+    <title>ระบบสนับสนุนการตัดสินใจ-ภาพรวม</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Map -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Favicons -->
+    <link href="./../../assets/img/favicon.png" rel="icon">
+    <link href="./../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link href="./../../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../../assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="./../../assets/vendor/aos/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <link href="./style.css" rel="stylesheet">
+    <link href="./circle.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+            <nav class="nav-menu d-none d-lg-block">
+                <ul id="nav">
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li class="active"><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+
+
+                </ul>
+            </nav>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png" class="img-circle"
+                        style="width:35px"></a> -->
+
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+
+    <main id="main">
+
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+
+        </section>
+        <!-- ======= Services Section ======= -->
+
+        <section id="services" class="services">
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <br>
+                    <br>
+
+
+                    <h2>ระบบสนับสนุนการตัดสินใจแบบภาพรวม</h2>
+                    <p>
+                        ระบบสนับสนุนการตัดสินใจ-ภาพรวม เป็นระบบสนับสนุนการตัดสินใจที่รวบรวมชั้นข้อมูลเชิงพื้นที่จำนวน
+                        112 ชั้นข้อมูล เพื่อให้ผู้ใช้สามารถเรียกดูชั้นข้อมูลเชิงพื้นที่ที่สนใจ
+                        <br>ในระบบนี้มีชั้นข้อมูล 5 หมวดข้อมูล ประกอบด้วย ขอบเขตการปกครอง แหล่งน้ำ มลพิษ ภัยธรรมชาติ
+                        และการใช้ประโยชน์ที่ดิน
+
+                    </p>
+                </div>
+
+            </div>
+            <div class="container-fluid">
+                <div class="mt-3" data-aos="fade-up" id="main">
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="card">
+                                <div class="card-body layer">
+                                    <label><b>ข้อมูลสถิติ</b></label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="checkpop" id="popcheck">
+                                        <label class="form-check-label">
+                                            ข้อมูลประชากร ปี2554-2563
+                                        </label>
+                                    </div>
+                                    <hr>
+                                    <label><b>การคาดการณ์และแนวโน้มสถานการณ์</b></label>
+                                    <div class="scroll-sm">
+                                        <div class="group-check">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendpopnormal">
+                                                <label class="form-check-label">
+                                                    ประชากร
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendpopcovid">
+                                                <label class="form-check-label">
+                                                    ประชากร (จากผลกระทบของโรคโควิด-19)
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendusewater">
+                                                <label class="form-check-label">
+                                                    ความต้องการใช้น้ำ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendelec">
+                                                <label class="form-check-label">
+                                                    ความต้องการใช้ไฟฟ้า
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendwaste">
+                                                <label class="form-check-label">
+                                                    ปริมาณน้ำเสียชุมชน
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendgarbage">
+                                                <label class="form-check-label">
+                                                    ปริมาณขยะมูลฝอย
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendraffle">
+                                                <label class="form-check-label">
+                                                    ปริมาณของเสียที่จะเกิดขึ้น
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendUW">
+                                                <label class="form-check-label">
+                                                    ปริมาณน้ำดิบ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendecon">
+                                                <label class="form-check-label">
+                                                    เศรษฐกิจ
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="trendlabor">
+                                                <label class="form-check-label">
+                                                    แรงงานไทย
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendgas">
+                                                <label class="form-check-label">
+                                                    การปล่อยก๊าซเรือนกระจกในกรณี BAU
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="trendlu">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <label><b>ชั้นข้อมูล</b></label>
+                                    <br>คลิกที่ชั้นข้อมูลเพื่อแสดงผลชั้นข้อมูลที่สนใจบนแผนที่
+                                    <hr>
+                                    <div class="scroll">
+                                        <div class="group-check">
+                                            <label><b>ขอบเขตการปกครอง</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pro"
+                                                    id="lyr_prov" checked>
+                                                <label class="form-check-label">
+                                                    ขอบเขตจังหวัด
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__01_prov_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="proLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="amp"
+                                                    id="lyr_amp">
+                                                <label class="form-check-label">
+                                                    ขอบเขตอำเภอ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__02_amphoe_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="ampLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="tam"
+                                                    id="lyr_tam">
+                                                <label class="form-check-label">
+                                                    ขอบเขตตำบล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__03_tambon_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="tamLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="muni" id="muni">
+                                                <label class="form-check-label">
+                                                    ขอบเขตเทศบาล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__04_municiple')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="munLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="vill" id="vill">
+                                                <label class="form-check-label">
+                                                    หมู่บ้าน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__05_village')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="villLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="maintran"
+                                                    id="maintran">
+                                                <label class="form-check-label">
+                                                    เส้นทางคมนาคมสายหลัก
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__49_maintran')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="maintranLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="tran" id="tran">
+                                                <label class="form-check-label">
+                                                    เส้นทางคมนาคม
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__49_tran')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="tranLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="highway"
+                                                    id="highway">
+                                                <label class="form-check-label">
+                                                    เส้นทางหลวงแผ่นดิน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__49_highway')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="highwayLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="train"
+                                                    id="train">
+                                                <label class="form-check-label">
+                                                    เส้นทางรถไฟ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__37_train')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="trainLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="munilandmark"
+                                                    id="munilandmark">
+                                                <label class="form-check-label">
+                                                    สถานที่สำคัญในเขตเทศบาล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__50_muni_lm_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="munilandmarkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landmark"
+                                                    id="landmark">
+                                                <label class="form-check-label">
+                                                    สถานที่สำคัญ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__38_landmark')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="landmarkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="artsource"
+                                                    id="artsource">
+                                                <label class="form-check-label">
+                                                    แหล่งศิลปกรรม
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__36_artsource')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="artsourceLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="countour"
+                                                    id="countour">
+                                                <label class="form-check-label">
+                                                    เส้นชั้นความสูง
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__11_countour')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="countourLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>แหล่งน้ำ</b></label>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterpath"
+                                                    id="waterpath">
+                                                <label class="form-check-label">
+                                                    เส้นทางน้ำ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__13_water_path')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="waterpathLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wbody"
+                                                    id="wbody">
+                                                <label class="form-check-label">
+                                                    แหล่งน้ำ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__14_w2_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wbodyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="basinquality"
+                                                    id="basinquality">
+                                                <label class="form-check-label">
+                                                    ชั้นคุณภาพลุ่มน้ำ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__16_basinquality')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="basinqualityLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mainbasin"
+                                                    id="mainbasin">
+                                                <label class="form-check-label">
+                                                    ลุ่มน้ำหลัก
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__12_main_basin_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="mainbasinLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="subbasin"
+                                                    id="subbasin">
+                                                <label class="form-check-label">
+                                                    ลุ่มน้ำย่อย
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__12_sub_basin')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="subbasinLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hydrogeology"
+                                                    id="hydrogeology">
+                                                <label class="form-check-label">
+                                                    อุทกธรณีวิทยา
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__18_hydrogeology')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="hydrogeologyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="radar" id="radar"
+                                                    checked>
+                                                <label class="form-check-label">
+                                                    เรดาห์น้ำฝน
+                                                </label>
+                                                <br>
+                                                <img id="radarLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wtrl" id="wtrl">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดระดับน้ำผิวดิน
+                                                </label>
+                                                <br>
+                                                <img id="wtrlLegend" width="30px">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Wqua" id="Wqua">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดคุณภาพน้ำผิวดิน
+                                                </label>
+                                                <br>
+                                                <img id="WquaLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="meteo"
+                                                    id="meteo">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดสภาพอากาศ (กรมอุตุนิยมวิทยา)
+                                                </label>
+                                                <br>
+                                                <img id="meteoLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterlevel_sa"
+                                                    id="waterlevel_sa">
+                                                <label class="form-check-label">
+                                                    สถานีตรวจวัดระดับน้ำ(สถานีอุทกวิทยา)
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__15_waterlevel_sa')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="waterlevel_saLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_mnre"
+                                                    id="water_mnre">
+                                                <label class="form-check-label">
+                                                    จุดเฝ้าระวังคุณภาพน้ำจากสสภ.13
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__58_water_mnre')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="water_mnreLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_onep"
+                                                    id="water_onep">
+                                                <label class="form-check-label">
+                                                    จุดเก็บน้ำเพื่อวิเคราะห์คุณภาพน้ำในโครงการฯ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__59_water_onep')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="water_onepLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="water_stand"
+                                                    id="water_stand">
+                                                <label class="form-check-label">
+                                                    จุดวัดคุณภาพน้ำผิวดิน
+                                                </label>
+                                                <br>
+                                                <img id="water_standLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="sea" id="sea">
+                                                <label class="form-check-label">
+                                                    จุดวัดคุณภาพน้ำทะเล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__61_sea_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="seaLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wsup_pipe"
+                                                    id="wsup_pipe">
+                                                <label class="form-check-label">
+                                                    ท่อส่งน้ำการประปา
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__53_wsup_pipe_wa_3p')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wsup_pipeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wdiv_pipe"
+                                                    id="wdiv_pipe">
+                                                <label class="form-check-label">
+                                                    ท่อผันน้ำกรมชลประทาน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__53_wdiv_pipe_3p')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wdiv_pipeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="locarid9"
+                                                    id="locarid9">
+                                                <label class="form-check-label">
+                                                    สำนักงานชลประทานที่ 9
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__53_loca_rid9')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="locarid9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="dambpk"
+                                                    id="dambpk">
+                                                <label class="form-check-label">
+                                                    เขื่อนทดน้ำบางปะกง
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__53_dam_bpk')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="dambpkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mainriver9"
+                                                    id="mainriver9">
+                                                <label class="form-check-label">
+                                                    แม่น้ำสายหลักสปช.9
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__53_main_riv_3p')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="mainriver9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pjarea_rid9"
+                                                    id="pjarea_rid9">
+                                                <label class="form-check-label">
+                                                    พื้นที่โครงการสปช.9
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__53_pj_area_rid9_3p')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="pjarea_rid9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pjloca_rid9"
+                                                    id="pjloca_rid9">
+                                                <label class="form-check-label">
+                                                    ที่ตั้งโครงการสปช.9
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__53_pj_loca_rid9_3p')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="pjloca_rid9Legend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>มลพิษ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="soundpoint"
+                                                    id="soundpoint">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดเสียง
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__08_soundpoint')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="soundpointLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="pollu"
+                                                    id="pollu">
+                                                <label class="form-check-label">
+                                                    แหล่งกำเนิดมลพิษ
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__81_pollution_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="polluLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ProtecPollu"
+                                                    id="ProtecPollu">
+                                                <label class="form-check-label">
+                                                    เขตพื้นที่คุ้มครองและเขตควบคุมมลพิษ
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__67_protec_pollu_cb_area_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="ProtecPolluLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="aqi" id="aqi">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดคุณภาพอากาศ (กรมควบคุมมลพิษ)
+                                                </label>
+                                                <br>
+                                                <img id="aqiLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hotspot"
+                                                    id="hotspot">
+                                                <label class="form-check-label">
+                                                    จุดความร้อน
+                                                </label>
+                                                <br>
+                                                <img id="hpLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="gwater"
+                                                    id="gwater">
+                                                <label class="form-check-label">
+                                                    จุดตรวจวัดคุณภาพน้ำบาดาล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute()">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="gwLegend" width="30px">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="waterstation"
+                                                    id="waterstation">
+                                                <label class="form-check-label">
+                                                    สถานีตรวจวัดคุณภาพน้ำอัตโนมัติ
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__10_water_station')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="waterstationLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wastewater"
+                                                    id="wastewater">
+                                                <label class="form-check-label">
+                                                    บ่อบำบัดน้ำเสีย
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__57_wastewater')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wastewaterLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wscope"
+                                                    id="wscope">
+                                                <label class="form-check-label">
+                                                    ขอบเขตระบบบำบัดน้ำเสีย
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__64_w_scope_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wscopeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wpipe"
+                                                    id="wpipe">
+                                                <label class="form-check-label">
+                                                    เส้นท่อระบบบำบัดน้ำเสีย
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__63_w_pipe_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wpipeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="garbage"
+                                                    id="garbage">
+                                                <label class="form-check-label">
+                                                    บ่อขยะ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__55_garbage')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="garbageLegend">
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="cp_cco" id="cp_cco">
+                                            <label class="form-check-label">
+                                                เรื่องร้องเรียนมลพิษ จังหวัดฉะเชิงเทรา
+                                            </label>
+                                            <a class="attrib"
+                                                onclick="callAttribute('a__68_complaint_pollu_cco')">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
+                                            <br>
+                                            <img id="cp_ccoLegend">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="cp_cbi" id="cp_cbi">
+                                            <label class="form-check-label">
+                                                เรื่องร้องเรียนมลพิษ จังหวัดชลบุรี
+                                            </label>
+                                            <a class="attrib"
+                                                onclick="callAttribute('a__69_complaint_pollu_cbi')">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
+                                            <br>
+                                            <img id="cp_cbiLegend">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="cp_ryg" id="cp_ryg">
+                                            <label class="form-check-label">
+                                                เรื่องร้องเรียนมลพิษ จังหวัดระยอง
+                                            </label>
+                                            <a class="attrib"
+                                                onclick="callAttribute('a__70_complaint_pollu_ryg')">&nbsp;<i
+                                                    class="bi bi-table"></i></a>
+                                            <br>
+                                            <img id="cp_rygLegend">
+                                        </div>
+
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>ภัยธรรมชาติ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="flood"
+                                                    id="flood">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยน้ำท่วม
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__41_flood')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="floodLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="earthquake"
+                                                    id="earthquake">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงแผ่นดินไหว
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__42_earthquake')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="earthquakeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landslide"
+                                                    id="landslide">
+                                                <label class="form-check-label">
+                                                    ตำแหน่งพื้นที่เสี่ยงดินถล่ม
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__43_landslide')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="landslideLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="hole" id="hole">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยหลุมยุบ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__44_hole')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="holeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="drought"
+                                                    id="drought">
+                                                <label class="form-check-label">
+                                                    พื้นที่เสี่ยงภัยแล้ง
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__45_drought')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="droughtLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>การใช้ประโยชน์ที่ดิน</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="grpark"
+                                                    id="grpark">
+                                                <label class="form-check-label">
+                                                    พื้นที่สีเขียวสาธารณะ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__52_gr_park')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="grparkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="f_reserved"
+                                                    id="f_reserved">
+                                                <label class="form-check-label">
+                                                    ป่าสงวนแห่งชาติ
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__26_f_reserved_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="f_reservedLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="nationalpark"
+                                                    id="nationalpark">
+                                                <label class="form-check-label">
+                                                    อุทยานแห่งชาติ
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__28_nationalparkboi')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="nationalparkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="park" id="park">
+                                                <label class="form-check-label">
+                                                    วนอุทยาน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__29_park_dnp')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="parkLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wildlife"
+                                                    id="wildlife">
+                                                <label class="form-check-label">
+                                                    เขตรักษาพันธุ์สัตว์ป่า
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__30_wildlife_boi')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wildlifeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="non_hunting"
+                                                    id="non_hunting">
+                                                <label class="form-check-label">
+                                                    เขตห้ามล่าสัตว์ป่า
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__31_non_huntingboi')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="non_huntingLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="f_type63"
+                                                    id="f_type63">
+                                                <label class="form-check-label">
+                                                    ประเภทป่าไม้ปีพ.ศ.2563
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__27_f_type63_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="f_type63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="afforesta"
+                                                    id="afforesta">
+                                                <label class="form-check-label">
+                                                    พื้นที่ปลูกป่า
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__33_afforestation')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="afforestaLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="alroarea"
+                                                    id="alroarea">
+                                                <label class="form-check-label">
+                                                    พื้นที่สปก.
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__35_alroarea')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="alroareaLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="commu_forest"
+                                                    id="commu_forest">
+                                                <label class="form-check-label">
+                                                    ป่าชุมชน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__56_commu_forest')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="commu_forestLegend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="thaigreen"
+                                                    id="thaigreen">
+                                                <label class="form-check-label">
+                                                    พื้นที่สีเขียวจาก Thai Green Urban
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__83_thaigreen_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="thaigreenLegend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geology"
+                                                    id="grology">
+                                                <label class="form-check-label">
+                                                    ธรณีวิทยา
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__19_geology')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="geologyLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mineral"
+                                                    id="mineral">
+                                                <label class="form-check-label">
+                                                    ทรัพยากรแร่
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__40_mineral')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="mineralLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geoconser"
+                                                    id="geoconser">
+                                                <label class="form-check-label">
+                                                    แหล่งอนุรักษ์ทางธรณีวิทยา
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__20_geology_miner')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="geoconserLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="minerdev"
+                                                    id="minerdev">
+                                                <label class="form-check-label">
+                                                    พื้นที่จำแนกเขตพัฒนาทรัพยากรแร่
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__20_mineral_develop')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="minerdevLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="geominer"
+                                                    id="geominer">
+                                                <label class="form-check-label">
+                                                    ข้อมูลธรณีและแหล่งทรัพยากรแร่
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__20_geology_miner')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="geominerLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oremine"
+                                                    id="oremine">
+                                                <label class="form-check-label">
+                                                    ประทานบัตร
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__21_oremine')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="oremineLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="soil" id="soil">
+                                                <label class="form-check-label">
+                                                    แผนที่ดิน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__25_soil_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="soilLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu56" id="lu56">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2556
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__46_lu_eec_56')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="lu56Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu59" id="lu59">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2559
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__46_lu_eec_59')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="lu59Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lu61" id="lu61">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดิน ปีพ.ศ.2561
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__46_lu_eec_61')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="lu61Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="lucbi63"
+                                                    id="lucbi63">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินพื้นที่จังหวัดชลบุรี ปีพ.ศ.2563
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__47_lu_cbi_2563')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="lucbi63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="luryg63"
+                                                    id="luryg63">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินพื้นที่จังหวัดระยอง ปีพ.ศ.2563
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__47_lu_ryg_2563')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="luryg63Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="landscape"
+                                                    id="landscape">
+                                                <label class="form-check-label">
+                                                    ภูมินิเวศ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__82_landscape')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="landscapeLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="wetland"
+                                                    id="wetland">
+                                                <label class="form-check-label">
+                                                    พื้นที่ชุ่มน้ำ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__80_wetland_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="wetlandLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="natural"
+                                                    id="natural">
+                                                <label class="form-check-label">
+                                                    ตำแหน่งแหล่งธรรมชาติ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__71_natural_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="naturalLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="species"
+                                                    id="species">
+                                                <label class="form-check-label">
+                                                    ชนิดพันธุ์สำคัญ หายาก และชีวภาพที่มีความสำคัญ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__66_species_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="speciesLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="a9" id="a9">
+                                                <label class="form-check-label">
+                                                    พื้นที่เกษตรกรรมประเภทเพาะเลี้ยงสัตว์น้ำ
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__48_a9_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="a9Legend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="mang_forest"
+                                                    id="mang_forest">
+                                                <label class="form-check-label">
+                                                    เขตป่าชายเลนตามมติคณะรัฐมนตรี
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__51_mang_forest_cabinet')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="mang_forestLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="MangLU"
+                                                    id="MangLU">
+                                                <label class="form-check-label">
+                                                    การใช้ประโยชน์ที่ดินในป่าชายเลน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__39_mangrovelu')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="MangLULegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Coastal"
+                                                    id="Coastal">
+                                                <label class="form-check-label">
+                                                    เขตที่ดินชายฝั่งทะเล
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__34_coastal')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="CoastalLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ancient"
+                                                    id="ancient">
+                                                <label class="form-check-label">
+                                                    โบราณสถาน
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__72_ancient_eec')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="ancientLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldcommu"
+                                                    id="oldcommu">
+                                                <label class="form-check-label">
+                                                    ย่านชุมชนเก่า
+                                                </label>
+                                                <a class="attrib"
+                                                    onclick="callAttribute('a__73_old_community_eec_point')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="oldcommuLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldtown_cco"
+                                                    id="oldtown_cco">
+                                                <label class="form-check-label">
+                                                    เขตเมืองเก่า จังหวัดฉะเชิงเทรา
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__74_oldtown_cco')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="oldtown_ccoLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="oldtown_ryg"
+                                                    id="oldtown_ryg">
+                                                <label class="form-check-label">
+                                                    เขตเมืองเก่า จังหวัดระยอง
+                                                </label>
+                                                <a class="attrib" onclick="callAttribute('a__75_oldtown_ryg')">&nbsp;<i
+                                                        class="bi bi-table"></i></a>
+                                                <br>
+                                                <img id="oldtown_rygLegend">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="group-check">
+                                            <label><b>ข้อมูลตรวจวัดกระแสน้ำ</b></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalradar"
+                                                    id="coastalradar">
+                                                <label class="form-check-label">
+                                                    ข้อมูลความเร็วและทิศทางกระแสน้ำจากระบบเรดาร์ชายฝั่ง
+                                                    บริเวณอ่าวไทยตอนบนและภาคตะวันออก (ที่มา: gistda)
+                                                </label>
+                                                <br>
+                                                <img id="coastalradarLegend">
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon59"
+                                                    id="coastalmon59">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2559
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon59Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon60"
+                                                    id="coastalmon60">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2560
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon60Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon61"
+                                                    id="coastalmon61">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2561
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon61Legend2">
+                                                <img id="coastalmon61Legend">
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="coastalmon62"
+                                                    id="coastalmon62">
+                                                <label class="form-check-label">
+                                                    สถานการณ์การกัดเซาะชายฝั่ง ปี 2562
+                                                </label>
+                                                <br>
+                                                <img id="coastalmon62Legend">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <hr>
+                                    <label for=""><b>แผนที่ฐาน</b></label>
+                                    <div class="scroll-base">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="basemap" value="mapbox"
+                                                checked>
+                                            <label class="form-check-label" for="">
+                                                แผนที่ถนน Mapbox
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="basemap" value="esri">
+                                            <label class="form-check-label" for="">
+                                                แผนที่ถนน ESRI
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="basemap" value="grod">
+                                            <label class="form-check-label" for="">
+                                                แผนที่ถนน Google Maps
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="basemap" value="ghyb">
+                                            <label class="form-check-label" for="">
+                                                แผนที่ผสม Google Maps
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="basemap" value="gter">
+                                            <label class="form-check-label" for="">
+                                                แผนที่ภูมิประเทศ Google Maps
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <label for="คู่มือการใช้งาน">
+                                        <b>คู่มือการใช้งานระบบ MIS</b>
+                                    </label>
+                                    <div id="accordion">
+                                        <div class="card-header d-flex align-items-start" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse"
+                                                    data-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    PostgreSQL/PostGIS
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                            data-parent="#accordion">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li class="p-1"><a href="./file/01_Install_postgresql_postgis.pdf"
+                                                            target="_blank">
+                                                            การติดตั้งโปรแกรม PostgreSQL
+                                                            และ PostGIS</a></li>
+
+                                                    <li class="p-1"> <a
+                                                            href="https://drive.google.com/file/d/1RgNz4i-M6qRKW2_m6a3ZFw_5_Jd4Xfin/view?usp=sharing">
+                                                            วิดิโอการติดตั้งโปรแกรม PostgreSQL และ PostGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a href="./file/02_started_postsql.pdf">
+                                                            การเริ่มต้นใช้งาน
+                                                            PostgreSQL</a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1pArhKFIfJmygEqIRX2cS8EqcyDoxdZ08/view?usp=sharing">
+                                                            วิดิโอการเริ่มต้นใช้งาน PostgreSQL
+                                                        </a></li>
+
+                                                    <a href="./file/03_started_postgis.pdf"> การเริ่มต้นใช้งาน
+                                                        PostGIS</a>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1DLWFsno41Pmudu09f6SPZ6-862xfQ9Fb/view?usp=sharing">
+                                                            วิดิโอการเริ่มต้นใช้งาน PostGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a href="./file/04_connect_postgis_qgis.pdf">
+                                                            การเชื่อมต่อโปรแกรม
+                                                            PostGIS
+                                                            ในโปรแกรม QGIS</a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/1Hv5p4fiJfZrX-4AAuzJpmRITkJQ9QT38/view?usp=sharing">
+                                                            วิดิโอการติดตั้งโปรแกรม QGIS
+                                                        </a></li>
+
+                                                    <li class="p-1"><a
+                                                            href="https://drive.google.com/file/d/12CpjeKm575XuOhmx6gsOeUl_5xvb8ljh/view?usp=sharing">
+                                                            วิดิโอการเชื่อมต่อโปรแกรม PostGIS ในโปรแกรม QGIS
+                                                        </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                        data-target="#collapseTwo" aria-expanded="false"
+                                                        aria-controls="collapseTwo">
+                                                        Geoserver
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <ul>
+                                                        <li class="p-1"><a href="#">
+                                                                เข้าสู่ระบบ
+                                                                Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/05_geoserver.pdf">
+                                                                วิธีการจัดการข้อมูลผ่าน Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/1s3ph16kJ013q4K5-GQT1phHaJPUQVirO/view?usp=sharing">
+                                                                วิดิโอวิธีการจัดการข้อมูลผ่าน Geoserver
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/06_Using_database.pdf">
+                                                                การใช้งานระบบฐานข้อมูลเชิงพื้นที </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/15NeGJE4QT2MXWGJ_YuX0Nml9V8zjztCW/view?usp=sharing">
+                                                                วิดิโอการใช้งานระบบฐานข้อมูลเชิงพื้นที
+                                                            </a></li>
+                                                        <li class="p-1"> <a href="./file/06_Using_database.pdf">
+                                                                วิธีการนำชั้นข้อมูล WMS/WFS
+                                                                เข้าสู่โปรแกรม QGIS </a></li>
+                                                        <li class="p-1"> <a
+                                                                href="https://drive.google.com/file/d/1NCU7k7TfesmAh_bC1NxELAkpXtco7vZq/view?usp=sharing">
+                                                                วิดิโอวิธีการนำชั้นข้อมูล WMS/WFS เข้าสู่โปรแกรม QGIS
+                                                            </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="card" id="cardpop">
+                                <div class="card-body population">
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="propop">
+                                            <label for="">จังหวัด</label>
+                                            <select class="form-control" id="pro">
+                                                <option value="TH">ทั้งประเทศ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">รายการข้อมูล</label>
+                                            <select class="form-control" id="item">
+                                                <option value="pop_sum">จำนวนประชากร</option>
+                                                <option value="pop_den">ความหนาแน่นของประชากร (คนต่อตร.กม.)</option>
+                                                <option value="num_home">จำนวนครัวเรือน</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group" id="years">
+                                            <label for="">ปี</label>
+                                            <!-- <h5>รายปี</h5>&nbsp;&nbsp;&nbsp; -->
+                                            <select class="form-control" id="year">
+                                                <option value="2563">2563</option>
+                                                <option value="2562">2562</option>
+                                                <option value="2561">2561</option>
+                                                <option value="2560">2560</option>
+                                                <option value="2559">2559</option>
+                                                <option value="2558">2558</option>
+                                                <option value="2557">2557</option>
+                                                <option value="2556">2556</option>
+                                                <option value="2555">2555</option>
+                                                <option value="2554">2554</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" id="types">
+                                            <label for="">ประเภท</label>
+                                            <select class="form-control" id="typepop">
+                                                <option value="แยกตามรายปี">ประชากรรวม</option>
+                                                <option value="แยกตามเพศ">แยกตามเพศ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" id="history">
+                                        <button type="button" class="btn btn-info" onclick="pophistory()"
+                                            id="btnhistory">ข้อมูลย้อนหลัง
+                                            10 ปี</button>
+                                        <button type="button" class="btn btn-success" id="btnyear"
+                                            onclick="popyears()">ข้อมูลรายปี</button>
+                                    </div>
+                                </div>
+                                <div id="poppresent" class="card-body card-popyear">
+                                    <div class="col-sm-8 d-flex flex-column text-center">
+                                        <h5><b>สัดส่วนของประชากรแยกตามเพศ ปี <span id="Vyear1"></span></b></h5>
+                                        <div class="card-popyear-body">
+                                            <div class="card-stat">
+                                                <div id="gramen" class="c100 p100 big green">
+                                                    <span id="pmen"></span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <h6><b>เพศชาย</b></h6>
+                                                    <span><b>จำนวน :</b><span id="mennum"></span>
+                                                </div>
+                                            </div>
+                                            <div class="card-stat">
+                                                <div id="grawomen" class="c100 p100 big green">
+                                                    <span id="pwomen"></span>
+                                                    <div class="slice">
+                                                        <div class="bar"></div>
+                                                        <div class="fill"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <h6><b>เพศหญิง</b></h6>
+                                                    <span><b>จำนวน :</b><span id="womennum"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="card bg-E8">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5><b>ข้อมูลประชากร ปี <span id="Vyear2"></span></b></h5>
+                                                <span><b>จังหวัด : </b><span class="badge badge-success"
+                                                        style="font-size: 14px;" id="getprov"></span></span>
+                                                <span><b>จำนวนประชากรทั้งหมด : </b><span class="badge badge-success"
+                                                        style="font-size: 14px;" id="popall"> </span> คน</span>
+                                                <span><b>จำนวนครัวเรือน : </b><span class="badge badge-success"
+                                                        style="font-size: 14px;" id="homenum"> </span> เรือน</span>
+                                                <span><b>เนื้อที่ : </b><span class="badge badge-success"
+                                                        style="font-size: 14px;" id="areanum"> </span>
+                                                    ตร.กม.</span>
+                                                <span><b>ความหนาแน่นของประชากร : </b><span class="badge badge-success"
+                                                        style="font-size: 14px;" id="dennum"> </span> คนต่อ
+                                                    ตร.กม.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="poppast" class="card-body">
+                                    <div class="d-flex flex-column text-center">
+                                        <h5><span id="hiprov"></span></h5>
+
+                                    </div>
+                                    <div class="w-100 mw-100" id="chartdiv"></div>
+                                </div>
+
+                                <div class="card-body">
+                                    <hr>
+                                    <span>ที่มา : กรมการปกครอง กระทรวงมหาดไทย</span>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardpopnormal">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5 id="Hpop"><span
+                                            id="hchart5">การคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)</span></h5>
+                                    <h5 id="Hpop2"><span
+                                            id="hchart5_2">การคาดการณ์ประชากรแฝงจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC) </span></h5>
+                                    <h5 id="Hpopincity"><span id="hchart5_2">อัตราการเติบโตของประชากรในเขตเมือง </span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="popnormaltype">
+                                            <option value="all">ภาพรวม</option>
+                                            <option value="register">ประชากรในทะเบียนบ้าน</option>
+                                            <option value="disguise">ประชากรแฝง</option>
+                                            <option value="popincity">ประชากรในเขตเมือง</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv5"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b> แผนภาพรวมเพื่อการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div class="card w-100 mw-100" id="cardpopcovid">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart6">การคาดการณ์ประชากรของ 3
+                                            จังหวัดทั้งประชากรตามทะเบียนบ้านและประชากรแฝง
+                                            จากผลกระทบของโรคโควิด-19</span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="popcovidtype">
+                                            <option value="all">ภาพรวม</option>
+                                            <option value="register">ประชากรในทะเบียนบ้าน</option>
+                                            <option value="disguise">ประชากรแฝง</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv6"></div>
+                                <div class="card-body">
+                                    <p><b>หมายเหตุ</b></p>
+                                    <ul style="line-height:100%">
+                                        <li> คาดการณ์ตามเงื่อนไข คือ ตราการเพิ่มคิดตามอัตราเฉลี่ย 5 ปี (พ.ศ.2558-2562)
+                                            ของแต่ละจังหวัด (อัตราการเพิ่มของจังหวัดชลบุรี : ระยอง : ฉะเชิงเทรา
+                                            อยู่ที่:
+                                            1.86 : 1.73 : 0.70)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardusewater">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart4">การคาดการณ์ความต้องการใช้น้ำแต่ละภาคส่วนในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)
+                                        </span></h5>
+                                    <div class="form-group d-flex flex-row m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control mr-2" id="usewatecat">
+                                            <option value="all">ภาพรวม</option>
+                                            <option value="byprov">แยกรายปี</option>
+                                            <option value="bycat">แยกตามแต่ละภาคส่วน</option>
+                                        </select>
+                                        <select class="form-control " id="usewatetype">
+                                            <option value="consume">อุปโภคบริโภค</option>
+                                            <option value="industry">อุตสาหกรรม</option>
+                                            <option value="agri">เกษตรกรรม</option>
+                                        </select>
+                                        <select class="form-control " id="usewateyear">
+                                            <option value="2560">ปี 2560</option>
+                                            <option value="2570">ปี 2570</option>
+                                            <option value="2580">ปี 2580</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv4"></div>
+                                <div class="card-body">
+                                    <p class="ml-1"><b>ที่มา :</b> สำนักงานทรัพยากรน้ำแห่งชาติ (2562)
+                                    </p>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="btn_uwindustry_up"
+                                    onClick="op_preditct_indust()">การใช้น้ำอุตสาหกรรมในพื้นที่ EEC ในช่วงที่ผ่านมา
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btn_uwindustry_down"
+                                    onClick="close_preditct_indust()">การใช้น้ำอุตสาหกรรมในพื้นที่ EEC ในช่วงที่ผ่านมา
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                                <div class="form-group card-body" id="uwindustry">
+                                    <h6 class="text-center"><b>การใช้น้ำอุตสาหกรรมในพื้นที่ EEC ในช่วงที่ผ่านมา
+                                            (ล้านลบ.ม./ปี)</b></h6>
+                                    <div class="d-flex flex-column">
+                                        <div class="row d-flex align-items-end">
+                                            <div class="col-sm-3">
+                                                <label for="">รายการข้อมูล :</label>
+                                                <select class="form-control " id="T_industry">
+                                                    <option value="eec">ภาพรวมทั้ง 3 จังหวัด</option>
+                                                    <option value="year">รายปี</option>
+                                                    <option value="prov">รายจังหวัด</option>
+                                                    <option value="category">ประเภทอุตสาหกรรม</option>
+                                                    <option value="industry2">อุตสาหกรรมใหม่ตามแผน กนอ.</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-3" id="Y_industry_1">
+                                                <label for="">จังหวัด :</label>
+                                                <select class="form-control " id="P1_industry">
+                                                    <option value="eec">ทุกจังหวัด</option>
+                                                    <option value="24">ฉะเชิงเทรา</option>
+                                                    <option value="20">ชลบุรี</option>
+                                                    <option value="21">ระยอง</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3" id="Y_industry_2">
+                                                <label for="">ปี :</label>
+                                                <select class="form-control" id="Y_industry">
+                                                    <option value="y2550">2550</option>
+                                                    <option value="y2551">2551</option>
+                                                    <option value="y2552">2552</option>
+                                                    <option value="y2553">2553</option>
+                                                    <option value="y2554">2554</option>
+                                                    <option value="y2555">2555</option>
+                                                    <option value="y2556">2556</option>
+                                                    <option value="y2557">2557</option>
+                                                    <option value="y2558">2558</option>
+                                                    <option value="y2559">2559</option>
+                                                    <option value="y2560">2560</option>
+                                                    <option value="y2561">2561</option>
+                                                    <option value="y2565">2565</option>
+                                                    <option value="y2570">2570</option>
+                                                    <option value="y2575">2575</option>
+                                                    <option value="y2580">2580</option>
+                                                </select>
+                                            </div>
+                                            <!-- <div class="col-sm-3" id="Y_industry_3">
+                                                <button type="button" class="btn btn-success"
+                                                    onclick="getyear_industry()">แสดงกราฟรายปี</button>
+                                            </div> -->
+                                            <div class="col-sm-3" id="P2_industry_1">
+                                                <label for="">จังหวัด :</label>
+                                                <select class="form-control " id="P2_industry">
+                                                    <option value="eec">ทุกจังหวัด</option>
+                                                    <option value="24">ฉะเชิงเทรา</option>
+                                                    <option value="20">ชลบุรี</option>
+                                                    <option value="21">ระยอง</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3" id="P2_industry_2">
+                                                <label for="">อำเภอ :</label>
+                                                <select class="form-control " id="A_industry">
+                                                    <option value="eec">ทุกอำเภอ</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3" id="C_industry_1">
+                                                <label for="">ประเภทอุตสาหกรรม :</label>
+                                                <select class="form-control " id="C_industry">
+                                                    <option value="eec">ภาพรวม</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="w-100 mw-100" style="height: 350px;" id="chartUW_industry"></div>
+                                    </div>
+                                    <p id="P_industry1"><b>ที่มา :</b> สถาบันน้ำและสิ่งแวดล้อมเพื่อความยั่งยืน
+                                        สภาอุตสาหกรรมแห่งประเทศไทย (2562)
+                                    </p>
+                                    <p id="P_industry2"><b>ที่มา :</b> แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน
+                                        รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                                <!-- //////////////น้ำประปา////////// -->
+                                <button type="submit" class="btn btn-primary" id="btn_prapa_up"
+                                    onClick="op_forecate_prapa()">การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC ในอนาคต
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btn_prapa_down"
+                                    onClick="close_forecate_prapa()">การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC
+                                    ในอนาคต
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                                <div class="card-body" id="prapa">
+                                    <h6 class="text-center"><b>การคาดกาณ์ความต้องการใช้น้ำประปาในพื้นที่ EEC ในอนาคต
+                                            (ล้านลบ.ม./ปี)</b></h6>
+                                    <div class="d-flex flex-column text-center">
+                                        <div class="form-group m-auto w-25 mw-100">
+                                            <!-- <label for="">รายการข้อมูล :</label> -->
+                                            <select class="form-control " id="prapa_type">
+                                                <option value="eec">ภาพรวม</option>
+                                                <option value="byprov">รายจังหวัด</option>
+                                            </select>
+                                        </div>
+                                        <div class="w-100 mw-100" style="height: 350px;" id="chartprapa"></div>
+                                    </div>
+                                    <p><b>ที่มา :</b> แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน
+                                        รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardelec">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5><span
+                                            id="hchart7">การคาดการณ์ความต้องการใช้พลังงานไฟฟ้าในเขตพื้นที่เศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="electype">
+                                            <option value="eec">ภาพรวม</option>
+                                            <option value="byprov">รายจังหวัด</option>
+                                            <option value="insys">กำลังการผลิตไฟฟ้าในระบบ</option>
+                                            <option value="afsys">กำลังการผลิตไฟฟ้าที่เหลือในระบบ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv7"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardwaste">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart2">การคาดการณ์ปริมาณน้ำเสียชุมชนในกรณีที่มีการพัฒนาพื้นที่เขตพัฒนาพิเศษ
+                                            ภาคตะวันออก (EEC)</span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="wastetype">
+                                            <option value="all">ภาพรวม</option>
+                                            <option value="byprov">รายจังหวัด</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv2"></div>
+                                <div class="card-body">
+                                    <p><b>หมายเหตุ</b></p>
+                                    <ul style="line-height:100%">
+                                        <li>จำนวนประชากรที่คาดการณ์
+                                            นำมาคูณกับอัตราการเกิดน้ำเสียของชุมชน
+                                            150
+                                            ลิตร/คน/วัน</li>
+                                        <li> จำนวนประชากรที่คาดการณ์เป็นการคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                        </li>
+                                    </ul>
+                                    <p><b>ที่มา :</b> ใช้ข้อมูลการคาดการณ์ประชากรจาก
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                        คูณกับอัตราการเกิดน้ำเสียของชุมชน ปีฐาน พ.ศ. 2563 ซึ่งเท่ากับ 150
+                                        ลิตรต่อคนต่อวัน (กรมควบคุมมลพิษ, อ้างใน ๒๕๕๓ สำนักงานสิ่งแวดล้อมภาคที่ 13
+                                        (ชลบุรี), 2563)
+                                    </p>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-primary" id="onwaste"
+                                    onClick="onwaste()">คำนวณคาดการณ์ปริมาณน้ำเสียชุมชน
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                                <button type="submit" class="btn btn-primary" id="offwaste"
+                                    onClick="offwaste()">คำนวณคาดการณ์ปริมาณน้ำเสียชุมชน
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                                <div class="form-group p-4 text-center" id="calwaste">
+                                    <h6><b>คำนวณคาดการณ์ปริมาณน้ำเสียชุมชน (ลิตร/คน/วัน)</b></h6>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <!-- <label for="inputAddress">จำนวนประชากร (คน)</label> -->
+                                                <div class="d-flex  flex-row  align-items-end justify-content-center">
+                                                    <input type="number" class="form-control w-25 mw-100 mr-1"
+                                                        placeholder="จำนวนประชากร (คน)" id="numpopwaste">
+                                                    <button type="submit" class="btn btn-primary mr-4"
+                                                        onclick="calwaste()">คำนวณ</button>
+                                                    <!-- <h3><span id="valuewaste"></span></h3>&nbsp;&nbsp;
+                                                    <h6>ลบ.ม./วัน</h6> -->
+                                                </div>
+                                            </div>
+                                            <div class="d-flex  flex-row  align-items-end justify-content-center">
+                                                <h3><span id="valuewaste"></span></h3>&nbsp;&nbsp;
+                                                <h6>ลิตร/วัน</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardgarbage">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart2">การคาดการณ์ปริมาณขยะมูลฝอยในพื้นที่เขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            (EEC)
+                                        </span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="garbagetype">
+                                            <option value="all">ภาพรวม</option>
+                                            <option value="byprov">รายจังหวัด</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv3"></div>
+                                <div class="card-body">
+                                    <p><b>หมายเหตุ</b></p>
+                                    <ul style="line-height:100%">
+                                        <li>ปริมาณขยะที่จะเกิดขึ้นในอนาคตคำนวณมาจาก จำนวนประชากรจากการคาดการณ์ (คน)
+                                            คูณด้วยอัตราการเกิดขยะมูลฝอย ซึ่งเป็นค่าคงที่ 1.17 กิโลกรัมต่อวัน
+                                            อ้างอิงจากกรมส่งเสริมคุณภาพสิ่งแวดล้อม กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                        </li>
+                                        <li> จำนวนประชากรที่คาดการณ์เป็นการคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            พ.ศ. 2564-2570</li>
+                                    </ul>
+                                    <p><b>ที่มา :</b> สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), มีนาคม
+                                        (2562)
+                                    </p>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-primary" id="ongarbage"
+                                    onClick="ongarbage()">คำนวณคาดการณ์ปริมาณปริมาณขยะมูลฝอย
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                                <button type="submit" class="btn btn-primary" id="offgarbage"
+                                    onClick="offgarbage()">คำนวณคาดการณ์ปริมาณปริมาณขยะมูลฝอย
+                                    &nbsp;&nbsp;<i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                                <div class="form-group p-4 text-center" id="calgarbage">
+                                    <h6><b>คำนวณคาดการณ์ปริมาณปริมาณขยะมูลฝอย (กิโลกรัม/คน/วัน)</b></h6>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <!-- <label for="inputAddress">จำนวนประชากร (คน)</label> -->
+                                                <div class="d-flex  flex-row  align-items-end justify-content-center">
+                                                    <input type="number" class="form-control w-25 mw-100 mr-1"
+                                                        placeholder="จำนวนประชากร (คน)" id="numpopgarbage">
+                                                    <button type="submit" class="btn btn-primary mr-4"
+                                                        onclick="calgarbage()">คำนวณ</button>
+                                                    <!-- <h3><span id="valuewaste"></span></h3>&nbsp;&nbsp;
+                                                    <h6>ลบ.ม./วัน</h6> -->
+                                                </div>
+                                            </div>
+                                            <div class="d-flex  flex-row  align-items-end justify-content-center">
+                                                <h3><span id="valuegarbage"></span></h3>&nbsp;&nbsp;
+                                                <h6>กิโลกรัมต่อวัน</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardraffle">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart11">การคาดการณ์ปริมาณของเสียที่เกิดขึ้นในพื้นที่เขตเศรษฐกิจพิเศษภาคตะวันออก
+                                        </span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="raffletype">
+                                            <option value="industry">กากอุตสาหกรรมอันตราย</option>
+                                            <option value="infectious">ขยะมูลฝอยติดเชื้อ</option>
+                                            <option value="garbage">ขยะชุมชน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv11"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b> ศูนย์ความเป็นเลิศด้านการจัดการสารและของเสียอันตราย (ศสอ.) HSM
+                                        (อ้างถึงใน <a href="https://bit.ly/3vdfRQ1" target="_blank">ข่าวกรุงเทพธุรกิจ
+                                        </a> 2562)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardUW">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart8">การคาดการณ์ปริมาณน้ำดิบในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="UWtype">
+                                            <option value="sum">น้ำดิบจำหน่ายรวม</option>
+                                            <option value="prapa">การประปาส่วนภูมิภาค</option>
+                                            <option value="industry">ภาคอุตสาหกรรม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv8"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardecon">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart9">การพยากรณ์เศรษฐกิจในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="econtype">
+                                            <option value="eec">จำนวนนักท่องเที่ยว (ภาพรวม)</option>
+                                            <option value="byprov">จำนวนนักท่องเที่ยว (รายจังหวัด)</option>
+                                            <option value="agri">ภาคเกษตร</option>
+                                            <option value="industry">ภาคอุตสาหกรรม</option>
+                                            <option value="sevice">ภาคบริการ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv9"></div>
+                                <div class="card-body">
+                                    <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardlabor">
+                                <div class="d-flex  flex-column justify-content-center p-4"
+                                    style="margin-bottom: -20px;">
+                                    <h5 class="text-center"><span id="hchart10"></span>
+                                    </h5>
+                                    <div class="form-group m-auto w-100 mw-100" id="">
+                                        <div class="row d-flex align-items-end ">
+                                            <div class="col-sm-4">
+                                                <label for="">รายการข้อมูล :</label>
+                                                <select class="form-control " id="labortype">
+                                                    <option value="employ">การจ้างงาน</option>
+                                                    <option value="exert">กําลังแรงงาน</option>
+                                                    <option value="minwage">อัตราค่าแรงขั้นต่ำ</option>
+                                                    <option value="edu">ระดับการศึกษา</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_exert">
+                                                <!-- <label for="">รายการข้อมูล :</label> -->
+                                                <select class="form-control" id="labor_Dexert">
+                                                    <option value="eec">ภาพรวม</option>
+                                                    <option value="byprov">รายจังหวัด</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_employ">
+                                                <!-- <label for="">รายการข้อมูล :</label> -->
+                                                <select class="form-control" id="labor_Demploy">
+                                                    <option value="eec">ภาพรวม</option>
+                                                    <option value="byprov">รายจังหวัด</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" id="d_edu">
+                                                <label for="">ระดับการศึกษา :</label>
+                                                <select class="form-control " id="laboredu">
+                                                    <option value="M3">ม.3 หรือต่ำกว่า</option>
+                                                    <option value="M6">ม.6</option>
+                                                    <option value="profession">วิชาชีพ</option>
+                                                    <option value="Bachelor">ปริญญาตรี</option>
+                                                    <option value="MoreBachelor">สูงกว่าปริญญาตรี</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv10"></div>
+                                <div class="card-body">
+                                    <!-- <p><b>หมายเหตุ</b></p>
+                                    <ul style="line-height:100%">
+                                        <li>ปริมาณขยะที่จะเกิดขึ้นในอนาคตคำนวณมาจาก จำนวนประชากรจากการคาดการณ์ (คน)
+                                            คูณด้วยอัตราการเกิดขยะมูลฝอย ซึ่งเป็นค่าคงที่ 1.17 กิโลกรัมต่อวัน
+                                            อ้างอิงจากกรมส่งเสริมคุณภาพสิ่งแวดล้อม กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                        </li>
+                                        <li> จำนวนประชากรที่คาดการณ์เป็นการคาดการณ์ประชากรจังหวัดในเขตเศรษฐกิจพิเศษของสำนักงานคณะกรรมการนโยบายเขตเศรษฐกิจพิเศษภาคตะวันออก
+                                            พ.ศ. 2564-2570</li>
+                                    </ul> -->
+                                    <p><b>ที่มา :</b>
+                                        รายงานการศึกษาวิเคราะห์ฐานข้อมูลแรงงานและประมาณการความต้องการแรงงาน โดย
+                                        กระทรวงแรงงาน สำนักงานปลัดกระทรวง กองเศรษฐกิจการแรงงาน (2560)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card w-100 mw-100" id="cardgas">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span id="hchart11">การคาดการณ์ปริมาณการปล่อยก๊าซเรือนกระจกในกรณี BAU
+
+                                        </span></h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">จังหวัด</label> -->
+                                        <select class="form-control " id="green_gastype">
+                                            <option value="TH">รวมทุกภาคฯ</option>
+                                            <option value="energy">ภาคพลังงาน</option>
+                                            <option value="waste">ภาคของเสีย</option>
+                                            <option value="industry">ภาคกระบวนการอุตสาหกรรมและการใช้ผลิตภัณฑ์</option>
+                                            <option value="agri">ภาคเกษตรกรรม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv12"></div>
+                                <div class="card-body">
+                                    <p><b>หมายเหตุ</b> : ktCO2eq หมายถึง พันตันคาร์บอนไดออกไซต์เทียบเท่า</p>
+                                    <p><b>ที่มา :</b> แผนที่นำทางการลดก๊าซเรือนกระจกของประเทศไทย ปี พ.ศ.2564–2573,
+                                        สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                        กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card w-100 mw-100" id="cardlu">
+                                <div class="d-flex  flex-column justify-content-center p-4 text-center"
+                                    style="margin-bottom: -20px;">
+                                    <h5> <span
+                                            id="hchart13">การคาดการณ์ประเภทการใช้ประโยชน์ที่ดินในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                                            (EEC)</span>
+                                    </h5>
+                                    <div class="form-group m-auto w-25 mw-100" id="">
+                                        <!-- <label for="">รายการข้อมูล :</label> -->
+                                        <select class="form-control " id="lutype">
+                                            <option value="urban">พื้นที่พัฒนาเมืองและชุมชน</option>
+                                            <option value="agri">พื้นที่ชนบทและเกษตรกรรม</option>
+                                            <option value="industry">อุตสาหกรรม</option>
+                                            <option value="envi">พื้นที่อนุรักษ์พื้นที่ทรัพยากรธรรมชาติและสิ่งแวดล้อม
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-100 mw-100" style="height: 350px;" id="chartdiv13"></div>
+                                <div class="card-body">
+                                    <!-- <p><b>ที่มา :</b>
+                                        แผนปฏิบัติการการพัฒนาโครงสร้างพื้นฐาน รองรับการพัฒนาเขตพัฒนาพิเศษภาคตะวันออก,
+                                        สำนักงานคณะกรรมการนโยบายเขตพัฒนาพิเศษภาคตะวันออก (สกพอ.), 2561
+                                    </p> -->
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div id="map"></div>
+                            </div>
+
+                            <hr>
+                            <!-- <div class="spinner-border text-success" id="spiner"></div> -->
+                            <button class="btn btn-primary" id="spiner" disabled>
+                                <span class="spinner-border spinner-border-sm"></span>
+                                Loading..
+                            </button>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="attrib" class="display table table-striped table-bordered nowrap"
+                                        cellspacing="0" width="100%"></table>
+                                </div><!-- /col-sm-12 -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <!-- <div class="container-fluid mb-6">
+                    <p> <span class="ver">ปรับปรุง 18/08/2021</span></p>
+                </div> -->
+            </div>
+        </section><!-- End Services Section -->
+    </main><!-- End #main -->
+    <br>
+    <br>
+    <br>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <!-- <div class="fixed-bottom p-2">
+            <div class="toast cookie text-white" role="alert" data-autohide="false">
+                <div class="toast-body p-2 d-flex bd-highlight dcookie align-items-center">
+                    <div class="p-2 bd-highlight  text-justify">
+                        <span style="font-size: 12px; font-stretch: condensed;">
+                            เว็บไซต์นี้
+                            มีการใช้งานคุกกี้เพื่อเพิ่มประสิทธิภาพและให้ท่านได้รับประสบการณ์การใช้งานที่ดียิ่งขึ้น
+                            หากท่านใช้บริการเว็บไซต์นี้ต่อไปโดยไม่มีการปรับตั้งค่าใดๆ
+                            นั่นเป็นการแสดงว่าท่านอนุญาตยินยอมที่จะรับคุกกี้บนเว็บไซต์
+                            <a href="https://www.onep.go.th/นโยบายการคุ้มครองข้อมู/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">อ่านนโยบายการคุ้มครองข้อมูลส่วนบุคคล
+                                (Privacy Policy)</a>
+                            และ <a href="https://www.onep.go.th/cookie-policy/"
+                                style="color: white; text-decoration: underline;" target="_blank"
+                                rel="noopener noreferrer">นโยบายคุกกี้
+                                (Cookie Policy)</a><br>
+                            หมายเหตุ : ข้อมูลที่นำมาเผยแพร่ในฐานข้อมูลนี้มาจากหลายหน่วยงาน องค์กร ฯลฯ
+                            เพื่อประกอบการวางแผนนโยบายด้านสิ่งแวดล้อม
+                            ไม่สามารถอ้างอิงทางกฎหมายได้จำเป็นต้องตรวจสอบความถูกต้องกับหน่วยงานที่รับผิดชอบก่อน
+                        </span>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight">
+                        <button type="button" class="btn btn-success w-fit" id="btnAccept" style="font-size: 14px;">
+                            ยอมรับและปิด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="container">
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+            </div>
+        </div>
+    </footer>
+    <!-- End  Footer -->
+
+    <div class="modal fade" id="infoModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center" style="background-color:#E5E6E5;">
+                    <i class="bi bi-ui-checks text-success  ml-3 mr-2" style="font-size: 26px;"></i>
+                    <h5 class="modal-title"><b>รายการข้อมูล</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background-color:#f6f6f8;">
+
+                    <h5><b>พิกัด</b></h5>
+                    <b>ละติจูด : </b><span class="badge bg-warning text-dark" id="showlat"
+                        style="font-size: 14px;"></span>
+                    <b>ลองจิจูด : </b><span class="badge bg-warning text-dark" id="showlng"
+                        style="font-size: 14px;"></span>
+                    <br>
+                    <br>
+
+                    <div class="d-flex flex-row flex-wrap justify-content-start align-items-stretch scroll-xl"
+                        id="accordion_info">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="wtrlModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hchart" id="depthChart"></div>
+                    <p></p>
+                    <div class="hchart" id="tempChart"></div>
+                    <p></p>
+                    <div class="hchart" id="humiChart"></div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WquaModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hchart" id="pHChart"></div>
+                    <p></p>
+                    <div class="hchart" id="TempChart"></div>
+                    <p></p>
+                    <div class="hchart" id="ECChart"></div>
+                    <p></p>
+                    <div class="hchart" id="DOChart"></div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-light" data-dismiss="modal" onclick="">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="preloader"></div>
+
+    <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- <script src="./../../assets/vendor/jquery/jquery.min.js"></script> -->
+    <!-- <script src="./../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="./../../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="./../../assets/vendor/php-email-form/validate.js"></script>
+    <script src="./../../assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="./../../assets/vendor/counterup/counterup.min.js"></script>
+    <script src="./../../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="./../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../../assets/vendor/venobox/venobox.min.js"></script>
+    <script src="./../../assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="./../../assets/js/main.js"></script>
+
+    <!-- start dooklink -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+
+    <!-- <script src="./../marker.js"></script> -->
+    <script src="./app.js"></script>
+    <script src="./trend.js"></script>
+    <script src="./uw_preditct.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+
+body{
+    width: 100%;
+    height: 100%;
+    font-family: 'Prompt', sans-serif;
+}
+
+#map{
+    height: 250px;
+}
+
+.chart{
+    height: 250px;
+}
+

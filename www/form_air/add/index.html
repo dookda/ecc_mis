@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- ชื่อเพจ -->
+    <title>ระบบนำเข้าข้อมูลมลพิษทางอากาศ</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- Template Main CSS File -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+
+
+    <!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <!-- <link href="./fontawesome/css/all.css" rel="stylesheet"> -->
+    <link href="./../../assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- .nav-menu -->
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><a href="./../../index.html">หน้าหลัก</a></li>
+                    <li><a href="./../../dashboard_eec.html">ระบบรายงานสถานการณ์สิ่งแวดล้อม</a></li>
+                    <li class="active"><a href="./../../input_eec.html">ระบบนำเข้าข้อมูลเชิงพื้นที่</a></li>
+                    <li><a href="./../../system_decide.html">ระบบสนับสนุนการตัดสินใจ</a></li>
+                    <li><a href="./../../form_envi_plan2/login/index.html">ระบบติดตามแผนสิ่งแวดล้อม</a></li>
+                    <li><a href="./../../aboutus/index.html">เกี่ยวกับโครงการ</a></li>
+
+                    <!-- <li><a href="https://www.facebook.com/EECENV" target="_blank">facebook</a></li> -->
+
+                    <li><a href="./../../form_register/profile/index.html"><i
+                                class="bi bi-person-square"></i>&nbsp;<span id="usrname"></span>
+                        </a></li>
+                    <li><a href="./../../form_register/login/index.html"><i class="bi bi-box-arrow-right"></i>
+                            ออกจากระบบ</a></li>
+                </ul>
+            </nav>
+            <div class="header-social-links">
+                <a href="https://www.facebook.com/EECENV"><i class="icofont-facebook"></i></a>
+                <!-- <a href="#" class="facebook"><img src="./../../assets/img/onep_logo.png" class="img-circle"
+                        style="width:35px"></a> -->
+
+            </div>
+        </div>
+    </header><!-- End Header -->
+    <br>
+    <br>
+    <br>
+    <main id="main">
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>ระบบนำเข้าข้อมูลมลพิษทางอากาศ</h2>
+                    <p>
+                        ระบบนำเข้าข้อมูลมลพิษทางอากาศ (แบบการมีส่วนร่วมของประชาชน)
+                        เป็นการร่วมนำเข้าข้อมูลผลกระทบทางสุขภาพที่เกิดขึ้นกับประชาชนในพื้นที่
+                        เพื่อใช้ประกอบการเฝ้าระวังตนเองและบริหารจัดการความเสี่ยงต่อต่อสุขภาพของประชาชนในพื้นที่เขตพัฒนาพิเศษภาคตะวันออก
+                        ซึ่งผู้ใช้งานที่ได้รับสิทธิในการเข้าถึงข้อมูลเท่านั้นจึงจะสามารถนำเข้า แก้ไข
+                        และเรียกดูข้อมูลนั้นได้
+                    </p>
+                </div>
+                <hr>
+
+                <form class="mt-3 mb-3" id="fieldForm">
+                    <div class="form-group">
+                        <span id="fieldList">
+                            <form id="formGW" name="form1" method="post" action="" novalidate>
+                                <div class="form-group" id="FormFirst">
+
+                                    <h5>โรคประจำตัว</h5>
+                                    <hr>
+                                    <div class="form-group row">
+                                        <div class="col-sm">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ไม่มีโรคประจำตัว"
+                                                    id="sickness01">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    ไม่มี
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="โรคหอบหืด"
+                                                    id="sickness02">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคหอบหืด
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="โรคเบาหวาน"
+                                                    id="sickness03">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคเบาหวาน
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="โรคภูมิแพ้"
+                                                    id="sickness04">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคภูมิแพ้
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="โรคมะเร็ง"
+                                                    id="sickness05">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคมะเร็ง
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="โรคหัวใจ"
+                                                    id="sickness06">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคหัวใจ
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    value="โรคความดันโลหิตสูง" id="sickness07">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    โรคความดันโลหิตสูง
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="sickness00">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    อื่นๆ
+                                                </label>
+                                                <!-- <input type="text" class="form-control" id="diseaseName"
+                                                            placeholder="โปรดระบุโรคประจำตัว"> -->
+                                                <textarea class="form-control" rows="2" aria-label="With textarea"
+                                                    placeholder="โปรดระบุโรคประจำตัว" id="sickness08"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <h5>มลพิษทางอากาศ</h5>
+                                <hr>
+                                <div class="form-group row">
+                                    <!-- <div class="col-sm-4">
+                                                    <h6>ปัญหาฝุ่นควัน/ฝุ่นละอองในพื้นที่</h6>
+                                                    <select class="form-control" id="effect">
+                                                        <option value="ไม่ได้รับผลกระทบ">ไม่ได้รับผลกระทบ
+                                                        </option>
+                                                        <option value="ได้รับผลกระทบ">ได้รับผลกระทบ</option>
+                                                    </select>
+                                                </div> -->
+                                    <!-- <div class="col-sm">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                    <label class="form-check-label"
+                                                        for="inlineRadio1">ได้รับผลกระทบ</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                    <label class="form-check-label"
+                                                        for="inlineRadio2">ไม่ได้รับผลกระทบ</label>
+                                                </div>
+                                            </div> -->
+                                    <div class="col-sm">
+                                        <h6 style="text-align: center;">ความรู้สึกต่อคุณภาพอากาศ</h6>
+                                        <br>
+                                        <div class="container-feel">
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-success "
+                                                    style="border:none;" id="verygood"
+                                                    onclick="getfeel('01','ดีมาก',1)">
+                                                    <img src="./img/verygood.svg" class="center h">
+                                                    <h5>ดีมาก</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P> ท้องฟ้าปลอดโปร่ง แจ่มใส ไม่มีเมฆหรือมีเล็กน้อย
+                                                        มองเห็นวิวทิวทัศน์มากกว่า 17 กม.</P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-success "
+                                                    style="border:none;" id="good" onclick="getfeel('01','ดี',2)">
+                                                    <img src="./img/goog.svg" class="center h">
+                                                    <h5>ดี</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>ท้องฟ้าโปร่ง มีเมฆเล็กน้อย อากาศสดชื่น
+                                                        มองเห็นวิวทิวทัศน์ได้ชัดเจน 9-16
+                                                        กม.
+                                                    </P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-warning"
+                                                    style="border:none;" id="medium"
+                                                    onclick="getfeel('01','ปานกลาง',3)">
+                                                    <img src="./img/nomal.svg" class="center h">
+                                                    <h5>ปานกลาง</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>ท้องฟ้ามีเมฆปกคลุม หรือ มีฝุ่นละอองในอากาศเล็กน้อย
+                                                        มองเห็นวิวทิวทัศน์ 5-8 กม.</P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    style="border:none;" id="bad" onclick="getfeel('01','แย่',4)">
+                                                    <img src="./img/bad2.svg" class="center h">
+                                                    <h5>แย่</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>มีฝุ่นละอองในอากาศ
+                                                        เริ่มมีผลกระทบต่อสุขภาพ และมองเห็นวิวได้น้อยกว่า 4
+                                                        กม.
+
+                                                    </P>
+                                                </div>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="card-feel">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    style="border:none;" id="badend">
+                                                    <img src="./img/badend.svg" class="center h"
+                                                        onclick="getfeel('01','แย่มาก',5)">
+                                                    <h5>แย่มาก</h5>
+                                                </button>
+                                                <div class="card-body">
+                                                    <P>มีผลกระบทต่อสุขภาพ มองเห็นวิวทิวทัศน์ได้น้อยกว่า 1.5 กม.</P>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="container-fluid">
+                                        <h6 style="text-align: center;">อาการ/ผลกระทบจากฝุ่นละอองในพื้นที่</h6>
+                                        <div class="container-sick">
+                                            <div class="card circle" id="no00" onclick="getsick('00','HaveNot',0)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/00.svg" class="center h">
+                                                    <h5>ไม่มีอาการ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no01" onclick="getsick('01','Have',1)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/01.svg" class="center h">
+                                                    <h5>คัดจมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no02" onclick="getsick('02','Have',2)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/02.svg" class="center h">
+                                                    <h5>มีน้ำมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no03" onclick="getsick('03','Have',3)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/03.svg" class="center h">
+                                                    <h5>แสบจมูก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no04" onclick="getsick('04','Have',4)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/04.svg" class="center h">
+                                                    <h5>เลือดกำเดาไหล</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no05" onclick="getsick('05','Have',5)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/05.svg" class="center h">
+                                                    <h5>แสบคอ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no06" onclick="getsick('06','Have',6)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/06.svg" class="center h">
+                                                    <h5>เสียงแหบ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no07" onclick="getsick('07','Have',7)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/07.svg" class="center h">
+                                                    <h5>ไอไม่มีเสมหะ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no08" onclick="getsick('08','Have',8)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/08.svg" class="center h">
+                                                    <h5>ไอมีเสมหะ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no09" onclick="getsick('09','Have',9)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/09.svg" class="center h">
+                                                    <h5>หายใจลำบาก</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no10" onclick="getsick('10','Have',10)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/10.svg" class="center h">
+                                                    <h5>หายใจมีเสียงหวีด</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no11" onclick="getsick('11','Have',11)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/11.svg" class="center h">
+                                                    <h5>ปวดหัว</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no12" onclick="getsick('12','Have',12)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/12.svg" class="center h">
+                                                    <h5>เวียนหัว</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no13" onclick="getsick('13','Have',13)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/13.svg" class="center h">
+                                                    <h5>เหนื่อยง่ายผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no14" onclick="getsick('14','Have',14)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/14.svg" class="center h">
+                                                    <h5>เท้าบวมผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no15" onclick="getsick('15','Have',15)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/15.svg" class="center h">
+                                                    <h5>หัวใจเต้นเร็วผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no16" onclick="getsick('16','Have',16)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/16.svg" class="center h">
+                                                    <h5>คันตามร่างกาย</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no17" onclick="getsick('17','Have',17)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/17.svg" class="center h">
+                                                    <h5>มีผื่นแดงตามร่างกาย</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no18" onclick="getsick('18','Have',18)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/18.svg" class="center h">
+                                                    <h5>คันตา/แสบตา</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no19" onclick="getsick('19','Have',19)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/19.svg" class="center h">
+                                                    <h5>ตาแดง</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no20" onclick="getsick('20','Have',20)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/20.svg" class="center h">
+                                                    <h5>น้ำตาไหลมากผิดปกติ</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no21" onclick="getsick('21','Have',21)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/21.svg" class="center h">
+                                                    <h5>ปวดตา</h5>
+                                                </button>
+                                            </div>&nbsp; &nbsp;
+                                            <div class="card circle" id="no22" onclick="getsick('22','Have',22)">
+                                                <button type="button" class="btn btn-outline-dark circle">
+                                                    <img src="./img/sick/22.svg" class="center h">
+                                                    <h5>มองภาพไม่ค่อยชัด</h5>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>พื้นที่ได้รับผลกระทบ</h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p style="text-align: center;">กรุณาวาดขอบเขตพื้นที่ที่คาดว่าได้รับผลกระทบ<label
+                                            style="color: red;" for="sel1">*</label>
+                                    </p>
+                                    <div class="card">
+                                        <div class="card-body p2">
+                                            <div id="map"></div>
+                                            <img class="border-10" src="./aqi.png" width="100%">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="container-sick">
+                                            <div class="card radius-r" id="cardaqi">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="icon-graph success font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h3><span id="aqi"></span></h3>
+                                                                <span>คุณภาพอากาศ AQI</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="card radius-r" id="cardpm10">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="icon-graph success font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h3><span id="pm10"></span></h3>
+                                                                <span>ค่าฝุ่น PM10</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="card radius-r" id="cardpm25">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="icon-graph success font-large-2 float-lef"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h3><span id="pm25"></span></h3>
+                                                                <span>ค่าฝุ่น PM2.5</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="card radius-r" id="cardtime">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <!-- <i class="icon-graph success font-large-2 float-left
+                                                                    w3-xxxlarge"></i> -->
+                                                                <i class="fa fa-calendar font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h6><span id="datetime"></span></h6>
+                                                                <span>ข้อมูล ณ วันที่/เวลา</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="card radius-r" id="cardsta">
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <div class="media d-flex">
+                                                            <div class="align-self-center">
+                                                                <!-- <i class="icon-graph success font-large-2 float-left
+                                                                    w3-xxxlarge"></i> -->
+                                                                <i class="fa fa-map-marker font-large-2 float-left"
+                                                                    style="font-size:36px;"></i>
+                                                            </div>
+                                                            <div class="media-body text-right">
+                                                                <h6><span id="staair"></span></h6>
+                                                                <span>สถานีตรวจวัด</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="card-deck p-3 mb-1">
+                                            <div class="card card-stats">
+                                                <div class="card-body p-1 ">
+                                                    <img class="border-10" src="./aqi.png" width="100%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">ค่าพิกัด lat: <label
+                                                    style="color: red;" for="sel1">*</label></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="lat" readonly>
+                                                <div class="invalid-feedback">
+                                                    *ระบุค่าพิกัด lat
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">ค่าพิกัด lng: <label
+                                                    style="color: red;" for="sel1">*</label></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="lon" readonly>
+                                                <div class="invalid-feedback">
+                                                    *ระบุค่าพิกัด lng
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">วันที่รายงาน :<label
+                                                    style="color: red;" for="sel1">*</label> </label>
+                                            <div class="col-sm-9">
+                                                <input type="date" id="redate" class="form-control">
+                                                <div class="invalid-feedback">
+                                                    *ระบุวันที่รายงาน
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">เวลา : <label style="color: red;"
+                                                    for="sel1">*</label> </label>
+                                            <div class="col-sm">
+                                                <input type="time" id="retime" class="form-control">
+                                                <div class="invalid-feedback">
+                                                    *ระบุเวลา
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">รายละเอียดเพิ่มเติม :</label>
+                                    <div class="col-sm">
+                                        <textarea class="form-control" rows="3" aria-label="With textarea"
+                                            id="detail"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">ลักษณะสภาพอากาศ</label>
+                                    <div class="col-sm-10 col-form-label">
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="imgfile">
+                                                <label class="custom-file-label"
+                                                    for="inputGroupFile02">เลือกไฟล์รูปภาพ</label>
+                                            </div>
+                                        </div>
+                                        <img src="" id="preview" width="250px">
+                                    </div>
+                                </div>
+
+
+                                <hr>
+                                <div class="form-group"
+                                    style="flex-direction: row; display: flex; justify-content: center;">
+                                    <!-- <button type=" button" class="btn btn-outline-success"
+                                                onClick="window.location.reload();">
+                                                <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;refresh</button>
+                                            &nbsp;&nbsp; -->
+
+
+                                    <!-- <a href="https://engrids.soc.cmu.ac.th/" class="btn btn-info">
+                                        <i class="fa fa-home" aria-hidden="true"></i>&nbsp;หน้าหลัก</a>
+                                    &nbsp;&nbsp; -->
+                                    <button type="button" class="btn btn-success" onclick="saveData()"><i
+                                            class="bi bi-save"></i>&nbsp;บันทึก</button>&nbsp;&nbsp;
+                                    &nbsp;&nbsp; <button class="btn btn-light" onclick="gotoreport()" type="button">
+                                        <i class="fa fa-bar-chart" aria-hidden="true">
+                                        </i>&nbsp;หน้ารายงาน</button>
+                                    &nbsp;&nbsp;
+
+
+
+                                </div>
+                            </form>
+                        </span>
+                    </div>
+                </form>
+                <!-- ฝากใส่วันที่ปรับปรุงด้วยนะคะ -->
+                <!-- <div class="mt-3 mb-6">
+                    <p> <span class="ver">ปรับปรุง 08/07/2021</span></p>
+                </div> -->
+            </div>
+        </section><!-- End Services Section -->
+    </main><!-- End #main -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container">
+
+            <div class="copyright">
+                <img src="./../../assets/img/onep_logo.png" class="img-circle" style="width:35px"> &nbsp;
+                สงวนสิทธิ์ 2564 <strong><span>สำนักงานนโยบายและแผนทรัพยากรธรรมชาติและสิ่งแวดล้อม</span></strong>
+
+            </div>
+        </div>
+    </footer><!-- End  Footer -->
+    <div class=" modal" id="valModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="w3-animate-zoom">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6>ขอบเขตพื้นที่ที่ได้รับผลกระทบ</h6>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-sm">
+                                <label for="sel1">จังหวัด:</label>
+                                <select class="form-control" id="pro">
+                                    <option value="eec">ทุกจังหวัด</option>
+                                    <option value="24">ฉะเชิงเทรา</option>
+                                    <option value="20">ชลบุรี</option>
+                                    <option value="21">ระยอง</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm">
+                                <label for="sel1">อำเภอ:</label>
+                                <select class="form-control" id="amp">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm">
+                                <label for="sel1">ตำบล:</label>
+                                <select class="form-control" id="tam">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                            <button type="button" class="btn btn-success" onclick="confirmvalue()">ตกลง</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="modal fade bd-example-modal-lg" id="Modalconfirm" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center ">
+                    <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="modal fade bd-example-modal-lg" id="Modalconfirm">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-check-fill text-success mr-2"
+                            style="font-size: 26px;"></i>ยืนยันการบันทึกข้อมูล
+                    </h4>
+                </div>
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;">ท่านต้องการบันทึกข้อมูลนี้ใช่หรือไม่</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <a href="/form_air/dashboard" class="btn btn-success">ยืนยัน</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="NOdatamodal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="imgfile_show">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-x-square-fill text-danger mr-2"
+                            style="font-size: 26px;"></i>บันทึกข้อมูลไม่สำเร็จ
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <br>
+                    <p style="font-size: 18px;  ">กรุณาอัพโหลดไฟล์รูปภาพ</p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="noauth" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="w3-animate-top"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="bi bi-file-earmark-excel-fill text-danger mr-2" style="font-size: 26px;"></i>
+                        <b>ไม่สามารถนำเข้าข้อมูลนี้ได้ </b>
+                    </h4>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p style="font-size: 18px;">ท่านไม่สามารถนำเข้าข้อมูลได้ <br>
+                        กรุณาลงทะเบียนหรือติดต่อผู้ดูแลระบบก่อนเข้าใช้งาน
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" onclick="gotoLogin()">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="assets/vendor/counterup/counterup.min.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+
+    <script src="./marker.js"></script>
+
+
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- datatable -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+
+
+
+
+<!-- <script src="./add.js"></script> -->
+<script src="./app.js"></script>
+
+
+</html>
